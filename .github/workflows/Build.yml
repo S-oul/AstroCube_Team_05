@@ -1,6 +1,6 @@
 name: Build project
 
-on: [push, pull_request]
+on: push
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows # Build a Windows standalone.
+          - StandaloneWindows64 # Build a Windows 64 standalone.
     steps:
       - uses: actions/checkout@v4
         with:
