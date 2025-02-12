@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RubiksCubeControlled : MonoBehaviour
 {
@@ -8,14 +9,12 @@ public class RubiksCubeControlled : MonoBehaviour
     [SerializeField] GameObject Lilcube;
     [SerializeField] GameObject EmptyParent;
 
+    [SerializeField] GameObject ActualFace;
+
     bool _isCubeShow = false;
     bool _isRotating = false;
     bool _faceSelected = false;
 
-    void Update()
-    {
-
-    }
 
     [Button("Show Cube")]
     void ActionShowUpcube()
@@ -45,8 +44,12 @@ public class RubiksCubeControlled : MonoBehaviour
     [Button("Left")]
     void ActionLeft()
     {
-        if(_isCubeShow && !_faceSelected) StartCoroutine(RotateCube(Vector3.down));
-        else if (_faceSelected) 
+        if (!_faceSelected)
+        {
+            StartCoroutine(RotateCube(Vector3.down));
+
+        }
+        else
         {
 
         }
@@ -54,8 +57,11 @@ public class RubiksCubeControlled : MonoBehaviour
     [Button("Right")]
     void ActionRight()
     {
-        if (_isCubeShow && !_faceSelected) StartCoroutine(RotateCube(Vector3.up));
-        else if (_faceSelected) 
+        if (!_faceSelected)
+        {
+            StartCoroutine(RotateCube(Vector3.up));
+        }
+        else
         {
 
         }
@@ -63,8 +69,11 @@ public class RubiksCubeControlled : MonoBehaviour
     [Button("Up")]
     void ActionUp()
     {
-        if (_isCubeShow && !_faceSelected) StartCoroutine(RotateCube(Vector3.right));
-        else if (_faceSelected) 
+        if (!_faceSelected)
+        {
+            StartCoroutine(RotateCube(Vector3.right));
+        }
+        else
         {
 
         }
@@ -72,12 +81,15 @@ public class RubiksCubeControlled : MonoBehaviour
     [Button("Down")]
     void ActionDown()
     {
-        if (_isCubeShow && !_faceSelected) StartCoroutine(RotateCube(Vector3.left));
-        else if (_faceSelected) 
+        if (!_faceSelected)
+        {
+            StartCoroutine(RotateCube(Vector3.left));
+        }
+        else
         {
 
         }
-    }   
+    }
 
 
 
@@ -101,5 +113,10 @@ public class RubiksCubeControlled : MonoBehaviour
             Lilcube.transform.rotation = targetRotation;
             _isRotating = false;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward*1000, Color.red);
     }
 }
