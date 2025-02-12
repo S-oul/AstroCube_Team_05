@@ -25,7 +25,12 @@ public class DoMoves : MonoBehaviour
 
     private void Start()
     {
-        allBlocks = GameObject.FindGameObjectsWithTag("Movable").ToList();
+        //CHANGE IF SCRIPT IS DISPLACED
+        foreach(Transform t in transform.parent)
+        {
+            if(t.tag == "Movable") allBlocks.Add(t.gameObject);
+        }
+        
         StartCoroutine(Scramble());
     }
 
