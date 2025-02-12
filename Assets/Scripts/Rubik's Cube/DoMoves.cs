@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class DoMoves : MonoBehaviour
@@ -26,11 +25,11 @@ public class DoMoves : MonoBehaviour
     private void Start()
     {
         //CHANGE IF SCRIPT IS DISPLACED
-        foreach(Transform t in transform.parent)
+        foreach (Transform t in transform.parent)
         {
-            if(t.tag == "Movable") allBlocks.Add(t.gameObject);
+            if (t.tag == "Movable") allBlocks.Add(t.gameObject);
         }
-        
+
         StartCoroutine(Scramble());
     }
 
@@ -39,19 +38,6 @@ public class DoMoves : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             doScramble = false;
-            List<int> posistions = new List<int>();
-            for (int i = 0; i < moves.Count - 2; i++)
-            {
-                if (moves[i].axis == moves[i + 1].axis && moves[i].clockWise != moves[i + 1].clockWise)
-                {
-                    posistions.Add(i);
-                    posistions.Add(i++);
-                }
-            }
-            for (int n = posistions.Count - 1; n >= 0; n--)
-            {
-                moves.RemoveAt(posistions[n]);
-            }
             StartCoroutine(ReverseAllMoves());
         }
     }
@@ -68,7 +54,6 @@ public class DoMoves : MonoBehaviour
             yield return null;
         }
     }
-
     IEnumerator ReverseAllMoves()
     {
         yield return new WaitForSeconds(.5f);
@@ -85,6 +70,7 @@ public class DoMoves : MonoBehaviour
     }
     public IEnumerator RotateAngle(Transform axis, bool clockWise, float duration = 0.5f)
     {
+        if (_isRotating) yield return null;
         print(axis.name + " " + clockWise);
         _isRotating = true;
         List<int> ids = new List<int>();
@@ -153,5 +139,26 @@ public class DoMoves : MonoBehaviour
         };
 
         return move;
+    }
+
+    public List<GameObject> GetAxisCubes(Transform axis)
+    {
+        List<GameObject> result = new List<GameObject>();
+        foreach (var block in allBlocks)
+        {
+            Vector3 localBlockPos = block.transform.localPosition;
+            Vector3 localAxisPos = axis.localPosition; // axis is child of the cube too
+
+            if ((localAxisPos.x > 0.5f && localBlockPos.x > 0.5f) ||
+                (localAxisPos.x < -0.5f && localBlockPos.x < -0.5f) ||
+                (localAxisPos.y > 0.5f && localBlockPos.y > 0.5f) ||
+                (localAxisPos.y < -0.5f && localBlockPos.y < -0.5f) ||
+                (localAxisPos.z > 0.5f && localBlockPos.z > 0.5f) ||
+                (localAxisPos.z < -0.5f && localBlockPos.z < -0.5f))
+            {
+                result.Add(block);
+            }
+        }
+        return result;
     }
 }
