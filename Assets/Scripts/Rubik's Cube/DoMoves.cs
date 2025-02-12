@@ -181,7 +181,6 @@ public class DoMoves : MonoBehaviour
         }
         _isRotating = false;
     }
-
     RubiksMove CreateMove()
     {
         RubiksMove move = new()
