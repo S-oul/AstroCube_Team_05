@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DoMoves : MonoBehaviour
@@ -29,22 +28,22 @@ public class DoMoves : MonoBehaviour
         allBlocks = GameObject.FindGameObjectsWithTag("Movable").ToList();
         StartCoroutine(Scramble());
     }
-    
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             doScramble = false;
             List<int> posistions = new List<int>();
-            for(int i = 0; i <moves.Count-2;i++)
+            for (int i = 0; i < moves.Count - 2; i++)
             {
-                if(moves[i].axis == moves[i + 1].axis && moves[i].clockWise != moves[i+1].clockWise)
+                if (moves[i].axis == moves[i + 1].axis && moves[i].clockWise != moves[i + 1].clockWise)
                 {
                     posistions.Add(i);
                     posistions.Add(i++);
                 }
             }
-            for(int n = posistions.Count-1; n >= 0; n--)
+            for (int n = posistions.Count - 1; n >= 0; n--)
             {
                 moves.RemoveAt(posistions[n]);
             }
@@ -59,7 +58,7 @@ public class DoMoves : MonoBehaviour
             {
                 RubiksMove m = CreateMove();
                 moves.Add(m);
-                StartCoroutine(RotateAngle(m, .1f));
+                RotateAngle(m, .3f);
             }
             yield return null;
         }
@@ -68,12 +67,12 @@ public class DoMoves : MonoBehaviour
     IEnumerator ReverseAllMoves()
     {
         yield return new WaitForSeconds(.5f);
-        while(moves.Count > 0)
+        while (moves.Count > 0)
         {
             if (!_isRotating)
             {
-                StartCoroutine(RotateAngle(moves[moves.Count-1].axis, !moves[moves.Count - 1].clockWise, .1f));
-                moves.RemoveAt(moves.Count-1);
+                StartCoroutine(RotateAngle(moves[moves.Count - 1].axis, !moves[moves.Count - 1].clockWise, .1f));
+                moves.RemoveAt(moves.Count - 1);
             }
             yield return null;
         }
@@ -81,105 +80,64 @@ public class DoMoves : MonoBehaviour
     }
     public IEnumerator RotateAngle(Transform axis, bool clockWise, float duration = 0.5f)
     {
-        print(axis.name + ' ' + clockWise);
+        print(axis.name + " " + clockWise);
         _isRotating = true;
+        List<int> ids = new List<int>();
+
         foreach (var block in allBlocks)
         {
-            Vector3 blockPos = block.transform.position;
+            Vector3 localBlockPos = block.transform.localPosition;
+            Vector3 localAxisPos = axis.localPosition; // axis is child of the cube too
 
-            if ((axis.position.x > 0.5f && blockPos.x > 0.5f) ||
-                (axis.position.y > 0.5f && blockPos.y > 0.5f) ||
-                (axis.position.z > 0.5f && blockPos.z > 0.5f) ||
-                (axis.position.x < -0.5f && blockPos.x < -0.5f) ||
-                (axis.position.y < -0.5f && blockPos.y < -0.5f) ||
-                (axis.position.z < -0.5f && blockPos.z < -0.5f))
+            if ((localAxisPos.x > 0.5f && localBlockPos.x > 0.5f) ||
+                (localAxisPos.x < -0.5f && localBlockPos.x < -0.5f) ||
+                (localAxisPos.y > 0.5f && localBlockPos.y > 0.5f) ||
+                (localAxisPos.y < -0.5f && localBlockPos.y < -0.5f) ||
+                (localAxisPos.z > 0.5f && localBlockPos.z > 0.5f) ||
+                (localAxisPos.z < -0.5f && localBlockPos.z < -0.5f))
             {
-                block.transform.SetParent(axis);
+                block.transform.SetParent(axis, true);
+                ids.Add(allBlocks.IndexOf(block));
             }
         }
-
-        Vector3 angles = axis.eulerAngles;
-        float elapsedTime = 0;
 
         int direction = clockWise ? 1 : -1;
         Vector3 rotationAxis = Vector3.zero;
 
-        if (axis.transform.position.x > 0.5 || axis.transform.position.x < -0.5)
+        if (Mathf.Abs(axis.localPosition.x) > 0.5f)
             rotationAxis = Vector3.right;
-        else if (axis.transform.position.y > 0.5 || axis.transform.position.y < -0.5)
+        else if (Mathf.Abs(axis.localPosition.y) > 0.5f)
             rotationAxis = Vector3.up;
-        else if (axis.transform.position.z > 0.5 || axis.transform.position.z < -0.5)
+        else if (Mathf.Abs(axis.localPosition.z) > 0.5f)
             rotationAxis = Vector3.forward;
 
         Quaternion startRotation = axis.rotation;
         Quaternion targetRotation = startRotation * Quaternion.AngleAxis(direction * 90, rotationAxis);
 
+        float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             axis.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
             yield return null;
         }
-
         axis.rotation = targetRotation;
 
-        foreach (GameObject t in allBlocks)
+        foreach (int i in ids)
         {
-            if (t.transform.position.x > 0) t.transform.parent = transform.parent;
+            Vector3 pos = allBlocks[i].transform.localPosition;
+            pos.x = Mathf.Round(pos.x);
+            pos.y = Mathf.Round(pos.y);
+            pos.z = Mathf.Round(pos.z);
+            allBlocks[i].transform.localPosition = pos;
+            allBlocks[i].transform.SetParent(this.transform, true);
+
         }
         _isRotating = false;
     }
-    IEnumerator RotateAngle(RubiksMove move, float duration = 0.5f)
+    void RotateAngle(RubiksMove move, float duration = 0.5f)
     {
-        Transform axis = move.axis;
-        bool clockWise = move.clockWise;
-        print(axis.name + ' ' + clockWise);
-        _isRotating = true;
-        foreach (var block in allBlocks)
-        {
-            Vector3 blockPos = block.transform.position;
-
-            if ((axis.position.x > 0.5f && blockPos.x > 0.5f) ||
-                (axis.position.y > 0.5f && blockPos.y > 0.5f) ||
-                (axis.position.z > 0.5f && blockPos.z > 0.5f) ||
-                (axis.position.x < -0.5f && blockPos.x < -0.5f) ||
-                (axis.position.y < -0.5f && blockPos.y < -0.5f) ||
-                (axis.position.z < -0.5f && blockPos.z < -0.5f))
-            {
-                block.transform.SetParent(axis);
-            }
-        }
-
-        Vector3 angles = axis.eulerAngles;
-        float elapsedTime = 0;
-
-        int direction = clockWise ? 1 : -1;
-        Vector3 rotationAxis = Vector3.zero;
-
-        if (axis.transform.position.x > 0.5 || axis.transform.position.x < -0.5)
-            rotationAxis = Vector3.right;
-        else if (axis.transform.position.y > 0.5 || axis.transform.position.y < -0.5)
-            rotationAxis = Vector3.up;
-        else if (axis.transform.position.z > 0.5 || axis.transform.position.z < -0.5)
-            rotationAxis = Vector3.forward;
-
-        Quaternion startRotation = axis.rotation;
-        Quaternion targetRotation = startRotation * Quaternion.AngleAxis(direction * 90, rotationAxis);
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            axis.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
-            yield return null;
-        }
-
-        axis.rotation = targetRotation;
-
-        foreach (GameObject t in allBlocks)
-        {
-            if (t.transform.position.x > 0) t.transform.parent = transform.parent;
-        }
-        _isRotating = false;
+        StartCoroutine(RotateAngle(move.axis, move.clockWise, duration));
     }
     RubiksMove CreateMove()
     {

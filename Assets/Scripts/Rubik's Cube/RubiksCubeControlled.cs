@@ -9,8 +9,6 @@ public class RubiksCubeControlled : MonoBehaviour
     public DoMoves Rubiks;
 
     [SerializeField] GameObject Lilcube;
-    [SerializeField] GameObject EmptyParent;
-
     [SerializeField] GameObject ActualFace;
 
     bool _isCubeShow = false;
@@ -22,18 +20,18 @@ public class RubiksCubeControlled : MonoBehaviour
 
 
     [Button("Show Cube")]
-    void ActionShowUpcube()
+    public void ActionShowUpcube()
     {
+        RaycastHit _raycastInfo;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _raycastInfo, 500, _detectableLayer))
+        {
+            ActualFace = _raycastInfo.transform.gameObject;
+        }
         StartCoroutine(ShowpCube());
-    }
-    IEnumerator ShowpCube()
-    {
-        _isCubeShow = true;
-        yield return null;
     }
 
     [Button("Select")]
-    void ActionValidate()
+    public void ActionValidate()
     {
         if (!_faceSelected)
         {
@@ -45,9 +43,18 @@ public class RubiksCubeControlled : MonoBehaviour
             StartCoroutine(Rubiks.RotateAngle(ActualFace.transform, true, 1f));
         }
     }
+    [Button("De-Select")]
+    public void ActionDeValidate()
+    {
+        if (_faceSelected)
+        {
+            Camera.main.fieldOfView += 30;
+            _faceSelected = false;
+        }
+    }
 
     [Button("Left")]
-    void ActionLeft()
+    public void ActionLeft()
     {
         if (!_faceSelected)
         {
@@ -60,7 +67,7 @@ public class RubiksCubeControlled : MonoBehaviour
         }
     }
     [Button("Right")]
-    void ActionRight()
+    public void ActionRight()
     {
         if (!_faceSelected)
         {
@@ -72,7 +79,7 @@ public class RubiksCubeControlled : MonoBehaviour
         }
     }
     [Button("Up")]
-    void ActionUp()
+    public void ActionUp()
     {
         if (!_faceSelected)
         {
@@ -84,7 +91,7 @@ public class RubiksCubeControlled : MonoBehaviour
         }
     }
     [Button("Down")]
-    void ActionDown()
+    public void ActionDown()
     {
         if (!_faceSelected)
         {
@@ -97,6 +104,26 @@ public class RubiksCubeControlled : MonoBehaviour
     }
 
 
+    IEnumerator ShowpCube()
+    {
+        if (!_isCubeShow)
+        {
+            _isCubeShow = true;
+
+        }
+        yield return null;
+        /*
+         *         float elapsedTime = 0;
+        while (elapsedTime < .5f)
+        {
+            elapsedTime += Time.deltaTime;
+            Lilcube.transform.position = new Vector3(0, Mathf.Lerp(0, 4, elapsedTime / .5f), 0);
+            yield return null;
+        }
+        Lilcube.transform.position = new Vector3(0, 4, 0);
+
+         */
+    }
 
 
     IEnumerator RotateCube(Vector3 direction)
@@ -111,7 +138,7 @@ public class RubiksCubeControlled : MonoBehaviour
             while (elapsedTime < .5f)
             {
                 elapsedTime += Time.deltaTime;
-                Lilcube.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / .5f);
+                Lilcube.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / .2f);
                 yield return null;
             }
 
