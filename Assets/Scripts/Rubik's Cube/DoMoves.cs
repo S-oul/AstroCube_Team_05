@@ -10,7 +10,7 @@ public class DoMoves : MonoBehaviour
     [SerializeField] Transform middle;
 
     [SerializeField] List<GameObject> Axis = new List<GameObject>();
-    [SerializeField] List<GameObject> allBlocks = new List<GameObject>();
+    public List<GameObject> allBlocks = new List<GameObject>();
 
     public bool doScramble = true;
 
@@ -79,7 +79,7 @@ public class DoMoves : MonoBehaviour
         }
 
     }
-    IEnumerator RotateAngle(Transform axis, bool clockWise, float duration = 0.5f)
+    public IEnumerator RotateAngle(Transform axis, bool clockWise, float duration = 0.5f)
     {
         print(axis.name + ' ' + clockWise);
         _isRotating = true;

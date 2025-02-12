@@ -1,10 +1,12 @@
 using NaughtyAttributes;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RubiksCubeControlled : MonoBehaviour
 {
+    public DoMoves Rubiks;
 
     [SerializeField] GameObject Lilcube;
     [SerializeField] GameObject EmptyParent;
@@ -15,6 +17,9 @@ public class RubiksCubeControlled : MonoBehaviour
     bool _isRotating = false;
     bool _faceSelected = false;
 
+    public LayerMask _detectableLayer;
+
+
 
     [Button("Show Cube")]
     void ActionShowUpcube()
@@ -23,22 +28,22 @@ public class RubiksCubeControlled : MonoBehaviour
     }
     IEnumerator ShowpCube()
     {
-        float elapsedTime = 0;
-        while (elapsedTime < .5f)
-        {
-            elapsedTime += Time.deltaTime;
-            Lilcube.transform.position = new Vector3(0, Mathf.Lerp(0, 4, elapsedTime / .5f), 0);
-            yield return null;
-        }
-        Lilcube.transform.position = new Vector3(0, 4, 0);
         _isCubeShow = true;
+        yield return null;
     }
 
     [Button("Select")]
     void ActionValidate()
     {
-        Camera.main.fieldOfView -= 30;
-        _faceSelected = true;
+        if (!_faceSelected)
+        {
+            Camera.main.fieldOfView -= 30;
+            _faceSelected = true;
+        }
+        else
+        {
+            StartCoroutine(Rubiks.RotateAngle(ActualFace.transform, true, 1f));
+        }
     }
 
     [Button("Left")]
@@ -112,11 +117,17 @@ public class RubiksCubeControlled : MonoBehaviour
 
             Lilcube.transform.rotation = targetRotation;
             _isRotating = false;
+
+            RaycastHit _raycastInfo;
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _raycastInfo, 500, _detectableLayer))
+            {
+                ActualFace = _raycastInfo.transform.gameObject;
+            }
         }
     }
 
     private void OnDrawGizmos()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward*1000, Color.red);
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 1000, Color.red);
     }
 }
