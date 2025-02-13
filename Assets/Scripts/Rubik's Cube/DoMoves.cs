@@ -13,6 +13,7 @@ public class DoMoves : MonoBehaviour
     public bool doScramble = true;
 
     private bool _isRotating = false;
+    private bool _isReversing = false;
 
     struct RubiksMove
     {
@@ -48,7 +49,6 @@ public class DoMoves : MonoBehaviour
             if (!_isRotating)
             {
                 RubiksMove m = CreateMove();
-                moves.Add(m);
                 RotateAngle(m, .3f);
             }
             yield return null;
@@ -57,15 +57,31 @@ public class DoMoves : MonoBehaviour
     IEnumerator ReverseAllMoves()
     {
         yield return new WaitForSeconds(.5f);
+        _isReversing = true;
         while (moves.Count > 0)
         {
             if (!_isRotating)
             {
                 StartCoroutine(RotateAngle(moves[moves.Count - 1].axis, !moves[moves.Count - 1].clockWise, .1f));
+                /*List<int> posistions = new List<int>();
+                for (int i = 0; i < moves.Count - 2; i++)
+                {
+                    if (moves[i].axis == moves[i + 1].axis && moves[i].clockWise != moves[i + 1].clockWise)
+                    {
+                        posistions.Add(i);
+                        posistions.Add(i++);
+                    }
+                }
+                for (int n = posistions.Count - 1; n >= 0; n--)
+                {
+                    moves.RemoveAt(posistions[n]);
+                }*/
                 moves.RemoveAt(moves.Count - 1);
             }
             yield return null;
         }
+        _isReversing = false;
+
 
     }
     public IEnumerator RotateAngle(Transform axis, bool clockWise, float duration = 0.5f)
@@ -125,6 +141,17 @@ public class DoMoves : MonoBehaviour
 
         }
         _isRotating = false;
+
+        if (!_isReversing)
+        {
+            RubiksMove move = new()
+            {
+                axis = axis,
+                clockWise = clockWise
+            };
+            moves.Add(move);
+        }
+
     }
     void RotateAngle(RubiksMove move, float duration = 0.5f)
     {
