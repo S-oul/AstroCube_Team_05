@@ -108,7 +108,7 @@ public class RubiksCubeController : MonoBehaviour
             StartCoroutine(_lilCubeScript.RotateAngle(ActualFace.transform, clockwise, .2f));
             Transform equivalence = BigCube.transform.GetChild(0).Find(ActualFace.name);
             print(equivalence);
-            StartCoroutine(_bigCubeScript.RotateAngle(equivalence, !clockwise, .2f));
+            StartCoroutine(_bigCubeScript.RotateAngle(equivalence, clockwise, .2f));
 
             StartCoroutine(waitfor2());
         }
@@ -129,13 +129,13 @@ public class RubiksCubeController : MonoBehaviour
             while (elapsedTime < .4f)
             {
                 elapsedTime += Time.deltaTime;
-                LilCube.transform.position = new Vector3(LilCube.transform.position.x, Mathf.Lerp(-18, -3, elapsedTime / .4f), LilCube.transform.position.z);
+                LilCube.transform.position = new Vector3(LilCube.transform.position.x, Mathf.Lerp(-18, -6, elapsedTime / .4f), LilCube.transform.position.z);
                 yield return null;
             }
-            LilCube.transform.position = new Vector3(LilCube.transform.position.x, -3, LilCube.transform.position.z);
+            LilCube.transform.position = new Vector3(LilCube.transform.position.x, -6, LilCube.transform.position.z);
 
             RaycastHit _raycastInfo;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _raycastInfo, 500, _detectableLayer))
+            if (Physics.Raycast(LilCube.transform.position, -LilCube.transform.parent.forward, out _raycastInfo, 500, _detectableLayer))
             {
                 ActualFace = _raycastInfo.transform.gameObject;
                 IlluminateFace();
