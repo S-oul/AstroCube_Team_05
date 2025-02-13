@@ -6,19 +6,28 @@ using UnityEngine.UI;
 
 public class RubiksCubeController : MonoBehaviour
 {
-    public DoMoves Rubiks;
 
-    [SerializeField] GameObject Lilcube;
-    [SerializeField] RectTransform ye2;
+    [SerializeField] GameObject LilCube;
+    [SerializeField] GameObject BigCube;
+    
+    DoMoves _lilCubeScript;
+    DoMoves _bigCubeScript;
+
+
+
     GameObject ActualFace;
 
     bool _isCubeShow = false;
     bool _isRotating = false;
     bool _faceSelected = false;
-    bool _rowOrColSelected = false;
 
     public LayerMask _detectableLayer;
+    private void Awake()
+    {
+        _lilCubeScript = LilCube.GetComponentInChildren<DoMoves>();
+        _bigCubeScript = BigCube.GetComponentInChildren<DoMoves>();
 
+    }
     public void SetActualFace(GameObject newFace)
     {
         ActualFace = newFace;
@@ -49,15 +58,10 @@ public class RubiksCubeController : MonoBehaviour
     [Button("De-Select")]
     public void ActionDeValidate()
     {
-         if (_faceSelected)
+         if (_isCubeShow)
         {
             Camera.main.fieldOfView += 30;
             _faceSelected = false;
-        }
-        if (_rowOrColSelected)
-        {
-            ye2.gameObject.SetActive(false);
-            _rowOrColSelected = false;
         }
        
     }
@@ -70,10 +74,6 @@ public class RubiksCubeController : MonoBehaviour
             StartCoroutine(RotateCube(Vector3.down));
 
         }
-        else
-        {
-            ChooseRowOrCol(Vector2.left);
-        }
     }
     [Button("Right")]
     public void ActionRight()
@@ -81,10 +81,6 @@ public class RubiksCubeController : MonoBehaviour
         if (!_faceSelected)
         {
             StartCoroutine(RotateCube(Vector3.up));
-        }
-        else
-        {
-            ChooseRowOrCol(Vector2.right);
         }
     }
     [Button("Up")]
@@ -94,10 +90,6 @@ public class RubiksCubeController : MonoBehaviour
         {
             StartCoroutine(RotateCube(Vector3.right));
         }
-        else
-        {
-            ChooseRowOrCol(Vector2.up);
-        }
     }
     [Button("Down")]
     public void ActionDown()
@@ -106,10 +98,6 @@ public class RubiksCubeController : MonoBehaviour
         {
             StartCoroutine(RotateCube(Vector3.left));
         }
-        else
-        {
-            ChooseRowOrCol(Vector2.down);
-        }
     }
 
     public void ActionMakeTurn(bool clockwise)
@@ -117,7 +105,11 @@ public class RubiksCubeController : MonoBehaviour
         if (!_isRotating) 
         {
             _isRotating = true;
-            StartCoroutine(Rubiks.RotateAngle(ActualFace.transform, clockwise, .2f));
+            StartCoroutine(_lilCubeScript.RotateAngle(ActualFace.transform, clockwise, .2f));
+            Transform equivalence = BigCube.transform.GetChild(0).Find(ActualFace.name);
+            print(equivalence);
+            StartCoroutine(_bigCubeScript.RotateAngle(equivalence, !clockwise, .2f));
+
             StartCoroutine(waitfor2());
         }
     }
@@ -134,13 +126,13 @@ public class RubiksCubeController : MonoBehaviour
             _isCubeShow = true;
             
             float elapsedTime = 0;
-            while (elapsedTime < .2f)
+            while (elapsedTime < .4f)
             {
                 elapsedTime += Time.deltaTime;
-                Lilcube.transform.position = new Vector3(0, Mathf.Lerp(-4, 0, elapsedTime / .2f), 0);
+                LilCube.transform.position = new Vector3(LilCube.transform.position.x, Mathf.Lerp(-18, -3, elapsedTime / .4f), LilCube.transform.position.z);
                 yield return null;
             }
-            Lilcube.transform.position = new Vector3(0, 0, 0);
+            LilCube.transform.position = new Vector3(LilCube.transform.position.x, -3, LilCube.transform.position.z);
 
             RaycastHit _raycastInfo;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _raycastInfo, 500, _detectableLayer))
@@ -159,21 +151,21 @@ public class RubiksCubeController : MonoBehaviour
         {
             _isRotating = true;
             float elapsedTime = 0;
-            Quaternion startRotation = Lilcube.transform.rotation;
+            Quaternion startRotation = LilCube.transform.rotation;
             Quaternion targetRotation = Quaternion.AngleAxis(90, direction) * startRotation;
 
             while (elapsedTime < .2f)
             {
                 elapsedTime += Time.deltaTime;
-                Lilcube.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / .2f);
+                LilCube.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / .2f);
                 yield return null;
             }
 
-            Lilcube.transform.rotation = targetRotation;
+            LilCube.transform.rotation = targetRotation;
             _isRotating = false;
 
             RaycastHit _raycastInfo;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _raycastInfo, 500, _detectableLayer))
+            if (Physics.Raycast(LilCube.transform.position, -LilCube.transform.parent.forward, out _raycastInfo, 500, _detectableLayer))
             {
                 //pas opti ça shhhhhhhhhhhh
                 ShutDownFace();
@@ -183,42 +175,20 @@ public class RubiksCubeController : MonoBehaviour
         }
     }
 
-    void ChooseRowOrCol(Vector2 dir)
-    {
-        ye2.gameObject.SetActive(true);
-        _rowOrColSelected = true;
-        switch (dir.x, dir.y)
-        {
-            case (0, 1):
-                ye2.eulerAngles = new Vector3(0, 0, 0);
-                return;
-            case (1, 0):
-                ye2.eulerAngles = new Vector3(0, 0, 270);
-                return;
-            case (0, -1):
-                ye2.eulerAngles = new Vector3(0, 0, 180);
-                return;
-            case (-1, 0):
-                ye2.eulerAngles = new Vector3(0, 0, 90);
-                return;
-        }
-    }
-
     void IlluminateFace()
     {
-        foreach (GameObject go in Rubiks.GetAxisCubes(ActualFace.transform))
+        foreach (GameObject go in _lilCubeScript.GetAxisCubes(ActualFace.transform))
         {
             go.GetComponent<Outline>().enabled = true;
         }
     }
     void ShutDownFace()
     {
-        foreach (GameObject go in Rubiks.GetAxisCubes(ActualFace.transform))
+        foreach (GameObject go in _lilCubeScript.GetAxisCubes(ActualFace.transform))
         {
             go.GetComponent<Outline>().enabled = false;
         }
     }
-
 
 }
 
