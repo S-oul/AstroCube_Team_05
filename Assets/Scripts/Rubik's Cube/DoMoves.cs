@@ -71,7 +71,7 @@ public class DoMoves : MonoBehaviour
     public IEnumerator RotateAngle(Transform axis, bool clockWise, float duration = 0.5f)
     {
         if (_isRotating) yield return null;
-        print(axis.name + " " + clockWise);
+        //print(axis.name + " " + clockWise);
         _isRotating = true;
         List<int> ids = new List<int>();
 
