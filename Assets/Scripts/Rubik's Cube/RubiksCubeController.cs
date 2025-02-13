@@ -19,7 +19,10 @@ public class RubiksCubeController : MonoBehaviour
 
     public LayerMask _detectableLayer;
 
-
+    public void SetActualFace(GameObject newFace)
+    {
+        ActualFace = newFace;
+    }
 
     [Button("Show Cube")]
     public void ActionShowUpcube()
