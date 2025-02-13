@@ -42,13 +42,13 @@ public class InputControl : MonoBehaviour
         print(dir);
         switch (dir.x, dir.y)
         {
-            case (0, 1):
+            case (0, -1):
                 RbkcController.ActionUp();
                 return;
             case (1, 0):
                 RbkcController.ActionRight();
                 return;
-            case (0, -1):
+            case (0, 1):
                 RbkcController.ActionDown();
                 return;
             case (-1, 0):
