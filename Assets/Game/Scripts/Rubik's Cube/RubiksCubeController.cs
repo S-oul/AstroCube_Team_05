@@ -107,7 +107,7 @@ public class RubiksCubeController : MonoBehaviour
             _isRotating = true;
             StartCoroutine(_lilCubeScript.RotateAngle(ActualFace.transform, clockwise, .2f));
             Transform equivalence = BigCube.transform.GetChild(0).Find(ActualFace.name);
-            print(equivalence);
+            //print(equivalence);
             StartCoroutine(_bigCubeScript.RotateAngle(equivalence, clockwise, .2f));
 
             StartCoroutine(waitfor2());
