@@ -41,7 +41,7 @@ public class MouseCamControl : MonoBehaviour
         //Raycast
         if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
         {
-            Debug.Log(_raycastInfo.transform.name);
+            //Debug.Log(_raycastInfo.transform.name);
             rubiksCubeController.SetActualFace(_raycastInfo.transform.gameObject);
         }
     }
