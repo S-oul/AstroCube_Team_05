@@ -9,7 +9,7 @@ public class RubiksCubeController : MonoBehaviour
 
     [SerializeField] GameObject LilCube;
     [SerializeField] GameObject BigCube;
-    
+
     DoMoves _lilCubeScript;
     DoMoves _bigCubeScript;
 
@@ -58,14 +58,14 @@ public class RubiksCubeController : MonoBehaviour
     [Button("De-Select")]
     public void ActionDeValidate()
     {
-         if (_isCubeShow)
+        if (_isCubeShow)
         {
             Camera.main.fieldOfView += 30;
             _faceSelected = false;
         }
-       
+
     }
-   
+
     [Button("Left")]
     public void ActionLeft()
     {
@@ -102,13 +102,16 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (!_isRotating) 
+        if (!_isRotating)
         {
             _isRotating = true;
             StartCoroutine(_lilCubeScript.RotateAngle(ActualFace.transform, clockwise, .2f));
-            Transform equivalence = BigCube.transform.GetChild(0).Find(ActualFace.name);
-            print(equivalence);
-            StartCoroutine(_bigCubeScript.RotateAngle(equivalence, clockwise, .2f));
+            if (BigCube != null)
+            {
+                Transform equivalence = BigCube.transform.GetChild(0).Find(ActualFace.name);
+                print(equivalence);
+                StartCoroutine(_bigCubeScript.RotateAngle(equivalence, clockwise, .2f));
+            }
 
             StartCoroutine(waitfor2());
         }
@@ -124,7 +127,7 @@ public class RubiksCubeController : MonoBehaviour
         if (!_isCubeShow)
         {
             _isCubeShow = true;
-            
+
             float elapsedTime = 0;
             while (elapsedTime < .4f)
             {
