@@ -37,7 +37,6 @@ public class MouseCamControl : MonoBehaviour
             moveY = Input.GetAxis("Mouse Y") * _mouseCamControlSpeed * Time.deltaTime * -1;
         }
 
-        Debug.Log("Mouse Pos is " + moveX + " , " + moveY);
 
         _xRotation -= moveY;
         _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);

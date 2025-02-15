@@ -105,10 +105,10 @@ public class RubiksCubeController : MonoBehaviour
         if (!_isRotating) 
         {
             _isRotating = true;
-            StartCoroutine(_lilCubeScript.RotateAngle(ActualFace.transform, clockwise, .2f));
+            StartCoroutine(_lilCubeScript.RotateAxis(ActualFace.transform, clockwise, .2f));
             Transform equivalence = BigCube.transform.GetChild(0).Find(ActualFace.name);
             print(equivalence);
-            StartCoroutine(_bigCubeScript.RotateAngle(equivalence, clockwise, .2f));
+            StartCoroutine(_bigCubeScript.RotateAxis(equivalence, clockwise, .2f));
 
             StartCoroutine(waitfor2());
         }
