@@ -172,17 +172,17 @@ public class DoMoves : MonoBehaviour
                 rotationAxis = Vector3.forward;
         }
 
-        Quaternion startRotation = axis.rotation;
+        Quaternion startRotation = axis.localRotation;
         Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) *startRotation;
         
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            axis.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
+            axis.localRotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
             yield return null;
         }
-        axis.rotation = targetRotation;
+        axis.localRotation = targetRotation;
 
         foreach (int i in ids)
         {
