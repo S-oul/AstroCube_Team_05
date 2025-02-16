@@ -28,15 +28,14 @@ public class MouseCamControl : MonoBehaviour
     void Update()
     {
         // Camera movement
-        float moveX = Input.GetAxis("Joystick X") * _joyStCamControlSpeed * Time.deltaTime;
-        float moveY = Input.GetAxis("Joystick X") * _joyStCamControlSpeed * Time.deltaTime;
+        float moveX = Input.GetAxis("Mouse X") * _mouseCamControlSpeed * Time.deltaTime;
+        float moveY = Input.GetAxis("Mouse Y") * _mouseCamControlSpeed * Time.deltaTime * -1;
 
         if (moveX == 0 && moveY == 0)
         {
-            moveX = Input.GetAxis("Mouse X") * _mouseCamControlSpeed * Time.deltaTime;
-            moveY = Input.GetAxis("Mouse Y") * _mouseCamControlSpeed * Time.deltaTime * -1;
+            moveX = Input.GetAxis("Joystick X") * _joyStCamControlSpeed * Time.deltaTime;
+            moveY = Input.GetAxis("Joystick Y") * _joyStCamControlSpeed * Time.deltaTime;
         }
-
 
         _xRotation -= moveY;
         _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);

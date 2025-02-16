@@ -107,8 +107,8 @@ public class RubiksCubeController : MonoBehaviour
             _isRotating = true;
             StartCoroutine(_lilCubeScript.RotateAxis(ActualFace.transform, clockwise, .2f));
             Transform equivalence = BigCube.transform.GetChild(0).Find(ActualFace.name);
-            print(equivalence);
-            StartCoroutine(_bigCubeScript.RotateAxis(equivalence, clockwise, .2f));
+            //print(equivalence);
+            StartCoroutine(_bigCubeScript.RotateAngle(equivalence, clockwise, .2f));
 
             StartCoroutine(waitfor2());
         }
@@ -167,7 +167,7 @@ public class RubiksCubeController : MonoBehaviour
             RaycastHit _raycastInfo;
             if (Physics.Raycast(LilCube.transform.position, -LilCube.transform.parent.forward, out _raycastInfo, 500, _detectableLayer))
             {
-                //pas opti ça shhhhhhhhhhhh
+                //pas opti ï¿½a shhhhhhhhhhhh
                 ShutDownFace();
                 ActualFace = _raycastInfo.transform.gameObject;
                 IlluminateFace();
