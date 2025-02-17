@@ -1,4 +1,6 @@
+using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MouseCamControl : MonoBehaviour
 {
@@ -8,15 +10,14 @@ public class MouseCamControl : MonoBehaviour
     [SerializeField] float _mouseCamControlSpeed = 100f;
 
 
-    [Header ("Raycast")]
+    [Header("Raycast")]
     [SerializeField] RubiksCubeController rubiksCubeController;
     [SerializeField] LayerMask _detectableLayer;
     [SerializeField] float _maxDistance;
 
+    Transform _oldTile;
 
     float _xRotation;
-
-    RaycastHit _raycastInfo;
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +31,8 @@ public class MouseCamControl : MonoBehaviour
         // Camera movement
         float moveX = Input.GetAxis("Mouse X") * _mouseCamControlSpeed * Time.deltaTime;
         float moveY = Input.GetAxis("Mouse Y") * _mouseCamControlSpeed * Time.deltaTime * -1;
-
-        if (moveX == 0 && moveY == 0)
-        {
-            moveX = Input.GetAxis("Joystick X") * _joyStCamControlSpeed * Time.deltaTime;
-            moveY = Input.GetAxis("Joystick Y") * _joyStCamControlSpeed * Time.deltaTime;
-        }
+        moveX += Input.GetAxis("Joystick X") * _joyStCamControlSpeed * Time.deltaTime;
+        moveY += Input.GetAxis("Joystick Y") * _joyStCamControlSpeed * Time.deltaTime;
 
         _xRotation -= moveY;
         _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
@@ -43,14 +40,15 @@ public class MouseCamControl : MonoBehaviour
 
         _playerTransform.Rotate(Vector3.up * moveX);
 
-
         //Raycast
+    RaycastHit _raycastInfo;
+
         if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
         {
-            //Debug.Log(_raycastInfo.transform.name);
-            if (rubiksCubeController != null)
+            if (_oldTile != _raycastInfo.transform)
             {
-                rubiksCubeController.SetActualFace(_raycastInfo.transform.gameObject);
+                _oldTile = _raycastInfo.transform;
+                rubiksCubeController.SetActualCube(_oldTile.parent);
             }
         }
     }

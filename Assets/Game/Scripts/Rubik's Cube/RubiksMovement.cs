@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
+using RubiksStatic;
 
-public class DoMoves : MonoBehaviour
+public class RubiksMovement : MonoBehaviour
 {
 
     [SerializeField] Transform middle;
@@ -18,7 +17,6 @@ public class DoMoves : MonoBehaviour
     private bool _isRotating = false;
     private bool _isReversing = false;
 
-    public enum SliceAxis { X, Y, Z, Useless }
     struct RubiksMove
     {
         public Transform axis;
@@ -40,7 +38,7 @@ public class DoMoves : MonoBehaviour
         {
             if (t.tag == "Movable") allBlocks.Add(t.gameObject);
         }
-        if(doScramble) StartCoroutine(Scramble());
+        if (doScramble) StartCoroutine(Scramble());
     }
 
     private void Update()
@@ -65,20 +63,20 @@ public class DoMoves : MonoBehaviour
     }
     IEnumerator ReverseAllMoves()
     {
-     /*   List<int> posistions = new List<int>();
-        for (int i = 0; i < moves.Count - 2; i++)
-        {
-            if (moves[i].axis != middle && moves[i].axis == moves[i + 1].axis && moves[i].clockWise != moves[i + 1].clockWise)
-            {
-                posistions.Add(i);
-                posistions.Add(i++);
-            }
-        }
-        for (int n = posistions.Count - 1; n >= 0; n--)
-        {
-            moves.RemoveAt(posistions[n]);
-        }
-        moves.RemoveAt(moves.Count - 1);*/
+        /*   List<int> posistions = new List<int>();
+           for (int i = 0; i < moves.Count - 2; i++)
+           {
+               if (moves[i].axis != middle && moves[i].axis == moves[i + 1].axis && moves[i].clockWise != moves[i + 1].clockWise)
+               {
+                   posistions.Add(i);
+                   posistions.Add(i++);
+               }
+           }
+           for (int n = posistions.Count - 1; n >= 0; n--)
+           {
+               moves.RemoveAt(posistions[n]);
+           }
+           moves.RemoveAt(moves.Count - 1);*/
         yield return new WaitForSeconds(.5f);
         _isReversing = true;
         while (moves.Count > 0)
@@ -115,7 +113,7 @@ public class DoMoves : MonoBehaviour
         foreach (var block in allBlocks)
         {
             Vector3 localBlockPos = block.transform.localPosition;
-            Vector3 localAxisPos = axis.localPosition; 
+            Vector3 localAxisPos = axis.localPosition;
 
             if (isMiddle)
             {
@@ -173,8 +171,8 @@ public class DoMoves : MonoBehaviour
         }
 
         Quaternion startRotation = axis.localRotation;
-        Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) *startRotation;
-        
+        Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) * startRotation;
+
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
@@ -222,27 +220,62 @@ public class DoMoves : MonoBehaviour
 
     void RotateAxis(RubiksMove move, float duration = 0.5f)
     {
-        StartCoroutine(RotateAxis(move.axis, move.clockWise, duration,move.orientation));
+        StartCoroutine(RotateAxis(move.axis, move.clockWise, duration, move.orientation));
     }
 
-    public List<GameObject> GetAxisCubes(Transform axis)
+    public List<GameObject> GetAxisCubes(Transform cube, SliceAxis sliceAxis)
     {
+        Transform axis;
+        bool isMiddle = false;
+
+        if (cube.name.Contains("Face"))
+        {
+            axis = middle;
+            isMiddle = true;
+        }
+
+        Vector3 rotationAxis = sliceAxis == SliceAxis.X ? Vector3.right :
+                                      sliceAxis == SliceAxis.Y ? Vector3.up :
+                                      Vector3.forward; //si X use pos.x else si Y use pos.y else use pos.z
+
         List<GameObject> result = new List<GameObject>();
         foreach (var block in allBlocks)
         {
-            Vector3 localBlockPos = block.transform.localPosition;
-            Vector3 localAxisPos = axis.localPosition; // axis is child of the cube too
 
-            if ((localAxisPos.x > 0.5f && localBlockPos.x > 0.5f) ||
-                (localAxisPos.x < -0.5f && localBlockPos.x < -0.5f) ||
-                (localAxisPos.y > 0.5f && localBlockPos.y > 0.5f) ||
-                (localAxisPos.y < -0.5f && localBlockPos.y < -0.5f) ||
-                (localAxisPos.z > 0.5f && localBlockPos.z > 0.5f) ||
-                (localAxisPos.z < -0.5f && localBlockPos.z < -0.5f))
+            Vector3 localBlockPos = block.transform.localPosition;
+            Vector3 localRefPos = cube.transform.localPosition;
+
+            if (isMiddle)
             {
-                result.Add(block);
+                float blockAxisValue = sliceAxis == SliceAxis.X ? localBlockPos.x :
+                                      sliceAxis == SliceAxis.Y ? localBlockPos.y :
+                                      localBlockPos.z; //si X use pos.x else si Y use pos.y else use pos.z
+
+                if (Mathf.Abs(blockAxisValue) < 0.5f)
+                {
+                    result.Add(block);
+                }
+            }
+            else
+            {
+
+                bool isOnSamePlane =
+              (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.1f) || // Rotating around Y -> Match Z
+              (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.1f) || // Rotating around X -> Match Y
+              (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.1f); // Rotating around Z -> Match X
+
+                if (isOnSamePlane)
+                {
+                    result.Add(block);
+                }
             }
         }
         return result;
     }
+}
+
+namespace RubiksStatic
+{
+    public enum SliceAxis { X, Y, Z, Useless }
+
 }

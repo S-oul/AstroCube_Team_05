@@ -133,7 +133,6 @@ GameObject:
   - component: {fileID: 91841650}
   - component: {fileID: 91841649}
   - component: {fileID: 91841648}
-  - component: {fileID: 91841647}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -141,18 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &91841647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 91841646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93921ff6e9abfd647ba44b4ad1006395, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &91841648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: b3efa8228d2448a44bf398e0418a5a83,
     type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -183,8 +170,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 91841649}
         m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
-        m_MethodName: ActionShowUpcube
-        m_Mode: 1
+        m_MethodName: ActionMakeTurn
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -193,104 +180,40 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 3cb7efcc-806b-48f1-9111-4045f4039d4a
-    m_ActionName: NicoScheme/ShowCube[/XInputControllerWindows/buttonNorth]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 91841649}
-        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
-        m_MethodName: ActionDeValidate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 22568e27-8080-4cfa-ba06-d785f84b6442
-    m_ActionName: NicoScheme/DeSelect[/XInputControllerWindows/buttonEast]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 91841649}
-        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
-        m_MethodName: ActionValidate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 0ffa1cfd-b995-4773-a3e0-816fe8d7f0ad
-    m_ActionName: NicoScheme/Select[/XInputControllerWindows/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 91841646}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: dbc4525c-3ef3-4817-88c6-e46c732e4c9f
-    m_ActionName: NicoScheme/Dpad[/XInputControllerWindows/dpad]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 3ac09e99-5853-4e76-914c-fe5b7cc4783b
     m_ActionName: NicoScheme/ClockWise[/XInputControllerWindows/rightShoulder]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 91841649}
+        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
+        m_MethodName: ActionMakeTurn
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_ActionId: 9c2092c3-a079-456d-83d0-ef92f3ae71da
     m_ActionName: NicoScheme/CounterClockWise[/XInputControllerWindows/leftShoulder]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f078dea5-adfc-4acd-888e-624226e0d385
-    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 636f3836-9c8d-4996-abe5-599e1119aced
-    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 354e408c-8def-4a5e-a1b4-42bd8c96e720
-    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a960f3a7-09ee-415b-b485-c8754ba62926
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 820886f5-d850-4ddb-82c9-151a7432d1c4
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d08303e5-deb6-49f8-ae5d-4f1c09629b21
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1080fe43-cbfb-4200-9898-7a74d3ceea88
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: df0b9f4d-fdb3-418c-8a42-f73c7e57acbc
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a71fca74-2450-4b73-ac7c-5a69b78bc5d5
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d6c6a3d2-cdc4-4ecf-9abe-04961b9c1806
-    m_ActionName: UI/TrackedDeviceOrientation
+      m_Calls:
+      - m_Target: {fileID: 91841649}
+        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
+        m_MethodName: SwitchLineCols
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+    m_ActionId: bfbdc334-90fb-4ae4-baf7-bc9711bf7248
+    m_ActionName: NicoScheme/SwitchColumns/Line[/XInputControllerWindows/leftShoulder,/XInputControllerWindows/rightShoulder]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: NicoScheme
@@ -308,8 +231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LilCube: {fileID: 1324278969}
-  BigCube: {fileID: 0}
+  ControlledCube: {fileID: 1324278969}
+  ReplicatedCube: []
+  ActualFace: {fileID: 0}
   _detectableLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -419,6 +343,46 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 257296464187759331, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257296464187759331, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257296464187759331, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257296464187759331, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 452859991765786379, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 452859991765786379, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 452859991765786379, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 452859991765786379, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 483857411511001432, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
@@ -443,6 +407,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 834727148748418595, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 834727148748418595, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 834727148748418595, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 834727148748418595, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 860025505161464812, guid: d6b511789dc05924285230115283b44c,
         type: 3}
@@ -469,6 +453,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1154056687922711507, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154056687922711507, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154056687922711507, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154056687922711507, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1263698962113634199, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
@@ -478,6 +482,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370681172494995501, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370681172494995501, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370681172494995501, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370681172494995501, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1444876713397039192, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1444876713397039192, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1444876713397039192, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1444876713397039192, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1506708367054126299, guid: d6b511789dc05924285230115283b44c,
         type: 3}
@@ -509,6 +553,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 2005645189106979280, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005645189106979280, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005645189106979280, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005645189106979280, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2095322876760865227, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Name
@@ -539,6 +603,71 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 2427286059036618403, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427286059036618403, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427286059036618403, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427286059036618403, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483354698700069295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483354698700069295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483354698700069295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483354698700069295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593540830258682650, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: doScramble
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608222953146967443, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608222953146967443, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608222953146967443, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608222953146967443, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2618350885699699165, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
@@ -553,6 +682,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3051054048863687810, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3051054048863687810, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3051054048863687810, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3051054048863687810, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3055093573397145556, guid: d6b511789dc05924285230115283b44c,
         type: 3}
@@ -574,6 +723,46 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3523707433186574319, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3523707433186574319, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3523707433186574319, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3523707433186574319, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315622924713613085, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315622924713613085, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315622924713613085, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315622924713613085, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0.5745369
+      objectReference: {fileID: 0}
     - target: {fileID: 4324936849077021768, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
@@ -594,30 +783,170 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4657206749926847658, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4657206749926847658, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4657206749926847658, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4657206749926847658, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4670100705605844832, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790640197026339475, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790640197026339475, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790640197026339475, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790640197026339475, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4912121780515061731, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4927286652971730375, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927286652971730375, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927286652971730375, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927286652971730375, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4945963869323653277, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5032042468469767692, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5032042468469767692, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5032042468469767692, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5032042468469767692, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5095610648108797531, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 5407469836416541440, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407469836416541440, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407469836416541440, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407469836416541440, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529749630321575295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529749630321575295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529749630321575295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529749630321575295, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5580276825004716464, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837766691009706466, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837766691009706466, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837766691009706466, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837766691009706466, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5839424438015557185, guid: d6b511789dc05924285230115283b44c,
         type: 3}
@@ -632,17 +961,17 @@ PrefabInstance:
     - target: {fileID: 6036601283852430457, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 8.94
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6036601283852430457, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 8.94
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6036601283852430457, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 8.94
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6036601283852430457, guid: d6b511789dc05924285230115283b44c,
         type: 3}
@@ -699,6 +1028,26 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6040464962882758598, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6040464962882758598, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6040464962882758598, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6040464962882758598, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6136748546714464276, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
@@ -734,6 +1083,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7162688558020683755, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162688558020683755, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162688558020683755, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162688558020683755, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7409901443571800405, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
@@ -748,6 +1117,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771835723370051386, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771835723370051386, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771835723370051386, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771835723370051386, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7855438091553331010, guid: d6b511789dc05924285230115283b44c,
         type: 3}
@@ -764,6 +1153,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8386962647599007833, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8386962647599007833, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8386962647599007833, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8386962647599007833, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8729801918404217565, guid: d6b511789dc05924285230115283b44c,
         type: 3}
       propertyPath: m_Layer
@@ -779,7 +1188,53 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9003263914220113634, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9003263914220113634, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9003263914220113634, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9003263914220113634, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201499597392452802, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201499597392452802, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201499597392452802, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201499597392452802, guid: d6b511789dc05924285230115283b44c,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8196017688512822739, guid: d6b511789dc05924285230115283b44c, type: 3}
+    - {fileID: 2685424332564725308, guid: d6b511789dc05924285230115283b44c, type: 3}
+    - {fileID: 2747268281605642676, guid: d6b511789dc05924285230115283b44c, type: 3}
+    - {fileID: 4829455576742484039, guid: d6b511789dc05924285230115283b44c, type: 3}
+    - {fileID: 7301935620469845022, guid: d6b511789dc05924285230115283b44c, type: 3}
+    - {fileID: 2891501197914839010, guid: d6b511789dc05924285230115283b44c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1173,7 +1628,7 @@ PrefabInstance:
     - target: {fileID: 1537851944306892503, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -30.46
       objectReference: {fileID: 0}
     - target: {fileID: 1537851944306892503, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
@@ -1229,6 +1684,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _mouseCamControlSpeed
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528389872019300487, guid: b5eeb929aa87481439de01016bcf6589,
+        type: 3}
+      propertyPath: _detectableLayer.m_Bits
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 5789224619367204211, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
