@@ -108,12 +108,12 @@ public class RubiksMovement : MonoBehaviour
         _isRotating = true;
 
         bool isMiddle = axis == middle;
+        Vector3 localAxisPos = axis.localPosition;
 
         List<int> ids = new List<int>();
         foreach (var block in allBlocks)
         {
             Vector3 localBlockPos = block.transform.localPosition;
-            Vector3 localAxisPos = axis.localPosition;
 
             if (isMiddle)
             {
@@ -211,7 +211,7 @@ public class RubiksMovement : MonoBehaviour
         RubiksMove move = new()
         {
             axis = Axis[ran].transform,
-            orientation = ran == 0 ? (SliceAxis)Random.Range(0, 3) : SliceAxis.Useless,
+            orientation = (SliceAxis)Random.Range(0, 3),
             clockWise = Random.Range(0, 100) % 2 == 0
         };
 
@@ -223,20 +223,21 @@ public class RubiksMovement : MonoBehaviour
         StartCoroutine(RotateAxis(move.axis, move.clockWise, duration, move.orientation));
     }
 
-    public List<GameObject> GetAxisCubes(Transform cube, SliceAxis sliceAxis)
+    public List<GameObject> GetCubesFromAxis(Transform cube, SliceAxis sliceAxis)
     {
         Transform axis;
         bool isMiddle = false;
 
         if (cube.name.Contains("Face"))
         {
+            print("hey");
             axis = middle;
             isMiddle = true;
         }
 
         Vector3 rotationAxis = sliceAxis == SliceAxis.X ? Vector3.right :
-                                      sliceAxis == SliceAxis.Y ? Vector3.up :
-                                      Vector3.forward; //si X use pos.x else si Y use pos.y else use pos.z
+                                      sliceAxis == SliceAxis.Y ? Vector3.forward :
+                                      Vector3.up;
 
         List<GameObject> result = new List<GameObject>();
         foreach (var block in allBlocks)
@@ -251,7 +252,11 @@ public class RubiksMovement : MonoBehaviour
                                       sliceAxis == SliceAxis.Y ? localBlockPos.y :
                                       localBlockPos.z; //si X use pos.x else si Y use pos.y else use pos.z
 
-                if (Mathf.Abs(blockAxisValue) < 0.5f)
+                float refAxisValue = sliceAxis == SliceAxis.X ? localRefPos.x :
+                         sliceAxis == SliceAxis.Y ? localRefPos.y :
+                         localRefPos.z;
+
+                if (Mathf.Abs(blockAxisValue - refAxisValue) < 0.5f)
                 {
                     result.Add(block);
                 }
@@ -260,9 +265,9 @@ public class RubiksMovement : MonoBehaviour
             {
 
                 bool isOnSamePlane =
-              (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.1f) || // Rotating around Y -> Match Z
-              (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.1f) || // Rotating around X -> Match Y
-              (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.1f); // Rotating around Z -> Match X
+              (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.5f) || // Rotating around Y -> Match Z
+              (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.5f) || // Rotating around X -> Match Y
+              (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.5f); // Rotating around Z -> Match X
 
                 if (isOnSamePlane)
                 {
@@ -271,6 +276,31 @@ public class RubiksMovement : MonoBehaviour
             }
         }
         return result;
+    }
+
+    public Transform GetAxisFromCube(Transform cube)
+    {
+        if (cube.name.Contains("Face"))
+        {
+            return middle;
+        }
+
+        float OldDistance = float.MaxValue;
+        Transform closestAxis = null;
+        foreach (Transform t in Axis)
+        {
+            if(t != Axis[0])
+            {
+                float newDistance = Vector3.Distance(t.position, cube.position);
+                if (newDistance < OldDistance)
+                {
+                    OldDistance = newDistance;
+                    closestAxis = t;
+                }
+            }
+        }
+
+        return closestAxis;
     }
 }
 

@@ -46,7 +46,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SwitchColumns/Line"",
+                    ""name"": ""SwitchColumnsLine"",
                     ""type"": ""Button"",
                     ""id"": ""bfbdc334-90fb-4ae4-baf7-bc9711bf7248"",
                     ""expectedControlType"": """",
@@ -107,7 +107,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""SwitchColumns/Line"",
+                    ""action"": ""SwitchColumnsLine"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -118,7 +118,18 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""SwitchColumns/Line"",
+                    ""action"": ""SwitchColumnsLine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0325e2b3-18b3-46d2-888b-a85b89806fd0"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchColumnsLine"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -192,7 +203,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_NicoScheme = asset.FindActionMap("NicoScheme", throwIfNotFound: true);
         m_NicoScheme_ClockWise = m_NicoScheme.FindAction("ClockWise", throwIfNotFound: true);
         m_NicoScheme_CounterClockWise = m_NicoScheme.FindAction("CounterClockWise", throwIfNotFound: true);
-        m_NicoScheme_SwitchColumnsLine = m_NicoScheme.FindAction("SwitchColumns/Line", throwIfNotFound: true);
+        m_NicoScheme_SwitchColumnsLine = m_NicoScheme.FindAction("SwitchColumnsLine", throwIfNotFound: true);
     }
 
     ~@PlayerAction()

@@ -59,7 +59,8 @@ public class RubiksCubeController : MonoBehaviour
         if (!_isRotating)
         {
             _isRotating = true;
-            StartCoroutine(_controlledScript.RotateAxis(ActualFace.transform, clockwise, .2f,_selectedSlice));
+            
+            StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform), clockwise, .2f,_selectedSlice));
             foreach (RubiksMovement cube in _replicatedScript)
             {
                 Transform equivalence = cube.transform.GetChild(0).Find(ActualFace.name);
@@ -78,7 +79,7 @@ public class RubiksCubeController : MonoBehaviour
     void IlluminateFace(SliceAxis sliceAxis)
     {
         Color hey = new Color(1, 0.5f, 0, 1);
-        foreach (GameObject go in _controlledScript.GetAxisCubes(ActualFace.transform, sliceAxis))
+        foreach (GameObject go in _controlledScript.GetCubesFromAxis(ActualFace.transform, sliceAxis))
         {
             Outline outline = go.GetComponent<Outline>();
             outline.OutlineColor = hey;
