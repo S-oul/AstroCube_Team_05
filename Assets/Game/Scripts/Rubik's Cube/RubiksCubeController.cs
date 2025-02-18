@@ -17,7 +17,6 @@ public class RubiksCubeController : MonoBehaviour
 
     [SerializeField] Outline ActualFace;
 
-    bool _isCubeShow = false;
     bool _isRotating = false;
 
     SliceAxis _selectedSlice = 0;
@@ -45,12 +44,12 @@ public class RubiksCubeController : MonoBehaviour
         ActualFace.OutlineWidth = 15;
         ActualFace.enabled = true;
 
-
+        _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
     }
 
     public void SwitchLineCols()
     {
-        _selectedSlice = (SliceAxis)((int)(float)((float)_selectedSlice + 1.33f) % 3);
+        _selectedSlice = (SliceAxis)(((int)_selectedSlice + 1) % 3);
         print(_selectedSlice );
         SetActualCube(ActualFace.transform);
     }
@@ -60,11 +59,11 @@ public class RubiksCubeController : MonoBehaviour
         {
             _isRotating = true;
             
-            StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform), clockwise, .2f,_selectedSlice));
+            StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, .2f,_selectedSlice));
             foreach (RubiksMovement cube in _replicatedScript)
             {
                 Transform equivalence = cube.transform.GetChild(0).Find(ActualFace.name);
-                StartCoroutine(cube.RotateAxis(equivalence, clockwise, .2f));
+                StartCoroutine(cube.RotateAxis(cube.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, .2f, _selectedSlice));
             }
 
             StartCoroutine(waitfor2());
@@ -79,7 +78,7 @@ public class RubiksCubeController : MonoBehaviour
     void IlluminateFace(SliceAxis sliceAxis)
     {
         Color hey = new Color(1, 0.5f, 0, 1);
-        foreach (GameObject go in _controlledScript.GetCubesFromAxis(ActualFace.transform, sliceAxis))
+        foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
         {
             Outline outline = go.GetComponent<Outline>();
             outline.OutlineColor = hey;
