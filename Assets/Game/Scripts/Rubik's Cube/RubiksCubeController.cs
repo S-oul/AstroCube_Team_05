@@ -50,13 +50,13 @@ public class RubiksCubeController : MonoBehaviour
     public void SwitchLineCols()
     {
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + 1) % 3);
-        print(_selectedSlice );
         SetActualCube(ActualFace.transform);
     }
     public void ActionMakeTurn(bool clockwise)
     {
         if (!_isRotating)
         {
+            ShutDownFace();
             _isRotating = true;
             
             StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, .2f,_selectedSlice));

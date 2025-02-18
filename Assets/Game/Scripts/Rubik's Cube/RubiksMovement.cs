@@ -303,7 +303,6 @@ public class RubiksMovement : MonoBehaviour
 
             }
         }
-        print(closestAxis.name);
         return closestAxis;
     }
 }
