@@ -63,8 +63,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.557, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3576588101882252109}
+  m_Children: []
   m_Father: {fileID: 1537851944306892503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5228521866593890910
@@ -100,7 +99,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 96
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -138,8 +137,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd35d48ede9fc66469a0b4e4546b1625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mouseCamControlSpeed: 500
   _playerTransform: {fileID: 1537851944306892503}
+  _mouseCamControlSpeed: 1000
+  rubiksCubeController: {fileID: 0}
+  _detectableLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  _maxDistance: 1000
 --- !u!114 &3875194145860832593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,48 +358,3 @@ MonoBehaviour:
   _canCrouch: 1
   _crouchSpeed: 0.5
   _crouchHeight: 0.5
---- !u!1 &7235491807735304099
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3576588101882252109}
-  - component: {fileID: 8205526876558202999}
-  m_Layer: 0
-  m_Name: Raycast
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3576588101882252109
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7235491807735304099}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.06300002, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2682455399166526803}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8205526876558202999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7235491807735304099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 961b17397fa740d4bb93f741e5ef1055, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxDistance: 100
