@@ -48,7 +48,7 @@ public class MouseCamControl : MonoBehaviour
             if (_oldTile != _raycastInfo.transform)
             {
                 _oldTile = _raycastInfo.transform;
-                rubiksCubeController.SetActualCube(_oldTile.parent);
+                //rubiksCubeController.SetActualCube(_oldTile.parent);
             }
         }
     }
