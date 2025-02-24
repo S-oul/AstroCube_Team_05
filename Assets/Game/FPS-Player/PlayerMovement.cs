@@ -39,11 +39,15 @@ public class PlayerMovement : MonoBehaviour
     bool jumpInput = false;
     bool crouchInput = false;
 
+    public float defaultSpeed { get; private set; }
+
     void Start()
     {
         _defaultCameraHeight = _camera.transform.localPosition.y;
         _defaultControllerHeight = _controller.height;
         _defaultControllerCenter = _controller.center;
+
+        defaultSpeed = _speed;
     }
 
     // Update is called once per frame
@@ -98,5 +102,15 @@ public class PlayerMovement : MonoBehaviour
                          (crouchInput ? _speed : _speed/_crouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity *Time.deltaTime);
+    }
+
+    public void setSpeed(float newSpeed)
+    {
+        _speed = newSpeed;
+    }
+
+    public void setSpeedToDefault()
+    {
+        _speed = defaultSpeed;
     }
 }
