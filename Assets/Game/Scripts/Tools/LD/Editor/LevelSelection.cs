@@ -1,26 +1,36 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 using UnityEngine.UIElements;
+using static UnityEditor.Rendering.FilterWindow;
 using static UnityEditor.Rendering.InspectorCurveEditor;
 
-[CustomEditor(typeof(RubicsCube)), CanEditMultipleObjects]
+[CustomEditor(typeof(RubicsCube))]
 public class LevelSelection : Editor
 {
     [SerializeField]
-    SerializedProperty _tilesPerFaces;
+    static SerializedProperty tilesPerFaces;    
+    [SerializeField]
+    static SerializedProperty foldoutTransforms;
+    [SerializeField]
+    static float tileInterval = 1;
     [SerializeField] Font font;
     static bool _isInIsolatedMode;
+    static bool _isFoldout = false;
     static GUIStyle _buttonStyle;
     static GUIStyle _buttonStyle1;
     static bool _isObjectSelected;
     static string labelText;
     
     static RubicsCube _script;
+    bool _showFoldoutReferences;
+    static private Pose[] _tilesOriginalTransforms = new Pose[6 * 9];
 
 
     private void OnEnable()
@@ -64,28 +74,52 @@ public class LevelSelection : Editor
     }
 
     public override void OnInspectorGUI()
-    {
-        RubicsCube data = (RubicsCube)target;
-
+    {     
         GUI.skin.font = font;
 
         EditorGUILayout.Space(10);
 
         InitStyles();
 
-        ActionsDisplay();
+        ActionsDisplay(serializedObject);
 
-        /*
-        for (int face = 0; face < 6; face++)
+        serializedObject.Update();
+
+        _showFoldoutReferences = EditorGUILayout.BeginFoldoutHeaderGroup(_showFoldoutReferences, "Show Foldout References", new GUIStyle(EditorStyles.foldout) { fontStyle = FontStyle.Normal});
+
+        if (_showFoldoutReferences)
         {
-            for (int tile = 0; tile < 9; tile++)
+            tilesPerFaces = serializedObject.FindProperty("_tilesPerFaces");
+            foldoutTransforms = serializedObject.FindProperty("_foldoutTransforms");
+
+            for (int face = 0; face < 6; face++)
             {
-                data.TilesPerFaces[face, tile] = (GameObject)EditorGUILayout.ObjectField("Face "+face+ " - Tile " + tile + " :", data.TilesPerFaces[face, tile], typeof(GameObject), true);
+                GUILayout.BeginVertical("GroupBox");
+                GUILayout.Label($"Face {face + 1}", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Normal, fontSize = 13, normal = new GUIStyleState() { textColor = new Color(0.7f, 0.9f, 0.6f) } });
+
+
+                for (int tile = 0; tile < 9; tile++)
+                {
+                    int index = face * 9 + tile;
+
+                    SerializedProperty element = tilesPerFaces.GetArrayElementAtIndex(index);
+                    EditorGUILayout.PropertyField(element, new GUIContent($"Face {face+1} - Tile {tile+1} :"), true);
+                }
+                EditorGUILayout.Space(5);
+
+                SerializedProperty transform = foldoutTransforms.GetArrayElementAtIndex(face);
+
+                GUILayout.BeginHorizontal("HelpBox");
+                GUILayout.Label("Foldout Transform :", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Normal, fontSize = 12, normal = new GUIStyleState() { textColor = new Color(0.9f, 0.6f, 0.7f) } });
+                EditorGUILayout.PropertyField(transform, new GUIContent(""), true);
+
+                GUILayout.EndHorizontal();
+
+                GUILayout.EndVertical();
             }
         }
-        */
 
-        if(GUI.changed)
+        if (GUI.changed)
             AssetDatabase.SaveAssetIfDirty(target);
 
         serializedObject.ApplyModifiedProperties();
@@ -107,7 +141,7 @@ public class LevelSelection : Editor
         _buttonStyle1.hover.textColor = Color.white;
     }
 
-    static void ActionsDisplay()
+    static void ActionsDisplay(SerializedObject serializedObject)
     {
         InitStyles();
         GUILayout.Label("Level Editor ", new GUIStyle(GUI.skin.label) { fontSize = 15, normal = new GUIStyleState() { textColor = Color.white } });
@@ -179,11 +213,84 @@ public class LevelSelection : Editor
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
 
+        GUILayout.EndVertical();
+        GUILayout.EndVertical();
+
+
+        GUILayout.BeginVertical("GroupBox");
+
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+
+        GUI.backgroundColor = _isFoldout ? new Color(0.4f, 0.6f, 0.3f) : new Color(0.8f, 1f, 0.7f);
+        if (GUILayout.Button("Foldout Rubic's Cube", _buttonStyle, GUILayout.Height(25)))
+        {
+            _isFoldout = !_isFoldout;
+            
+            if(_isFoldout)
+                Foldout(serializedObject);
+            else
+                Foldin(serializedObject);
+
+        }
+        GUI.backgroundColor = Color.white;
+
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
 
         GUILayout.EndVertical();
-        GUILayout.EndVertical();
+    }
+
+    static void Foldout(SerializedObject serializedObject)
+    {
+        Debug.Log("FOLD OUT");
+        tilesPerFaces = serializedObject.FindProperty("_tilesPerFaces");
+        foldoutTransforms = serializedObject.FindProperty("_foldoutTransforms");
+
+        for (int face = 0; face < 6; face++)
+        {
+            SerializedProperty transform = foldoutTransforms.GetArrayElementAtIndex(face);
+            Transform transformFoldout = (Transform)transform.objectReferenceValue;
+
+            for (int tile = 0; tile < 9; tile++)
+            {
+                int index = face * 9 + tile;
+
+                SerializedProperty element = tilesPerFaces.GetArrayElementAtIndex(index);
+                var b = ((GameObject)element.objectReferenceValue);
+                _tilesOriginalTransforms[index].position = b.transform.position;
+                _tilesOriginalTransforms[index].rotation = b.transform.rotation;
+
+                b.transform.position = new Vector3(transformFoldout.position.x + ((tile % 3.0f)*tileInterval), 
+                                                   transformFoldout.position.y, 
+                                                   transformFoldout.position.z - (Mathf.Floor(tile / 3.0f) * tileInterval));
+                b.transform.rotation = transformFoldout.rotation;
+
+
+            }          
+        }
+    }
+
+    static void Foldin(SerializedObject serializedObject)
+    {
+        Debug.Log("FOLD IN");
+        tilesPerFaces = serializedObject.FindProperty("_tilesPerFaces");
+
+        for (int face = 0; face < 6; face++)
+        {
+            for (int tile = 0; tile < 9; tile++)
+            {
+                int index = face * 9 + tile;
+
+                SerializedProperty element = tilesPerFaces.GetArrayElementAtIndex(index);
+                var b = ((GameObject)element.objectReferenceValue);
+                b.transform.position = _tilesOriginalTransforms[index].position;
+                b.transform.rotation = _tilesOriginalTransforms[index].rotation;
+                
+            }
+        }
     }
 
     LayerMask GetLayerMaskFromMode(EIsolationMode mode)

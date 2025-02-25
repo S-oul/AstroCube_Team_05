@@ -6,15 +6,15 @@ using UnityEngine;
 public class RubicsCube : MonoBehaviour
 {
 
-    [SerializeField]
-    public GameObject[,] TilesPerFaces => _tilesPerFaces;
-    private GameObject[,] _tilesPerFaces = new GameObject[6, 9];
+    [SerializeField] private GameObject[] _tilesPerFaces = new GameObject[6 * 9];
+    [SerializeField] private Transform[] _foldoutTransforms = new Transform[6];
 
     public static GameObject[] Selection {  get => _selection; set => _selection = value; }
     private static GameObject[] _selection = { null };
 
     public static EIsolationMode IsolationMode { get => _isolationMode; set => _isolationMode = value; }
     private static EIsolationMode _isolationMode = EIsolationMode.TILE;
+
 
     public void Isolate(EIsolationMode mode, Transform selection, Transform parent)
     {
