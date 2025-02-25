@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RubicsCube : MonoBehaviour
 {
@@ -9,12 +10,23 @@ public class RubicsCube : MonoBehaviour
     [SerializeField] private GameObject[] _tilesPerFaces = new GameObject[6 * 9];
     [SerializeField] private Transform[] _foldoutTransforms = new Transform[6];
 
+
     public static GameObject[] Selection {  get => _selection; set => _selection = value; }
     private static GameObject[] _selection = { null };
 
     public static EIsolationMode IsolationMode { get => _isolationMode; set => _isolationMode = value; }
     private static EIsolationMode _isolationMode = EIsolationMode.TILE;
 
+    public static UnityAction OnReset;
+
+    public void Reset()
+    {
+        OnReset?.Invoke();
+        if (Selection[0] != null)
+            DeIsolate(_isolationMode, RubicsCube.Selection[0].transform, transform);
+    }
+
+#region Isolate
 
     public void Isolate(EIsolationMode mode, Transform selection, Transform parent)
     {
@@ -70,11 +82,7 @@ public class RubicsCube : MonoBehaviour
         }
     }
 
-    public void Reset()
-    {
-        if (Selection[0] != null)
-            DeIsolate(_isolationMode, RubicsCube.Selection[0].transform, transform);
-    }
+#endregion
 
     private void OnDestroy()
     {
@@ -86,9 +94,5 @@ public class RubicsCube : MonoBehaviour
         Reset();
     }
 
-    private void OnDrawGizmos()
-    {
-        if (Selection[0] != null)
-            Handles.DrawOutline(Selection, Color.red, 1);
-    }
+
 }
