@@ -30,7 +30,6 @@ public class RubiksCubeController : MonoBehaviour
         {
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
-
     }
     public void SetActualCube(Transform newFace)
     {
@@ -50,6 +49,12 @@ public class RubiksCubeController : MonoBehaviour
     public void SwitchLineCols()
     {
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + 1) % 3);
+        switch (_selectedSlice)
+        {
+            case(SliceAxis.X):
+                return;
+
+        }
         SetActualCube(ActualFace.transform);
     }
     public void ActionMakeTurn(bool clockwise)
