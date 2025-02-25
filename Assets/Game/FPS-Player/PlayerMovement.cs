@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0.0f, 1.0f)] float _crouchSpeed;
     [SerializeField, Range(0.0f, 1.0f)] float _crouchHeight;
 
-    Vector3 _gravityDirection = new Vector3(0, 1, 0);
+    Vector3 _gravityDirection;
 
     float _floorDistance = 0.1f;
 
@@ -55,11 +55,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Update Gravity direction
-        Quaternion rotation = transform.rotation;
-        Vector3 forward = rotation * Vector3.forward; // Rotated forward vector
-        Debug.Log("Facing Direction: " + forward);
-
         // collect player inputs
         xInput = Input.GetAxis("Horizontal");
         zInput = Input.GetAxis("Vertical");
@@ -70,11 +65,11 @@ public class PlayerMovement : MonoBehaviour
         _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
         // apply gravity 
+        _gravityDirection = transform.up;
         _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
-        if (_isGrounded && _verticalVelocity.y < 0)
+        if (_isGrounded)
         {
-            _verticalVelocity.y = -0.2f;
-            //_verticalVelocity.y = -0f;
+            _verticalVelocity = Vector3.zero;
         }
 
         // movePlayer (walking around)
@@ -122,5 +117,11 @@ public class PlayerMovement : MonoBehaviour
         _speed = defaultSpeed;
     }
 
-
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("collided with: " + other.gameObject.name);
+        if (other.gameObject.tag != "floor") return;
+        transform.SetParent(other.gameObject.transform);
+        Debug.Log("new parent named: " + other.gameObject.name);
+    }
 }
