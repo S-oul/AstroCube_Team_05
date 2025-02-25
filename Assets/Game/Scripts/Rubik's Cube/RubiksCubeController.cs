@@ -80,6 +80,7 @@ public class RubiksCubeController : MonoBehaviour
     void IlluminateFace(SliceAxis sliceAxis)
     {
         Color hey = new Color(1, 0.5f, 0, 1);
+        print(sliceAxis);
         foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
         {
             Outline outline = go.GetComponent<Outline>();
