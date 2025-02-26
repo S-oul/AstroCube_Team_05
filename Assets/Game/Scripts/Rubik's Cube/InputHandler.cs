@@ -22,4 +22,14 @@ public class InputHandler : MonoBehaviour
         _controller.ActionMakeTurn(true);
 
     }
+
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(10,10,300,20), "ZQSD : A & E to turn Cube, F to swap Face");
+        GUI.Label(new Rect(10, 30, 300, 20), "V to return ciube to normal");
+        GUI.Label(new Rect(10, 50, 300, 20), "");
+
+
+    }
+
 }

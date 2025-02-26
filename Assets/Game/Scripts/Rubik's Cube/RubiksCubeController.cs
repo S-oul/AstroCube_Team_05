@@ -8,11 +8,12 @@ public class RubiksCubeController : MonoBehaviour
 {
 
     [SerializeField] GameObject ControlledCube;
+    [SerializeField] RubiksMovement _controlledScript;
+    
     [SerializeField] List<GameObject> ReplicatedCube = new List<GameObject>();
 
     [SerializeField] float movementSpeed = 0.2f;
 
-    RubiksMovement _controlledScript;
     List<RubiksMovement> _replicatedScript = new List<RubiksMovement>();
 
 
@@ -32,11 +33,15 @@ public class RubiksCubeController : MonoBehaviour
         {
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
-
     }
     public void SetActualCube(Transform newFace)
     {
         ShutDownFace();
+        if(newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) ControlledCube = newFace.parent.parent.gameObject;
+        else if (newFace.parent.CompareTag("Rubiks")) ControlledCube = newFace.parent.gameObject;
+
+        _controlledScript = ControlledCube.GetComponentInChildren<RubiksMovement>();
+        if (_controlledScript == null) return;
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<Outline>();
 
@@ -61,6 +66,8 @@ public class RubiksCubeController : MonoBehaviour
             ShutDownFace();
             _isRotating = true;
             
+            if (_controlledScript == null) return;
+
             StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice));
             foreach (RubiksMovement cube in _replicatedScript)
             {
@@ -80,8 +87,8 @@ public class RubiksCubeController : MonoBehaviour
     void IlluminateFace(SliceAxis sliceAxis)
     {
         Color hey = new Color(1, 0.5f, 0, 1);
-        //print(sliceAxis);
-        foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
+        if(_controlledScript != null)
+        foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))   
         {
             Outline outline = go.GetComponent<Outline>();
             outline.OutlineColor = hey;

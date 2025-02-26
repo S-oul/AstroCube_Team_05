@@ -8,5 +8,6 @@ public class DetectNewParent : MonoBehaviour
     {
         //if (other.gameObject.layer != "Floor") return;
         transform.parent.SetParent(other.transform);
+        //Debug.Log("new parent named: " + other.gameObject.name);
     }
 }
