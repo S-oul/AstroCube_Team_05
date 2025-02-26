@@ -10,6 +10,8 @@ public class RubiksCubeController : MonoBehaviour
     [SerializeField] GameObject ControlledCube;
     [SerializeField] List<GameObject> ReplicatedCube = new List<GameObject>();
 
+    [SerializeField] float movementSpeed = 0.2f;
+
     RubiksMovement _controlledScript;
     List<RubiksMovement> _replicatedScript = new List<RubiksMovement>();
 
@@ -64,11 +66,11 @@ public class RubiksCubeController : MonoBehaviour
             ShutDownFace();
             _isRotating = true;
             
-            StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, .2f,_selectedSlice));
+            StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice));
             foreach (RubiksMovement cube in _replicatedScript)
             {
                 Transform equivalence = cube.transform.GetChild(0).Find(ActualFace.name);
-                StartCoroutine(cube.RotateAxis(cube.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, .2f, _selectedSlice));
+                StartCoroutine(cube.RotateAxis(cube.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice));
             }
 
             StartCoroutine(waitfor2());

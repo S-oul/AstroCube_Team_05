@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0.0f, 1.0f)] float _crouchSpeed;
     [SerializeField, Range(0.0f, 1.0f)] float _crouchHeight;
 
+    Vector3 _gravityDirection;
+
     float _floorDistance = 0.1f;
 
     Vector3 _verticalVelocity;
@@ -63,10 +65,11 @@ public class PlayerMovement : MonoBehaviour
         _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
         // apply gravity 
-        _verticalVelocity.y += _gravity * Time.deltaTime;
-        if (_isGrounded && _verticalVelocity.y < 0)
+        _gravityDirection = transform.up;
+        _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
+        if (_isGrounded)
         {
-            _verticalVelocity.y = -0.2f;
+            _verticalVelocity = Vector3.zero;
         }
 
         // movePlayer (walking around)
@@ -112,5 +115,13 @@ public class PlayerMovement : MonoBehaviour
     public void setSpeedToDefault()
     {
         _speed = defaultSpeed;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("collided with: " + other.gameObject.name);
+        if (other.gameObject.tag != "floor") return;
+        transform.SetParent(other.gameObject.transform);
+        Debug.Log("new parent named: " + other.gameObject.name);
     }
 }
