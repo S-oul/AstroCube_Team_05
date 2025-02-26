@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
 using static UnityEditor.PlayerSettings;
+using Unity.VisualScripting;
+using System.Linq;
 
 public class RubiksMovement : MonoBehaviour
 {
@@ -100,6 +102,18 @@ public class RubiksMovement : MonoBehaviour
 
         Vector3 rotationAxis = Vector3.zero;
 
+        if (!_isReversing)
+        {
+            RubiksMove move = new()
+            {
+                axis = axis,
+                cube = selectedCube,
+                orientation = sliceAxis,
+                clockWise = clockWise
+            };
+            moves.Add(move);
+        }
+
         if (isMiddle)
         {
             switch (sliceAxis)
@@ -165,6 +179,38 @@ public class RubiksMovement : MonoBehaviour
             }
         }
 
+
+        foreach (int i in ids)
+        {
+            if (allBlocks[i].gameObject.name != "Middle")
+            {
+                var tiles = allBlocks[i].transform.GetComponentsInChildren<Tile>().ToList();
+                foreach (Tile tile in tiles)
+                {
+                    if (!tile.IsOccupied)
+                        continue;
+                    switch (sliceAxis)
+                    {
+                        case SliceAxis.X:
+                            if (transform.localPosition.z - allBlocks[i].transform.localPosition.z < 0 && clockWise 
+                                || transform.localPosition.z - allBlocks[i].transform.localPosition.z > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - allBlocks[i].transform.localPosition.z).normalized);
+                            break;
+                        case SliceAxis.Y:
+                            if (transform.localPosition.y - allBlocks[i].transform.localPosition.y < 0 && clockWise
+                                || transform.localPosition.y - allBlocks[i].transform.localPosition.y > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - allBlocks[i].transform.localPosition.y, 0).normalized);
+                            break;
+                        case SliceAxis.Z:
+                            if (transform.localPosition.x - allBlocks[i].transform.localPosition.x < 0 && clockWise
+                                || transform.localPosition.x - allBlocks[i].transform.localPosition.x > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - allBlocks[i].transform.localPosition.x, 0, 0).normalized);
+                            break;
+                    }
+                }
+            }
+        }
+
         int direction = clockWise ? 1 : -1;
 
 
@@ -181,29 +227,17 @@ public class RubiksMovement : MonoBehaviour
         axis.localRotation = targetRotation;
 
         foreach (int i in ids)
-        {
+        {           
             Vector3 pos = allBlocks[i].transform.localPosition;
             pos.x = Mathf.Round(pos.x);
             pos.y = Mathf.Round(pos.y);
             pos.z = Mathf.Round(pos.z);
             allBlocks[i].transform.localPosition = pos;
             allBlocks[i].transform.SetParent(this.transform.parent, true);
-
         }
         _isRotating = false;
-
-        if (!_isReversing)
-        {
-            RubiksMove move = new()
-            {
-                axis = axis,
-                cube = selectedCube,
-                orientation = sliceAxis,
-                clockWise = clockWise
-            };
-            moves.Add(move);
-        }
     }
+
     RubiksMove CreateRandomMove()
     {
         int ran = Random.Range(0, allBlocks.Count- 1);
