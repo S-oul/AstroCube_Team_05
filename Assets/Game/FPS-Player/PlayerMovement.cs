@@ -119,9 +119,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log("collided with: " + other.gameObject.name);
+        //Debug.Log("collided with: " + other.gameObject.name);
         if (other.gameObject.tag != "floor") return;
         transform.SetParent(other.gameObject.transform);
-        Debug.Log("new parent named: " + other.gameObject.name);
+        //Debug.Log("new parent named: " + other.gameObject.name);
     }
 }
