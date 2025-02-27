@@ -20,8 +20,6 @@ public class RubiksCubeController : MonoBehaviour
 
     [SerializeField] Outline ActualFace;
 
-    bool _isRotating = false;
-
     SliceAxis _selectedSlice = 0;
 
 
@@ -61,27 +59,18 @@ public class RubiksCubeController : MonoBehaviour
     }
     public void ActionMakeTurn(bool clockwise)
     {
-        if (!_isRotating)
+        if (_controlledScript.IsRotating == false)
         {
             ShutDownFace();
-            _isRotating = true;
             
             if (_controlledScript == null) return;
-
-            StartCoroutine(_controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice));
+            _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice);
             foreach (RubiksMovement cube in _replicatedScript)
             {
                 Transform equivalence = cube.transform.GetChild(0).Find(ActualFace.name);
-                StartCoroutine(cube.RotateAxis(cube.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice));
+                cube.RotateAxis(cube.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
             }
-
-            StartCoroutine(waitfor2());
         }
-    }
-    IEnumerator waitfor2()
-    {
-        yield return new WaitForSeconds(.2f);
-        _isRotating = false;
     }
 
     void IlluminateFace(SliceAxis sliceAxis)
