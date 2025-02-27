@@ -2,36 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
-using Unity.VisualScripting;
+using System.Linq;
 
 public class RubiksMovement : MonoBehaviour
 {
 
     [SerializeField] Transform middle;
-
     [SerializeField] List<Transform> Axis = new List<Transform>();
-
     List<Transform> allBlocks = new List<Transform>();
 
     public bool doScramble = true;
 
+
     private bool _isRotating = false;
+
     private bool _isReversing = false;
-
-    struct RubiksMove
-    {
-        public Transform axis;
-        public Transform cube;
-        public SliceAxis orientation;
-        public bool clockWise;
-
-        public void Print()
-        {
-            Debug.Log("Axis : " + axis + " Orient : " + orientation + " ClockWise : " + clockWise);
-        }
-    }
-
     List<RubiksMove> moves = new List<RubiksMove>();
+
+
+    #region Accessor
+    public bool IsRotating { get => _isRotating;}
+
+    #endregion
 
     private void Awake()
     {
@@ -42,7 +34,7 @@ public class RubiksMovement : MonoBehaviour
             if (t.tag == "Movable") allBlocks.Add(t);
         }
         if (doScramble) StartCoroutine(Scramble());
-    
+
     }
     void OnDisable()
     {
@@ -74,13 +66,31 @@ public class RubiksMovement : MonoBehaviour
             if (!_isRotating)
             {
                 RubiksMove m = moves[moves.Count - 1];
-                StartCoroutine(RotateAxis(m.axis,m.cube, !m.clockWise, .1f, m.orientation));
+                StartCoroutine(RotateAxisCoroutine(m.axis, m.cube, !m.clockWise, .1f, m.orientation));
                 moves.RemoveAt(moves.Count - 1);
             }
             yield return null;
         }
         yield return new WaitForSeconds(.5f);
         _isReversing = false;
+    }
+    void RotateAxis(RubiksMove move, float duration = 0.5f)
+    {
+        StartCoroutine(RotateAxisCoroutine(move.axis, move.cube, move.clockWise, duration, move.orientation));
+    }
+
+    /// <summary>
+    /// Fonction qui Lance la coroutine qui permet de faire tourner n'importe quelle partie du cube.
+    /// </summary>
+    /// <param name="axis">L'un des 6 Axes X/Y/Z/-X/-Y/-Z ET le Milieu</param> 
+    /// <param name="selectedCube">The cube the player is looknig at</param>
+    /// <param name="clockWise">Sens de rortation de l'axe</param>
+    /// <param name="duration">frere abuse un peu</param>
+    /// <param name="sliceAxis">Indique autour de quelle axes X/Y/Z doit tourner la slice du cube </param>
+    /// <returns></returns>
+    public void RotateAxis(Transform axis, Transform selectedCube, bool clockWise, float duration = 0.5f, SliceAxis sliceAxis = SliceAxis.Useless)
+    {
+        StartCoroutine(RotateAxisCoroutine(axis, selectedCube, clockWise, duration, sliceAxis));
     }
 
     /// <summary>
@@ -92,7 +102,7 @@ public class RubiksMovement : MonoBehaviour
     /// <param name="duration">frere abuse un peu</param>
     /// <param name="sliceAxis">Indique autour de quelle axes X/Y/Z doit tourner la slice du cube </param>
     /// <returns></returns>
-    public IEnumerator RotateAxis(Transform axis,Transform selectedCube, bool clockWise, float duration = 0.5f, SliceAxis sliceAxis = SliceAxis.Useless)
+    public IEnumerator RotateAxisCoroutine(Transform axis, Transform selectedCube, bool clockWise, float duration = 0.5f, SliceAxis sliceAxis = SliceAxis.Useless)
     {
         if (_isRotating) yield break;
         _isRotating = true;
@@ -130,7 +140,7 @@ public class RubiksMovement : MonoBehaviour
         Vector3 localAxisPos = axis.localPosition;
         Vector3 localRefPos = selectedCube.transform.localPosition;
 
-        List<int> ids = new List<int>();
+        List<int> blockIndexs = new List<int>();
         foreach (var block in allBlocks)
         {
             Vector3 localBlockPos = block.transform.localPosition;
@@ -149,7 +159,7 @@ public class RubiksMovement : MonoBehaviour
                 if (Mathf.Abs(blockAxisValue - refAxisValue) < 0.5f)
                 {
                     block.transform.SetParent(axis, true);
-                    ids.Add(allBlocks.IndexOf(block));
+                    blockIndexs.Add(allBlocks.IndexOf(block));
                 }
             }
             else
@@ -157,11 +167,43 @@ public class RubiksMovement : MonoBehaviour
                 bool isOnSamePlane =
                               (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.5f)
                            || (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.5f)
-                           || (rotationAxis == Vector3.right   && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.5f);
+                           || (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.5f);
                 if (isOnSamePlane)
                 {
                     block.transform.SetParent(axis, true);
-                    ids.Add(allBlocks.IndexOf(block));
+                    blockIndexs.Add(allBlocks.IndexOf(block));
+                }
+            }
+        }
+
+
+        foreach (int i in blockIndexs)
+        {
+            if (allBlocks[i].gameObject.name != "Middle")
+            {
+                var tiles = allBlocks[i].transform.GetComponentsInChildren<Tile>().ToList();
+                foreach (Tile tile in tiles)
+                {
+                    if (!tile.IsOccupied)
+                        continue;
+                    switch (sliceAxis)
+                    {
+                        case SliceAxis.X:
+                            if (transform.localPosition.z - allBlocks[i].transform.localPosition.z < 0 && clockWise
+                                || transform.localPosition.z - allBlocks[i].transform.localPosition.z > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - allBlocks[i].transform.localPosition.z).normalized);
+                            break;
+                        case SliceAxis.Y:
+                            if (transform.localPosition.y - allBlocks[i].transform.localPosition.y < 0 && clockWise
+                                || transform.localPosition.y - allBlocks[i].transform.localPosition.y > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - allBlocks[i].transform.localPosition.y, 0).normalized);
+                            break;
+                        case SliceAxis.Z:
+                            if (transform.localPosition.x - allBlocks[i].transform.localPosition.x < 0 && clockWise
+                                || transform.localPosition.x - allBlocks[i].transform.localPosition.x > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - allBlocks[i].transform.localPosition.x, 0, 0).normalized);
+                            break;
+                    }
                 }
             }
         }
@@ -181,7 +223,7 @@ public class RubiksMovement : MonoBehaviour
         }
         axis.localRotation = targetRotation;
 
-        foreach (int i in ids)
+        foreach (int i in blockIndexs)
         {
             Vector3 pos = allBlocks[i].transform.localPosition;
             pos.x = Mathf.Round(pos.x);
@@ -207,7 +249,7 @@ public class RubiksMovement : MonoBehaviour
     }
     RubiksMove CreateRandomMove()
     {
-        int ran = Random.Range(0, allBlocks.Count- 1);
+        int ran = Random.Range(0, allBlocks.Count - 1);
         RubiksMove move = new()
         {
             cube = allBlocks[ran],
@@ -219,10 +261,6 @@ public class RubiksMovement : MonoBehaviour
         return move;
     }
 
-    void RotateAxis(RubiksMove move, float duration = 0.5f)
-    {
-        StartCoroutine(RotateAxis(move.axis,move.cube, move.clockWise, duration, move.orientation));
-    }
 
     public List<Transform> GetCubesFromFace(Transform cube, SliceAxis sliceAxis)
     {
@@ -310,6 +348,18 @@ public class RubiksMovement : MonoBehaviour
 
 namespace RubiksStatic
 {
+    class RubiksMove
+    {
+        public Transform axis;
+        public Transform cube;
+        public SliceAxis orientation;
+        public bool clockWise;
+
+        public void Print()
+        {
+            Debug.Log("Axis : " + axis + " Orient : " + orientation + " ClockWise : " + clockWise);
+        }
+    }
     public enum SliceAxis { X, Y, Z, Useless }
 
 }
