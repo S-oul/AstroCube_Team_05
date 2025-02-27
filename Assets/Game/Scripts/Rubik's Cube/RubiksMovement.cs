@@ -346,11 +346,6 @@ public class RubiksMovement : MonoBehaviour
     }
 }
 
-internal class Tile
-{
-    public bool IsOccupied { get; internal set; }
-}
-
 namespace RubiksStatic
 {
     class RubiksMove
