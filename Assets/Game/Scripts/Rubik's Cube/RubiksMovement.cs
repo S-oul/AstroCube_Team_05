@@ -35,23 +35,20 @@ public class RubiksMovement : MonoBehaviour
 
     List<RubiksMove> moves = new List<RubiksMove>();
 
-    private void Start()
+    private void Awake()
     {
-        //CHANGE IF SCRIPT IS DISPLACED
+        EventManager.OnPlayerReset += ReverseMoves;
+
         foreach (Transform t in transform.parent)
         {
             if (t.tag == "Movable") allBlocks.Add(t);
         }
         if (doScramble) StartCoroutine(Scramble());
+    
     }
-
-    private void Update()
+    void OnDisable()
     {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            doScramble = false;
-            StartCoroutine(ReverseAllMoves());
-        }
+        EventManager.OnPlayerReset -= ReverseMoves;
     }
     IEnumerator Scramble()
     {
@@ -64,6 +61,11 @@ public class RubiksMovement : MonoBehaviour
             }
             yield return null;
         }
+    }
+    void ReverseMoves()
+    {
+        doScramble = false;
+        StartCoroutine(ReverseAllMoves());
     }
     IEnumerator ReverseAllMoves()
     {
@@ -79,9 +81,8 @@ public class RubiksMovement : MonoBehaviour
             }
             yield return null;
         }
+        yield return new WaitForSeconds(.5f);
         _isReversing = false;
-
-
     }
 
     /// <summary>

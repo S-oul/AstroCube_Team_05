@@ -1,12 +1,24 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
+    public static EventManager Instance;
+
+    private void Awake()
+    {
+        if(Instance) Destroy(this);
+        else Instance = this;
+    }
+
+
     public static event Action OnPlayerWin;
     public static event Action OnPlayerLose;
     public static event Action OnButtonPressed;
     public static event Action OnButtonReleased;
+
+    public static event Action OnPlayerReset;
 
     public static void TriggerPlayerWin()
     {
@@ -26,5 +38,10 @@ public class EventManager : MonoBehaviour
     public static void TriggerButtonReleased()
     {
         OnButtonReleased?.Invoke();
+    }
+
+    public static void TriggerReset()
+    {
+        OnPlayerReset?.Invoke();
     }
 }
