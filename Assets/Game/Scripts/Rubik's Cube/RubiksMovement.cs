@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
-using static UnityEditor.PlayerSettings;
-using Unity.VisualScripting;
 using System.Linq;
 
 public class RubiksMovement : MonoBehaviour
@@ -113,18 +111,6 @@ public class RubiksMovement : MonoBehaviour
 
         Vector3 rotationAxis = Vector3.zero;
 
-        if (!_isReversing)
-        {
-            RubiksMove move = new()
-            {
-                axis = axis,
-                cube = selectedCube,
-                orientation = sliceAxis,
-                clockWise = clockWise
-            };
-            moves.Add(move);
-        }
-
         if (isMiddle)
         {
             switch (sliceAxis)
@@ -222,52 +208,17 @@ public class RubiksMovement : MonoBehaviour
             }
         }
 
-
-        foreach (int i in blockIndexs)
-        {
-            if (allBlocks[i].gameObject.name != "Middle")
-            {
-                var tiles = allBlocks[i].transform.GetComponentsInChildren<Tile>().ToList();
-                foreach (Tile tile in tiles)
-                {
-                    if (!tile.IsOccupied)
-                        continue;
-                    switch (sliceAxis)
-                    {
-                        case SliceAxis.X:
-                            if ((transform.localPosition.z - allBlocks[i].transform.localPosition.z < 0 && !clockWise)
-                                || (transform.localPosition.z - allBlocks[i].transform.localPosition.z > 0 && clockWise))
-                                tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - allBlocks[i].transform.localPosition.z).normalized);
-                            break;
-                        case SliceAxis.Y:
-                            //if ((transform.localPosition.y - allBlocks[i].transform.localPosition.y < 0 && clockWise)
-                            //    || (transform.localPosition.y - allBlocks[i].transform.localPosition.y > 0 && !clockWise))
-                            //    tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - allBlocks[i].transform.localPosition.y, 0).normalized);
-                            break;
-                        case SliceAxis.Z:
-                            if ((transform.localPosition.x - allBlocks[i].transform.localPosition.x < 0 && clockWise)
-                                || (transform.localPosition.x - allBlocks[i].transform.localPosition.x > 0 && !clockWise))
-                                tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - allBlocks[i].transform.localPosition.x, 0, 0).normalized);
-                            break;
-                    }
-                }
-            }
-        }
-
         int direction = clockWise ? 1 : -1;
 
 
         Quaternion startRotation = axis.localRotation;
         Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) * startRotation;
 
-        Rigidbody axisRb = axis.GetComponent<Rigidbody>();
-
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            axisRb.MoveRotation(Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration));
-            //axis.localRotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
+            axis.localRotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
             yield return null;
         }
         axis.localRotation = targetRotation;
@@ -280,10 +231,22 @@ public class RubiksMovement : MonoBehaviour
             pos.z = Mathf.Round(pos.z);
             allBlocks[i].transform.localPosition = pos;
             allBlocks[i].transform.SetParent(this.transform.parent, true);
+
         }
         _isRotating = false;
-    }
 
+        if (!_isReversing)
+        {
+            RubiksMove move = new()
+            {
+                axis = axis,
+                cube = selectedCube,
+                orientation = sliceAxis,
+                clockWise = clockWise
+            };
+            moves.Add(move);
+        }
+    }
     RubiksMove CreateRandomMove()
     {
         int ran = Random.Range(0, allBlocks.Count - 1);
@@ -381,6 +344,11 @@ public class RubiksMovement : MonoBehaviour
         }
         return closestAxis;
     }
+}
+
+internal class Tile
+{
+    public bool IsOccupied { get; internal set; }
 }
 
 namespace RubiksStatic
