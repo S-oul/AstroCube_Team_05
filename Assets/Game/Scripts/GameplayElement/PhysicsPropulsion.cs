@@ -21,9 +21,9 @@ public class PhysicsPropulsion: MonoBehaviour
         LayerMask maskCube = LayerMask.GetMask("Cube");
         LayerMask maskTile = LayerMask.GetMask("Tile");
 
-        Debug.DrawRay(_groundCheck.position, Vector3.down, Color.green, 20);
+        Debug.DrawRay(transform.position, Vector3.down, Color.green, 20);
 
-        if (Physics.Raycast(_groundCheck.position, Vector3.down, out hit, 3, maskTile))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 6, maskTile))
         {
             if(_currentFloorTile)
                 _currentFloorTile.IsOccupied = false;
@@ -36,13 +36,16 @@ public class PhysicsPropulsion: MonoBehaviour
 
     private void OnPropulse(Vector3 dir)
     {
+        Debug.Log(dir);
+
         StartCoroutine(WaitForPropulsion(dir * _sidePropulsionForce + 
-                                        ((transform.position - _currentFloorTile.transform.position).normalized * _upPropulsionForce)));
+                                        Vector3.up * _upPropulsionForce));
     }
 
     IEnumerator WaitForPropulsion(Vector3 dir)
     {
         yield return null;
+        Debug.Log(dir);
         _rb.AddForce(dir, ForceMode.VelocityChange);
     }
 

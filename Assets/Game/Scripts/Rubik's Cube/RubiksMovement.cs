@@ -193,18 +193,18 @@ public class RubiksMovement : MonoBehaviour
                     switch (sliceAxis)
                     {
                         case SliceAxis.X:
-                            if (transform.localPosition.z - allBlocks[i].transform.localPosition.z < 0 && clockWise 
-                                || transform.localPosition.z - allBlocks[i].transform.localPosition.z > 0 && !clockWise)
+                            if ((transform.localPosition.z - allBlocks[i].transform.localPosition.z < 0 && !clockWise)
+                                || (transform.localPosition.z - allBlocks[i].transform.localPosition.z > 0 && clockWise))
                                 tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - allBlocks[i].transform.localPosition.z).normalized);
                             break;
                         case SliceAxis.Y:
-                            if (transform.localPosition.y - allBlocks[i].transform.localPosition.y < 0 && clockWise
-                                || transform.localPosition.y - allBlocks[i].transform.localPosition.y > 0 && !clockWise)
-                                tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - allBlocks[i].transform.localPosition.y, 0).normalized);
+                            //if ((transform.localPosition.y - allBlocks[i].transform.localPosition.y < 0 && clockWise)
+                            //    || (transform.localPosition.y - allBlocks[i].transform.localPosition.y > 0 && !clockWise))
+                            //    tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - allBlocks[i].transform.localPosition.y, 0).normalized);
                             break;
                         case SliceAxis.Z:
-                            if (transform.localPosition.x - allBlocks[i].transform.localPosition.x < 0 && clockWise
-                                || transform.localPosition.x - allBlocks[i].transform.localPosition.x > 0 && !clockWise)
+                            if ((transform.localPosition.x - allBlocks[i].transform.localPosition.x < 0 && clockWise)
+                                || (transform.localPosition.x - allBlocks[i].transform.localPosition.x > 0 && !clockWise))
                                 tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - allBlocks[i].transform.localPosition.x, 0, 0).normalized);
                             break;
                     }
@@ -218,11 +218,14 @@ public class RubiksMovement : MonoBehaviour
         Quaternion startRotation = axis.localRotation;
         Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) * startRotation;
 
+        Rigidbody axisRb = axis.GetComponent<Rigidbody>();
+
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            axis.localRotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
+            axisRb.MoveRotation(Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration));
+            //axis.localRotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
             yield return null;
         }
         axis.localRotation = targetRotation;
