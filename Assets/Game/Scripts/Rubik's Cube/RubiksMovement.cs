@@ -47,7 +47,7 @@ public class RubiksMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.V))
         {
             doScramble = false;
             StartCoroutine(ReverseAllMoves());

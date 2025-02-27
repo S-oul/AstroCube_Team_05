@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0.0f, 1.0f)] float _crouchSpeed;
     [SerializeField, Range(0.0f, 1.0f)] float _crouchHeight;
 
+    [Header("Slipping")]
+    [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
+
     Vector3 _gravityDirection;
 
     float _floorDistance = 0.1f;
@@ -41,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
     bool jumpInput = false;
     bool crouchInput = false;
 
+
+    bool _isSlipping = false;
+    Vector3 _pastHorizontalVelocity;
     public float defaultSpeed { get; private set; }
 
     void Start()
@@ -73,7 +79,19 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // movePlayer (walking around)
+        if (_isSlipping ) _pastHorizontalVelocity = _horizontalVelocity;
         _horizontalVelocity = transform.right * xInput + transform.forward * zInput;
+
+        if (_isSlipping)
+        {
+            _horizontalVelocity = _horizontalVelocity * _slippingMovementControl + _pastHorizontalVelocity;
+
+            //clamp
+            _horizontalVelocity.x = _horizontalVelocity.x > 1 ? 1 : _horizontalVelocity.x;
+            _horizontalVelocity.x = _horizontalVelocity.x < -1 ? -1 : _horizontalVelocity.x;
+            _horizontalVelocity.z = _horizontalVelocity.z > 1 ? 1 : _horizontalVelocity.z;
+            _horizontalVelocity.z = _horizontalVelocity.z < -1 ? -1 : _horizontalVelocity.z;
+        }
 
         // jump
         if (jumpInput && _isGrounded)
@@ -100,28 +118,25 @@ public class PlayerMovement : MonoBehaviour
             _camera.transform.localPosition = newCamPos;
         }
 
-        // apply calculated movements
+        // apply calculated
         _controller.Move(_horizontalVelocity * 
                          (crouchInput ? _speed : _speed/_crouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity *Time.deltaTime);
     }
 
-    public void setSpeed(float newSpeed)
+    public void SetSpeed(float newSpeed)
     {
         _speed = newSpeed;
     }
 
-    public void setSpeedToDefault()
+    public void SetSpeedToDefault()
     {
         _speed = defaultSpeed;
     }
 
-    private void OnCollisionEnter(Collision other)
+    public void SetSlippingState(bool isSlipping)
     {
-        Debug.Log("collided with: " + other.gameObject.name);
-        if (other.gameObject.tag != "floor") return;
-        transform.SetParent(other.gameObject.transform);
-        Debug.Log("new parent named: " + other.gameObject.name);
+        _isSlipping = isSlipping;
     }
 }
