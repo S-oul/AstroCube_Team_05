@@ -53,6 +53,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ResetRoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""78276d6b-79fd-420a-8476-517d456cada6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""action"": ""SwitchColumnsLine"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0f3fde0-bba8-402c-97ce-ecf373fae50a"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ResetRoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a29658da-fd1c-4cfa-a817-acc8056bfdad"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ResetRoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -204,6 +235,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_NicoScheme_ClockWise = m_NicoScheme.FindAction("ClockWise", throwIfNotFound: true);
         m_NicoScheme_CounterClockWise = m_NicoScheme.FindAction("CounterClockWise", throwIfNotFound: true);
         m_NicoScheme_SwitchColumnsLine = m_NicoScheme.FindAction("SwitchColumnsLine", throwIfNotFound: true);
+        m_NicoScheme_ResetRoom = m_NicoScheme.FindAction("ResetRoom", throwIfNotFound: true);
     }
 
     ~@PlayerAction()
@@ -273,6 +305,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_NicoScheme_ClockWise;
     private readonly InputAction m_NicoScheme_CounterClockWise;
     private readonly InputAction m_NicoScheme_SwitchColumnsLine;
+    private readonly InputAction m_NicoScheme_ResetRoom;
     public struct NicoSchemeActions
     {
         private @PlayerAction m_Wrapper;
@@ -280,6 +313,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @ClockWise => m_Wrapper.m_NicoScheme_ClockWise;
         public InputAction @CounterClockWise => m_Wrapper.m_NicoScheme_CounterClockWise;
         public InputAction @SwitchColumnsLine => m_Wrapper.m_NicoScheme_SwitchColumnsLine;
+        public InputAction @ResetRoom => m_Wrapper.m_NicoScheme_ResetRoom;
         public InputActionMap Get() { return m_Wrapper.m_NicoScheme; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -298,6 +332,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SwitchColumnsLine.started += instance.OnSwitchColumnsLine;
             @SwitchColumnsLine.performed += instance.OnSwitchColumnsLine;
             @SwitchColumnsLine.canceled += instance.OnSwitchColumnsLine;
+            @ResetRoom.started += instance.OnResetRoom;
+            @ResetRoom.performed += instance.OnResetRoom;
+            @ResetRoom.canceled += instance.OnResetRoom;
         }
 
         private void UnregisterCallbacks(INicoSchemeActions instance)
@@ -311,6 +348,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SwitchColumnsLine.started -= instance.OnSwitchColumnsLine;
             @SwitchColumnsLine.performed -= instance.OnSwitchColumnsLine;
             @SwitchColumnsLine.canceled -= instance.OnSwitchColumnsLine;
+            @ResetRoom.started -= instance.OnResetRoom;
+            @ResetRoom.performed -= instance.OnResetRoom;
+            @ResetRoom.canceled -= instance.OnResetRoom;
         }
 
         public void RemoveCallbacks(INicoSchemeActions instance)
@@ -378,5 +418,6 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnClockWise(InputAction.CallbackContext context);
         void OnCounterClockWise(InputAction.CallbackContext context);
         void OnSwitchColumnsLine(InputAction.CallbackContext context);
+        void OnResetRoom(InputAction.CallbackContext context);
     }
 }
