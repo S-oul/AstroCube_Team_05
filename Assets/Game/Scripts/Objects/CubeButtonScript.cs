@@ -10,8 +10,10 @@ public class CubeButtonScript : MonoBehaviour
     [SerializeField] private GameObject lightsVisual;
     [SerializeField] private float magnetSpeed = 20f; 
     [SerializeField] private float rotationSpeed = 10f; 
+    [SerializeField] private float stopThreshold = 0.01f;
 
     private GameObject currentCube = null;
+    private bool cubeLocked = false; 
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -25,6 +27,7 @@ public class CubeButtonScript : MonoBehaviour
             }
 
             currentCube = collision.gameObject;
+            cubeLocked = false; 
         }
     }
 
@@ -35,6 +38,7 @@ public class CubeButtonScript : MonoBehaviour
             if (currentCube == collision.gameObject)
             {
                 currentCube = null;
+                cubeLocked = false;
             }
 
             isPressed = false;
@@ -45,13 +49,27 @@ public class CubeButtonScript : MonoBehaviour
 
     private void Update()
     {
-        if (currentCube != null)
+        if (currentCube != null && !cubeLocked)
         {
             Vector3 targetPosition = new Vector3(transform.position.x, currentCube.transform.position.y, transform.position.z);
-            currentCube.transform.position = Vector3.Lerp(currentCube.transform.position, targetPosition, Time.deltaTime * magnetSpeed);
 
-            Quaternion targetRotation = transform.rotation;
-            currentCube.transform.rotation = Quaternion.Lerp(currentCube.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            float distance = Vector3.Distance(new Vector3(currentCube.transform.position.x, 0, currentCube.transform.position.z),
+                                              new Vector3(targetPosition.x, 0, targetPosition.z));
+
+            float rotationDifference = Quaternion.Angle(currentCube.transform.rotation, transform.rotation);
+
+            if (distance < stopThreshold && rotationDifference < stopThreshold)
+            {
+                cubeLocked = true;
+                currentCube.transform.position = targetPosition;
+                currentCube.transform.rotation = transform.rotation; 
+            }
+            else
+            {
+                currentCube.transform.position = Vector3.Lerp(currentCube.transform.position, targetPosition, Time.deltaTime * magnetSpeed);
+
+                currentCube.transform.rotation = Quaternion.Lerp(currentCube.transform.rotation, transform.rotation, Time.deltaTime * rotationSpeed);
+            }
         }
     }
 
