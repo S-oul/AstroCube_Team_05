@@ -223,7 +223,7 @@ public class RubiksMovement : MonoBehaviour
         }
 
 
-        foreach (int i in ids)
+        foreach (int i in blockIndexs)
         {
             if (allBlocks[i].gameObject.name != "Middle")
             {
