@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Slipping")]
     [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
 
+    [Header("GravityRotation")]
+    [SerializeField] bool _enableGravityRotation = true;
+
     Vector3 _gravityDirection;
 
     float _floorDistance = 0.1f;
@@ -123,6 +126,20 @@ public class PlayerMovement : MonoBehaviour
                          (crouchInput ? _speed : _speed/_crouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity *Time.deltaTime);
+
+        // gravity rotation
+        if (_enableGravityRotation == false && transform.parent != null)
+        {
+            DetectNewParent detectNewParent = GetComponentInChildren<DetectNewParent>();
+            detectNewParent.gameObject.SetActive(false);
+            transform.SetParent(null);
+        }        
+        
+        if (_enableGravityRotation == true && transform.parent == null)
+        {
+            Transform parentChangerChild = transform.GetChild(3);
+            parentChangerChild.gameObject.SetActive(true);
+        }
     }
 
     public void SetSpeed(float newSpeed)

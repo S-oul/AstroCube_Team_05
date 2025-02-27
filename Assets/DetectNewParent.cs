@@ -1,13 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class DetectNewParent : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    [SerializeField] LayerMask _detectableLayer;
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    transform.parent.SetParent(other.transform);
+    //}
+
+    private void Update()
     {
-        //if (other.gameObject.layer != "Floor") return;
-        transform.parent.SetParent(other.transform);
-        //Debug.Log("new parent named: " + other.gameObject.name);
+        RaycastHit _raycastInfo;
+
+        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 100, _detectableLayer))
+        {
+            transform.parent.SetParent(_raycastInfo.collider.gameObject.transform);
+        }
     }
 }
