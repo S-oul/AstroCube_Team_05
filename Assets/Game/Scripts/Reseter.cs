@@ -5,22 +5,33 @@ using UnityEngine;
 
 public class Reseter : MonoBehaviour
 {
-    Pose StartPos;
-    Pose PoseOnReset;
+    Pose _startPos;
+    Pose _poseOnReset;
+
+    Rigidbody _rb;
     void Awake()
     {
-        StartPos = new Pose();
-        transform.GetPositionAndRotation(out StartPos.position, out StartPos.rotation);
-
+        _startPos = new Pose();
+        transform.GetPositionAndRotation(out _startPos.position, out _startPos.rotation);
+        TryGetComponent(out _rb);
         EventManager.OnPlayerReset += OnReset;
     }
-
+    private void OnDisable()
+    {
+        EventManager.OnPlayerReset -= OnReset;
+    }
 
     [Button]
     void OnReset()
     {
-        PoseOnReset = new Pose();
-        transform.GetPositionAndRotation(out PoseOnReset.position, out PoseOnReset.rotation);
+        if (_rb)
+        {
+            _rb.velocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+        }
+        _poseOnReset = new Pose();
+        print(name);
+        transform.GetPositionAndRotation(out _poseOnReset.position, out _poseOnReset.rotation);
         StartCoroutine(Reset(1));
     }
 
@@ -30,12 +41,12 @@ public class Reseter : MonoBehaviour
         while (elapsedTime < time)
         {
             elapsedTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(PoseOnReset.position, StartPos.position, elapsedTime / time);
-            transform.rotation = Quaternion.Lerp(PoseOnReset.rotation, StartPos.rotation, elapsedTime / time);
+            transform.position = Vector3.Lerp(_poseOnReset.position, _startPos.position, elapsedTime / time);
+            transform.rotation = Quaternion.Lerp(_poseOnReset.rotation, _startPos.rotation, elapsedTime / time);
             yield return null;
         }
-        transform.position = StartPos.position;
-        transform.rotation = StartPos.rotation;
+        transform.position = _startPos.position;
+        transform.rotation = _startPos.rotation;
     }
 
 }
