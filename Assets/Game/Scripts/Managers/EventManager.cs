@@ -15,6 +15,8 @@ public class EventManager : MonoBehaviour
 
     public static event Action OnPlayerWin;
     public static event Action OnPlayerLose;
+    public static event Action OnButtonPressed;
+    public static event Action OnButtonReleased;
 
     public static event Action OnPlayerReset;
 
@@ -28,7 +30,16 @@ public class EventManager : MonoBehaviour
         OnPlayerLose?.Invoke();
     }
 
-    [Button]
+    public static void TriggerButtonPressed()
+    {
+        OnButtonPressed?.Invoke();
+    }
+
+    public static void TriggerButtonReleased()
+    {
+        OnButtonReleased?.Invoke();
+    }
+
     public static void TriggerReset()
     {
         OnPlayerReset?.Invoke();
