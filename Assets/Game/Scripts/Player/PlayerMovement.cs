@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (jumpInput && _isGrounded)
         {
-            _verticalVelocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            _verticalVelocity = transform.up * Mathf.Sqrt(_jumpHeight * -2f * _gravity);
         }
 
         // crouch

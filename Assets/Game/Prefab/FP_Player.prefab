@@ -352,7 +352,7 @@ MonoBehaviour:
   _floorCheck: {fileID: 7652035074635611970}
   _floorLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   _speed: 12
   _gravity: -18
   _canJump: 1
@@ -361,6 +361,7 @@ MonoBehaviour:
   _crouchSpeed: 0.5
   _crouchHeight: 0.5
   _slippingMovementControl: 0.01
+  _enableGravityRotation: 1
 --- !u!1 &9205467479729934857
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +371,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5398094141838564102}
-  - component: {fileID: 8089597701347800292}
   - component: {fileID: 3556385474053788473}
   m_Layer: 0
   m_Name: ParentChanger
@@ -394,27 +394,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1537851944306892503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8089597701347800292
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9205467479729934857}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.10000001, y: 0.6947975, z: 0.10000001}
-  m_Center: {x: 0, y: 0.15260124, z: 0}
 --- !u!114 &3556385474053788473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,4 +408,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectableLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
