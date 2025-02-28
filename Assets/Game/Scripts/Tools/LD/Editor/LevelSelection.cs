@@ -29,6 +29,7 @@ public class LevelSelection : Editor
     static private Pose[] _tilesOriginalTransforms = new Pose[6 * 9];
     static float _tileInterval;
     static bool _isFoldout = false;
+    static bool _areWallsInvisible = false;
     static bool _showFoldoutReferences;
 
     // - OTHER -    
@@ -247,6 +248,32 @@ public class LevelSelection : Editor
         GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
+
+
+
+        GUILayout.BeginVertical("GroupBox");
+
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+
+        GUI.backgroundColor = _areWallsInvisible ? new Color(0.4f, 0.6f, 0.3f) : new Color(0.8f, 1f, 0.7f);
+        if (GUILayout.Button("Make Walls invisible", _buttonStyle, GUILayout.Height(25)))
+        {
+            _areWallsInvisible = !_areWallsInvisible;
+
+            if (_areWallsInvisible)
+                _script.ChangeWallsVisibility(_script.transform, false);
+            else
+                _script.ChangeWallsVisibility(_script.transform, true);
+        }
+        GUI.backgroundColor = Color.white;
+
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+
+        GUILayout.EndVertical();
+
+
 
         GUILayout.EndVertical();
     }
