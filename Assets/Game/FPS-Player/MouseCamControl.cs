@@ -41,14 +41,14 @@ public class MouseCamControl : MonoBehaviour
         _playerTransform.Rotate(Vector3.up * moveX);
 
         //Raycast
-    RaycastHit _raycastInfo;
+        RaycastHit _raycastInfo;
 
         if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
         {
             GameObject collider = _raycastInfo.collider.gameObject;
             if (_oldTile != collider.transform)
             {
-                _oldTile = _raycastInfo.transform;
+                _oldTile = collider.transform;
                 if (rubiksCubeController != null && _oldTile.parent != null) rubiksCubeController.SetActualCube(_oldTile.parent);
             }
         }

@@ -143,7 +143,7 @@ MonoBehaviour:
   rubiksCubeController: {fileID: 0}
   _detectableLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
   _maxDistance: 1000
 --- !u!114 &3875194145860832593
 MonoBehaviour:
@@ -161,7 +161,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 0}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -189,6 +190,37 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &3396631818045372411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8608025456989573920}
+  m_Layer: 0
+  m_Name: HoldTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8608025456989573920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3396631818045372411}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1537851944306892503}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4699954862897373879
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,6 +314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1537851944306892503}
   - component: {fileID: 7069003786607905744}
+  - component: {fileID: 8895847318250023099}
   - component: {fileID: 700580131499637484}
   - component: {fileID: 4747696836999268114}
   - component: {fileID: 5067991794126187365}
@@ -309,6 +342,7 @@ Transform:
   - {fileID: 2682455399166526803}
   - {fileID: 7652035074635611970}
   - {fileID: 5398094141838564102}
+  - {fileID: 8608025456989573920}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &7069003786607905744
@@ -337,6 +371,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8895847318250023099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2d6efe47c40974b98e971437b2e525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _rayDistance: 3
+  _holdTransform: {fileID: 8608025456989573920}
 --- !u!114 &700580131499637484
 MonoBehaviour:
   m_ObjectHideFlags: 0
