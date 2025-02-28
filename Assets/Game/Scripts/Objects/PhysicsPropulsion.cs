@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PhysicsPropulsion: MonoBehaviour
 {
-    [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _upPropulsionForce;
     [SerializeField] private float _sidePropulsionForce;
     private Tile _currentFloorTile;
