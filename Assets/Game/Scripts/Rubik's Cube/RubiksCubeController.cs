@@ -64,11 +64,14 @@ public class RubiksCubeController : MonoBehaviour
             ShutDownFace();
             
             if (_controlledScript == null) return;
+
+            Transform equivalence = ControlledCube.transform.GetChild(ActualFace.transform.GetComponentIndex());
+            
             _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice);
             foreach (RubiksMovement cube in _replicatedScript)
             {
-                Transform equivalence = cube.transform.GetChild(0).Find(ActualFace.name);
-                cube.RotateAxis(cube.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
+                if(equivalence == null ) Debug.Break();
+                cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
             }
         }
     }
