@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class RubicsCube : MonoBehaviour
 {
@@ -24,9 +26,46 @@ public class RubicsCube : MonoBehaviour
         OnReset?.Invoke();
         if (Selection[0] != null)
             DeIsolate(_isolationMode, RubicsCube.Selection[0].transform, transform);
+        ChangeWallsVisibility(transform, true);
     }
 
-#region Isolate
+
+    public void ChangeWallsVisibility(Transform parent, bool visibility)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            var cube = parent.GetChild(i);
+            for (int j = 0; j < cube.childCount; j++)
+            {
+                var tile = cube.GetChild(j);
+                if (tile.gameObject.layer == LayerMask.NameToLayer("Tile"))
+                {
+                    _ChangeFloorVisibily(tile, visibility);
+                }
+            }            
+        }
+        if (!visibility)
+        {
+            for (int tile = 0; tile < 9; tile++)
+            {
+                Transform floor = _tilesPerFaces[tile].transform;
+                _ChangeFloorVisibily(floor, true);
+            }            
+        }
+    }
+
+    private void _ChangeFloorVisibily(Transform parent, bool visibility)
+    {
+        for (int k = 0; k < parent.childCount; k++)
+        {
+            if (parent.GetChild(k).gameObject.layer == LayerMask.NameToLayer("Floor"))
+            {
+                parent.GetChild(k).gameObject.SetActive(visibility);
+            }
+        }
+    }
+
+    #region Isolate
 
     public void Isolate(EIsolationMode mode, Transform selection, Transform parent)
     {
