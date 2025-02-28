@@ -18,11 +18,14 @@ public class DetectNewParent : MonoBehaviour
 
         if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
         {
-            Debug.Log(_raycastInfo.transform.up);
-            if (transform.parent.up != -_raycastInfo.transform.right)
+
+            var h = _raycastInfo.collider.transform;
+            var dif = transform.parent.up - (-h.right);
+            if (Mathf.Abs(dif.magnitude) > 0.1f)
             {
-                Debug.Log("I'm tilted!");
-                transform.parent.rotation =Quaternion.Lerp(transform.parent.rotation, Quaternion.FromToRotation(transform.parent.up, -_raycastInfo.transform.right) * transform.parent.rotation,.2f);
+                Debug.Log(transform.parent.up + " is not " + -h.right);
+                //Debug.Log("I'm tilted!");
+                transform.parent.rotation =Quaternion.Lerp(transform.parent.rotation, Quaternion.FromToRotation(transform.parent.up, -h.right) * transform.parent.rotation,.2f);
             }
             transform.parent.SetParent(_raycastInfo.collider.gameObject.transform.parent);
         }
