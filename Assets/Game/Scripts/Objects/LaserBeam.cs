@@ -59,6 +59,12 @@ public class LaserBeam
 
     void CheckHit(RaycastHit hitInfo, Vector3 direction, LineRenderer laser)
     {
+        if(hitInfo.collider.tag == "Aim")
+        {
+            EventManager.TriggerPlayerWin();
+        }
+       
+
         if (hitInfo.collider.tag == "Mirror")
         {
             Vector3 pos = hitInfo.point;

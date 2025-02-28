@@ -29,6 +29,12 @@ public class CubeButtonScript : MonoBehaviour
             currentCube = collision.gameObject;
             cubeLocked = false; 
         }
+
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Player entered the button");
+            EventManager.TriggerButtonPressed();
+        }
     }
 
     private void OnTriggerExit(Collider collision)
@@ -43,6 +49,11 @@ public class CubeButtonScript : MonoBehaviour
 
             isPressed = false;
             UpdateVisuals();
+            EventManager.TriggerButtonReleased();
+        }
+
+        if(collision.gameObject.CompareTag("Player"))
+        {
             EventManager.TriggerButtonReleased();
         }
     }
