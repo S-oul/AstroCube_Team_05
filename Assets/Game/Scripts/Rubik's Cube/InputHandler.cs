@@ -3,7 +3,9 @@ using UnityEngine.InputSystem.XR;
 
 public class InputHandler : MonoBehaviour
 {
+    [SerializeField] PlayerHold _playerHold;
     RubiksCubeController _controller;
+
     void Awake()
     {
         _controller = GetComponent<RubiksCubeController>();
@@ -25,6 +27,14 @@ public class InputHandler : MonoBehaviour
     public void OnResetRoom()
     {
         EventManager.TriggerReset();
+    }
+    public void OnInteract()
+    {
+        if(_playerHold.IsHolding)
+            _playerHold.TryRelease();
+
+        else
+            _playerHold.TryHold();
     }
 
 

@@ -36,8 +36,6 @@ public class PhysicsPropulsion: MonoBehaviour
 
     private void OnPropulse(Vector3 dir)
     {
-        Debug.Log(dir);
-
         StartCoroutine(WaitForPropulsion(dir * _sidePropulsionForce + 
                                         Vector3.up * _upPropulsionForce));
     }

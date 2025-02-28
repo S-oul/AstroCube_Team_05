@@ -62,6 +62,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""a04cb8c7-d18f-472d-8156-0fb92a8155a2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -163,6 +172,17 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""action"": ""ResetRoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""02323f2f-ac41-4220-a812-269b51b04dce"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -236,6 +256,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_NicoScheme_CounterClockWise = m_NicoScheme.FindAction("CounterClockWise", throwIfNotFound: true);
         m_NicoScheme_SwitchColumnsLine = m_NicoScheme.FindAction("SwitchColumnsLine", throwIfNotFound: true);
         m_NicoScheme_ResetRoom = m_NicoScheme.FindAction("ResetRoom", throwIfNotFound: true);
+        m_NicoScheme_Interact = m_NicoScheme.FindAction("Interact", throwIfNotFound: true);
     }
 
     ~@PlayerAction()
@@ -306,6 +327,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_NicoScheme_CounterClockWise;
     private readonly InputAction m_NicoScheme_SwitchColumnsLine;
     private readonly InputAction m_NicoScheme_ResetRoom;
+    private readonly InputAction m_NicoScheme_Interact;
     public struct NicoSchemeActions
     {
         private @PlayerAction m_Wrapper;
@@ -314,6 +336,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @CounterClockWise => m_Wrapper.m_NicoScheme_CounterClockWise;
         public InputAction @SwitchColumnsLine => m_Wrapper.m_NicoScheme_SwitchColumnsLine;
         public InputAction @ResetRoom => m_Wrapper.m_NicoScheme_ResetRoom;
+        public InputAction @Interact => m_Wrapper.m_NicoScheme_Interact;
         public InputActionMap Get() { return m_Wrapper.m_NicoScheme; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -335,6 +358,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ResetRoom.started += instance.OnResetRoom;
             @ResetRoom.performed += instance.OnResetRoom;
             @ResetRoom.canceled += instance.OnResetRoom;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(INicoSchemeActions instance)
@@ -351,6 +377,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ResetRoom.started -= instance.OnResetRoom;
             @ResetRoom.performed -= instance.OnResetRoom;
             @ResetRoom.canceled -= instance.OnResetRoom;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(INicoSchemeActions instance)
@@ -419,5 +448,6 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnCounterClockWise(InputAction.CallbackContext context);
         void OnSwitchColumnsLine(InputAction.CallbackContext context);
         void OnResetRoom(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
