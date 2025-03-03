@@ -42,7 +42,6 @@ public class PhysicsPropulsion: MonoBehaviour
     IEnumerator WaitForPropulsion(Vector3 dir)
     {
         yield return null;
-        Debug.Log(dir);
         _rb.AddForce(dir, ForceMode.VelocityChange);
     }
 

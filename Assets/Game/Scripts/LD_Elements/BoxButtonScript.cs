@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CubeButtonScript : MonoBehaviour
+public class BoxButtonScript : MonoBehaviour
 {
     private bool isPressed = false;
 
@@ -12,8 +12,8 @@ public class CubeButtonScript : MonoBehaviour
     [SerializeField] private float rotationSpeed = 10f; 
     [SerializeField] private float stopThreshold = 0.01f;
 
-    private GameObject currentCube = null;
-    private bool cubeLocked = false; 
+    private GameObject _currentBox = null;
+    private bool _boxLocked = false; 
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -26,13 +26,12 @@ public class CubeButtonScript : MonoBehaviour
                 EventManager.TriggerButtonPressed();
             }
 
-            currentCube = collision.gameObject;
-            cubeLocked = false; 
+            _currentBox = collision.gameObject;
+            _boxLocked = false; 
         }
 
         if(collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player entered the button");
             EventManager.TriggerButtonPressed();
         }
     }
@@ -41,10 +40,10 @@ public class CubeButtonScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Cube"))
         {
-            if (currentCube == collision.gameObject)
+            if (_currentBox == collision.gameObject)
             {
-                currentCube = null;
-                cubeLocked = false;
+                _currentBox = null;
+                _boxLocked = false;
             }
 
             isPressed = false;
@@ -60,26 +59,26 @@ public class CubeButtonScript : MonoBehaviour
 
     private void Update()
     {
-        if (currentCube != null && !cubeLocked)
+        if (_currentBox != null && !_boxLocked)
         {
-            Vector3 targetPosition = new Vector3(transform.position.x, currentCube.transform.position.y, transform.position.z);
+            Vector3 targetPosition = new Vector3(transform.position.x, _currentBox.transform.position.y, transform.position.z);
 
-            float distance = Vector3.Distance(new Vector3(currentCube.transform.position.x, 0, currentCube.transform.position.z),
+            float distance = Vector3.Distance(new Vector3(_currentBox.transform.position.x, 0, _currentBox.transform.position.z),
                                               new Vector3(targetPosition.x, 0, targetPosition.z));
 
-            float rotationDifference = Quaternion.Angle(currentCube.transform.rotation, transform.rotation);
+            float rotationDifference = Quaternion.Angle(_currentBox.transform.rotation, transform.rotation);
 
             if (distance < stopThreshold && rotationDifference < stopThreshold)
             {
-                cubeLocked = true;
-                currentCube.transform.position = targetPosition;
-                currentCube.transform.rotation = transform.rotation; 
+                _boxLocked = true;
+                _currentBox.transform.position = targetPosition;
+                _currentBox.transform.rotation = transform.rotation; 
             }
             else
             {
-                currentCube.transform.position = Vector3.Lerp(currentCube.transform.position, targetPosition, Time.deltaTime * magnetSpeed);
+                _currentBox.transform.position = Vector3.Lerp(_currentBox.transform.position, targetPosition, Time.deltaTime * magnetSpeed);
 
-                currentCube.transform.rotation = Quaternion.Lerp(currentCube.transform.rotation, transform.rotation, Time.deltaTime * rotationSpeed);
+                _currentBox.transform.rotation = Quaternion.Lerp(_currentBox.transform.rotation, transform.rotation, Time.deltaTime * rotationSpeed);
             }
         }
     }

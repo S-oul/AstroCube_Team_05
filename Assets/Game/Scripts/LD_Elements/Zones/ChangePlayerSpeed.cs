@@ -9,7 +9,6 @@ public class ChangePlayerSpeed : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Entered");
         if (other.gameObject.tag != "Player") return;
         PlayerMovement playerMovement =  other.gameObject.GetComponent<PlayerMovement>();
         playerMovement.SetSpeed(playerMovement.defaultSpeed *  newSpeedMultiplyer);
@@ -17,7 +16,6 @@ public class ChangePlayerSpeed : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Exited");
         if (other.gameObject.tag != "Player") return;
         PlayerMovement playerMovement = other.gameObject.GetComponent<PlayerMovement>();
         playerMovement.SetSpeedToDefault();
