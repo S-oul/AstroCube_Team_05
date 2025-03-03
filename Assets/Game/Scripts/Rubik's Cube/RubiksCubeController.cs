@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
+using System.Linq;
 
 public class RubiksCubeController : MonoBehaviour
 {
@@ -65,14 +66,15 @@ public class RubiksCubeController : MonoBehaviour
             
             if (_controlledScript == null) return;
 
-            Transform equivalence = ControlledCube.transform.GetChild(ActualFace.transform.GetComponentIndex());
-            
-            _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice);
             foreach (RubiksMovement cube in _replicatedScript)
             {
-                if(equivalence == null ) Debug.Break();
+                //HAHAHAHAHAHAHA LA LIGNE EST HORRIBLE ALED JEROME J'T'EN SUPPLIE
+                Transform equivalence = cube.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
+                if (equivalence == null ) Debug.Break();
                 cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
             }
+            
+            _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice);
         }
     }
 
