@@ -27,7 +27,7 @@ public class DetectNewParent : MonoBehaviour
                 //Debug.Log("I'm tilted!");
                 transform.parent.rotation =Quaternion.Lerp(transform.parent.rotation, Quaternion.FromToRotation(transform.parent.up, -h.right) * transform.parent.rotation,.2f);
             }
-            transform.parent.SetParent(_raycastInfo.collider.gameObject.transform.parent);
+            transform.parent.SetParent(_raycastInfo.collider.gameObject.transform);
         }
     }
 }
