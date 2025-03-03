@@ -17,7 +17,7 @@ public class RubiksMovement : MonoBehaviour
     private bool _isRotating = false;
 
     private bool _isReversing = false;
-    List<RubiksMove> moves = new List<RubiksMove>();
+    List<RubiksMove> _moves = new List<RubiksMove>();
 
 
     #region Accessor
@@ -61,13 +61,13 @@ public class RubiksMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         _isReversing = true;
-        while (moves.Count > 0)
+        while (_moves.Count > 0)
         {
             if (!_isRotating)
             {
-                RubiksMove m = moves[moves.Count - 1];
+                RubiksMove m = _moves[_moves.Count - 1];
                 StartCoroutine(RotateAxisCoroutine(m.axis, m.cube, !m.clockWise, .1f, m.orientation));
-                moves.RemoveAt(moves.Count - 1);
+                _moves.RemoveAt(_moves.Count - 1);
             }
             yield return null;
         }
@@ -244,7 +244,7 @@ public class RubiksMovement : MonoBehaviour
                 orientation = sliceAxis,
                 clockWise = clockWise
             };
-            moves.Add(move);
+            _moves.Add(move);
         }
     }
     RubiksMove CreateRandomMove()

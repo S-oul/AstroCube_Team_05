@@ -77,7 +77,7 @@ Shader "Custom/PortalShader"
                 
                 // Correct the direction for full 360° mapping
                 float3 correctedDir = normalize(reflect(-i.viewDir, i.normalDir));
-                float2 sphericalUV = float2(0.5 + atan2(correctedDir.z, correctedDir.x) / (2 * 3.14159), 0.5 - asin(correctedDir.y) / 3.14159);
+                float2 sphericalUV = float2(0.5 + atan2(correctedDir.z, correctedDir.x) / -(2 * 3.14159), 0.5 - asin(correctedDir.y) / 3.14159);
                 fixed4 col = tex2D(_MainTex, sphericalUV) * _ColorTint;
                 
                 // Portal mask effect with edge softness
