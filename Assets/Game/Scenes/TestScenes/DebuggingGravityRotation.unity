@@ -302,6 +302,27 @@ Transform:
   - {fileID: 151985398}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &234379470 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5789224619367204211, guid: b5eeb929aa87481439de01016bcf6589,
+    type: 3}
+  m_PrefabInstance: {fileID: 1737364899}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &234379482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234379470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f26c42b495467394f9d5290c22cff6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectableLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,7 +1316,7 @@ MonoBehaviour:
   ControlledCube: {fileID: 2095322877076973373}
   _controlledScript: {fileID: 0}
   ReplicatedCube: []
-  movementSpeed: 1
+  movementSpeed: 2
   ActualFace: {fileID: 0}
   _detectableLayer:
     serializedVersion: 2
@@ -1709,10 +1730,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: FP_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 9205467479729934857, guid: b5eeb929aa87481439de01016bcf6589,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5789224619367204211, guid: b5eeb929aa87481439de01016bcf6589,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 234379482}
   m_SourcePrefab: {fileID: 100100000, guid: b5eeb929aa87481439de01016bcf6589, type: 3}
 --- !u!1001 &1766853681
 PrefabInstance:
