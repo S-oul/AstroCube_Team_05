@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - dev
+      - Dev  
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -14,7 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64 standalone.
+          - StandaloneWindows64 # Build une version Windows 64 standalone.
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +31,17 @@ jobs:
       - if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
 
+      - name: Define build type
+        id: build_type
+        run: |
+          if [[ "${{ github.ref_name }}" == "Dev" ]]; then
+            echo "BUILD_TYPE=Dev Build" >> $GITHUB_ENV
+            echo "BUILD_NAME=Dev-Build-${{ matrix.targetPlatform }}" >> $GITHUB_ENV
+          else
+            echo "BUILD_TYPE=Release Build" >> $GITHUB_ENV
+            echo "BUILD_NAME=Build-${{ matrix.targetPlatform }}" >> $GITHUB_ENV
+          fi
+
       - name: Build with Unity
         uses: game-ci/unity-builder@v4
         env:
@@ -42,7 +54,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Build-${{ matrix.targetPlatform }}
+          name: ${{ env.BUILD_NAME }}
           path: build/${{ matrix.targetPlatform }}
 
       - name: Send Discord notification on success
@@ -53,8 +65,8 @@ jobs:
                -d '{
                     "username": "Build Bot",
                     "embeds": [{
-                      "title": "✅ Build Succeeded!",
-                      "description": "Build for **${{ matrix.targetPlatform }}** is complete.",
+                      "title": "✅ ${{ env.BUILD_TYPE }} Succeeded!",
+                      "description": "Build for **${{ matrix.targetPlatform }}** is complete on branch **${{ github.ref_name }}**.",
                       "color": 3066993,
                       "fields": [
                         {
@@ -74,8 +86,8 @@ jobs:
                -d '{
                     "username": "Build Bot",
                     "embeds": [{
-                      "title": "❌ Build Failed!",
-                      "description": "Build for **${{ matrix.targetPlatform }}** has failed.",
+                      "title": "❌ ${{ env.BUILD_TYPE }} Failed!",
+                      "description": "Build for **${{ matrix.targetPlatform }}** failed on branch **${{ github.ref_name }}**.",
                       "color": 15158332,
                       "fields": [
                         {
