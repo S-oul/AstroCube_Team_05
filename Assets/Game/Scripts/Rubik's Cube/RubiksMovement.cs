@@ -25,10 +25,10 @@ public class RubiksMovement : MonoBehaviour
 
     #region Accessor
 
-    public bool IsRotating { get => _isRotating;}
-    public bool IsLockXAxis { get => _isLockXAxis;}
+    public bool IsRotating { get => _isRotating; }
+    public bool IsLockXAxis { get => _isLockXAxis; }
     public bool IsLockYAxis { get => _isLockYAxis; }
-    public bool IsLockZAxis { get => _isLockZAxis;}
+    public bool IsLockZAxis { get => _isLockZAxis; }
 
     #endregion
 
@@ -66,7 +66,7 @@ public class RubiksMovement : MonoBehaviour
     }
     IEnumerator ReverseAllMoves(float time)
     {
-        while(_isRotating) yield return null;
+        while (_isRotating) yield return null;
         time /= _moves.Count();
         _isReversing = true;
         while (_moves.Count > 0)
@@ -79,7 +79,7 @@ public class RubiksMovement : MonoBehaviour
             }
             yield return null;
         }
-        yield return new WaitForSeconds(time+.05f);
+        yield return new WaitForSeconds(time + .05f);
         _isReversing = false;
     }
     void RotateAxis(RubiksMove move, float duration = 0.5f)
@@ -351,6 +351,10 @@ public class RubiksMovement : MonoBehaviour
             }
         }
         return closestAxis;
+    }
+    private void OnValidate()
+    {
+        if (IsLockXAxis && IsLockYAxis && IsLockZAxis) _isLockXAxis = false;
     }
 }
 
