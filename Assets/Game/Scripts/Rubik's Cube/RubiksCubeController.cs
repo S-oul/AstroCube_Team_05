@@ -14,8 +14,8 @@ public class RubiksCubeController : MonoBehaviour
    
 
 
-    [SerializeField] Transform overlayTransform;
-    [SerializeField] float cameraSpeed = 0.2f;
+    [SerializeField] Transform _overlayTransform;
+    [SerializeField] float _cameraSpeed = 0.2f;
     bool _isCameraRotating = false;
 
 
@@ -93,17 +93,17 @@ public class RubiksCubeController : MonoBehaviour
             
             _isCameraRotating = true;
             float elapsedTime = 0;
-            Quaternion startRotation = overlayTransform.rotation;
+            Quaternion startRotation = _overlayTransform.rotation;
             Quaternion targetRotation = startRotation * Quaternion.AngleAxis(-90, new Vector2(direction.y,direction.x   ));
 
-            while (elapsedTime < .2f)
+            while (elapsedTime < _cameraSpeed)
             {
                 elapsedTime += Time.deltaTime;
-                overlayTransform.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / .2f);
+                _overlayTransform.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / _cameraSpeed);
                 yield return null;
             }
 
-            overlayTransform.transform.rotation = targetRotation;
+            _overlayTransform.transform.rotation = targetRotation;
 
             
             

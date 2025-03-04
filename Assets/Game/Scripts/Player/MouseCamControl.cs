@@ -23,6 +23,7 @@ public class MouseCamControl : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        //rubiksCubeController = FindObjectOfType<RubiksCubeController>();
     }
 
     // Update is called once per frame
