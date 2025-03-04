@@ -6,9 +6,9 @@ public class MouseCamControl : MonoBehaviour
 {
     [Header("Camera Movement")]
     [SerializeField] Transform _playerTransform;
+    [SerializeField] Transform _cameraOverlay;
     [SerializeField] float _joyStCamControlSpeed = 1000f;
     [SerializeField] float _mouseCamControlSpeed = 100f;
-
 
     [Header("Raycast")]
     [SerializeField] RubiksCubeController rubiksCubeController;
@@ -23,6 +23,7 @@ public class MouseCamControl : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        //rubiksCubeController = FindObjectOfType<RubiksCubeController>();
     }
 
     // Update is called once per frame
@@ -39,6 +40,8 @@ public class MouseCamControl : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
 
         _playerTransform.Rotate(Vector3.up * moveX);
+        //_cameraOverlay.Rotate(Vector3.up * moveX);
+        //_cameraOverlay.Rotate(_cameraOverlay.forward * moveY);
 
         //Raycast
         RaycastHit _raycastInfo;

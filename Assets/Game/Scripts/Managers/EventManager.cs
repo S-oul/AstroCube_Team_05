@@ -12,12 +12,22 @@ public class EventManager : MonoBehaviour
         else Instance = this;
     }
 
+    //Game Events
+    public static event Action OnSceneStart;
+    public static event Action OnSceneEnd;
 
     public static event Action OnPlayerWin;
     public static event Action OnPlayerLose;
+
+
+    //Rubik's Cube Events
+    public static event Action OnCubeRotated;
+
+    //Object Events
     public static event Action OnButtonPressed;
     public static event Action OnButtonReleased;
 
+    //Player Events
     public static event Action OnPlayerReset;
 
     public static void TriggerPlayerWin()
@@ -43,5 +53,19 @@ public class EventManager : MonoBehaviour
     public static void TriggerReset()
     {
         OnPlayerReset?.Invoke();
+    }
+
+    public static void TriggerSceneStart()
+    {
+        OnSceneStart?.Invoke();
+    }
+
+    public static void TriggerSceneEnd() {
+        OnSceneEnd?.Invoke();
+    }
+
+    public static void TriggerCubeRotated()
+    {
+        OnCubeRotated?.Invoke();
     }
 }

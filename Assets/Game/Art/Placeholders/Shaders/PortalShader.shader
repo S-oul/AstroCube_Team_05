@@ -62,7 +62,7 @@ Shader "Custom/PortalShader"
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-                o.viewDir = normalize(o.worldPos - _WorldSpaceCameraPos) * _DepthFactor;
+                o.viewDir = normalize(_WorldSpaceCameraPos - o.worldPos) * _DepthFactor;
                 o.normalDir = UnityObjectToWorldNormal(v.normal);
                 o.uv = v.uv;
                 return o;
@@ -75,9 +75,9 @@ Shader "Custom/PortalShader"
                 float2 distortion = (noiseOffset - 0.5) * _NoiseStrength;
                 float3 dir = normalize(i.viewDir + float3(distortion, 0));
                 
-                // Correct the direction for full 360° mapping
-                float3 correctedDir = normalize(reflect(-i.viewDir, i.normalDir));
-                float2 sphericalUV = float2(0.5 + atan2(correctedDir.z, correctedDir.x) / -(2 * 3.14159), 0.5 - asin(correctedDir.y) / 3.14159);
+                // Correct the direction for full 360° mapping (fix inversion issue)
+                float3 correctedDir = normalize(i.viewDir);
+                float2 sphericalUV = float2(0.5 + atan2(-correctedDir.z, -correctedDir.x) / (2 * 3.14159), 0.5 - asin(correctedDir.y) / 3.14159);
                 fixed4 col = tex2D(_MainTex, sphericalUV) * _ColorTint;
                 
                 // Portal mask effect with edge softness
