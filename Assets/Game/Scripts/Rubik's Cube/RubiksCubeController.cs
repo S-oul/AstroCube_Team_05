@@ -80,6 +80,7 @@ public class RubiksCubeController : MonoBehaviour
             }
 
             _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
+            EventManager.TriggerCubeRotated();
         }
     }
     public void ActionRotateCube(Vector2 direction)
@@ -104,12 +105,8 @@ public class RubiksCubeController : MonoBehaviour
             }
 
             _overlayTransform.transform.rotation = targetRotation;
-
-            
             
             _isCameraRotating = false;
-            _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform,_selectedSlice),ActualFace.transform, clockwise, movementSpeed,_selectedSlice);
-            EventManager.TriggerCubeRotated();
         }
     }
 

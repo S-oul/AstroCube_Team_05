@@ -46,7 +46,7 @@ public class InputHandler : MonoBehaviour
     {
         if (callbackContext.performed)
         {
-            EventManager.TriggerReset();
+            EventManager.Instance.TriggerReset();
         }
     }
     public void OnInteract(InputAction.CallbackContext callbackContext)
