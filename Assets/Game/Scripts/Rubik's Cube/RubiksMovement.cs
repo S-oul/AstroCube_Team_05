@@ -72,7 +72,7 @@ public class RubiksMovement : MonoBehaviour
             }
             yield return null;
         }
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(time+.05f);
         _isReversing = false;
     }
     void RotateAxis(RubiksMove move, float duration = 0.5f)
