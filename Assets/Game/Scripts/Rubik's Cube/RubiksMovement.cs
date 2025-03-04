@@ -9,9 +9,9 @@ public class RubiksMovement : MonoBehaviour
 
     [SerializeField] Transform middle;
     [SerializeField] List<Transform> Axis = new List<Transform>();
-    List<Transform> allBlocks = new List<Transform>();
+    List<Transform> _allBlocks = new List<Transform>();
 
-    public bool doScramble = true;
+    [SerializeField] bool _doScramble = true;
 
 
     private bool _isRotating = false;
@@ -19,9 +19,16 @@ public class RubiksMovement : MonoBehaviour
     private bool _isReversing = false;
     List<RubiksMove> _moves = new List<RubiksMove>();
 
+    [SerializeField] bool _isLockXAxis;
+    [SerializeField] bool _isLockYAxis;
+    [SerializeField] bool _isLockZAxis;
 
     #region Accessor
+
     public bool IsRotating { get => _isRotating;}
+    public bool IsLockXAxis { get => _isLockXAxis;}
+    public bool IsLockYAxis { get => _isLockYAxis; }
+    public bool IsLockZAxis { get => _isLockZAxis;}
 
     #endregion
 
@@ -31,9 +38,9 @@ public class RubiksMovement : MonoBehaviour
 
         foreach (Transform t in transform.parent)
         {
-            if (t.tag == "Movable") allBlocks.Add(t);
+            if (t.tag == "Movable") _allBlocks.Add(t);
         }
-        if (doScramble) StartCoroutine(Scramble());
+        if (_doScramble) StartCoroutine(Scramble());
 
     }
     void OnDisable()
@@ -42,7 +49,7 @@ public class RubiksMovement : MonoBehaviour
     }
     IEnumerator Scramble()
     {
-        while (doScramble)
+        while (_doScramble)
         {
             if (!_isRotating)
             {
@@ -54,7 +61,7 @@ public class RubiksMovement : MonoBehaviour
     }
     void ReverseMoves(float timeToReset)
     {
-        doScramble = false;
+        _doScramble = false;
         StartCoroutine(ReverseAllMoves(timeToReset));
     }
     IEnumerator ReverseAllMoves(float time)
@@ -142,7 +149,7 @@ public class RubiksMovement : MonoBehaviour
         Vector3 localRefPos = selectedCube.transform.localPosition;
 
         List<int> blockIndexs = new List<int>();
-        foreach (var block in allBlocks)
+        foreach (var block in _allBlocks)
         {
             Vector3 localBlockPos = block.transform.localPosition;
 
@@ -160,7 +167,7 @@ public class RubiksMovement : MonoBehaviour
                 if (Mathf.Abs(blockAxisValue - refAxisValue) < 0.5f)
                 {
                     block.transform.SetParent(axis, true);
-                    blockIndexs.Add(allBlocks.IndexOf(block));
+                    blockIndexs.Add(_allBlocks.IndexOf(block));
                 }
             }
             else
@@ -172,7 +179,7 @@ public class RubiksMovement : MonoBehaviour
                 if (isOnSamePlane)
                 {
                     block.transform.SetParent(axis, true);
-                    blockIndexs.Add(allBlocks.IndexOf(block));
+                    blockIndexs.Add(_allBlocks.IndexOf(block));
                 }
             }
         }
@@ -180,9 +187,9 @@ public class RubiksMovement : MonoBehaviour
 
         foreach (int i in blockIndexs)
         {
-            if (allBlocks[i].gameObject.name != "Middle")
+            if (_allBlocks[i].gameObject.name != "Middle")
             {
-                var tiles = allBlocks[i].transform.GetComponentsInChildren<Tile>().ToList();
+                var tiles = _allBlocks[i].transform.GetComponentsInChildren<Tile>().ToList();
                 foreach (Tile tile in tiles)
                 {
                     if (!tile.IsOccupied)
@@ -190,19 +197,19 @@ public class RubiksMovement : MonoBehaviour
                     switch (sliceAxis)
                     {
                         case SliceAxis.X:
-                            if (transform.localPosition.z - allBlocks[i].transform.localPosition.z < 0 && clockWise
-                                || transform.localPosition.z - allBlocks[i].transform.localPosition.z > 0 && !clockWise)
-                                tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - allBlocks[i].transform.localPosition.z).normalized);
+                            if (transform.localPosition.z - _allBlocks[i].transform.localPosition.z < 0 && clockWise
+                                || transform.localPosition.z - _allBlocks[i].transform.localPosition.z > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - _allBlocks[i].transform.localPosition.z).normalized);
                             break;
                         case SliceAxis.Y:
-                            if (transform.localPosition.y - allBlocks[i].transform.localPosition.y < 0 && clockWise
-                                || transform.localPosition.y - allBlocks[i].transform.localPosition.y > 0 && !clockWise)
-                                tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - allBlocks[i].transform.localPosition.y, 0).normalized);
+                            if (transform.localPosition.y - _allBlocks[i].transform.localPosition.y < 0 && clockWise
+                                || transform.localPosition.y - _allBlocks[i].transform.localPosition.y > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - _allBlocks[i].transform.localPosition.y, 0).normalized);
                             break;
                         case SliceAxis.Z:
-                            if (transform.localPosition.x - allBlocks[i].transform.localPosition.x < 0 && clockWise
-                                || transform.localPosition.x - allBlocks[i].transform.localPosition.x > 0 && !clockWise)
-                                tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - allBlocks[i].transform.localPosition.x, 0, 0).normalized);
+                            if (transform.localPosition.x - _allBlocks[i].transform.localPosition.x < 0 && clockWise
+                                || transform.localPosition.x - _allBlocks[i].transform.localPosition.x > 0 && !clockWise)
+                                tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - _allBlocks[i].transform.localPosition.x, 0, 0).normalized);
                             break;
                     }
                 }
@@ -226,12 +233,12 @@ public class RubiksMovement : MonoBehaviour
 
         foreach (int i in blockIndexs)
         {
-            Vector3 pos = allBlocks[i].transform.localPosition;
+            Vector3 pos = _allBlocks[i].transform.localPosition;
             pos.x = Mathf.Round(pos.x);
             pos.y = Mathf.Round(pos.y);
             pos.z = Mathf.Round(pos.z);
-            allBlocks[i].transform.localPosition = pos;
-            allBlocks[i].transform.SetParent(this.transform.parent, true);
+            _allBlocks[i].transform.localPosition = pos;
+            _allBlocks[i].transform.SetParent(this.transform.parent, true);
 
         }
         _isRotating = false;
@@ -250,12 +257,12 @@ public class RubiksMovement : MonoBehaviour
     }
     RubiksMove CreateRandomMove()
     {
-        int ran = Random.Range(0, allBlocks.Count - 1);
+        int ran = Random.Range(0, _allBlocks.Count - 1);
         RubiksMove move = new()
         {
-            cube = allBlocks[ran],
+            cube = _allBlocks[ran],
             orientation = (SliceAxis)(ran % 3),
-            axis = GetAxisFromCube(allBlocks[ran], (SliceAxis)(ran % 3)),
+            axis = GetAxisFromCube(_allBlocks[ran], (SliceAxis)(ran % 3)),
             clockWise = Random.Range(0, 2) % 2 == 0
         };
 
@@ -277,7 +284,7 @@ public class RubiksMovement : MonoBehaviour
                                       Vector3.up;
 
         List<Transform> result = new List<Transform>();
-        foreach (var block in allBlocks)
+        foreach (var block in _allBlocks)
         {
 
             Vector3 localBlockPos = block.localPosition;

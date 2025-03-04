@@ -63,6 +63,19 @@ public class RubiksCubeController : MonoBehaviour
     public void ActionSwitchLineCols()
     {
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + 1) % 3);
+        switch (_selectedSlice)
+        {
+            case SliceAxis.X:
+                if (_controlledScript.IsLockXAxis) _selectedSlice++;
+                break;
+            case SliceAxis.Y:
+                if (_controlledScript.IsLockYAxis) _selectedSlice++;
+                break;
+            case SliceAxis.Z:
+                if (_controlledScript.IsLockZAxis) _selectedSlice++;
+                break;
+        }
+        _selectedSlice = (SliceAxis)((int)_selectedSlice % 3);
         SetActualCube(ActualFace.transform);
     }
     public void ActionMakeTurn(bool clockwise)
