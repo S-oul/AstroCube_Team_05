@@ -52,26 +52,27 @@ public class RubiksMovement : MonoBehaviour
             yield return null;
         }
     }
-    void ReverseMoves()
+    void ReverseMoves(float timeToReset)
     {
         doScramble = false;
-        StartCoroutine(ReverseAllMoves());
+        StartCoroutine(ReverseAllMoves(timeToReset));
     }
-    IEnumerator ReverseAllMoves()
+    IEnumerator ReverseAllMoves(float time)
     {
-        yield return new WaitForSeconds(.5f);
+        while(_isRotating) yield return null;
+        time /= _moves.Count();
         _isReversing = true;
         while (_moves.Count > 0)
         {
             if (!_isRotating)
             {
                 RubiksMove m = _moves[_moves.Count - 1];
-                StartCoroutine(RotateAxisCoroutine(m.axis, m.cube, !m.clockWise, .1f, m.orientation));
+                StartCoroutine(RotateAxisCoroutine(m.axis, m.cube, !m.clockWise, time, m.orientation));
                 _moves.RemoveAt(_moves.Count - 1);
             }
             yield return null;
         }
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(time+.05f);
         _isReversing = false;
     }
     void RotateAxis(RubiksMove move, float duration = 0.5f)

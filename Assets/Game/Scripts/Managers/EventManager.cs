@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
+    [SerializeField] float _timeToReset = 2;
     public static EventManager Instance;
-
     private void Awake()
     {
         if(Instance) Destroy(this);
@@ -28,7 +28,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnButtonReleased;
 
     //Player Events
-    public static event Action OnPlayerReset;
+    public static event Action<float> OnPlayerReset;
 
     public static void TriggerPlayerWin()
     {
@@ -50,9 +50,9 @@ public class EventManager : MonoBehaviour
         OnButtonReleased?.Invoke();
     }
 
-    public static void TriggerReset()
+    public void TriggerReset()
     {
-        OnPlayerReset?.Invoke();
+        OnPlayerReset?.Invoke(_timeToReset);
     }
 
     public static void TriggerSceneStart()

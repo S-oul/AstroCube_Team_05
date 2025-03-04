@@ -22,7 +22,7 @@ public class Reseter : MonoBehaviour
     }
 
     [Button]
-    void OnReset()
+    void OnReset(float time)
     {
         if (_rb)
         {
@@ -30,9 +30,8 @@ public class Reseter : MonoBehaviour
             _rb.angularVelocity = Vector3.zero;
         }
         _poseOnReset = new Pose();
-        print(name);
         transform.GetPositionAndRotation(out _poseOnReset.position, out _poseOnReset.rotation);
-        StartCoroutine(Reset(1));
+        StartCoroutine(Reset(time));
     }
 
     IEnumerator Reset(float time)
