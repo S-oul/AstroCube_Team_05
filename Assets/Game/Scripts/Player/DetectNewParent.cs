@@ -8,6 +8,7 @@ public class DetectNewParent : MonoBehaviour
     [SerializeField] LayerMask _detectableLayer;
     Vector3 currentRotationDir;
 
+    #region  raycast (old) 
     //private void Update()
     //{
     //    RaycastHit _raycastInfo;
@@ -26,6 +27,7 @@ public class DetectNewParent : MonoBehaviour
     //        transform.parent.SetParent(_raycastInfo.collider.gameObject.transform);
     //    }
     //}
+    #endregion
 
     private void Start()
     {
