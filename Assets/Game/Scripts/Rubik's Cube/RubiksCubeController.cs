@@ -11,7 +11,7 @@ public class RubiksCubeController : MonoBehaviour
     [SerializeField] GameObject controlledCube;
     [SerializeField] float movementSpeed = 0.2f;
     RubiksMovement _controlledScript;
-   
+
 
 
     [SerializeField] Transform _overlayTransform;
@@ -62,20 +62,31 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionSwitchLineCols()
     {
-        _selectedSlice = (SliceAxis)(((int)_selectedSlice + 1) % 3);
+        _selectedSlice = (SliceAxis)((int)(_selectedSlice+1) % 3);
         switch (_selectedSlice)
         {
             case SliceAxis.X:
-                if (_controlledScript.IsLockXAxis) _selectedSlice++;
+                if (_controlledScript.IsLockXAxis)
+                {
+                    ActionSwitchLineCols();
+                    return;
+                }
                 break;
             case SliceAxis.Y:
-                if (_controlledScript.IsLockYAxis) _selectedSlice++;
+                if (_controlledScript.IsLockYAxis)
+                {
+                    ActionSwitchLineCols();
+                    return;
+                }
                 break;
             case SliceAxis.Z:
-                if (_controlledScript.IsLockZAxis) _selectedSlice++;
+                if (_controlledScript.IsLockZAxis)
+                {
+                    ActionSwitchLineCols();
+                    return;
+                }
                 break;
         }
-        _selectedSlice = (SliceAxis)((int)_selectedSlice % 3);
         SetActualCube(ActualFace.transform);
     }
     public void ActionMakeTurn(bool clockwise)
@@ -104,11 +115,11 @@ public class RubiksCubeController : MonoBehaviour
     {
         if (!_isCameraRotating)
         {
-            
+
             _isCameraRotating = true;
             float elapsedTime = 0;
             Quaternion startRotation = _overlayTransform.rotation;
-            Quaternion targetRotation = startRotation * Quaternion.AngleAxis(-90, new Vector2(direction.y,direction.x   ));
+            Quaternion targetRotation = startRotation * Quaternion.AngleAxis(-90, new Vector2(direction.y, direction.x));
 
             while (elapsedTime < _cameraSpeed)
             {
@@ -118,7 +129,7 @@ public class RubiksCubeController : MonoBehaviour
             }
 
             _overlayTransform.transform.rotation = targetRotation;
-            
+
             _isCameraRotating = false;
         }
     }
