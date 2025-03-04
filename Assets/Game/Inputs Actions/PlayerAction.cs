@@ -24,7 +24,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     ""name"": ""PlayerAction"",
     ""maps"": [
         {
-            ""name"": ""NicoScheme"",
+            ""name"": ""MainScheme"",
             ""id"": ""3220ae63-91c2-431b-8878-6f326ca05dad"",
             ""actions"": [
                 {
@@ -71,6 +71,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveOverlayCube"",
+                    ""type"": ""Value"",
+                    ""id"": ""2eb49cb9-f56f-4a6b-810e-4646888fd554"",
+                    ""expectedControlType"": ""Dpad"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,61 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""25cde475-b607-4447-becc-6c5210bb0d4f"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveOverlayCube"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""1287c106-ee38-457c-83f5-9784436ce377"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""MoveOverlayCube"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""82cd4a22-4c09-4825-a5cc-65862e5a8fc4"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""MoveOverlayCube"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""02215e61-805f-47e9-ab66-30ec0a03ed7d"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""MoveOverlayCube"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""5d614225-a126-483c-a3a0-a808998838d4"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""MoveOverlayCube"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -261,18 +325,19 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // NicoScheme
-        m_NicoScheme = asset.FindActionMap("NicoScheme", throwIfNotFound: true);
-        m_NicoScheme_ClockWise = m_NicoScheme.FindAction("ClockWise", throwIfNotFound: true);
-        m_NicoScheme_CounterClockWise = m_NicoScheme.FindAction("CounterClockWise", throwIfNotFound: true);
-        m_NicoScheme_SwitchColumnsLine = m_NicoScheme.FindAction("SwitchColumnsLine", throwIfNotFound: true);
-        m_NicoScheme_ResetRoom = m_NicoScheme.FindAction("ResetRoom", throwIfNotFound: true);
-        m_NicoScheme_Interact = m_NicoScheme.FindAction("Interact", throwIfNotFound: true);
+        // MainScheme
+        m_MainScheme = asset.FindActionMap("MainScheme", throwIfNotFound: true);
+        m_MainScheme_ClockWise = m_MainScheme.FindAction("ClockWise", throwIfNotFound: true);
+        m_MainScheme_CounterClockWise = m_MainScheme.FindAction("CounterClockWise", throwIfNotFound: true);
+        m_MainScheme_SwitchColumnsLine = m_MainScheme.FindAction("SwitchColumnsLine", throwIfNotFound: true);
+        m_MainScheme_ResetRoom = m_MainScheme.FindAction("ResetRoom", throwIfNotFound: true);
+        m_MainScheme_Interact = m_MainScheme.FindAction("Interact", throwIfNotFound: true);
+        m_MainScheme_MoveOverlayCube = m_MainScheme.FindAction("MoveOverlayCube", throwIfNotFound: true);
     }
 
     ~@PlayerAction()
     {
-        UnityEngine.Debug.Assert(!m_NicoScheme.enabled, "This will cause a leak and performance issues, PlayerAction.NicoScheme.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MainScheme.enabled, "This will cause a leak and performance issues, PlayerAction.MainScheme.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -331,32 +396,34 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // NicoScheme
-    private readonly InputActionMap m_NicoScheme;
-    private List<INicoSchemeActions> m_NicoSchemeActionsCallbackInterfaces = new List<INicoSchemeActions>();
-    private readonly InputAction m_NicoScheme_ClockWise;
-    private readonly InputAction m_NicoScheme_CounterClockWise;
-    private readonly InputAction m_NicoScheme_SwitchColumnsLine;
-    private readonly InputAction m_NicoScheme_ResetRoom;
-    private readonly InputAction m_NicoScheme_Interact;
-    public struct NicoSchemeActions
+    // MainScheme
+    private readonly InputActionMap m_MainScheme;
+    private List<IMainSchemeActions> m_MainSchemeActionsCallbackInterfaces = new List<IMainSchemeActions>();
+    private readonly InputAction m_MainScheme_ClockWise;
+    private readonly InputAction m_MainScheme_CounterClockWise;
+    private readonly InputAction m_MainScheme_SwitchColumnsLine;
+    private readonly InputAction m_MainScheme_ResetRoom;
+    private readonly InputAction m_MainScheme_Interact;
+    private readonly InputAction m_MainScheme_MoveOverlayCube;
+    public struct MainSchemeActions
     {
         private @PlayerAction m_Wrapper;
-        public NicoSchemeActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ClockWise => m_Wrapper.m_NicoScheme_ClockWise;
-        public InputAction @CounterClockWise => m_Wrapper.m_NicoScheme_CounterClockWise;
-        public InputAction @SwitchColumnsLine => m_Wrapper.m_NicoScheme_SwitchColumnsLine;
-        public InputAction @ResetRoom => m_Wrapper.m_NicoScheme_ResetRoom;
-        public InputAction @Interact => m_Wrapper.m_NicoScheme_Interact;
-        public InputActionMap Get() { return m_Wrapper.m_NicoScheme; }
+        public MainSchemeActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ClockWise => m_Wrapper.m_MainScheme_ClockWise;
+        public InputAction @CounterClockWise => m_Wrapper.m_MainScheme_CounterClockWise;
+        public InputAction @SwitchColumnsLine => m_Wrapper.m_MainScheme_SwitchColumnsLine;
+        public InputAction @ResetRoom => m_Wrapper.m_MainScheme_ResetRoom;
+        public InputAction @Interact => m_Wrapper.m_MainScheme_Interact;
+        public InputAction @MoveOverlayCube => m_Wrapper.m_MainScheme_MoveOverlayCube;
+        public InputActionMap Get() { return m_Wrapper.m_MainScheme; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(NicoSchemeActions set) { return set.Get(); }
-        public void AddCallbacks(INicoSchemeActions instance)
+        public static implicit operator InputActionMap(MainSchemeActions set) { return set.Get(); }
+        public void AddCallbacks(IMainSchemeActions instance)
         {
-            if (instance == null || m_Wrapper.m_NicoSchemeActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_NicoSchemeActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Add(instance);
             @ClockWise.started += instance.OnClockWise;
             @ClockWise.performed += instance.OnClockWise;
             @ClockWise.canceled += instance.OnClockWise;
@@ -372,9 +439,12 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @MoveOverlayCube.started += instance.OnMoveOverlayCube;
+            @MoveOverlayCube.performed += instance.OnMoveOverlayCube;
+            @MoveOverlayCube.canceled += instance.OnMoveOverlayCube;
         }
 
-        private void UnregisterCallbacks(INicoSchemeActions instance)
+        private void UnregisterCallbacks(IMainSchemeActions instance)
         {
             @ClockWise.started -= instance.OnClockWise;
             @ClockWise.performed -= instance.OnClockWise;
@@ -391,23 +461,26 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @MoveOverlayCube.started -= instance.OnMoveOverlayCube;
+            @MoveOverlayCube.performed -= instance.OnMoveOverlayCube;
+            @MoveOverlayCube.canceled -= instance.OnMoveOverlayCube;
         }
 
-        public void RemoveCallbacks(INicoSchemeActions instance)
+        public void RemoveCallbacks(IMainSchemeActions instance)
         {
-            if (m_Wrapper.m_NicoSchemeActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(INicoSchemeActions instance)
+        public void SetCallbacks(IMainSchemeActions instance)
         {
-            foreach (var item in m_Wrapper.m_NicoSchemeActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_MainSchemeActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_NicoSchemeActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public NicoSchemeActions @NicoScheme => new NicoSchemeActions(this);
+    public MainSchemeActions @MainScheme => new MainSchemeActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -453,12 +526,13 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_XRSchemeIndex];
         }
     }
-    public interface INicoSchemeActions
+    public interface IMainSchemeActions
     {
         void OnClockWise(InputAction.CallbackContext context);
         void OnCounterClockWise(InputAction.CallbackContext context);
         void OnSwitchColumnsLine(InputAction.CallbackContext context);
         void OnResetRoom(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnMoveOverlayCube(InputAction.CallbackContext context);
     }
 }
