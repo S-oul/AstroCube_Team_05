@@ -36,8 +36,7 @@ public class DetectNewParent : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //Debug.Log("collided with " + hit.gameObject.name);
-        //transform.up = currentRotationDir;
+        if (!this.enabled) return;
 
         var h = hit.collider.transform;
         var dif = transform.up - (-h.right);
@@ -45,7 +44,6 @@ public class DetectNewParent : MonoBehaviour
         {
             Debug.Log(transform.up + " is not " + -h.right);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -h.right) * transform.rotation, 1f);
-            //transform.rotation = Quaternion.FromToRotation(transform.up, -h.right);
             Debug.Log("new up is: " + transform.up);
         }
         transform.SetParent(hit.collider.gameObject.transform);

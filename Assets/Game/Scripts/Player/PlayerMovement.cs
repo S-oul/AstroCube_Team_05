@@ -54,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        GetComponent<DetectNewParent>().enabled = _enableGravityRotation;
+        
         _defaultCameraHeight = _camera.transform.localPosition.y;
         _defaultControllerHeight = _controller.height;
         _defaultControllerCenter = _controller.center;
@@ -130,15 +132,14 @@ public class PlayerMovement : MonoBehaviour
         // gravity rotation
         if (_enableGravityRotation == false && transform.parent != null)
         {
-            DetectNewParent detectNewParent = GetComponentInChildren<DetectNewParent>();
-            detectNewParent.gameObject.SetActive(false);
+            GetComponent<DetectNewParent>().enabled = false;
             transform.SetParent(null);
         }        
         
         if (_enableGravityRotation == true && transform.parent == null)
         {
             Transform parentChangerChild = transform.GetChild(3);
-            parentChangerChild.gameObject.SetActive(true);
+            GetComponent<DetectNewParent>().enabled = true;
         }
     }
 
