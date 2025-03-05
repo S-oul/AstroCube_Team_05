@@ -146,7 +146,7 @@ public class RubiksMovement : MonoBehaviour
 
 
         Vector3 localAxisPos = axis.localPosition;
-        Vector3 localRefPos = selectedCube.transform.localPosition;
+        Vector3 localRefPos = selectedCube.localPosition;
 
         List<int> blockIndexs = new List<int>();
         foreach (var block in _allBlocks)
@@ -272,12 +272,7 @@ public class RubiksMovement : MonoBehaviour
 
     public List<Transform> GetCubesFromFace(Transform cube, SliceAxis sliceAxis)
     {
-        bool isMiddle = false;
-
-        if (cube.name.Contains("Face"))
-        {
-            isMiddle = true;
-        }
+        bool isMiddle = cube.name.Contains("Face");
 
         Vector3 rotationAxis = sliceAxis == SliceAxis.X ? Vector3.right :
                                       sliceAxis == SliceAxis.Y ? Vector3.forward :
@@ -369,7 +364,7 @@ namespace RubiksStatic
 
         public void Print()
         {
-            Debug.Log("Axis : " + axis + " Orient : " + orientation + " ClockWise : " + clockWise);
+            Debug.Log("Axis : " + axis + " cube : " + cube + " Orient : " + orientation + " ClockWise : " + clockWise);
         }
     }
     public enum SliceAxis { X, Y, Z, Useless }
