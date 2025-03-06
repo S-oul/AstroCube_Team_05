@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class RubiksMovement : MonoBehaviour
 {
 
     [SerializeField] Transform middle;
+    [SerializeField] Transform middleGameObject;
+
     [SerializeField] List<Transform> Axis = new List<Transform>();
     List<Transform> _allBlocks = new List<Transform>();
 
@@ -115,26 +118,8 @@ public class RubiksMovement : MonoBehaviour
         if (_isRotating) yield break;
         _isRotating = true;
 
-        bool isMiddle = axis == middle;
 
         Vector3 rotationAxis = Vector3.zero;
-
-        if (isMiddle)
-        {
-            switch (sliceAxis)
-            {
-                case SliceAxis.X:
-                    rotationAxis = Vector3.right;
-                    break;
-                case SliceAxis.Y:
-                    rotationAxis = Vector3.up;
-                    break;
-                case SliceAxis.Z:
-                    rotationAxis = Vector3.forward;
-                    break;
-            }
-        }
-        else
         {
             if (Mathf.Abs(axis.localPosition.x) > 0.5f)
                 rotationAxis = Vector3.right;
@@ -144,6 +129,7 @@ public class RubiksMovement : MonoBehaviour
                 rotationAxis = Vector3.forward;
         }
 
+        bool isMiddle = true;
 
         Vector3 localAxisPos = axis.localPosition;
         Vector3 localRefPos = selectedCube.localPosition;
@@ -153,36 +139,20 @@ public class RubiksMovement : MonoBehaviour
         {
             Vector3 localBlockPos = block.transform.localPosition;
 
-            if (isMiddle)
+            bool isOnSamePlane =
+                          (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.5f)
+                       || (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.5f)
+                       || (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.5f);
+            
+            if (isOnSamePlane)
             {
-                float blockAxisValue = sliceAxis == SliceAxis.X ? localBlockPos.x :
-                                      sliceAxis == SliceAxis.Y ? localBlockPos.y :
-                                      localBlockPos.z; //si X use pos.x else si Y use pos.y else use pos.z
-
-
-                float refAxisValue = sliceAxis == SliceAxis.X ? localRefPos.x :
-                         sliceAxis == SliceAxis.Y ? localRefPos.y :
-                         localRefPos.z;
-
-                if (Mathf.Abs(blockAxisValue - refAxisValue) < 0.5f)
-                {
-                    block.transform.SetParent(axis, true);
-                    blockIndexs.Add(_allBlocks.IndexOf(block));
-                }
-            }
-            else
-            {
-                bool isOnSamePlane =
-                              (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.5f)
-                           || (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.5f)
-                           || (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.5f);
-                if (isOnSamePlane)
-                {
-                    block.transform.SetParent(axis, true);
-                    blockIndexs.Add(_allBlocks.IndexOf(block));
-                }
+                if (block.name == "Corner") isMiddle = false;
+                block.transform.SetParent(axis, true);
+                blockIndexs.Add(_allBlocks.IndexOf(block));
             }
         }
+
+        if(isMiddle) middleGameObject.parent = axis;
 
 
         foreach (int i in blockIndexs)
@@ -241,6 +211,13 @@ public class RubiksMovement : MonoBehaviour
             _allBlocks[i].transform.SetParent(this.transform.parent, true);
 
         }
+
+
+        if (isMiddle)
+        {
+            middleGameObject.parent = transform.parent;
+        }
+
         _isRotating = false;
 
         if (!_isReversing)
