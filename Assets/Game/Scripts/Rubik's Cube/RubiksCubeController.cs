@@ -9,27 +9,18 @@ public class RubiksCubeController : MonoBehaviour
 {
 
     [SerializeField] GameObject _controlledCube;
-    [SerializeField] float movementSpeed = 0.2f;
     RubiksMovement _controlledScript;
 
-
-
     [SerializeField] Transform _overlayTransform;
-    [SerializeField] float _cameraSpeed = 0.2f;
     bool _isCameraRotating = false;
 
-
     [SerializeField] List<GameObject> ReplicatedCube = new List<GameObject>();
-
+    [SerializeField] SelectionCube ActualFace;
 
     List<RubiksMovement> _replicatedScript = new List<RubiksMovement>();
 
-
-
-    [SerializeField] SelectionCube ActualFace;
-
-
     SliceAxis _selectedSlice = 0;
+    private GameSettings _gameSettings;
 
 
     public LayerMask _detectableLayer;
@@ -40,6 +31,7 @@ public class RubiksCubeController : MonoBehaviour
         {
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
+        _gameSettings = GameManager.Instance.Settings;
     }
 
 
@@ -124,10 +116,10 @@ public class RubiksCubeController : MonoBehaviour
             foreach (RubiksMovement cube in _replicatedScript)
             {
                 Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
-                cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), equivalence, clockwise, movementSpeed, _selectedSlice);
+                cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), equivalence, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
             }
 
-            _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
+            _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
             EventManager.TriggerCubeRotated();
         }
     }
@@ -135,6 +127,7 @@ public class RubiksCubeController : MonoBehaviour
     {
         StartCoroutine(RotateCube(direction));
     }
+
     IEnumerator RotateCube(Vector2 direction)
     {
         if (!_isCameraRotating)
@@ -145,10 +138,10 @@ public class RubiksCubeController : MonoBehaviour
             Quaternion startRotation = _overlayTransform.rotation;
             Quaternion targetRotation = startRotation * Quaternion.AngleAxis(-90, new Vector2(direction.y, direction.x));
 
-            while (elapsedTime < _cameraSpeed)
+            while (elapsedTime < _gameSettings.UiRubikscCubeRotationDuration)
             {
                 elapsedTime += Time.deltaTime;
-                _overlayTransform.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / _cameraSpeed);
+                _overlayTransform.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / _gameSettings.UiRubikscCubeRotationDuration);
                 yield return null;
             }
 
