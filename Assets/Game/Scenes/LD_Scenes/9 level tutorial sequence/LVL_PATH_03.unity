@@ -524,7 +524,7 @@ Transform:
   m_GameObject: {fileID: 531755603}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.69, y: -19.88, z: -0.0010000002}
+  m_LocalPosition: {x: 9.69, y: -50.87, z: -0.0010000002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1146,6 +1146,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 879239077}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &951510929 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5572829294728235433, guid: c82e7d49d42c10546a5b4c163d7eb160,
+    type: 3}
+  m_PrefabInstance: {fileID: 8722173051808504300}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &995929103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1468,6 +1474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a229c1821968b314b957e56aae85c99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerHold: {fileID: 0}
 --- !u!114 &1371031933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1482,7 +1489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: b3efa8228d2448a44bf398e0418a5a83,
     type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -1528,10 +1535,10 @@ MonoBehaviour:
     m_ActionName: NicoScheme/CounterClockWise[/XInputControllerWindows/leftShoulder]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1371031934}
-        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
-        m_MethodName: SwitchLineCols
-        m_Mode: 1
+      - m_Target: {fileID: 1371031932}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnSwitchColumnsLine
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1542,9 +1549,33 @@ MonoBehaviour:
         m_CallState: 1
     m_ActionId: bfbdc334-90fb-4ae4-baf7-bc9711bf7248
     m_ActionName: NicoScheme/SwitchColumns/Line[/XInputControllerWindows/leftShoulder,/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1371031932}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnResetRoom
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 78276d6b-79fd-420a-8476-517d456cada6
+    m_ActionName: MainScheme/ResetRoom[/Keyboard/v]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a04cb8c7-d18f-472d-8156-0fb92a8155a2
+    m_ActionName: MainScheme/Interact[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2eb49cb9-f56f-4a6b-810e-4646888fd554
+    m_ActionName: MainScheme/MoveOverlayCube
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: NicoScheme
+  m_DefaultActionMap: MainScheme
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1371031934
@@ -1559,10 +1590,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ControlledCube: {fileID: 2095322877076973373}
-  _controlledScript: {fileID: 0}
-  ReplicatedCube: []
+  _controlledCube: {fileID: 951510929}
   movementSpeed: 0.2
+  _overlayTransform: {fileID: 0}
+  _cameraSpeed: 0.2
+  ReplicatedCube: []
   ActualFace: {fileID: 0}
   _detectableLayer:
     serializedVersion: 2
@@ -3239,12 +3271,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2959121875425905129, guid: 0ff4bccfa35ae0f41824aea27d5d3e2b,
     type: 3}
   m_PrefabInstance: {fileID: 2122498007}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2095322877076973373 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5572829294728235433, guid: c82e7d49d42c10546a5b4c163d7eb160,
-    type: 3}
-  m_PrefabInstance: {fileID: 8722173051808504300}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6036601283342267023 stripped
 Transform:
@@ -5911,6 +5937,13 @@ PrefabInstance:
     - {fileID: 6290343711901177573, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
     - {fileID: 150925349970914285, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
     - {fileID: 8170185179035729974, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 7391251291954372271, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 2819706249490230084, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 2315381314094729354, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 5684816713183791680, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 132469730562986108, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 2939279014550795062, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 6901372977208175757, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8558045369071667964, guid: c82e7d49d42c10546a5b4c163d7eb160,
         type: 3}
