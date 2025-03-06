@@ -62,8 +62,6 @@ public class PlayerMovement : MonoBehaviour
         xInput = Input.GetAxis("Horizontal");
         zInput = Input.GetAxis("Vertical");
 
-        Debug.Log(xInput + " " + zInput);
-        Debug.Log(_currentMoveSpeed);
         if (_canJump) jumpInput = Input.GetButtonDown("Jump");
         if (_canCrouch) crouchInput = Input.GetKey(KeyCode.LeftShift);
 
