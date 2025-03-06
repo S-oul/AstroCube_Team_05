@@ -17,7 +17,7 @@ public class MouseCamControl : MonoBehaviour
 
     Transform _oldTile;
 
-    float _xRotation;
+    float _yRotation;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +35,27 @@ public class MouseCamControl : MonoBehaviour
         moveX += Input.GetAxis("Joystick X") * _joyStCamControlSpeed * Time.deltaTime;
         moveY += Input.GetAxis("Joystick Y") * _joyStCamControlSpeed * Time.deltaTime;
 
-        _xRotation -= moveY;
-        _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
+        _yRotation -= moveY;
+        _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
 
+        transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * moveX);
+
+
+        Vector3 forward = _playerTransform.forward;
+        forward.y = 0; // Ignore vertical tilt if needed
+        float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
+        float aaaaa = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
+
+         print(aaaaa);
+        if (aaaaa >= 315 || aaaaa < 135)
+        {
+            rubiksCubeController.CameraPlayerReversed = false;
+        }
+        else
+        {
+            rubiksCubeController.CameraPlayerReversed = true;
+        }
         //_cameraOverlay.Rotate(Vector3.up * moveX);
         //_cameraOverlay.Rotate(_cameraOverlay.forward * moveY);
 

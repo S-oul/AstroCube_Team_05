@@ -13,6 +13,7 @@ public class RubiksCubeController : MonoBehaviour
     RubiksMovement _controlledScript;
 
 
+    bool _cameraPlayerReversed = false;
 
     [SerializeField] Transform _overlayTransform;
     [SerializeField] float _cameraSpeed = 0.2f;
@@ -31,7 +32,14 @@ public class RubiksCubeController : MonoBehaviour
     SliceAxis _selectedSlice = 0;
 
 
+
     public LayerMask _detectableLayer;
+
+    #region Accesseur
+
+    public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
+
+    #endregion
     private void Awake()
     {
         _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
@@ -104,6 +112,11 @@ public class RubiksCubeController : MonoBehaviour
     {
         if (_controlledScript.IsRotating == false)
         {
+            if (_cameraPlayerReversed)
+            {
+                clockwise = !clockwise;
+            }
+
             ShutDownFace();
 
             if (_controlledScript == null) return;
