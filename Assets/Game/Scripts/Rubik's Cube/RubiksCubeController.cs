@@ -8,7 +8,7 @@ using System.Linq;
 public class RubiksCubeController : MonoBehaviour
 {
 
-    [SerializeField] GameObject controlledCube;
+    [SerializeField] GameObject _controlledCube;
     [SerializeField] float movementSpeed = 0.2f;
     RubiksMovement _controlledScript;
 
@@ -25,7 +25,8 @@ public class RubiksCubeController : MonoBehaviour
     List<RubiksMovement> _replicatedScript = new List<RubiksMovement>();
 
 
-    [SerializeField] Outline ActualFace;
+
+    [SerializeField] SelectionCube ActualFace;
 
 
     SliceAxis _selectedSlice = 0;
@@ -34,12 +35,15 @@ public class RubiksCubeController : MonoBehaviour
     public LayerMask _detectableLayer;
     private void Awake()
     {
-        _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
+        _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
         foreach (GameObject go in ReplicatedCube)
         {
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
     }
+
+
+    /* OLD
     public void SetActualCube(Transform newFace)
     {
         ShutDownFace();
@@ -51,11 +55,30 @@ public class RubiksCubeController : MonoBehaviour
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<Outline>();
 
-        IlluminateFace(_selectedSlice);
+        IlluminateFace(_selectedSlice, SelectionCube.SelectionMode.CUBE);        
 
         ActualFace.OutlineColor = Color.red;
         ActualFace.OutlineWidth = 15;
         ActualFace.enabled = true;
+
+        _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
+    }
+    */
+
+    public void SetActualCube(Transform newFace)
+    {
+        ShutDownFace();
+        if(newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) _controlledCube = newFace.parent.parent.gameObject;
+        else if (newFace.parent.CompareTag("Rubiks")) _controlledCube = newFace.parent.gameObject;
+
+        _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
+        if (_controlledScript == null) return;
+        if (ActualFace) ActualFace.enabled = false;
+        ActualFace = newFace.GetComponent<SelectionCube>();
+
+        IlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS);        
+
+        ActualFace.Select(SelectionCube.SelectionMode.CUBE);
 
         _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
     }
@@ -89,6 +112,7 @@ public class RubiksCubeController : MonoBehaviour
         }
         SetActualCube(ActualFace.transform);
     }
+
     public void ActionMakeTurn(bool clockwise)
     {
         if (_controlledScript.IsRotating == false)
@@ -134,24 +158,50 @@ public class RubiksCubeController : MonoBehaviour
         }
     }
 
+    /* OLD
     void IlluminateFace(SliceAxis sliceAxis)
     {
         Color hey = new Color(1, 0.5f, 0, 1);
-        if (_controlledScript != null)
-            foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
-            {
-                Outline outline = go.GetComponent<Outline>();
-                outline.OutlineColor = hey;
-                outline.OutlineWidth = 10;
-                outline.enabled = true;
-            }
+        if(_controlledScript != null)
+        foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))   
+        {
+            Outline outline = go.GetComponent<Outline>();
+            outline.OutlineColor = hey;
+            outline.OutlineWidth = 10;
+            outline.enabled = true;
+        }
+    */
+
+    void IlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    {
+        if(_controlledScript != null)
+        foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))   
+        {
+            SelectionCube selection = go.GetComponent<SelectionCube>();
+            if (selection == null) continue;
+
+            selection.Select(mode);
+        }
     }
+
+    /* OLD
     void ShutDownFace()
     {
         foreach (Transform go in controlledCube.transform)
         {
             Outline outOutline;
             if (go.TryGetComponent<Outline>(out outOutline)) outOutline.enabled = false;
+        }
+    }
+    */
+
+    void ShutDownFace()
+    {
+        foreach (Transform go in _controlledCube.transform)
+        {
+            SelectionCube selection = go.GetComponent<SelectionCube>();
+            if (selection == null) continue;
+            selection.Unselect();
         }
     }
 
