@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    [SerializeField] float _timeToReset = 2;
-    public static EventManager Instance;
+    public static EventManager Instance => instance;
+    private static EventManager instance;
+
+    private GameSettings _gameSettings;
+
     private void Awake()
     {
-        if(Instance) Destroy(this);
-        else Instance = this;
+        if (instance) Destroy(this);
+        else instance = this;
+
+        _gameSettings = GameManager.Instance.Settings;
     }
 
     //Game Events
@@ -52,7 +57,7 @@ public class EventManager : MonoBehaviour
 
     public void TriggerReset()
     {
-        OnPlayerReset?.Invoke(_timeToReset);
+        OnPlayerReset?.Invoke(_gameSettings.ResetDuration);
     }
 
     public static void TriggerSceneStart()
