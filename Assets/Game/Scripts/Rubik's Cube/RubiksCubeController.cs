@@ -19,7 +19,7 @@ public class RubiksCubeController : MonoBehaviour
 
 
 
-    [SerializeField] Outline ActualFace;
+    [SerializeField] SelectionCube ActualFace;
 
     SliceAxis _selectedSlice = 0;
 
@@ -33,6 +33,9 @@ public class RubiksCubeController : MonoBehaviour
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
     }
+
+
+    /* OLD
     public void SetActualCube(Transform newFace)
     {
         ShutDownFace();
@@ -44,11 +47,30 @@ public class RubiksCubeController : MonoBehaviour
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<Outline>();
 
-        IlluminateFace(_selectedSlice);        
+        IlluminateFace(_selectedSlice, SelectionCube.SelectionMode.CUBE);        
 
         ActualFace.OutlineColor = Color.red;
         ActualFace.OutlineWidth = 15;
         ActualFace.enabled = true;
+
+        _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
+    }
+    */
+
+    public void SetActualCube(Transform newFace)
+    {
+        ShutDownFace();
+        if(newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) ControlledCube = newFace.parent.parent.gameObject;
+        else if (newFace.parent.CompareTag("Rubiks")) ControlledCube = newFace.parent.gameObject;
+
+        _controlledScript = ControlledCube.GetComponentInChildren<RubiksMovement>();
+        if (_controlledScript == null) return;
+        if (ActualFace) ActualFace.enabled = false;
+        ActualFace = newFace.GetComponent<SelectionCube>();
+
+        IlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS);        
+
+        ActualFace.Select(SelectionCube.SelectionMode.CUBE);
 
         _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
     }
@@ -58,6 +80,7 @@ public class RubiksCubeController : MonoBehaviour
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + 1) % 3);
         SetActualCube(ActualFace.transform);
     }
+
     public void ActionMakeTurn(bool clockwise)
     {
         if (_controlledScript.IsRotating == false)
@@ -78,6 +101,7 @@ public class RubiksCubeController : MonoBehaviour
         }
     }
 
+    /* OLD
     void IlluminateFace(SliceAxis sliceAxis)
     {
         Color hey = new Color(1, 0.5f, 0, 1);
@@ -89,13 +113,38 @@ public class RubiksCubeController : MonoBehaviour
             outline.OutlineWidth = 10;
             outline.enabled = true;
         }
+    */
+
+    void IlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    {
+        if(_controlledScript != null)
+        foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))   
+        {
+            SelectionCube selection = go.GetComponent<SelectionCube>();
+            if (selection == null) continue;
+
+            selection.Select(mode);
+        }
     }
+
+    /* OLD
     void ShutDownFace()
     {
         foreach (Transform go in ControlledCube.transform)
         {
             Outline outOutline;
             if(go.TryGetComponent<Outline>(out outOutline)) outOutline.enabled = false;
+        }
+    }
+    */
+
+    void ShutDownFace()
+    {
+        foreach (Transform go in ControlledCube.transform)
+        {
+            SelectionCube selection = go.GetComponent<SelectionCube>();
+            if (selection == null) continue;
+            selection.Unselect();
         }
     }
 
