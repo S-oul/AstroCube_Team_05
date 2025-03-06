@@ -47,10 +47,21 @@ public class RubiksCubeController : MonoBehaviour
     public void SetActualCube(Transform newFace)
     {
         ShutDownFace();
-        if (newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) controlledCube = newFace.parent.parent.gameObject;
-        else if (newFace.parent.CompareTag("Rubiks")) controlledCube = newFace.parent.gameObject;
+        GameObject newCube = null;
+        if (newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) newCube = newFace.parent.parent.gameObject;
+        else if (newFace.parent.CompareTag("Rubiks")) newCube = newFace.parent.gameObject;
 
-        _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
+        if (newCube && newCube != controlledCube)
+        {
+            if ((ReplicatedCube.Contains(newCube)))
+            {
+                print("bahoui connard");
+                return;
+            }
+            controlledCube = newCube;
+            _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
+        }
+
         if (_controlledScript == null) return;
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<Outline>();
@@ -85,7 +96,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionSwitchLineCols()
     {
-        _selectedSlice = (SliceAxis)((int)(_selectedSlice+1) % 3);
+        _selectedSlice = (SliceAxis)((int)(_selectedSlice + 1) % 3);
         switch (_selectedSlice)
         {
             case SliceAxis.X:
@@ -123,8 +134,19 @@ public class RubiksCubeController : MonoBehaviour
 
             foreach (RubiksMovement cube in _replicatedScript)
             {
-                Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
-                cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), equivalence, clockwise, movementSpeed, _selectedSlice);
+                if (!cube) continue;
+
+                // HAHAHAHAHAHAHA LA LIGNE EST HORRIBLE ALED JEROME J'T'EN SUPPLIE
+                Transform equivalence = cube.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
+                
+                // Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
+                // why won't work ???
+                
+                // Get The index of the children 
+                // Find the Other child at the index in other cube
+                // Move it
+
+                cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
             }
 
             _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, movementSpeed, _selectedSlice);
