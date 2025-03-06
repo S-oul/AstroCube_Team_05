@@ -11,6 +11,9 @@ public class RubiksCubeController : MonoBehaviour
     [SerializeField] GameObject _controlledCube;
     RubiksMovement _controlledScript;
 
+
+    bool _cameraPlayerReversed = false;
+
     [SerializeField] Transform _overlayTransform;
     bool _isCameraRotating = false;
 
@@ -23,7 +26,14 @@ public class RubiksCubeController : MonoBehaviour
     private GameSettings _gameSettings;
 
 
+
     public LayerMask _detectableLayer;
+
+    #region Accesseur
+
+    public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
+
+    #endregion
     private void Awake()
     {
         _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
@@ -120,6 +130,11 @@ public class RubiksCubeController : MonoBehaviour
     {
         if (_controlledScript.IsRotating == false)
         {
+            if (_cameraPlayerReversed)
+            {
+                clockwise = !clockwise;
+            }
+
             ShutDownFace();
 
             if (_controlledScript == null) return;
