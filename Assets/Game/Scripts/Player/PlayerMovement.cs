@@ -11,29 +11,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform _floorCheck;
     [SerializeField] LayerMask _floorLayer;
 
-    [Header("Movement")]
-    [SerializeField] float _speed = 12f;
-    [SerializeField] float _gravity = -9.81f;
-
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
-    [SerializeField] float _jumpHeight = 10;
 
     [Header("Crouch")]
     [SerializeField] bool _canCrouch = true;
-    [SerializeField, Range(0.0f, 1.0f)] float _crouchSpeed;
-    [SerializeField, Range(0.0f, 1.0f)] float _crouchHeight;
-
-    [Header("Slipping")]
-    [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
-
-    [Header("GravityRotation")]
-    [SerializeField] bool _enableGravityRotation = true;
 
     Vector3 _gravityDirection;
 
     float _floorDistance = 0.1f;
 
+    float _currentMoveSpeed;
     Vector3 _verticalVelocity;
     Vector3 _horizontalVelocity; 
     bool _isGrounded;
@@ -47,20 +35,24 @@ public class PlayerMovement : MonoBehaviour
     bool jumpInput = false;
     bool crouchInput = false;
 
-
     bool _isSlipping = false;
     Vector3 _pastHorizontalVelocity;
+    GameSettings _gameSettings;
+
     public float defaultSpeed { get; private set; }
+
 
     void Start()
     {
-        GetComponent<DetectNewParent>().enabled = _enableGravityRotation;
+        _gameSettings = GameManager.Instance.Settings;
+        GetComponent<DetectNewParent>().enabled = _gameSettings.EnableGravityRotation;
         
         _defaultCameraHeight = _camera.transform.localPosition.y;
         _defaultControllerHeight = _controller.height;
         _defaultControllerCenter = _controller.center;
 
-        defaultSpeed = _speed;
+        defaultSpeed = _gameSettings.PlayerMoveSpeed;
+        _currentMoveSpeed = defaultSpeed;
     }
 
     // Update is called once per frame
@@ -69,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
         // collect player inputs
         xInput = Input.GetAxis("Horizontal");
         zInput = Input.GetAxis("Vertical");
+
         if (_canJump) jumpInput = Input.GetButtonDown("Jump");
         if (_canCrouch) crouchInput = Input.GetKey(KeyCode.LeftShift);
 
@@ -77,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
 
         // apply gravity 
         _gravityDirection = transform.up;
-        _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
+        _verticalVelocity += _gravityDirection * _gameSettings.Gravity * Time.deltaTime;
         if (_isGrounded)
         {
             _verticalVelocity = Vector3.zero;
@@ -89,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_isSlipping)
         {
-            _horizontalVelocity = _horizontalVelocity * _slippingMovementControl + _pastHorizontalVelocity;
+            _horizontalVelocity = _horizontalVelocity * _gameSettings.SlippingMovementControl + _pastHorizontalVelocity;
 
             //clamp
             _horizontalVelocity.x = _horizontalVelocity.x > 1 ? 1 : _horizontalVelocity.x;
@@ -101,17 +94,17 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (jumpInput && _isGrounded)
         {
-            _verticalVelocity = transform.up * Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
         }
 
         // crouch
         if (crouchInput)
         {
-            _controller.height *= _crouchHeight;
-            _controller.center = Vector3.up * _crouchHeight * -1;
+            _controller.height *= _gameSettings.CrouchHeight;
+            _controller.center = Vector3.up * _gameSettings.CrouchHeight * -1;
 
             Vector3 newCamPos = _camera.transform.localPosition;
-            newCamPos.y = _defaultCameraHeight * _crouchHeight;
+            newCamPos.y = _defaultCameraHeight * _gameSettings.CrouchHeight;
             _camera.transform.localPosition = newCamPos;
         }
         else
@@ -125,18 +118,18 @@ public class PlayerMovement : MonoBehaviour
 
         // apply calculated
         _controller.Move(_horizontalVelocity * 
-                         (crouchInput ? _speed : _speed/_crouchSpeed) * 
+                         (crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity *Time.deltaTime);
 
         // gravity rotation
-        if (_enableGravityRotation == false && transform.parent != null)
+        if (_gameSettings.EnableGravityRotation == false && transform.parent != null)
         {
             GetComponent<DetectNewParent>().enabled = false;
             transform.SetParent(null);
         }        
         
-        if (_enableGravityRotation == true && transform.parent == null)
+        if (_gameSettings.EnableGravityRotation == true && transform.parent == null)
         {
             Transform parentChangerChild = transform.GetChild(3);
             GetComponent<DetectNewParent>().enabled = true;
@@ -145,12 +138,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSpeed(float newSpeed)
     {
-        _speed = newSpeed;
+        _currentMoveSpeed = newSpeed;
     }
 
     public void SetSpeedToDefault()
     {
-        _speed = defaultSpeed;
+        _currentMoveSpeed = defaultSpeed;
     }
 
     public void SetSlippingState(bool isSlipping)

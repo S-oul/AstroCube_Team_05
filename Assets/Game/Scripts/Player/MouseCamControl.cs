@@ -6,9 +6,6 @@ public class MouseCamControl : MonoBehaviour
 {
     [Header("Camera Movement")]
     [SerializeField] Transform _playerTransform;
-    [SerializeField] Transform _cameraOverlay;
-    [SerializeField] float _joyStCamControlSpeed = 1000f;
-    [SerializeField] float _mouseCamControlSpeed = 100f;
 
     [Header("Raycast")]
     [SerializeField] RubiksCubeController rubiksCubeController;
@@ -17,29 +14,44 @@ public class MouseCamControl : MonoBehaviour
 
     Transform _oldTile;
 
-    float _xRotation;
+    float _yRotation;
+    GameSettings _settings;
 
-    // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        //rubiksCubeController = FindObjectOfType<RubiksCubeController>();
+        _settings = GameManager.Instance.Settings;
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Camera movement
-        float moveX = Input.GetAxis("Mouse X") * _mouseCamControlSpeed * Time.deltaTime;
-        float moveY = Input.GetAxis("Mouse Y") * _mouseCamControlSpeed * Time.deltaTime * -1;
-        moveX += Input.GetAxis("Joystick X") * _joyStCamControlSpeed * Time.deltaTime;
-        moveY += Input.GetAxis("Joystick Y") * _joyStCamControlSpeed * Time.deltaTime;
+        float moveX = Input.GetAxis("Mouse X") * _settings.CameraSensibilityMouse * Time.deltaTime;
+        float moveY = Input.GetAxis("Mouse Y") * _settings.CameraSensibilityMouse * Time.deltaTime * -1;
+        moveX += Input.GetAxis("Joystick X") * _settings.CameraSensibilityJoystick * Time.deltaTime;
+        moveY += Input.GetAxis("Joystick Y") * _settings.CameraSensibilityJoystick * Time.deltaTime;
 
-        _xRotation -= moveY;
-        _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
+        _yRotation -= moveY;
+        _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
 
+        transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * moveX);
+
+
+        Vector3 forward = _playerTransform.forward;
+        forward.y = 0; // Ignore vertical tilt if needed
+        float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
+        float aaaaa = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
+
+         print(aaaaa);
+        if (aaaaa >= 315 || aaaaa < 135)
+        {
+            rubiksCubeController.CameraPlayerReversed = false;
+        }
+        else
+        {
+            rubiksCubeController.CameraPlayerReversed = true;
+        }
         //_cameraOverlay.Rotate(Vector3.up * moveX);
         //_cameraOverlay.Rotate(_cameraOverlay.forward * moveY);
 
