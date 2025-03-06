@@ -17,6 +17,11 @@ public class GameManager : MonoBehaviour
         EventManager.OnPlayerLose -= ShowLoseScreen;
     }
 
+    private void Start()
+    {
+        EventManager.TriggerSceneStart();
+    }
+
     void ShowWinScreen()
     {
         winScreen.SetActive(true);

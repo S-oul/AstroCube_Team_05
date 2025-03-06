@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
+    [SerializeField] float _timeToReset = 2;
     public static EventManager Instance;
-
     private void Awake()
     {
         if(Instance) Destroy(this);
         else Instance = this;
     }
 
+    //Game Events
+    public static event Action OnSceneStart;
+    public static event Action OnSceneEnd;
 
     public static event Action OnPlayerWin;
     public static event Action OnPlayerLose;
+
+
+    //Rubik's Cube Events
+    public static event Action OnCubeRotated;
+
+    //Object Events
     public static event Action OnButtonPressed;
     public static event Action OnButtonReleased;
 
-    public static event Action OnPlayerReset;
+    //Player Events
+    public static event Action<float> OnPlayerReset;
 
     public static void TriggerPlayerWin()
     {
@@ -40,8 +50,22 @@ public class EventManager : MonoBehaviour
         OnButtonReleased?.Invoke();
     }
 
-    public static void TriggerReset()
+    public void TriggerReset()
     {
-        OnPlayerReset?.Invoke();
+        OnPlayerReset?.Invoke(_timeToReset);
+    }
+
+    public static void TriggerSceneStart()
+    {
+        OnSceneStart?.Invoke();
+    }
+
+    public static void TriggerSceneEnd() {
+        OnSceneEnd?.Invoke();
+    }
+
+    public static void TriggerCubeRotated()
+    {
+        OnCubeRotated?.Invoke();
     }
 }
