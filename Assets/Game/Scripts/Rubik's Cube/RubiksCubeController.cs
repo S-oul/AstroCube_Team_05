@@ -36,7 +36,7 @@ public class RubiksCubeController : MonoBehaviour
     #endregion
     private void Awake()
     {
-        if (controlledCube != null) _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
+        if (_controlledCube != null) _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
         foreach (GameObject go in ReplicatedCube)
         {
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());

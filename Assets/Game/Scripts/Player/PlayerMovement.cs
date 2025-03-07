@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
     float _stopWalkingDuration;
     bool _isWalking;
 
+    Vector3 newCamPos;
+
     public float defaultSpeed { get; private set; }
 
 
@@ -119,8 +121,9 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (_jumpInput && _isGrounded)
         {
-        } _jumpInput = false;
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
+            _jumpInput = false;
+        }
 
         // crouch
         if (_crouchInput)
@@ -145,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
         // apply calculated
         _controller.Move(_horizontalVelocity * 
-                         (crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * 
+                         (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity * Time.deltaTime);
 
