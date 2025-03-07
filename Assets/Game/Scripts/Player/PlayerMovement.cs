@@ -39,6 +39,12 @@ public class PlayerMovement : MonoBehaviour
     Vector3 _pastHorizontalVelocity;
     GameSettings _gameSettings;
 
+    // HeadBobbing
+    float _walkingDuration;
+    float _startWalkingDuration;
+    float _stopWalkingDuration;
+    bool _isWalking;
+
     public float defaultSpeed { get; private set; }
 
 
@@ -98,22 +104,21 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // crouch
+        Vector3 newCamPos;
         if (crouchInput)
         {
             _controller.height *= _gameSettings.CrouchHeight;
             _controller.center = Vector3.up * _gameSettings.CrouchHeight * -1;
 
-            Vector3 newCamPos = _camera.transform.localPosition;
+            newCamPos = _camera.transform.localPosition;
             newCamPos.y = _defaultCameraHeight * _gameSettings.CrouchHeight;
-            _camera.transform.localPosition = newCamPos;
         }
         else
         {
             _controller.height = _defaultControllerHeight;
             _controller.center = _defaultControllerCenter;
-            Vector3 newCamPos = _camera.transform.localPosition;
+            newCamPos = _camera.transform.localPosition;
             newCamPos.y = _defaultCameraHeight;
-            _camera.transform.localPosition = newCamPos;
         }
 
         // apply calculated
@@ -134,6 +139,8 @@ public class PlayerMovement : MonoBehaviour
             Transform parentChangerChild = transform.GetChild(3);
             GetComponent<DetectNewParent>().enabled = true;
         }
+
+        _ApplyCameraHeight(newCamPos.y);
     }
 
     public void SetSpeed(float newSpeed)
@@ -149,5 +156,44 @@ public class PlayerMovement : MonoBehaviour
     public void SetSlippingState(bool isSlipping)
     {
         _isSlipping = isSlipping;
+    }
+
+    private void _ApplyCameraHeight(float currentDefaultHeight)
+    {
+        Vector3 newCameraHeight;
+        _isWalking = _horizontalVelocity != Vector3.zero;
+        if (_isWalking && !_isSlipping)
+        {
+            if (_startWalkingDuration <= _gameSettings.StartWalkingTransitionDuration)
+            {
+                _stopWalkingDuration = 0.0f;
+                _startWalkingDuration += Time.deltaTime;
+                newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y, 
+                                                            currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount, 
+                                                            _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
+            }
+            else
+            {
+                _walkingDuration += Time.deltaTime;
+                newCameraHeight = Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+            }
+        }
+        else
+        {
+            _walkingDuration = 0.0f;
+            if(_stopWalkingDuration <= _gameSettings.StopWalkingTransitionDuration)
+            {
+                _startWalkingDuration = 0.0f; 
+                _stopWalkingDuration += Time.deltaTime;
+                newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y, 
+                                                            currentDefaultHeight, 
+                                                            _stopWalkingDuration / _gameSettings.StopWalkingTransitionDuration);
+            }
+            else
+            {
+                newCameraHeight = Vector3.up * currentDefaultHeight;
+            }
+        }
+        _camera.transform.localPosition = newCameraHeight;
     }
 }
