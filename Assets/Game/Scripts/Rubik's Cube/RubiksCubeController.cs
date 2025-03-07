@@ -34,7 +34,7 @@ public class RubiksCubeController : MonoBehaviour
     public LayerMask _detectableLayer;
     private void Awake()
     {
-        _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
+        if (controlledCube != null) _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
         foreach (GameObject go in ReplicatedCube)
         {
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
