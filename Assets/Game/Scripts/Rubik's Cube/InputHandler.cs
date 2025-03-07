@@ -15,9 +15,7 @@ public class InputHandler : MonoBehaviour
     {
         _controller = GetComponent<RubiksCubeController>();
         _playerInput = GetComponent<PlayerInput>();
-    }
-    private void Start()
-    {
+
         InputActionMap _actionMap = _playerInput.actions.FindActionMap("PlayerMovement");
         if (_actionMap != null)
         {
@@ -25,6 +23,10 @@ public class InputHandler : MonoBehaviour
             else Debug.LogError("playerMovement script is missing from InputHandler Inspector");
         }
         else Debug.LogError("playerMovment InputMap not found.");
+    }
+    private void Start()
+    {
+
     }
 
     public void OnSwitchColumnsLine(InputAction.CallbackContext callbackContext)
@@ -92,7 +94,6 @@ public class InputHandler : MonoBehaviour
             _playerMovement.ActionCrouch();
         }
     }
-
 
     // NoClip
     public void OnVerticalMovement(InputAction.CallbackContext callbackContext)

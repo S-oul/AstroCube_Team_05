@@ -32,8 +32,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _enableGravityRotation = true;
 
     [Header("NoClip")]
-    [SerializeField] float _verticalMovementSpeed = 12;
-    float _verticalMovementDirection = 0;
+    [SerializeField] bool _resetRotationWhenNoClip = false;
 
     Vector3 _gravityDirection;
 
@@ -49,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     float _xInput = 0;
     float _zInput = 0;
+    float _yInput = 0;//noclip
     bool _jumpInput = false;
     bool _crouchInput = false;
 
@@ -135,13 +135,13 @@ public class PlayerMovement : MonoBehaviour
         _crouchInput = false;
 
         // no clip
-        _controller.Move(Vector3.up * _verticalMovementDirection * _verticalMovementSpeed);
+        _horizontalVelocity += transform.up * _yInput;
 
         // apply calculated
         _controller.Move(_horizontalVelocity * 
                          (_crouchInput ? _speed : _speed/_crouchSpeed) * 
                          Time.deltaTime);
-        _controller.Move(_verticalVelocity *Time.deltaTime);
+        _controller.Move(_verticalVelocity * Time.deltaTime);
 
         // gravity rotation
         if (_enableGravityRotation == false && transform.parent != null)
@@ -195,6 +195,13 @@ public class PlayerMovement : MonoBehaviour
     {
         GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
         _hasGravity = false;
+        _verticalVelocity = Vector3.zero;
+        _controller.Move(Vector3.zero);
+        transform.SetParent(null);
+        if (_resetRotationWhenNoClip)
+        {
+            transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
+        }
     }   
     public void DeactivateNoClip()
     {
@@ -203,6 +210,6 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ActionVerticalMovement(float direction)
     {
-        _verticalMovementDirection = direction;
+        _yInput = direction;
     }
 }

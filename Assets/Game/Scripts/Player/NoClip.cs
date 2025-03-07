@@ -10,13 +10,31 @@ public class NoClip : MonoBehaviour
     PlayerMovement _playerMovement;
     bool _noClipEnabled = false;
 
+    //InputActionMap _playerMovementMap;
+    InputActionMap _noClipMap;
+
+    List<string> _enabledActionMaps = new List<string>();
+
     private void Start()
     {
         if (_playerInput == null)
         {
-            Debug.LogError("PlayerInput missing from NoClip inspector");
+            Debug.LogError("PlayerInput missing from NoClip inspector.");
         }
         _playerMovement = GetComponent<PlayerMovement>();
+
+        //_playerMovementMap = _playerInput.actions.FindActionMap("PlayerMovement");
+        //if (_playerMovementMap == null) Debug.LogError("Could not find InputActionMap 'PlayerMovement'.");
+        _noClipMap = _playerInput.actions.FindActionMap("NoClip");
+        if (_noClipMap == null) Debug.LogError("Could not find InputActionMap 'NoClip'.");
+
+        foreach (InputActionMap map in _playerInput.actions.actionMaps)
+        {
+            if (map.enabled)
+            {
+                _enabledActionMaps.Add(map.name);
+            }
+        }
     }
 
     void Update()
@@ -33,14 +51,24 @@ public class NoClip : MonoBehaviour
 
             if (_noClipEnabled)
             {
-                Debug.Log("Activating NoClip");
                 _playerMovement.ActivateNoClip();
-                //switch input system to NoClip input system
+                foreach (InputActionMap map in _playerInput.actions.actionMaps)
+                {
+                    map.Disable();
+                }
+                _noClipMap.Enable();
             }
             else
             {
                 _playerMovement.DeactivateNoClip();
-                //switch back to default input system
+                foreach (InputActionMap map in _playerInput.actions.actionMaps)
+                {
+                    if (_enabledActionMaps.Contains(map.name))
+                    {
+                        map.Enable();
+                    }
+                }
+                _noClipMap.Disable();
             }
         }
     }
