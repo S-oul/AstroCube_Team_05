@@ -42,9 +42,7 @@ public class DetectNewParent : MonoBehaviour
         var dif = transform.up - (-h.right);
         if (Mathf.Abs(dif.magnitude) > 0.1f)
         {
-            Debug.Log(transform.up + " is not " + -h.right);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -h.right) * transform.rotation, 1f);
-            Debug.Log("new up is: " + transform.up);
         }
         transform.SetParent(hit.collider.gameObject.transform);
     }
