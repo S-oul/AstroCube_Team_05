@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] float _speed = 12f;
     [SerializeField] float _gravity = -9.81f;
+    bool _hasGravity = true;
 
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
@@ -30,6 +31,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("GravityRotation")]
     [SerializeField] bool _enableGravityRotation = true;
 
+    [Header("NoClip")]
+    [SerializeField] float _verticalMovementSpeed = 12;
+    float _verticalMovementDirection = 0;
+
     Vector3 _gravityDirection;
 
     float _floorDistance = 0.1f;
@@ -42,10 +47,10 @@ public class PlayerMovement : MonoBehaviour
     float _defaultControllerHeight;
     Vector3 _defaultControllerCenter;
 
-    float xInput = 0;
-    float zInput = 0;
-    bool jumpInput = false;
-    bool crouchInput = false;
+    float _xInput = 0;
+    float _zInput = 0;
+    bool _jumpInput = false;
+    bool _crouchInput = false;
 
 
     bool _isSlipping = false;
@@ -66,26 +71,31 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         // collect player inputs
-        xInput = Input.GetAxis("Horizontal");
-        zInput = Input.GetAxis("Vertical");
-        if (_canJump) jumpInput = Input.GetButtonDown("Jump");
-        if (_canCrouch) crouchInput = Input.GetKey(KeyCode.LeftShift);
+        _xInput = Input.GetAxis("Horizontal");
+        _zInput = Input.GetAxis("Vertical");
+        if (_canJump) _jumpInput = Input.GetButtonDown("Jump");
+        if (_canCrouch) _crouchInput = Input.GetKey(KeyCode.LeftShift);
+        */
 
         // check player state
         _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
         // apply gravity 
-        _gravityDirection = transform.up;
-        _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
-        if (_isGrounded)
+        if (_hasGravity)
         {
-            _verticalVelocity = Vector3.zero;
+            _gravityDirection = transform.up;
+            _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
+            if (_isGrounded)
+            {
+                _verticalVelocity = Vector3.zero;
+            }
         }
 
         // movePlayer (walking around)
         if (_isSlipping ) _pastHorizontalVelocity = _horizontalVelocity;
-        _horizontalVelocity = transform.right * xInput + transform.forward * zInput;
+        _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
 
         if (_isSlipping)
         {
@@ -99,13 +109,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // jump
-        if (jumpInput && _isGrounded)
+        if (_jumpInput && _isGrounded)
         {
             _verticalVelocity = transform.up * Mathf.Sqrt(_jumpHeight * -2f * _gravity);
-        }
+        } _jumpInput = false;
 
         // crouch
-        if (crouchInput)
+        if (_crouchInput)
         {
             _controller.height *= _crouchHeight;
             _controller.center = Vector3.up * _crouchHeight * -1;
@@ -122,10 +132,14 @@ public class PlayerMovement : MonoBehaviour
             newCamPos.y = _defaultCameraHeight;
             _camera.transform.localPosition = newCamPos;
         }
+        _crouchInput = false;
+
+        // no clip
+        _controller.Move(Vector3.up * _verticalMovementDirection * _verticalMovementSpeed);
 
         // apply calculated
         _controller.Move(_horizontalVelocity * 
-                         (crouchInput ? _speed : _speed/_crouchSpeed) * 
+                         (_crouchInput ? _speed : _speed/_crouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity *Time.deltaTime);
 
@@ -141,7 +155,25 @@ public class PlayerMovement : MonoBehaviour
             Transform parentChangerChild = transform.GetChild(3);
             GetComponent<DetectNewParent>().enabled = true;
         }
+
     }
+
+    #region Inputs
+    public void ActionMovement(Vector2 direction)
+    {
+        //Debug.Log("actionMovement direction is " + direction);
+        _xInput = direction.x;
+        _zInput = direction.y;
+    }
+    public void ActionJump()
+    {
+        _jumpInput = _canJump;
+    }
+    public void ActionCrouch()
+    {
+        _crouchInput = _canCrouch;
+    }
+    #endregion
 
     public void SetSpeed(float newSpeed)
     {
@@ -156,5 +188,21 @@ public class PlayerMovement : MonoBehaviour
     public void SetSlippingState(bool isSlipping)
     {
         _isSlipping = isSlipping;
+    }
+
+    //NoClip
+    public void ActivateNoClip()
+    {
+        GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
+        _hasGravity = false;
+    }   
+    public void DeactivateNoClip()
+    {
+        GetComponent<CharacterController>().excludeLayers = 0;
+        _hasGravity = true;
+    }
+    public void ActionVerticalMovement(float direction)
+    {
+        _verticalMovementDirection = direction;
     }
 }

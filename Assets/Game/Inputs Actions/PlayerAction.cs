@@ -260,6 +260,265 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerMovement"",
+            ""id"": ""a20e5998-df04-4a81-ac7d-f68055ce7b0d"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""dd59c3ec-d4d8-4810-a337-dc1aae8c8b3c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6f4235f-4eb5-4b3f-8276-3b9b62e72abd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""de88368b-19c7-4edb-b35c-d85ca1f76c7f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""8d189936-f14e-4658-b740-a5bf5e081c27"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""47ed3955-d82b-4a65-b28b-c5f33996259e"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e9928a21-7175-4f52-aea8-f541dc2257eb"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""bef544ff-bfc9-493f-a9d9-f9e3eb27d0c0"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""0510498b-b7e3-4ae5-85a0-8a572727073f"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f0bf818-f1d2-4714-b0e1-d89b0b798df0"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b160170d-8414-4e79-86de-6a0bff4dcb7a"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""NoClip"",
+            ""id"": ""3aa8d348-a1e9-433b-bf01-b1f174c77fcc"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""59f107cb-0f59-45c8-b182-942f2a69fc22"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""VerticalMovement"",
+                    ""type"": ""Value"",
+                    ""id"": ""a9377ed4-2696-4ba1-abfc-02eb9ca8e75c"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""e4d49587-94b5-4fc0-997e-0abae5ddf9ef"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""78cbc640-9a37-4349-9031-d1604bcd93bd"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b6c14ed6-3be5-4e2b-90c5-b8470b71d533"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""50d32c53-1828-4e44-b574-575daa7fd728"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""a3cb8173-c51e-4574-9812-158be7111b5f"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""067ce0f5-7be0-4162-8e79-769f65a5d26a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""5ba81bf6-bc3a-4c98-b727-c736effa8ee1"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""27987d0a-dcb3-477d-a5fa-21f5c68db369"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""d7d7c1a1-350f-4e7a-b8ea-e2a6efaa000c"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""c2f14b14-8827-4238-8e53-995727ef74c5"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""0bd9e98d-6721-48ca-a8ea-b7482847f291"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -333,11 +592,22 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_MainScheme_ResetRoom = m_MainScheme.FindAction("ResetRoom", throwIfNotFound: true);
         m_MainScheme_Interact = m_MainScheme.FindAction("Interact", throwIfNotFound: true);
         m_MainScheme_MoveOverlayCube = m_MainScheme.FindAction("MoveOverlayCube", throwIfNotFound: true);
+        // PlayerMovement
+        m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
+        m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
+        m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerMovement_Crouch = m_PlayerMovement.FindAction("Crouch", throwIfNotFound: true);
+        // NoClip
+        m_NoClip = asset.FindActionMap("NoClip", throwIfNotFound: true);
+        m_NoClip_Movement = m_NoClip.FindAction("Movement", throwIfNotFound: true);
+        m_NoClip_VerticalMovement = m_NoClip.FindAction("VerticalMovement", throwIfNotFound: true);
     }
 
     ~@PlayerAction()
     {
         UnityEngine.Debug.Assert(!m_MainScheme.enabled, "This will cause a leak and performance issues, PlayerAction.MainScheme.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, PlayerAction.PlayerMovement.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_NoClip.enabled, "This will cause a leak and performance issues, PlayerAction.NoClip.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -481,6 +751,122 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         }
     }
     public MainSchemeActions @MainScheme => new MainSchemeActions(this);
+
+    // PlayerMovement
+    private readonly InputActionMap m_PlayerMovement;
+    private List<IPlayerMovementActions> m_PlayerMovementActionsCallbackInterfaces = new List<IPlayerMovementActions>();
+    private readonly InputAction m_PlayerMovement_Movement;
+    private readonly InputAction m_PlayerMovement_Jump;
+    private readonly InputAction m_PlayerMovement_Crouch;
+    public struct PlayerMovementActions
+    {
+        private @PlayerAction m_Wrapper;
+        public PlayerMovementActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_PlayerMovement_Movement;
+        public InputAction @Jump => m_Wrapper.m_PlayerMovement_Jump;
+        public InputAction @Crouch => m_Wrapper.m_PlayerMovement_Crouch;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerMovementActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerMovementActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerMovementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerMovementActionsCallbackInterfaces.Add(instance);
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Crouch.started += instance.OnCrouch;
+            @Crouch.performed += instance.OnCrouch;
+            @Crouch.canceled += instance.OnCrouch;
+        }
+
+        private void UnregisterCallbacks(IPlayerMovementActions instance)
+        {
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Crouch.started -= instance.OnCrouch;
+            @Crouch.performed -= instance.OnCrouch;
+            @Crouch.canceled -= instance.OnCrouch;
+        }
+
+        public void RemoveCallbacks(IPlayerMovementActions instance)
+        {
+            if (m_Wrapper.m_PlayerMovementActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerMovementActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerMovementActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerMovementActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // NoClip
+    private readonly InputActionMap m_NoClip;
+    private List<INoClipActions> m_NoClipActionsCallbackInterfaces = new List<INoClipActions>();
+    private readonly InputAction m_NoClip_Movement;
+    private readonly InputAction m_NoClip_VerticalMovement;
+    public struct NoClipActions
+    {
+        private @PlayerAction m_Wrapper;
+        public NoClipActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_NoClip_Movement;
+        public InputAction @VerticalMovement => m_Wrapper.m_NoClip_VerticalMovement;
+        public InputActionMap Get() { return m_Wrapper.m_NoClip; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NoClipActions set) { return set.Get(); }
+        public void AddCallbacks(INoClipActions instance)
+        {
+            if (instance == null || m_Wrapper.m_NoClipActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_NoClipActionsCallbackInterfaces.Add(instance);
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @VerticalMovement.started += instance.OnVerticalMovement;
+            @VerticalMovement.performed += instance.OnVerticalMovement;
+            @VerticalMovement.canceled += instance.OnVerticalMovement;
+        }
+
+        private void UnregisterCallbacks(INoClipActions instance)
+        {
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @VerticalMovement.started -= instance.OnVerticalMovement;
+            @VerticalMovement.performed -= instance.OnVerticalMovement;
+            @VerticalMovement.canceled -= instance.OnVerticalMovement;
+        }
+
+        public void RemoveCallbacks(INoClipActions instance)
+        {
+            if (m_Wrapper.m_NoClipActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(INoClipActions instance)
+        {
+            foreach (var item in m_Wrapper.m_NoClipActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_NoClipActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public NoClipActions @NoClip => new NoClipActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -534,5 +920,16 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnResetRoom(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMoveOverlayCube(InputAction.CallbackContext context);
+    }
+    public interface IPlayerMovementActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
+    }
+    public interface INoClipActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnVerticalMovement(InputAction.CallbackContext context);
     }
 }

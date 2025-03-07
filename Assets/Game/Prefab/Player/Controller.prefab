@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlledCube: {fileID: 0}
-  movementSpeed: 0.2
+  movementSpeed: 10
   _overlayTransform: {fileID: 0}
   _cameraSpeed: 0.2
   ReplicatedCube: []
@@ -177,6 +177,18 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2eb49cb9-f56f-4a6b-810e-4646888fd554
     m_ActionName: MainScheme/MoveOverlayCube[/XInputControllerWindows/dpad/up,/XInputControllerWindows/dpad/down,/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dd59c3ec-d4d8-4810-a337-dc1aae8c8b3c
+    m_ActionName: PlayerMovement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a6f4235f-4eb5-4b3f-8276-3b9b62e72abd
+    m_ActionName: PlayerMovement/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: de88368b-19c7-4edb-b35c-d85ca1f76c7f
+    m_ActionName: PlayerMovement/Crouch[/Keyboard/shift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MainScheme
@@ -195,3 +207,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerHold: {fileID: 0}
+  _playerMovement: {fileID: 0}
