@@ -9,6 +9,7 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (other.CompareTag("VictoryZone"))
         {
+            print("hey");
             EventManager.TriggerPlayerWin();
         }
         if (other.CompareTag("DeathZone"))

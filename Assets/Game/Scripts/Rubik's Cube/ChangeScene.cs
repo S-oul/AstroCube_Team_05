@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
+    public ChangeScene Instance;
+
     public string scene;
     [SerializeField] bool PToReturnToMenu = true;
 
+    private void Awake()
+    {
+        EventManager.OnPlayerWin += ChangeScener;
+    }
     public void ChangeScener()
     {
         Debug.Log("Changing Scene to " + scene);

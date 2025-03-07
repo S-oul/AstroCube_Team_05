@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnPlayerWin += ShowWinScreen;
-        EventManager.OnPlayerLose += ShowLoseScreen;
     }
 
     private void OnDisable()
