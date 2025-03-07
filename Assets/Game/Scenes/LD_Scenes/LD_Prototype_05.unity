@@ -2664,6 +2664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a229c1821968b314b957e56aae85c99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerHold: {fileID: 0}
 --- !u!114 &1371031933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2755,10 +2756,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ControlledCube: {fileID: 2095322877076973373}
-  _controlledScript: {fileID: 0}
-  ReplicatedCube: []
+  _controlledCube: {fileID: 0}
   movementSpeed: 0.2
+  _overlayTransform: {fileID: 0}
+  _cameraSpeed: 0.2
+  ReplicatedCube: []
   ActualFace: {fileID: 0}
   _detectableLayer:
     serializedVersion: 2
@@ -4566,12 +4568,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4986062396632585771, guid: 28dc377cc47e7a44cba104442b5e05e8,
     type: 3}
   m_PrefabInstance: {fileID: 2116947971}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2095322877076973373 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5572829294728235433, guid: c82e7d49d42c10546a5b4c163d7eb160,
-    type: 3}
-  m_PrefabInstance: {fileID: 8722173051808504300}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6036601283342267023 stripped
 Transform:
@@ -7238,6 +7234,13 @@ PrefabInstance:
     - {fileID: 1326848696727024714, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
     - {fileID: 150925349970914285, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
     - {fileID: 8170185179035729974, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 5684816713183791680, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 132469730562986108, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 6901372977208175757, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 2939279014550795062, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 7391251291954372271, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 2315381314094729354, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
+    - {fileID: 2819706249490230084, guid: c82e7d49d42c10546a5b4c163d7eb160, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2756149678389189996, guid: c82e7d49d42c10546a5b4c163d7eb160,
         type: 3}
