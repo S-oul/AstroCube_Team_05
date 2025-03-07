@@ -6,6 +6,7 @@
 //  Copyright © 2018 Chris Nolet. All rights reserved.
 //
 
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,28 +14,71 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 
-public class SelectionCube : MonoBehaviour 
+public class SelectionCube : MonoBehaviour
 {
     [SerializeField]
-    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask;
+    bool _isTileLocked;
+    [SerializeField]
+    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6;
 
     private Renderer[] _renderers;
+    [SerializeField] Material greyMat;
+    private Material[] allOldMat = new Material[0];
+
+
+
+    public bool IsTileLocked { get => _isTileLocked; set => _isTileLocked = value; }
 
     public enum SelectionMode
     {
         AXIS,
-        CUBE
+        CUBE,
+        LOCKED
     }
 
-    void Awake() 
+    void Awake()
     {
         // Cache renderers
         _renderers = GetComponentsInChildren<Renderer>();
+
+        if (_isTileLocked)
+        {
+            SetTilesMatToLock();
+
+        }
     }
 
-    public void Select(SelectionMode mode) 
+    [Button]
+    public void SetTilesMatToLock()
     {
-        foreach (var renderer in _renderers) 
+        _isTileLocked = true;
+        allOldMat = new Material[_renderers.Length];
+
+        int i = 0;
+        foreach (Renderer r in _renderers)
+        {
+            allOldMat[i++] = r.material;
+            r.material = greyMat;
+        }
+
+
+    }
+
+    [Button]
+    public void SetTilestoBaseMat()
+    {
+        _isTileLocked = false;
+
+        int i = 0;
+        foreach (Renderer r in _renderers)
+        {
+            r.material = allOldMat[i++];
+        }
+    }
+
+    public void Select(SelectionMode mode)
+    {
+        foreach (var renderer in _renderers)
         {
             switch (mode)
             {
@@ -43,6 +87,9 @@ public class SelectionCube : MonoBehaviour
                     break;
                 case SelectionMode.CUBE:
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
+                    break;
+                case SelectionMode.LOCKED:
+                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
                     break;
             }
         }

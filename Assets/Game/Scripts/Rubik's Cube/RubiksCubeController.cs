@@ -25,7 +25,7 @@ public class RubiksCubeController : MonoBehaviour
     SliceAxis _selectedSlice = 0;
     private GameSettings _gameSettings;
 
-
+    bool _canPlayerMoveAxis = true;
 
     public LayerMask _detectableLayer;
 
@@ -81,19 +81,28 @@ public class RubiksCubeController : MonoBehaviour
     public void SetActualCube(Transform newFace)
     {
         ShutDownFace();
-        if(newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) _controlledCube = newFace.parent.parent.gameObject;
+        if (newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) _controlledCube = newFace.parent.parent.gameObject;
         else if (newFace.parent.CompareTag("Rubiks")) _controlledCube = newFace.parent.gameObject;
 
         _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
+        
         if (_controlledScript == null) return;
+        if (_controlledScript.IsRotating) return;
+
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 
-        IlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS);        
+        if(TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
+        {
+            ActualFace.Select(SelectionCube.SelectionMode.CUBE);
+            _canPlayerMoveAxis = true;
+        }
+        else
+        {
+            _canPlayerMoveAxis = false;
+        }
 
-        ActualFace.Select(SelectionCube.SelectionMode.CUBE);
-
-        _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
+            _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
     }
 
     public void ActionSwitchLineCols()
@@ -128,7 +137,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript.IsRotating == false)
+        if (_controlledScript.IsRotating == false && _canPlayerMoveAxis)
         {
             if (_cameraPlayerReversed)
             {
@@ -145,10 +154,10 @@ public class RubiksCubeController : MonoBehaviour
 
                 // HAHAHAHAHAHAHA LA LIGNE EST HORRIBLE ALED JEROME J'T'EN SUPPLIE
                 Transform equivalence = cube.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
-                
+
                 // Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
                 // why won't work ???
-                
+
                 // Get The index of the children 
                 // Find the Other child at the index in other cube
                 // Move it
@@ -160,12 +169,12 @@ public class RubiksCubeController : MonoBehaviour
             EventManager.TriggerCubeRotated();
         }
     }
-    public void ActionRotateCube(Vector2 direction)
+    public void ActionRotateCubeUI(Vector2 direction)
     {
-        StartCoroutine(RotateCube(direction));
+        StartCoroutine(RotateCubeUI(direction));
     }
 
-    IEnumerator RotateCube(Vector2 direction)
+    IEnumerator RotateCubeUI(Vector2 direction)
     {
         if (!_isCameraRotating)
         {
@@ -202,16 +211,30 @@ public class RubiksCubeController : MonoBehaviour
         }
     */
 
-    void IlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    /// <summary>
+    /// return True if Player Can Move Axis;
+    /// </summary>
+    /// <param name="sliceAxis"></param>
+    /// <param name="mode">Should normally never be set to Locked</param>
+    /// <returns></returns>
+    bool TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
-        if(_controlledScript != null)
-        foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))   
-        {
-            SelectionCube selection = go.GetComponent<SelectionCube>();
-            if (selection == null) continue;
+        List<SelectionCube> selectionCubes = new List<SelectionCube>();
+        bool isOneTileLocked = false;
 
-            selection.Select(mode);
-        }
+        if (_controlledScript != null)
+            foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
+            {
+                SelectionCube selection = go.GetComponent<SelectionCube>();
+                if (selection == null) continue;
+
+                selectionCubes.Add(selection);
+                if (selection.IsTileLocked) isOneTileLocked = true;
+            }
+
+        foreach(SelectionCube selection in selectionCubes) selection.Select(isOneTileLocked? SelectionCube.SelectionMode.LOCKED : mode);
+
+        return !isOneTileLocked;
     }
 
     /* OLD
