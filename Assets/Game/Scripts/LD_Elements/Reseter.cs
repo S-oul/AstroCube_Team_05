@@ -22,7 +22,7 @@ public class Reseter : MonoBehaviour
     }
 
     [Button]
-    void OnReset(float time)
+    void OnReset(float duration)
     {
         if (_rb)
         {
@@ -31,17 +31,17 @@ public class Reseter : MonoBehaviour
         }
         _poseOnReset = new Pose();
         transform.GetPositionAndRotation(out _poseOnReset.position, out _poseOnReset.rotation);
-        StartCoroutine(Reset(time));
+        StartCoroutine(Reset(duration));
     }
 
-    IEnumerator Reset(float time)
+    IEnumerator Reset(float duration)
     {
         float elapsedTime = 0f;
-        while (elapsedTime < time)
+        while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(_poseOnReset.position, _startPos.position, elapsedTime / time);
-            transform.rotation = Quaternion.Lerp(_poseOnReset.rotation, _startPos.rotation, elapsedTime / time);
+            transform.position = Vector3.Lerp(_poseOnReset.position, _startPos.position, elapsedTime / duration);
+            transform.rotation = Quaternion.Lerp(_poseOnReset.rotation, _startPos.rotation, elapsedTime / duration);
             yield return null;
         }
         transform.position = _startPos.position;

@@ -55,7 +55,7 @@ public class InputHandler : MonoBehaviour
     {
         if (callbackContext.performed)
         {
-            _controller.ActionRotateCube(callbackContext.ReadValue<Vector2>());
+            _controller.ActionRotateCubeUI(callbackContext.ReadValue<Vector2>());
         }
     }
 

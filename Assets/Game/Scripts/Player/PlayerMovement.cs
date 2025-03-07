@@ -18,12 +18,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
-    [SerializeField] float _jumpHeight = 10;
 
     [Header("Crouch")]
     [SerializeField] bool _canCrouch = true;
-    [SerializeField, Range(0.0f, 1.0f)] float _crouchSpeed;
-    [SerializeField, Range(0.0f, 1.0f)] float _crouchHeight;
 
     [Header("Slipping")]
     [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
@@ -38,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     float _floorDistance = 0.1f;
 
+    float _currentMoveSpeed;
     Vector3 _verticalVelocity;
     Vector3 _horizontalVelocity; 
     bool _isGrounded;
@@ -52,20 +50,30 @@ public class PlayerMovement : MonoBehaviour
     bool _jumpInput = false;
     bool _crouchInput = false;
 
-
     bool _isSlipping = false;
     Vector3 _pastHorizontalVelocity;
+    GameSettings _gameSettings;
+
+    // HeadBobbing
+    float _walkingDuration;
+    float _startWalkingDuration;
+    float _stopWalkingDuration;
+    bool _isWalking;
+
     public float defaultSpeed { get; private set; }
+
 
     void Start()
     {
-        GetComponent<DetectNewParent>().enabled = _enableGravityRotation;
+        _gameSettings = GameManager.Instance.Settings;
+        GetComponent<DetectNewParent>().enabled = _gameSettings.EnableGravityRotation;
         
         _defaultCameraHeight = _camera.transform.localPosition.y;
         _defaultControllerHeight = _controller.height;
         _defaultControllerCenter = _controller.center;
 
-        defaultSpeed = _speed;
+        defaultSpeed = _gameSettings.PlayerMoveSpeed;
+        _currentMoveSpeed = defaultSpeed;
     }
 
     // Update is called once per frame
@@ -99,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_isSlipping)
         {
-            _horizontalVelocity = _horizontalVelocity * _slippingMovementControl + _pastHorizontalVelocity;
+            _horizontalVelocity = _horizontalVelocity * _gameSettings.SlippingMovementControl + _pastHorizontalVelocity;
 
             //clamp
             _horizontalVelocity.x = _horizontalVelocity.x > 1 ? 1 : _horizontalVelocity.x;
@@ -111,26 +119,24 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (_jumpInput && _isGrounded)
         {
-            _verticalVelocity = transform.up * Mathf.Sqrt(_jumpHeight * -2f * _gravity);
         } _jumpInput = false;
+            _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
 
         // crouch
         if (_crouchInput)
         {
-            _controller.height *= _crouchHeight;
-            _controller.center = Vector3.up * _crouchHeight * -1;
+            _controller.height *= _gameSettings.CrouchHeight;
+            _controller.center = Vector3.up * _gameSettings.CrouchHeight * -1;
 
-            Vector3 newCamPos = _camera.transform.localPosition;
-            newCamPos.y = _defaultCameraHeight * _crouchHeight;
-            _camera.transform.localPosition = newCamPos;
+            newCamPos = _camera.transform.localPosition;
+            newCamPos.y = _defaultCameraHeight * _gameSettings.CrouchHeight;
         }
         else
         {
             _controller.height = _defaultControllerHeight;
             _controller.center = _defaultControllerCenter;
-            Vector3 newCamPos = _camera.transform.localPosition;
+            newCamPos = _camera.transform.localPosition;
             newCamPos.y = _defaultCameraHeight;
-            _camera.transform.localPosition = newCamPos;
         }
         _crouchInput = false;
 
@@ -139,23 +145,24 @@ public class PlayerMovement : MonoBehaviour
 
         // apply calculated
         _controller.Move(_horizontalVelocity * 
-                         (_crouchInput ? _speed : _speed/_crouchSpeed) * 
+                         (crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity * Time.deltaTime);
 
         // gravity rotation
-        if (_enableGravityRotation == false && transform.parent != null)
+        if (_gameSettings.EnableGravityRotation == false && transform.parent != null)
         {
             GetComponent<DetectNewParent>().enabled = false;
             transform.SetParent(null);
         }        
         
-        if (_enableGravityRotation == true && transform.parent == null)
+        if (_gameSettings.EnableGravityRotation == true && transform.parent == null)
         {
             Transform parentChangerChild = transform.GetChild(3);
             GetComponent<DetectNewParent>().enabled = true;
         }
 
+        _ApplyCameraHeight(newCamPos.y);
     }
 
     #region Inputs
@@ -177,17 +184,56 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSpeed(float newSpeed)
     {
-        _speed = newSpeed;
+        _currentMoveSpeed = newSpeed;
     }
 
     public void SetSpeedToDefault()
     {
-        _speed = defaultSpeed;
+        _currentMoveSpeed = defaultSpeed;
     }
 
     public void SetSlippingState(bool isSlipping)
     {
         _isSlipping = isSlipping;
+    }
+
+    private void _ApplyCameraHeight(float currentDefaultHeight)
+    {
+        Vector3 newCameraHeight;
+        _isWalking = _horizontalVelocity != Vector3.zero;
+        if (_isWalking && !_isSlipping)
+        {
+            if (_startWalkingDuration <= _gameSettings.StartWalkingTransitionDuration)
+            {
+                _stopWalkingDuration = 0.0f;
+                _startWalkingDuration += Time.deltaTime;
+                newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y, 
+                                                            currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount, 
+                                                            _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
+            }
+            else
+            {
+                _walkingDuration += Time.deltaTime;
+                newCameraHeight = Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+            }
+        }
+        else
+        {
+            _walkingDuration = 0.0f;
+            if(_stopWalkingDuration <= _gameSettings.StopWalkingTransitionDuration)
+            {
+                _startWalkingDuration = 0.0f; 
+                _stopWalkingDuration += Time.deltaTime;
+                newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y, 
+                                                            currentDefaultHeight, 
+                                                            _stopWalkingDuration / _gameSettings.StopWalkingTransitionDuration);
+            }
+            else
+            {
+                newCameraHeight = Vector3.up * currentDefaultHeight;
+            }
+        }
+        _camera.transform.localPosition = newCameraHeight;
     }
 
     //NoClip
