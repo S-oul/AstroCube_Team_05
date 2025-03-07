@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 5067991794126187365}
   - component: {fileID: 390007284634587234}
   - component: {fileID: 2128463034130162547}
+  - component: {fileID: 2867457531972925666}
   m_Layer: 0
   m_Name: FP_Player
   m_TagString: Player
@@ -248,8 +249,13 @@ MonoBehaviour:
   _floorLayer:
     serializedVersion: 2
     m_Bits: 384
+  _speed: 12
+  _gravity: -9.81
   _canJump: 1
   _canCrouch: 1
+  _slippingMovementControl: 0.01
+  _enableGravityRotation: 1
+  _resetRotationWhenNoClip: 0
 --- !u!114 &4747696836999268114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +310,19 @@ MonoBehaviour:
   _detectableLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &2867457531972925666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e6eea3ffca71f848a0fde7987a6e848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerInput: {fileID: 0}
 --- !u!1001 &6227919447832848270
 PrefabInstance:
   m_ObjectHideFlags: 0

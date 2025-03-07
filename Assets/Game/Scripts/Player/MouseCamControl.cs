@@ -43,7 +43,6 @@ public class MouseCamControl : MonoBehaviour
         float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
         float aaaaa = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
 
-         print(aaaaa);
         if (aaaaa >= 315 || aaaaa < 135)
         {
             rubiksCubeController.CameraPlayerReversed = false;
