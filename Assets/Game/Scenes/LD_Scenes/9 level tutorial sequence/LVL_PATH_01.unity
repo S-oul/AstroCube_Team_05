@@ -851,6 +851,79 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8722173051808504300}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &637732373
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706481031665168761, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: _playerMovement
+      value: 
+      objectReference: {fileID: 1737364900}
+    - target: {fileID: 8224419958410924750, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_Name
+      value: Controller (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a6ec11c84de52ea47a8127f0825703b7, type: 3}
 --- !u!1001 &713499934
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1716,7 +1789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1371031932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1730,6 +1803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerHold: {fileID: 0}
+  _playerMovement: {fileID: 1737364900}
 --- !u!114 &1371031933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1828,6 +1902,26 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2eb49cb9-f56f-4a6b-810e-4646888fd554
     m_ActionName: MainScheme/MoveOverlayCube
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dd59c3ec-d4d8-4810-a337-dc1aae8c8b3c
+    m_ActionName: PlayerMovement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a6f4235f-4eb5-4b3f-8276-3b9b62e72abd
+    m_ActionName: PlayerMovement/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: de88368b-19c7-4edb-b35c-d85ca1f76c7f
+    m_ActionName: PlayerMovement/Crouch[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 59f107cb-0f59-45c8-b182-942f2a69fc22
+    m_ActionName: NoClip/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a9377ed4-2696-4ba1-abfc-02eb9ca8e75c
+    m_ActionName: NoClip/VerticalMovement[/Keyboard/q,/Keyboard/e,/Keyboard/shift,/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MainScheme
@@ -2355,6 +2449,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2867457531972925666, guid: b5eeb929aa87481439de01016bcf6589,
+        type: 3}
+      propertyPath: _playerInput
+      value: 
+      objectReference: {fileID: 1371031933}
     - target: {fileID: 3556385474053788473, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
       propertyPath: m_Enabled
@@ -2411,6 +2510,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5eeb929aa87481439de01016bcf6589, type: 3}
+--- !u!114 &1737364900 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 700580131499637484, guid: b5eeb929aa87481439de01016bcf6589,
+    type: 3}
+  m_PrefabInstance: {fileID: 1737364899}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68aaab3c2dd3bd240afbe69cd9b69d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1767785783 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6186537006181174601, guid: c82e7d49d42c10546a5b4c163d7eb160,
@@ -6357,3 +6468,4 @@ SceneRoots:
   - {fileID: 531755604}
   - {fileID: 978059948}
   - {fileID: 383618258}
+  - {fileID: 637732373}
