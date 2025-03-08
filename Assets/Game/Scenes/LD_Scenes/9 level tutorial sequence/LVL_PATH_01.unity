@@ -992,6 +992,11 @@ PrefabInstance:
       propertyPath: _playerMovement
       value: 
       objectReference: {fileID: 1737364900}
+    - target: {fileID: 7734142097994166212, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: _controlledCube
+      value: 
+      objectReference: {fileID: 951510929}
     - target: {fileID: 8224419958410924750, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
       propertyPath: m_Name
@@ -1299,7 +1304,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e9b8d765e5f6044abb005a68a08d57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Instance: {fileID: 0}
   scene: Demo Rubik'sCube
   PToReturnToMenu: 1
 --- !u!114 &855938978
@@ -1882,196 +1886,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212384918}
   m_CullTransparentMesh: 1
---- !u!1 &1371031931
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1371031935}
-  - component: {fileID: 1371031934}
-  - component: {fileID: 1371031933}
-  - component: {fileID: 1371031932}
-  m_Layer: 0
-  m_Name: Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1371031932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371031931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a229c1821968b314b957e56aae85c99c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerHold: {fileID: 0}
-  _playerMovement: {fileID: 1737364900}
---- !u!114 &1371031933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371031931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: b3efa8228d2448a44bf398e0418a5a83,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1371031934}
-        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
-        m_MethodName: ActionMakeTurn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 3ac09e99-5853-4e76-914c-fe5b7cc4783b
-    m_ActionName: NicoScheme/ClockWise[/XInputControllerWindows/rightShoulder]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1371031934}
-        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
-        m_MethodName: ActionMakeTurn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-    m_ActionId: 9c2092c3-a079-456d-83d0-ef92f3ae71da
-    m_ActionName: NicoScheme/CounterClockWise[/XInputControllerWindows/leftShoulder]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1371031932}
-        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
-        m_MethodName: OnSwitchColumnsLine
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
-    m_ActionId: bfbdc334-90fb-4ae4-baf7-bc9711bf7248
-    m_ActionName: NicoScheme/SwitchColumns/Line[/XInputControllerWindows/leftShoulder,/XInputControllerWindows/rightShoulder]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1371031932}
-        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
-        m_MethodName: OnResetRoom
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 78276d6b-79fd-420a-8476-517d456cada6
-    m_ActionName: MainScheme/ResetRoom[/Keyboard/v]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a04cb8c7-d18f-472d-8156-0fb92a8155a2
-    m_ActionName: MainScheme/Interact[/Keyboard/i]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2eb49cb9-f56f-4a6b-810e-4646888fd554
-    m_ActionName: MainScheme/MoveOverlayCube
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: dd59c3ec-d4d8-4810-a337-dc1aae8c8b3c
-    m_ActionName: PlayerMovement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a6f4235f-4eb5-4b3f-8276-3b9b62e72abd
-    m_ActionName: PlayerMovement/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: de88368b-19c7-4edb-b35c-d85ca1f76c7f
-    m_ActionName: PlayerMovement/Crouch[/Keyboard/shift]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 59f107cb-0f59-45c8-b182-942f2a69fc22
-    m_ActionName: NoClip/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a9377ed4-2696-4ba1-abfc-02eb9ca8e75c
-    m_ActionName: NoClip/VerticalMovement[/Keyboard/q,/Keyboard/e,/Keyboard/shift,/Keyboard/space]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: MainScheme
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &1371031934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371031931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _controlledCube: {fileID: 951510929}
-  _overlayTransform: {fileID: 988867734}
-  ReplicatedCube: []
-  ActualFace: {fileID: 0}
-  _detectableLayer:
-    serializedVersion: 2
-    m_Bits: 256
---- !u!4 &1371031935
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371031931}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1445667446 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1494674226617449104, guid: c82e7d49d42c10546a5b4c163d7eb160,
@@ -2564,7 +2378,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _playerInput
       value: 
-      objectReference: {fileID: 1371031933}
+      objectReference: {fileID: 1908699640}
     - target: {fileID: 3556385474053788473, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
       propertyPath: m_Enabled
@@ -2573,7 +2387,7 @@ PrefabInstance:
     - target: {fileID: 3875194145860832593, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
       propertyPath: m_Cameras.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3875194145860832593, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
@@ -2584,7 +2398,7 @@ PrefabInstance:
         type: 3}
       propertyPath: rubiksCubeController
       value: 
-      objectReference: {fileID: 1371031934}
+      objectReference: {fileID: 1908699641}
     - target: {fileID: 5528389872019300487, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
       propertyPath: _mouseCamControlSpeed
@@ -3361,6 +3175,30 @@ Transform:
   - {fileID: 1519236404}
   m_Father: {fileID: 211924071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1908699640 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 637732373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1908699641 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7734142097994166212, guid: a6ec11c84de52ea47a8127f0825703b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 637732373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1954843994
 GameObject:
   m_ObjectHideFlags: 0
@@ -6574,8 +6412,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 211924071}
   - {fileID: 831561009}
-  - {fileID: 1371031935}
   - {fileID: 531755604}
   - {fileID: 978059948}
   - {fileID: 383618258}
   - {fileID: 637732373}
+  - {fileID: 464155840}
+  - {fileID: 988867734}

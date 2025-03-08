@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    public ChangeScene Instance;
-
     public string scene;
     [SerializeField] bool PToReturnToMenu = true;
 
@@ -14,9 +12,19 @@ public class ChangeScene : MonoBehaviour
     {
         EventManager.OnPlayerWin += ChangeScener;
     }
+    private void OnDisable()
+    {
+        EventManager.OnPlayerWin -= ChangeScener;
+    }
+    private void OnDestroy()
+    {
+        EventManager.OnPlayerWin -= ChangeScener;
+    }
     public void ChangeScener()
     {
-        Debug.Log("Changing Scene to " + scene);
+        Cursor.lockState = CursorLockMode.Confined;
+        EventManager.OnPlayerWin -= ChangeScener;
+        Debug.Log("   Changing Scene to " + scene);
         SceneManager.LoadScene(scene);
     }
 

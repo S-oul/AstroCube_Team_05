@@ -137,7 +137,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript.IsRotating == false && _canPlayerMoveAxis)
+        if (_controlledScript && _controlledScript.IsRotating == false && _canPlayerMoveAxis)
         {
             if (_cameraPlayerReversed)
             {
