@@ -24,7 +24,6 @@ public class ChangeScene : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         EventManager.OnPlayerWin -= ChangeScener;
-        Debug.Log("   Changing Scene to " + scene);
         SceneManager.LoadScene(scene);
     }
 

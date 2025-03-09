@@ -122,8 +122,8 @@ public class PlayerMovement : MonoBehaviour
         if (_jumpInput && _isGrounded)
         {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
-            _jumpInput = false;
         }
+            _jumpInput = false;
 
         // crouch
         if (_crouchInput)

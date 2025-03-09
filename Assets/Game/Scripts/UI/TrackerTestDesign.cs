@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using UnityEngine.SceneManagement;
 
 public class TrackerTestDesign : MonoBehaviour
 {
@@ -19,14 +21,14 @@ public class TrackerTestDesign : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnSceneStart += StartTimer;
-        EventManager.OnSceneEnd += StopTimer;
+        EventManager.OnPlayerWin += StopTimer;
         EventManager.OnCubeRotated += IncrementRotation;
     }
 
     private void OnDisable()
     {
         EventManager.OnSceneStart -= StartTimer;
-        EventManager.OnSceneEnd -= StopTimer;
+        EventManager.OnPlayerWin -= StopTimer;
         EventManager.OnCubeRotated -= IncrementRotation;
     }
 
@@ -46,6 +48,7 @@ public class TrackerTestDesign : MonoBehaviour
 
     private void StopTimer()
     {
+        print("Tester Took : " + timeTrackerText.text + " on level " + SceneManager.GetActiveScene().name);
         isTimerRunning = false;
     }
 
