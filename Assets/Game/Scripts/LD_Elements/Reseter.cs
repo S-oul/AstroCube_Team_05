@@ -21,7 +21,6 @@ public class Reseter : MonoBehaviour
         EventManager.OnPlayerReset -= OnReset;
     }
 
-    [Button]
     void OnReset(float duration)
     {
         if (_rb)
