@@ -19,7 +19,7 @@ public class SelectionCube : MonoBehaviour
     [SerializeField]
     bool _isTileLocked;
     [SerializeField]
-    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6;
+    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5;
 
     private Renderer[] _renderers;
     [SerializeField] Material greyMat;
@@ -33,7 +33,8 @@ public class SelectionCube : MonoBehaviour
     {
         AXIS,
         CUBE,
-        LOCKED
+        LOCKED,
+        PLAYERONTILE
     }
 
     void Awake()
@@ -89,6 +90,9 @@ public class SelectionCube : MonoBehaviour
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
                     break;
                 case SelectionMode.LOCKED:
+                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    break;
+                case SelectionMode.PLAYERONTILE:
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
                     break;
             }
