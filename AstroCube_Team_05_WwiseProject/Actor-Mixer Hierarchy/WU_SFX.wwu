@@ -315,6 +315,262 @@
 										</ObjectList>
 									</ObjectLists>
 								</RandomSequenceContainer>
+								<RandomSequenceContainer Name="SFX_RC_LaserReceived" ID="{56771A5B-2F33-4EEC-9CFC-8D190A499050}" ShortID="560792748">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{15E90114-A9DD-4120-93B1-0EB9E14536E1}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="150"/>
+															<Property Name="Min" Type="Real64" Value="-150"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-21</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="ATT_15m" ID="{0D4D7827-3A5C-46EB-A46F-62F7611ADC5A}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+										</Reference>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="SFX_Laser_Received_01" ID="{169BF7CE-0D56-4363-A45F-0AAB9E95FBF6}" ShortID="545754356">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Received_01" ID="{4590013B-0488-465D-A40D-9D8D281618D4}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Received_01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="925561773"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Received_01" ID="{4590013B-0488-465D-A40D-9D8D281618D4}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="SFX_Laser_Received_02" ID="{1C488C95-857B-4E5C-96C3-BC28E5468CFF}" ShortID="320339004">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Received_02" ID="{D4DC4E29-FDE0-4BBB-8BCC-A5BD13D1EF28}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Received_02.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="748590913"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Received_02" ID="{D4DC4E29-FDE0-4BBB-8BCC-A5BD13D1EF28}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="SFX_Laser_Received_03" ID="{81BA7FDA-EB66-4F39-89A9-C34B853435D8}" ShortID="137583891">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Received_03" ID="{5CD4EA99-9CDE-4D71-A89A-FA378DB4C935}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Received_03.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="1039241937"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Received_03" ID="{5CD4EA99-9CDE-4D71-A89A-FA378DB4C935}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="SFX_Laser_Received_04" ID="{826CC1B0-70C0-419A-B16E-A81E072EDC2D}" ShortID="342506215">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Received_04" ID="{85DAA427-F604-4E63-B02D-5BB7BB332A27}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Received_04.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="1041205504"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Received_04" ID="{85DAA427-F604-4E63-B02D-5BB7BB332A27}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+								</RandomSequenceContainer>
+								<RandomSequenceContainer Name="SFX_RC_LaserReflected" ID="{95C5D2A7-4941-44C7-B6CC-E884B76B49BA}" ShortID="136539690">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{596E4B2B-C8C5-4896-9195-FC85DB67D99C}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="150"/>
+															<Property Name="Min" Type="Real64" Value="-150"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-21</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="ATT_15m" ID="{0D4D7827-3A5C-46EB-A46F-62F7611ADC5A}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+										</Reference>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="SFX_Laser_Reflected_01" ID="{0FF0DEE9-B441-418C-81C0-B220340866BA}" ShortID="233558958">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Reflected_01" ID="{CB57AABA-9025-4D25-8983-7B05A7B387ED}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Reflected_01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="312887753"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Reflected_01" ID="{CB57AABA-9025-4D25-8983-7B05A7B387ED}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="SFX_Laser_Reflected_02" ID="{823A5448-A232-42A7-AAC0-F1AB74FE6844}" ShortID="777270877">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Reflected_02" ID="{2A661BA1-0291-426E-9205-0A30AC8CEF2F}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Reflected_02.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="666187075"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Reflected_02" ID="{2A661BA1-0291-426E-9205-0A30AC8CEF2F}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="SFX_Laser_Reflected_03" ID="{0A262656-8DF3-444E-94C8-12A50A88E2BA}" ShortID="420773125">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Reflected_03" ID="{E9AAA244-1532-4A37-9B4E-46350D4B88C2}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Reflected_03.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="738113458"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Reflected_03" ID="{E9AAA244-1532-4A37-9B4E-46350D4B88C2}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="SFX_Laser_Reflected_04" ID="{9DAF8F71-E4F7-4CB7-9E11-3226AC43A3A3}" ShortID="109427678">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{62A63512-ABAD-482B-9E8B-F7897C981876}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Laser_Reflected_04" ID="{CE1A80F9-C418-4040-842F-49FE264EB1E7}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Laser\SFX_Laser_Reflected_04.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="963422868"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Laser_Reflected_04" ID="{CE1A80F9-C418-4040-842F-49FE264EB1E7}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+								</RandomSequenceContainer>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
