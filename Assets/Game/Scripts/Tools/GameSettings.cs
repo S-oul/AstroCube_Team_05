@@ -19,6 +19,7 @@ public class GameSettings : ScriptableObject
     public float HeadBobbingSpeed => _headBobbingSpeed;
     public float StartWalkingTransitionDuration => _startWalkingTransitionDuration;
     public float StopWalkingTransitionDuration => _stopWalkingTransitionDuration;
+    public float FOV => _FOV;
     public AnimationCurve HeadBobbingCurve => _headBobbingCurve;
     public bool EnableGravityRotation => _enableGravityRotation;
 
@@ -56,6 +57,10 @@ public class GameSettings : ScriptableObject
     [SerializeField] float _startWalkingTransitionDuration = 0.5f;
     [SerializeField] float _stopWalkingTransitionDuration = 0.5f;
     [SerializeField] AnimationCurve _headBobbingCurve;
+
+    [Header("- Camera")]
+    [SerializeField] float _FOV = 60f;
+
 
     [Header("- GravityRotation")]
     [SerializeField] bool _enableGravityRotation = false;

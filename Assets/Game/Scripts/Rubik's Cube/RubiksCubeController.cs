@@ -19,6 +19,8 @@ public class RubiksCubeController : MonoBehaviour
 
     [SerializeField] List<GameObject> ReplicatedCube = new List<GameObject>();
     [SerializeField] SelectionCube ActualFace;
+    
+    [SerializeField] bool _ShowStripLayerToPlayer  =true;
 
     List<RubiksMovement> _replicatedScript = new List<RubiksMovement>();
 
@@ -32,8 +34,10 @@ public class RubiksCubeController : MonoBehaviour
     #region Accesseur
 
     public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
+    public bool ShowStripLayerToPlayer { get => _ShowStripLayerToPlayer; set => _ShowStripLayerToPlayer = value; }
 
     #endregion
+
     private void Awake()
     {
         if (_controlledCube != null) _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
@@ -42,6 +46,7 @@ public class RubiksCubeController : MonoBehaviour
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
+        ActionSwitchLineCols();
     }
 
 
@@ -92,7 +97,7 @@ public class RubiksCubeController : MonoBehaviour
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 
-        if(TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
+        if(_ShowStripLayerToPlayer && TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
         {
             ActualFace.Select(SelectionCube.SelectionMode.CUBE);
             _canPlayerMoveAxis = true;
@@ -132,7 +137,7 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
         }
-        SetActualCube(ActualFace.transform);
+        if(ActualFace) SetActualCube(ActualFace.transform);
     }
 
     public void ActionMakeTurn(bool clockwise)
