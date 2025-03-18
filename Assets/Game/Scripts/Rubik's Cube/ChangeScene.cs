@@ -8,9 +8,22 @@ public class ChangeScene : MonoBehaviour
     public string scene;
     [SerializeField] bool PToReturnToMenu = true;
 
+    private void Awake()
+    {
+        EventManager.OnPlayerWin += ChangeScener;
+    }
+    private void OnDisable()
+    {
+        EventManager.OnPlayerWin -= ChangeScener;
+    }
+    private void OnDestroy()
+    {
+        EventManager.OnPlayerWin -= ChangeScener;
+    }
     public void ChangeScener()
     {
-        Debug.Log("Changing Scene to " + scene);
+        Cursor.lockState = CursorLockMode.Confined;
+        EventManager.OnPlayerWin -= ChangeScener;
         SceneManager.LoadScene(scene);
     }
 
