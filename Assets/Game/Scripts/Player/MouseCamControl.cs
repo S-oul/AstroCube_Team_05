@@ -21,6 +21,7 @@ public class MouseCamControl : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _settings = GameManager.Instance.Settings;
+        Camera.main.fieldOfView = _settings.FOV;
     }
 
     void Update()

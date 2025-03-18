@@ -46,6 +46,7 @@ public class RubiksCubeController : MonoBehaviour
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
+        ActionSwitchLineCols();
     }
 
 
@@ -136,7 +137,7 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
         }
-        SetActualCube(ActualFace.transform);
+        if(ActualFace) SetActualCube(ActualFace.transform);
     }
 
     public void ActionMakeTurn(bool clockwise)
