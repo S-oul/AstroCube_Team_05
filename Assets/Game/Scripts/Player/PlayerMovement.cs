@@ -30,9 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _resetRotationWhenNoClip = false;
 
     [Header("WISE")]
-    [SerializeField] AK.Wwise.Event AKWiseEvent ;
-
-
+    [SerializeField] AK.Wwise.Event AKWiseEvent;  // Event Wwise à jouer
 
     Vector3 _gravityDirection;
 
@@ -49,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     float _xInput = 0;
     float _zInput = 0;
-    float _yInput = 0;//noclip
+    float _yInput = 0; //noclip
     bool _jumpInput = false;
     bool _crouchInput = false;
 
@@ -67,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
 
     public float defaultSpeed { get; private set; }
 
-
     void Start()
     {
         _gameSettings = GameManager.Instance.Settings;
@@ -84,18 +81,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        // collect player inputs
-        _xInput = Input.GetAxis("Horizontal");
-        _zInput = Input.GetAxis("Vertical");
-        if (_canJump) _jumpInput = Input.GetButtonDown("Jump");
-        if (_canCrouch) _crouchInput = Input.GetKey(KeyCode.LeftShift);
-        */
-
-        // check player state
         _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
-        // apply gravity 
+        // Apply gravity
         if (_hasGravity)
         {
             _gravityDirection = transform.up;
@@ -106,34 +94,29 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // movePlayer (walking around)
-        if (_isSlipping ) _pastHorizontalVelocity = _horizontalVelocity;
+        // Movement
         _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
 
-        if (_isSlipping)
+        if (_isSlipping) 
         {
             _horizontalVelocity = _horizontalVelocity * _gameSettings.SlippingMovementControl + _pastHorizontalVelocity;
-
-            //clamp
-            _horizontalVelocity.x = _horizontalVelocity.x > 1 ? 1 : _horizontalVelocity.x;
-            _horizontalVelocity.x = _horizontalVelocity.x < -1 ? -1 : _horizontalVelocity.x;
-            _horizontalVelocity.z = _horizontalVelocity.z > 1 ? 1 : _horizontalVelocity.z;
-            _horizontalVelocity.z = _horizontalVelocity.z < -1 ? -1 : _horizontalVelocity.z;
+            _horizontalVelocity.x = Mathf.Clamp(_horizontalVelocity.x, -1, 1);
+            _horizontalVelocity.z = Mathf.Clamp(_horizontalVelocity.z, -1, 1);
         }
 
-        // jump
+        // Jump
         if (_jumpInput && _isGrounded)
         {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
+            PlayMovementSound();  // Joue un son Wwise lorsqu'on saute
         }
-            _jumpInput = false;
+        _jumpInput = false;
 
-        // crouch
+        // Crouch
         if (_crouchInput)
         {
             _controller.height *= _gameSettings.CrouchHeight;
             _controller.center = Vector3.up * _gameSettings.CrouchHeight * -1;
-
             newCamPos = _camera.transform.localPosition;
             newCamPos.y = _defaultCameraHeight * _gameSettings.CrouchHeight;
         }
@@ -146,22 +129,20 @@ public class PlayerMovement : MonoBehaviour
         }
         _crouchInput = false;
 
-        // no clip
+        // NoClip
         _horizontalVelocity += transform.up * _yInput;
 
-        // apply calculated
-        _controller.Move(_horizontalVelocity * 
-                         (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * 
-                         Time.deltaTime);
+        // Apply Movement
+        _controller.Move(_horizontalVelocity * (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime);
         _controller.Move(_verticalVelocity * Time.deltaTime);
 
-        // gravity rotation
+        // Gravity Rotation
         if (_gameSettings.EnableGravityRotation == false && transform.parent != null)
         {
             GetComponent<DetectNewParent>().enabled = false;
             transform.SetParent(null);
-        }        
-        
+        }
+
         if (_gameSettings.EnableGravityRotation == true && transform.parent == null)
         {
             Transform parentChangerChild = transform.GetChild(3);
@@ -169,12 +150,17 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _ApplyCameraHeight(newCamPos.y);
+
+        // Play the movement sound if the player is walking
+        if (_isWalking && AKWiseEvent != null)
+        {
+            PlayMovementSound();  // Joue un son Wwise pendant la marche
+        }
     }
 
     #region Inputs
     public void ActionMovement(Vector2 direction)
     {
-        //Debug.Log("actionMovement direction is " + direction);
         _xInput = direction.x;
         _zInput = direction.y;
     }
@@ -242,7 +228,16 @@ public class PlayerMovement : MonoBehaviour
         _camera.transform.localPosition = newCameraHeight;
     }
 
-    //NoClip
+    // Fonction pour jouer un son Wwise lors du mouvement
+    private void PlayMovementSound()
+    {
+        if (AKWiseEvent != null)
+        {
+            AKWiseEvent.Post(gameObject);  // Envoie l'événement Wwise pour jouer un son
+        }
+    }
+
+    // NoClip
     public void ActivateNoClip()
     {
         GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
@@ -254,7 +249,8 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
         }
-    }   
+    }
+
     public void DeactivateNoClip()
     {
         GetComponent<CharacterController>().excludeLayers = 0;
