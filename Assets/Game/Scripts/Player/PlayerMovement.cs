@@ -1,3 +1,4 @@
+using AK.Wwise;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -27,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("NoClip")]
     [SerializeField] bool _resetRotationWhenNoClip = false;
+
+    [Header("WISE")]
+    [SerializeField] AK.Wwise.Event AKWiseEvent ;
+
+
 
     Vector3 _gravityDirection;
 
