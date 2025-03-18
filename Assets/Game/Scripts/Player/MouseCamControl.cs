@@ -21,6 +21,7 @@ public class MouseCamControl : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _settings = GameManager.Instance.Settings;
+        Camera.main.fieldOfView = _settings.FOV;
     }
 
     void Update()
@@ -60,11 +61,8 @@ public class MouseCamControl : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
         {
             GameObject collider = _raycastInfo.collider.gameObject;
-            if (_oldTile != collider.transform)
-            {
-                _oldTile = collider.transform;
-                if (rubiksCubeController != null && _oldTile.parent != null) rubiksCubeController.SetActualCube(_oldTile.parent);
-            }
+            _oldTile = collider.transform;
+            if (rubiksCubeController != null && _oldTile.parent != null) rubiksCubeController.SetActualCube(_oldTile.parent);
         }
     }
 }

@@ -11,8 +11,8 @@ public class TrackerTestDesign : MonoBehaviour
     private int rotationTracker = 0;
     private float timeTracker = 0f;
 
-    [SerializeField] private TextMeshProUGUI rotationTrackerText;
     [SerializeField] private TextMeshProUGUI timeTrackerText;
+    [SerializeField] private TextMeshProUGUI rotationTrackerText;
 
     private bool isTimerRunning = false;
 
@@ -68,8 +68,9 @@ public class TrackerTestDesign : MonoBehaviour
 
     private void UpdateUI()
     {
+        TimeSpan UITimeAsTS = TimeSpan.FromSeconds(timeTracker);
         if (timeTrackerText != null)
-            timeTrackerText.text = "Time : " + timeTracker.ToString("F2") + "s";
+            timeTrackerText.text = "Time : " + (UITimeAsTS.Minutes < 10 ? "0" + UITimeAsTS.Minutes : UITimeAsTS.Minutes) + ":" + (UITimeAsTS.Seconds < 10 ? "0" + UITimeAsTS.Seconds : UITimeAsTS.Seconds) + "," + UITimeAsTS.Milliseconds;
 
         if (rotationTrackerText != null)
             rotationTrackerText.text = "Rotations : " + rotationTracker;
