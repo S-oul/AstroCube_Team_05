@@ -1,4 +1,4 @@
-using AK.Wwise;
+//using AK.Wwise;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _resetRotationWhenNoClip = false;
 
     [Header("WISE")]
-    [SerializeField] AK.Wwise.Event AKWiseEvent ;
+    //[SerializeField] AK.Wwise.Event AKWiseEvent ;
 
 
 

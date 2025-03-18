@@ -13,6 +13,7 @@ public class InputHandler : MonoBehaviour
 
     void Awake()
     {
+
         _controller = GetComponent<RubiksCubeController>();
         _playerInput = GetComponent<PlayerInput>();
 
@@ -24,11 +25,7 @@ public class InputHandler : MonoBehaviour
         }
         else Debug.LogError("playerMovment InputMap not found.");
     }
-    private void Start()
-    {
-
-    }
-
+    #region Rubiks Cube Inputs
     public void OnSwitchColumnsLine(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -66,6 +63,7 @@ public class InputHandler : MonoBehaviour
             EventManager.Instance.TriggerReset();
         }
     }
+    #endregion
     public void OnInteract(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -75,7 +73,9 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    // PlayerMovement
+
+
+    #region Player Movement & NoClip Movement
     public void OnMovement(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
         _playerMovement.ActionMovement(callbackContext.ReadValue<Vector2>());
@@ -94,8 +94,9 @@ public class InputHandler : MonoBehaviour
             _playerMovement.ActionCrouch();
         }
     }
+    #endregion
 
-    // NoClip
+    #region Noclip
     public void OnVerticalMovement(InputAction.CallbackContext callbackContext)
     {
         if (!callbackContext.performed)
@@ -103,4 +104,16 @@ public class InputHandler : MonoBehaviour
             _playerMovement.ActionVerticalMovement(callbackContext.ReadValue<float>());
         }
     }
+    #endregion
+
+    #region UI
+    public void OnShowStripLayer(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            _controller.ShowStripLayerToPlayer = !_controller.ShowStripLayerToPlayer;
+        }
+    }
+    #endregion
+
 }

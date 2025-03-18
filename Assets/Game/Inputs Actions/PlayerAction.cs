@@ -80,6 +80,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ShowStrips"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f690b63-220d-4fba-bb73-64d9c7e24342"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -258,6 +267,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""action"": ""MoveOverlayCube"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4187aa92-c756-413c-94bb-bbae7f6dafed"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ShowStrips"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ccab694f-2ab8-47cc-bc3f-8940fec7ae36"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ShowStrips"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -669,6 +700,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_MainScheme_ResetRoom = m_MainScheme.FindAction("ResetRoom", throwIfNotFound: true);
         m_MainScheme_Interact = m_MainScheme.FindAction("Interact", throwIfNotFound: true);
         m_MainScheme_MoveOverlayCube = m_MainScheme.FindAction("MoveOverlayCube", throwIfNotFound: true);
+        m_MainScheme_ShowStrips = m_MainScheme.FindAction("ShowStrips", throwIfNotFound: true);
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
@@ -752,6 +784,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_MainScheme_ResetRoom;
     private readonly InputAction m_MainScheme_Interact;
     private readonly InputAction m_MainScheme_MoveOverlayCube;
+    private readonly InputAction m_MainScheme_ShowStrips;
     public struct MainSchemeActions
     {
         private @PlayerAction m_Wrapper;
@@ -762,6 +795,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @ResetRoom => m_Wrapper.m_MainScheme_ResetRoom;
         public InputAction @Interact => m_Wrapper.m_MainScheme_Interact;
         public InputAction @MoveOverlayCube => m_Wrapper.m_MainScheme_MoveOverlayCube;
+        public InputAction @ShowStrips => m_Wrapper.m_MainScheme_ShowStrips;
         public InputActionMap Get() { return m_Wrapper.m_MainScheme; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -789,6 +823,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @MoveOverlayCube.started += instance.OnMoveOverlayCube;
             @MoveOverlayCube.performed += instance.OnMoveOverlayCube;
             @MoveOverlayCube.canceled += instance.OnMoveOverlayCube;
+            @ShowStrips.started += instance.OnShowStrips;
+            @ShowStrips.performed += instance.OnShowStrips;
+            @ShowStrips.canceled += instance.OnShowStrips;
         }
 
         private void UnregisterCallbacks(IMainSchemeActions instance)
@@ -811,6 +848,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @MoveOverlayCube.started -= instance.OnMoveOverlayCube;
             @MoveOverlayCube.performed -= instance.OnMoveOverlayCube;
             @MoveOverlayCube.canceled -= instance.OnMoveOverlayCube;
+            @ShowStrips.started -= instance.OnShowStrips;
+            @ShowStrips.performed -= instance.OnShowStrips;
+            @ShowStrips.canceled -= instance.OnShowStrips;
         }
 
         public void RemoveCallbacks(IMainSchemeActions instance)
@@ -997,6 +1037,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnResetRoom(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMoveOverlayCube(InputAction.CallbackContext context);
+        void OnShowStrips(InputAction.CallbackContext context);
     }
     public interface IPlayerMovementActions
     {
