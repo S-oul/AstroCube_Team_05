@@ -1,4 +1,4 @@
-﻿//
+//
 //  Outline.cs
 //  QuickOutline
 //
@@ -13,13 +13,12 @@ using System.Linq;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-
 public class SelectionCube : MonoBehaviour
 {
     [SerializeField]
     bool _isTileLocked;
     [SerializeField]
-    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6;
+    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5;
 
     private Renderer[] _renderers;
     [SerializeField] Material greyMat;
@@ -33,7 +32,8 @@ public class SelectionCube : MonoBehaviour
     {
         AXIS,
         CUBE,
-        LOCKED
+        LOCKED,
+        PLAYERONTILE
     }
 
     void Awake()
@@ -41,15 +41,17 @@ public class SelectionCube : MonoBehaviour
         // Cache renderers
         _renderers = GetComponentsInChildren<Renderer>();
 
-        if (_isTileLocked)
-        {
-            SetTilesMatToLock();
-
-        }
+        if (_isTileLocked) SetTileMatToLock();
     }
 
-    [Button]
-    public void SetTilesMatToLock()
+    public void SetIsTileLock(bool locking)
+    {
+        IsTileLocked = locking;
+        if (locking) SetTileMatToLock();
+        else SetTilestoBaseMat();
+    }
+
+    public void SetTileMatToLock()
     {
         _isTileLocked = true;
         allOldMat = new Material[_renderers.Length];
@@ -60,11 +62,8 @@ public class SelectionCube : MonoBehaviour
             allOldMat[i++] = r.material;
             r.material = greyMat;
         }
-
-
     }
 
-    [Button]
     public void SetTilestoBaseMat()
     {
         _isTileLocked = false;
@@ -89,6 +88,9 @@ public class SelectionCube : MonoBehaviour
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
                     break;
                 case SelectionMode.LOCKED:
+                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    break;
+                case SelectionMode.PLAYERONTILE:
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
                     break;
             }

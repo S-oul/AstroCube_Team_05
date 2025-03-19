@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class DetectNewParent : MonoBehaviour
@@ -8,26 +5,37 @@ public class DetectNewParent : MonoBehaviour
     [SerializeField] LayerMask _detectableLayer;
     Vector3 currentRotationDir;
 
-    #region  raycast (old) 
-    //private void Update()
-    //{
-    //    RaycastHit _raycastInfo;
+    [SerializeField] SelectionCube OldTilePlayerPos;
+    Transform OldTilePlayerPosTransform;
 
-    //    if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
-    //    {
 
-    //        var h = _raycastInfo.collider.transform;
-    //        var dif = transform.parent.up - (-h.right);
-    //        if (Mathf.Abs(dif.magnitude) > 0.1f)
-    //        {
-    //            Debug.Log(transform.parent.up + " is not " + -h.right);
-    //            //Debug.Log("I'm tilted!");
-    //            transform.parent.rotation =Quaternion.Lerp(transform.parent.rotation, Quaternion.FromToRotation(transform.parent.up, -h.right) * transform.parent.rotation,.2f);
-    //        }
-    //        transform.parent.SetParent(_raycastInfo.collider.gameObject.transform);
-    //    }
-    //}
-    #endregion
+    private bool _doGravityRotation;
+
+    
+    
+    
+    public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
+
+
+
+    private void Update()
+    {
+        RaycastHit _raycastInfo;
+        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer) && OldTilePlayerPosTransform != _raycastInfo.collider.transform)
+        {
+            OldTilePlayerPosTransform = _raycastInfo.collider.transform;
+
+            if (OldTilePlayerPos) OldTilePlayerPos.SetIsTileLock(false);
+
+            _raycastInfo.transform.parent.TryGetComponent(out OldTilePlayerPos);
+            //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
+
+            if (OldTilePlayerPos)
+            {
+                OldTilePlayerPos.SetIsTileLock(true);
+            }
+        }
+    }
 
     private void Start()
     {
@@ -36,7 +44,7 @@ public class DetectNewParent : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (!this.enabled) return;
+        if (!_doGravityRotation) return;
 
         var h = hit.collider.transform;
         var dif = transform.up - (-h.right);
