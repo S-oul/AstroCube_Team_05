@@ -45,10 +45,10 @@ public class DetectNewParent : MonoBehaviour
                 //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
 
             }
-            else
-            {
-                transform.SetParent(null, true);
-            }
+        }
+        else if (transform.parent != null)
+        {
+            transform.SetParent(null, true);
         }
 
 
