@@ -109,6 +109,10 @@ public class PlayerMovement : MonoBehaviour
         // movePlayer (walking around)
         if (_isSlipping ) _pastHorizontalVelocity = _horizontalVelocity;
         _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
+        if (_horizontalVelocity.magnitude > 0.1f && _isGrounded)
+        {
+            AKWiseEvent.Post(gameObject);
+        }
 
         if (_isSlipping)
         {
