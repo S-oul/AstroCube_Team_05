@@ -12,6 +12,12 @@ public class MouseCamControl : MonoBehaviour
     [SerializeField] LayerMask _detectableLayer;
     [SerializeField] float _maxDistance;
 
+    //To Fix
+    //[SerializeField] bool _MoveOverlayCubeWithCamRota = true;
+
+    [SerializeField] bool _doReversedCam = true;
+
+
     Transform _oldTile;
 
     float _yRotation;
@@ -38,22 +44,29 @@ public class MouseCamControl : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * moveX);
 
-
-        Vector3 forward = _playerTransform.forward;
-        forward.y = 0; // Ignore vertical tilt if needed
-        float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
-        float aaaaa = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
-
-        if (aaaaa >= 315 || aaaaa < 135)
+        if (_doReversedCam)
         {
-            rubiksCubeController.CameraPlayerReversed = false;
+
+            Vector3 forward = _playerTransform.forward;
+            forward.y = 0; // Ignore vertical tilt if needed
+            float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
+            float aaaaa = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
+
+            if (aaaaa >= 315 || aaaaa < 135)
+            {
+                rubiksCubeController.CameraPlayerReversed = false;
+            }
+            else
+            {
+                rubiksCubeController.CameraPlayerReversed = true;
+            }
         }
-        else
+
+        /*if (_MoveOverlayCubeWithCamRota)
         {
-            rubiksCubeController.CameraPlayerReversed = true;
-        }
-        //_cameraOverlay.Rotate(Vector3.up * moveX);
-        //_cameraOverlay.Rotate(_cameraOverlay.forward * moveY);
+            _cameraOverlay.Rotate(Vector3.up * moveX);
+            _cameraOverlay.Rotate(_cameraOverlay.forward * moveY);
+        }*/
 
         //Raycast
         RaycastHit _raycastInfo;

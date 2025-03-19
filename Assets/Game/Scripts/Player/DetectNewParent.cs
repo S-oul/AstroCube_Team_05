@@ -11,9 +11,9 @@ public class DetectNewParent : MonoBehaviour
 
     private bool _doGravityRotation;
 
-    
-    
-    
+
+
+
     public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
 
 
@@ -21,20 +21,28 @@ public class DetectNewParent : MonoBehaviour
     private void Update()
     {
         RaycastHit _raycastInfo;
-        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer) && OldTilePlayerPosTransform != _raycastInfo.collider.transform)
+        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
         {
             OldTilePlayerPosTransform = _raycastInfo.collider.transform;
 
-            if (OldTilePlayerPos) OldTilePlayerPos.SetIsTileLock(false);
+            //if (OldTilePlayerPos) OldTilePlayerPos.SetIsTileLock(false);
 
-            _raycastInfo.transform.parent.TryGetComponent(out OldTilePlayerPos);
+
+
+            OldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
+            print(OldTilePlayerPos);
+            transform.SetParent(OldTilePlayerPos.transform, true);
+
+
+
             //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
-
-            if (OldTilePlayerPos)
-            {
-                OldTilePlayerPos.SetIsTileLock(true);
-            }
+            
         }
+        else 
+        {
+            transform.SetParent(null, true);
+        }
+
     }
 
     private void Start()
