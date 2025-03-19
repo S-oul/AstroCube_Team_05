@@ -9,46 +9,52 @@ public class DetectNewParent : MonoBehaviour
     Transform OldTilePlayerPosTransform;
 
 
+    [SerializeField] private bool _doGroundRotation;
+
     private bool _doGravityRotation;
 
 
 
 
     public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
-
-
-
-    private void Update()
-    {
-        RaycastHit _raycastInfo;
-        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
-        {
-            OldTilePlayerPosTransform = _raycastInfo.collider.transform;
-
-            //if (OldTilePlayerPos) OldTilePlayerPos.SetIsTileLock(false);
-
-
-
-            OldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
-            if (OldTilePlayerPos)
-            {
-                print(OldTilePlayerPos);
-                transform.SetParent(OldTilePlayerPos.transform, true);
-            }
-            //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
-
-        }
-        else
-        {
-            transform.SetParent(null, true);
-        }
-
-    }
+    public bool DoGroundRotation { get => _doGroundRotation; set => _doGroundRotation = value; }
 
     private void Start()
     {
         currentRotationDir = transform.up;
     }
+    private void Update()
+    {
+        if (_doGroundRotation)
+        {
+            RaycastHit _raycastInfo;
+            if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
+            {
+                OldTilePlayerPosTransform = _raycastInfo.collider.transform;
+
+                //if (OldTilePlayerPos) OldTilePlayerPos.SetIsTileLock(false);
+
+
+
+                OldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
+                if (OldTilePlayerPos)
+                {
+                    print(OldTilePlayerPos);
+                    transform.SetParent(OldTilePlayerPos.transform, true);
+                }
+                //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
+
+            }
+            else
+            {
+                transform.SetParent(null, true);
+            }
+        }
+
+
+    }
+
+
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {

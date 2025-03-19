@@ -24,6 +24,9 @@ public class RubiksCubeController : MonoBehaviour
 
     List<RubiksMovement> _replicatedScript = new List<RubiksMovement>();
 
+    Transform Player;
+    DetectNewParent _detectParentForGroundRotation;
+
     SliceAxis _selectedSlice = 0;
     private GameSettings _gameSettings;
 
@@ -40,6 +43,8 @@ public class RubiksCubeController : MonoBehaviour
 
     private void Awake()
     {
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
+        _detectParentForGroundRotation = Player.GetComponentInChildren<DetectNewParent>();
         if (_controlledCube != null) _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
         foreach (GameObject go in ReplicatedCube)
         {
@@ -118,6 +123,7 @@ public class RubiksCubeController : MonoBehaviour
             case SliceAxis.X:
                 if (_controlledScript.IsLockXAxis)
                 {
+                    _detectParentForGroundRotation.DoGroundRotation = false;
                     ActionSwitchLineCols();
                     return;
                 }
@@ -125,6 +131,8 @@ public class RubiksCubeController : MonoBehaviour
             case SliceAxis.Y:
                 if (_controlledScript.IsLockYAxis)
                 {
+                    print(_detectParentForGroundRotation);
+                    _detectParentForGroundRotation.DoGroundRotation = true;
                     ActionSwitchLineCols();
                     return;
                 }
@@ -132,6 +140,7 @@ public class RubiksCubeController : MonoBehaviour
             case SliceAxis.Z:
                 if (_controlledScript.IsLockZAxis)
                 {
+                    _detectParentForGroundRotation.DoGroundRotation = false;
                     ActionSwitchLineCols();
                     return;
                 }
