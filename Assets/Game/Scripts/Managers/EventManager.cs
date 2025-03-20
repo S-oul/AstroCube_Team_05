@@ -37,6 +37,7 @@ public class EventManager : MonoBehaviour
 
     //Player Events
     public static event Action<float> OnPlayerReset;
+    public static event Action<float> OnPlayerResetOnce;
 
     public static void TriggerPlayerWin()
     {
@@ -66,6 +67,10 @@ public class EventManager : MonoBehaviour
     public void TriggerReset()
     {
         OnPlayerReset?.Invoke(_gameSettings.ResetDuration);
+    }
+    public void TriggerResetOnce()
+    {
+        OnPlayerResetOnce?.Invoke(_gameSettings.ResetDuration/4);
     }
 
     public static void TriggerSceneStart()
