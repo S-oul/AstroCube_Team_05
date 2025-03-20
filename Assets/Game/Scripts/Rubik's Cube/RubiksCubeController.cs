@@ -51,7 +51,7 @@ public class RubiksCubeController : MonoBehaviour
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
-        ActionSwitchLineCols();
+        ActionSwitchLineCols(true);
     }
 
 
@@ -115,17 +115,18 @@ public class RubiksCubeController : MonoBehaviour
         _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
     }
 
-    public void ActionSwitchLineCols()
+    public void ActionSwitchLineCols(bool isLeft)
     {
 
-        _selectedSlice = (SliceAxis)((int)(_selectedSlice + 1) % 3);
+        _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
+        print((int)_selectedSlice);
         switch (_selectedSlice)
         {
             case SliceAxis.X:
                 _detectParentForGroundRotation.DoGroundRotation = false;
                 if (_controlledScript.IsLockXAxis)
                 {
-                    ActionSwitchLineCols();
+                    ActionSwitchLineCols(true);
                     return;
                 }
                 break;
@@ -133,7 +134,7 @@ public class RubiksCubeController : MonoBehaviour
                 _detectParentForGroundRotation.DoGroundRotation = true;
                 if (_controlledScript.IsLockYAxis)
                 {
-                    ActionSwitchLineCols();
+                    ActionSwitchLineCols(true);
                     return;
                 }
                 break;
@@ -141,7 +142,7 @@ public class RubiksCubeController : MonoBehaviour
                 _detectParentForGroundRotation.DoGroundRotation = false;
                 if (_controlledScript.IsLockZAxis)
                 {
-                    ActionSwitchLineCols();
+                    ActionSwitchLineCols(true);
                     return;
                 }
                 break;
