@@ -26,11 +26,18 @@ public class InputHandler : MonoBehaviour
         else Debug.LogError("playerMovment InputMap not found.");
     }
     #region Rubiks Cube Inputs
-    public void OnSwitchColumnsLine(InputAction.CallbackContext callbackContext)
+    public void OnSwitchColumnsLineLeft(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
-            _controller.ActionSwitchLineCols();
+            _controller.ActionSwitchLineCols(true);
+        }
+    }
+    public void OnSwitchColumnsLineRight(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            _controller.ActionSwitchLineCols(false);
         }
     }
     public void OnClockWise(InputAction.CallbackContext callbackContext)

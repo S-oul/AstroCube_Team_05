@@ -51,6 +51,8 @@ MonoBehaviour:
   ReplicatedCube: []
   ActualFace: {fileID: 0}
   _ShowStripLayerToPlayer: 1
+  _player: {fileID: 0}
+  _detectParentForGroundRotation: {fileID: 0}
   _detectableLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -116,7 +118,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3706481031665168761}
         m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
-        m_MethodName: OnSwitchColumnsLine
+        m_MethodName: OnSwitchColumnsLineLeft
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -272,6 +274,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0f690b63-220d-4fba-bb73-64d9c7e24342
     m_ActionName: MainScheme/ShowStrips[/Keyboard/t,/XInputControllerWindows/start]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3706481031665168761}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnSwitchColumnsLineRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ae37ff05-363d-4227-a863-d23dae0366db
+    m_ActionName: MainScheme/SwitchColumnsLineRight
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MainScheme
