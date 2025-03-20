@@ -42,7 +42,7 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerWin()
     {
         OnPlayerWin?.Invoke();
-        EventManager.OnSceneEnd();
+        EventManager.TriggerSceneEnd();
     }
 
     public static void TriggerPlayerLose()
