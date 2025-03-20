@@ -1,27 +1,24 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ElectricCircuitScript : MonoBehaviour
 {
     [SerializeField] private GameObject previousElectricPoint;
-    [SerializeField] private GameObject Editor_InputVisual;
-    [SerializeField] private GameObject Editor_OutputVisual;
+    [SerializeField] private List<GameObject> Editor_CircuitVisual;
+    
 
-    [SerializeField] private float lineStartWidth = 0.05f;  // Largeur de début du faisceau
-    [SerializeField] private float lineEndWidth = 0.05f;    // Largeur de fin du faisceau
+    [SerializeField] private float lineStartWidth = 0.05f; 
+    [SerializeField] private float lineEndWidth = 0.05f;   
 
     private LineRenderer lineRenderer;
     private ParticleSystem electricParticles;
 
     private void Awake()
     {
-        if (Editor_InputVisual != null)
+        foreach (GameObject electricPoint in Editor_CircuitVisual)
         {
-            Editor_InputVisual.SetActive(false);
-        }
-        if (Editor_OutputVisual != null)
-        {
-            Editor_OutputVisual.SetActive(false);
+            electricPoint.SetActive(false);
         }
 
         // Ajouter un LineRenderer pour dessiner la connexion
