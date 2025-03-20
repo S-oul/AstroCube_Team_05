@@ -10,20 +10,20 @@ public class ChangeScene : MonoBehaviour
 
     private void Awake()
     {
-        EventManager.OnPlayerWin += ChangeScener;
+        EventManager.OnSceneChange += ChangeScener;
     }
     private void OnDisable()
     {
-        EventManager.OnPlayerWin -= ChangeScener;
+        EventManager.OnSceneChange -= ChangeScener;
     }
     private void OnDestroy()
     {
-        EventManager.OnPlayerWin -= ChangeScener;
+        EventManager.OnSceneChange -= ChangeScener;
     }
     public void ChangeScener()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        EventManager.OnPlayerWin -= ChangeScener;
+        EventManager.OnSceneChange -= ChangeScener;
         SceneManager.LoadScene(scene);
     }
 

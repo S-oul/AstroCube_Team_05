@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using AK.Wwise;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -30,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("NoClip")]
     [SerializeField] bool _resetRotationWhenNoClip = false;
+
+    [Header("WISE")]
+    [SerializeField] AK.Wwise.Event AKWiseEvent ;
+
+
 
     Vector3 _gravityDirection;
 
@@ -68,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _gameSettings = GameManager.Instance.Settings;
-        GetComponent<DetectNewParent>().enabled = _gameSettings.EnableGravityRotation;
+        GetComponent<DetectNewParent>().DoGravityRotation = _gameSettings.EnableGravityRotation;
         
         _defaultCameraHeight = _camera.transform.localPosition.y;
         _defaultControllerHeight = _controller.height;
@@ -151,19 +154,6 @@ public class PlayerMovement : MonoBehaviour
                          (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * 
                          Time.deltaTime);
         _controller.Move(_verticalVelocity * Time.deltaTime);
-
-        // gravity rotation
-        if (_gameSettings.EnableGravityRotation == false && transform.parent != null)
-        {
-            GetComponent<DetectNewParent>().enabled = false;
-            transform.SetParent(null);
-        }        
-        
-        if (_gameSettings.EnableGravityRotation == true && transform.parent == null)
-        {
-            Transform parentChangerChild = transform.GetChild(3);
-            GetComponent<DetectNewParent>().enabled = true;
-        }
 
         _ApplyCameraHeight(newCamPos.y);
     }

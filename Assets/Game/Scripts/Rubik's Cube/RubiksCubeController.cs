@@ -19,8 +19,13 @@ public class RubiksCubeController : MonoBehaviour
 
     [SerializeField] List<GameObject> ReplicatedCube = new List<GameObject>();
     [SerializeField] SelectionCube ActualFace;
+    
+    [SerializeField] bool _ShowStripLayerToPlayer  =true;
 
     List<RubiksMovement> _replicatedScript = new List<RubiksMovement>();
+
+    Transform Player;
+    DetectNewParent _detectParentForGroundRotation;
 
     SliceAxis _selectedSlice = 0;
     private GameSettings _gameSettings;
@@ -32,16 +37,21 @@ public class RubiksCubeController : MonoBehaviour
     #region Accesseur
 
     public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
+    public bool ShowStripLayerToPlayer { get => _ShowStripLayerToPlayer; set => _ShowStripLayerToPlayer = value; }
 
     #endregion
+
     private void Awake()
     {
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
+        _detectParentForGroundRotation = Player.GetComponentInChildren<DetectNewParent>();
         if (_controlledCube != null) _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
         foreach (GameObject go in ReplicatedCube)
         {
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
+        ActionSwitchLineCols();
     }
 
 
@@ -92,7 +102,7 @@ public class RubiksCubeController : MonoBehaviour
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 
-        if(TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
+        if(_ShowStripLayerToPlayer && TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
         {
             ActualFace.Select(SelectionCube.SelectionMode.CUBE);
             _canPlayerMoveAxis = true;
@@ -113,6 +123,7 @@ public class RubiksCubeController : MonoBehaviour
             case SliceAxis.X:
                 if (_controlledScript.IsLockXAxis)
                 {
+                    _detectParentForGroundRotation.DoGroundRotation = false;
                     ActionSwitchLineCols();
                     return;
                 }
@@ -120,6 +131,8 @@ public class RubiksCubeController : MonoBehaviour
             case SliceAxis.Y:
                 if (_controlledScript.IsLockYAxis)
                 {
+                    print(_detectParentForGroundRotation);
+                    _detectParentForGroundRotation.DoGroundRotation = true;
                     ActionSwitchLineCols();
                     return;
                 }
@@ -127,12 +140,13 @@ public class RubiksCubeController : MonoBehaviour
             case SliceAxis.Z:
                 if (_controlledScript.IsLockZAxis)
                 {
+                    _detectParentForGroundRotation.DoGroundRotation = false;
                     ActionSwitchLineCols();
                     return;
                 }
                 break;
         }
-        SetActualCube(ActualFace.transform);
+        if(ActualFace) SetActualCube(ActualFace.transform);
     }
 
     public void ActionMakeTurn(bool clockwise)

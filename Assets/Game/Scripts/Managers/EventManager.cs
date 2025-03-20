@@ -25,6 +25,8 @@ public class EventManager : MonoBehaviour
     public static event Action OnPlayerWin;
     public static event Action OnPlayerLose;
 
+    public static event Action OnSceneChange;
+
 
     //Rubik's Cube Events
     public static event Action OnCubeRotated;
@@ -44,6 +46,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerLose()
     {
         OnPlayerLose?.Invoke();
+    }    
+    
+    public static void TriggerSceneChange()
+    {
+        OnSceneChange?.Invoke();
     }
 
     public static void TriggerButtonPressed()
