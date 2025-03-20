@@ -251,11 +251,15 @@ MonoBehaviour:
     m_Bits: 384
   _speed: 12
   _gravity: -9.81
-  _canJump: 1
+  _canJump: 0
   _canCrouch: 1
   _slippingMovementControl: 0.01
   _enableGravityRotation: 0
   _resetRotationWhenNoClip: 0
+  AKWiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
 --- !u!114 &4747696836999268114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +315,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   OldTilePlayerPos: {fileID: 0}
+  _doGroundRotation: 0
 --- !u!114 &2867457531972925666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +350,7 @@ PrefabInstance:
     - target: {fileID: 7181402158563568351, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_Cameras.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8311390107998659293, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
