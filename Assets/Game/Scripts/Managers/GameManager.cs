@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour
 
     void ChangeScene()
     {
-        Debug.Log("Changing to Shane's Scene");
         SceneManager.LoadScene(nextScene);
     }
 }

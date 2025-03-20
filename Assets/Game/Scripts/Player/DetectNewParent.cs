@@ -39,7 +39,7 @@ public class DetectNewParent : MonoBehaviour
                 OldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
                 if (OldTilePlayerPos)
                 {
-                    print(OldTilePlayerPos);
+                    //print(OldTilePlayerPos);
                     transform.SetParent(OldTilePlayerPos.transform, true);
                 }
                 //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
