@@ -2,13 +2,23 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameSettings Settings => settings;
+    [SerializeField] private GameSettings settings;
+
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
 
+    public static GameManager Instance => instance;
+    private static GameManager instance;
+
+    private void Awake()
+    {
+        if (instance) Destroy(this);
+        else instance = this;
+    }
+
     private void OnEnable()
     {
-        EventManager.OnPlayerWin += ShowWinScreen;
-        EventManager.OnPlayerLose += ShowLoseScreen;
     }
 
     private void OnDisable()

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTrigger : MonoBehaviour
@@ -5,11 +6,13 @@ public class PlayerTrigger : MonoBehaviour
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("VictoryZone"))
         {
             EventManager.TriggerPlayerWin();
+            Destroy(other.gameObject);
         }
         if (other.CompareTag("DeathZone"))
         {

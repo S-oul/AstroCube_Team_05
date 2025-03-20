@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -5,18 +6,38 @@ using UnityEngine.InputSystem.XR;
 public class InputHandler : MonoBehaviour
 {
     [SerializeField] PlayerHold _playerHold;
+    [SerializeField] PlayerMovement _playerMovement;
     RubiksCubeController _controller;
+
+    PlayerInput _playerInput;
 
     void Awake()
     {
-        _controller = GetComponent<RubiksCubeController>();
-    }
 
-    public void OnSwitchColumnsLine(InputAction.CallbackContext callbackContext)
+        _controller = GetComponent<RubiksCubeController>();
+        _playerInput = GetComponent<PlayerInput>();
+
+        InputActionMap _actionMap = _playerInput.actions.FindActionMap("PlayerMovement");
+        if (_actionMap != null)
+        {
+            if (_playerMovement != null) _actionMap.Enable();
+            else Debug.LogError("playerMovement script is missing from InputHandler Inspector");
+        }
+        else Debug.LogError("playerMovment InputMap not found.");
+    }
+    #region Rubiks Cube Inputs
+    public void OnSwitchColumnsLineLeft(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
-            _controller.ActionSwitchLineCols();
+            _controller.ActionSwitchLineCols(true);
+        }
+    }
+    public void OnSwitchColumnsLineRight(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            _controller.ActionSwitchLineCols(false);
         }
     }
     public void OnClockWise(InputAction.CallbackContext callbackContext)
@@ -38,7 +59,7 @@ public class InputHandler : MonoBehaviour
     {
         if (callbackContext.performed)
         {
-            _controller.ActionRotateCube(callbackContext.ReadValue<Vector2>());
+            _controller.ActionRotateCubeUI(callbackContext.ReadValue<Vector2>());
         }
     }
 
@@ -49,6 +70,7 @@ public class InputHandler : MonoBehaviour
             EventManager.Instance.TriggerReset();
         }
     }
+    #endregion
     public void OnInteract(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -59,13 +81,46 @@ public class InputHandler : MonoBehaviour
     }
 
 
-    private void OnGUI()
+
+    #region Player Movement & NoClip Movement
+    public void OnMovement(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
-        GUI.Label(new Rect(10, 10, 300, 20), "ZQSD : A & E to turn Cube, F to swap Face");
-        GUI.Label(new Rect(10, 30, 300, 20), "'Trigger or L2/R2' to turn Cube, 'Bumper otr R1/L1' to swap Face");
-        GUI.Label(new Rect(10, 50, 300, 20), "'V' or 'WestButton' to return Room to normal");
-
-
+        _playerMovement.ActionMovement(callbackContext.ReadValue<Vector2>());
     }
+    public void OnJump(InputAction.CallbackContext callbackContext)
+    {
+        if (!callbackContext.performed)
+        {
+            _playerMovement.ActionJump();
+        }
+    }
+    public void OnCrouch(InputAction.CallbackContext callbackContext)
+    {
+        if (!callbackContext.performed)
+        {
+            _playerMovement.ActionCrouch();
+        }
+    }
+    #endregion
+
+    #region Noclip
+    public void OnVerticalMovement(InputAction.CallbackContext callbackContext)
+    {
+        if (!callbackContext.performed)
+        {
+            _playerMovement.ActionVerticalMovement(callbackContext.ReadValue<float>());
+        }
+    }
+    #endregion
+
+    #region UI
+    public void OnShowStripLayer(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            _controller.ShowStripLayerToPlayer = !_controller.ShowStripLayerToPlayer;
+        }
+    }
+    #endregion
 
 }

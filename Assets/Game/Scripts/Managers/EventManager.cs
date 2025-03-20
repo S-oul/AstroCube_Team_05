@@ -1,15 +1,21 @@
 using NaughtyAttributes;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    [SerializeField] float _timeToReset = 2;
-    public static EventManager Instance;
+    public static EventManager Instance => instance;
+    private static EventManager instance;
+
+    private GameSettings _gameSettings;
+
     private void Awake()
     {
-        if(Instance) Destroy(this);
-        else Instance = this;
+        if (instance) Destroy(this);
+        else instance = this;
+
+        _gameSettings = GameManager.Instance.Settings;
     }
 
     //Game Events
@@ -18,6 +24,8 @@ public class EventManager : MonoBehaviour
 
     public static event Action OnPlayerWin;
     public static event Action OnPlayerLose;
+
+    public static event Action OnSceneChange;
 
 
     //Rubik's Cube Events
@@ -38,6 +46,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerLose()
     {
         OnPlayerLose?.Invoke();
+    }    
+    
+    public static void TriggerSceneChange()
+    {
+        OnSceneChange?.Invoke();
     }
 
     public static void TriggerButtonPressed()
@@ -52,7 +65,7 @@ public class EventManager : MonoBehaviour
 
     public void TriggerReset()
     {
-        OnPlayerReset?.Invoke(_timeToReset);
+        OnPlayerReset?.Invoke(_gameSettings.ResetDuration);
     }
 
     public static void TriggerSceneStart()
