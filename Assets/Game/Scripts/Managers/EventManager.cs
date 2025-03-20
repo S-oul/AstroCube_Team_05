@@ -41,6 +41,7 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerWin()
     {
         OnPlayerWin?.Invoke();
+        EventManager.OnSceneEnd();
     }
 
     public static void TriggerPlayerLose()

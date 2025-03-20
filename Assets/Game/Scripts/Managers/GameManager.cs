@@ -1,4 +1,6 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
+
+    [SerializeField] string nextScene;
 
     public static GameManager Instance => instance;
     private static GameManager instance;
@@ -19,10 +23,13 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
+        EventManager.OnSceneChange += ChangeScene;
     }
 
     private void OnDisable()
     {
+        EventManager.OnSceneChange -= ChangeScene;
+        
         EventManager.OnPlayerWin -= ShowWinScreen;
         EventManager.OnPlayerLose -= ShowLoseScreen;
     }
@@ -41,6 +48,11 @@ public class GameManager : MonoBehaviour
     void ShowLoseScreen()
     {
         loseScreen.SetActive(true);
-        Debug.Log("Défaite !");
+        Debug.Log("Dï¿½faite !");
+    }
+
+    void ChangeScene()
+    {
+        SceneManager.LoadScene(nextScene);
     }
 }
