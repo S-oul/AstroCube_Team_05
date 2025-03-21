@@ -119,7 +119,7 @@ public class RubiksCubeController : MonoBehaviour
     {
 
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
-        print((int)_selectedSlice);
+        //print((int)_selectedSlice);
         switch (_selectedSlice)
         {
             case SliceAxis.X:
