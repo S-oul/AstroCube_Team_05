@@ -46,9 +46,18 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SwitchColumnsLine"",
+                    ""name"": ""SwitchColumnsLineLeft"",
                     ""type"": ""Button"",
                     ""id"": ""bfbdc334-90fb-4ae4-baf7-bc9711bf7248"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchColumnsLineRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""ae37ff05-363d-4227-a863-d23dae0366db"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -60,7 +69,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""id"": ""78276d6b-79fd-420a-8476-517d456cada6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -143,18 +152,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""SwitchColumnsLine"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""55fcbdcc-331a-4126-a400-65a65315e4a2"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""SwitchColumnsLine"",
+                    ""action"": ""SwitchColumnsLineLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -165,7 +163,18 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""SwitchColumnsLine"",
+                    ""action"": ""SwitchColumnsLineLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d15c155-8593-44ba-abde-ab03745d782c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SwitchColumnsLineRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -627,6 +636,12 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""LockPlayerMov"",
+            ""id"": ""36e24ca8-43f0-4e9e-98b3-81b50699bd57"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": [
@@ -696,7 +711,8 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_MainScheme = asset.FindActionMap("MainScheme", throwIfNotFound: true);
         m_MainScheme_ClockWise = m_MainScheme.FindAction("ClockWise", throwIfNotFound: true);
         m_MainScheme_CounterClockWise = m_MainScheme.FindAction("CounterClockWise", throwIfNotFound: true);
-        m_MainScheme_SwitchColumnsLine = m_MainScheme.FindAction("SwitchColumnsLine", throwIfNotFound: true);
+        m_MainScheme_SwitchColumnsLineLeft = m_MainScheme.FindAction("SwitchColumnsLineLeft", throwIfNotFound: true);
+        m_MainScheme_SwitchColumnsLineRight = m_MainScheme.FindAction("SwitchColumnsLineRight", throwIfNotFound: true);
         m_MainScheme_ResetRoom = m_MainScheme.FindAction("ResetRoom", throwIfNotFound: true);
         m_MainScheme_Interact = m_MainScheme.FindAction("Interact", throwIfNotFound: true);
         m_MainScheme_MoveOverlayCube = m_MainScheme.FindAction("MoveOverlayCube", throwIfNotFound: true);
@@ -710,6 +726,8 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_NoClip = asset.FindActionMap("NoClip", throwIfNotFound: true);
         m_NoClip_Movement = m_NoClip.FindAction("Movement", throwIfNotFound: true);
         m_NoClip_VerticalMovement = m_NoClip.FindAction("VerticalMovement", throwIfNotFound: true);
+        // LockPlayerMov
+        m_LockPlayerMov = asset.FindActionMap("LockPlayerMov", throwIfNotFound: true);
     }
 
     ~@PlayerAction()
@@ -717,6 +735,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_MainScheme.enabled, "This will cause a leak and performance issues, PlayerAction.MainScheme.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, PlayerAction.PlayerMovement.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_NoClip.enabled, "This will cause a leak and performance issues, PlayerAction.NoClip.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_LockPlayerMov.enabled, "This will cause a leak and performance issues, PlayerAction.LockPlayerMov.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -780,7 +799,8 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private List<IMainSchemeActions> m_MainSchemeActionsCallbackInterfaces = new List<IMainSchemeActions>();
     private readonly InputAction m_MainScheme_ClockWise;
     private readonly InputAction m_MainScheme_CounterClockWise;
-    private readonly InputAction m_MainScheme_SwitchColumnsLine;
+    private readonly InputAction m_MainScheme_SwitchColumnsLineLeft;
+    private readonly InputAction m_MainScheme_SwitchColumnsLineRight;
     private readonly InputAction m_MainScheme_ResetRoom;
     private readonly InputAction m_MainScheme_Interact;
     private readonly InputAction m_MainScheme_MoveOverlayCube;
@@ -791,7 +811,8 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public MainSchemeActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @ClockWise => m_Wrapper.m_MainScheme_ClockWise;
         public InputAction @CounterClockWise => m_Wrapper.m_MainScheme_CounterClockWise;
-        public InputAction @SwitchColumnsLine => m_Wrapper.m_MainScheme_SwitchColumnsLine;
+        public InputAction @SwitchColumnsLineLeft => m_Wrapper.m_MainScheme_SwitchColumnsLineLeft;
+        public InputAction @SwitchColumnsLineRight => m_Wrapper.m_MainScheme_SwitchColumnsLineRight;
         public InputAction @ResetRoom => m_Wrapper.m_MainScheme_ResetRoom;
         public InputAction @Interact => m_Wrapper.m_MainScheme_Interact;
         public InputAction @MoveOverlayCube => m_Wrapper.m_MainScheme_MoveOverlayCube;
@@ -811,9 +832,12 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @CounterClockWise.started += instance.OnCounterClockWise;
             @CounterClockWise.performed += instance.OnCounterClockWise;
             @CounterClockWise.canceled += instance.OnCounterClockWise;
-            @SwitchColumnsLine.started += instance.OnSwitchColumnsLine;
-            @SwitchColumnsLine.performed += instance.OnSwitchColumnsLine;
-            @SwitchColumnsLine.canceled += instance.OnSwitchColumnsLine;
+            @SwitchColumnsLineLeft.started += instance.OnSwitchColumnsLineLeft;
+            @SwitchColumnsLineLeft.performed += instance.OnSwitchColumnsLineLeft;
+            @SwitchColumnsLineLeft.canceled += instance.OnSwitchColumnsLineLeft;
+            @SwitchColumnsLineRight.started += instance.OnSwitchColumnsLineRight;
+            @SwitchColumnsLineRight.performed += instance.OnSwitchColumnsLineRight;
+            @SwitchColumnsLineRight.canceled += instance.OnSwitchColumnsLineRight;
             @ResetRoom.started += instance.OnResetRoom;
             @ResetRoom.performed += instance.OnResetRoom;
             @ResetRoom.canceled += instance.OnResetRoom;
@@ -836,9 +860,12 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @CounterClockWise.started -= instance.OnCounterClockWise;
             @CounterClockWise.performed -= instance.OnCounterClockWise;
             @CounterClockWise.canceled -= instance.OnCounterClockWise;
-            @SwitchColumnsLine.started -= instance.OnSwitchColumnsLine;
-            @SwitchColumnsLine.performed -= instance.OnSwitchColumnsLine;
-            @SwitchColumnsLine.canceled -= instance.OnSwitchColumnsLine;
+            @SwitchColumnsLineLeft.started -= instance.OnSwitchColumnsLineLeft;
+            @SwitchColumnsLineLeft.performed -= instance.OnSwitchColumnsLineLeft;
+            @SwitchColumnsLineLeft.canceled -= instance.OnSwitchColumnsLineLeft;
+            @SwitchColumnsLineRight.started -= instance.OnSwitchColumnsLineRight;
+            @SwitchColumnsLineRight.performed -= instance.OnSwitchColumnsLineRight;
+            @SwitchColumnsLineRight.canceled -= instance.OnSwitchColumnsLineRight;
             @ResetRoom.started -= instance.OnResetRoom;
             @ResetRoom.performed -= instance.OnResetRoom;
             @ResetRoom.canceled -= instance.OnResetRoom;
@@ -984,6 +1011,44 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         }
     }
     public NoClipActions @NoClip => new NoClipActions(this);
+
+    // LockPlayerMov
+    private readonly InputActionMap m_LockPlayerMov;
+    private List<ILockPlayerMovActions> m_LockPlayerMovActionsCallbackInterfaces = new List<ILockPlayerMovActions>();
+    public struct LockPlayerMovActions
+    {
+        private @PlayerAction m_Wrapper;
+        public LockPlayerMovActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_LockPlayerMov; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LockPlayerMovActions set) { return set.Get(); }
+        public void AddCallbacks(ILockPlayerMovActions instance)
+        {
+            if (instance == null || m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(ILockPlayerMovActions instance)
+        {
+        }
+
+        public void RemoveCallbacks(ILockPlayerMovActions instance)
+        {
+            if (m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ILockPlayerMovActions instance)
+        {
+            foreach (var item in m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public LockPlayerMovActions @LockPlayerMov => new LockPlayerMovActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1033,7 +1098,8 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     {
         void OnClockWise(InputAction.CallbackContext context);
         void OnCounterClockWise(InputAction.CallbackContext context);
-        void OnSwitchColumnsLine(InputAction.CallbackContext context);
+        void OnSwitchColumnsLineLeft(InputAction.CallbackContext context);
+        void OnSwitchColumnsLineRight(InputAction.CallbackContext context);
         void OnResetRoom(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMoveOverlayCube(InputAction.CallbackContext context);
@@ -1049,5 +1115,8 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnVerticalMovement(InputAction.CallbackContext context);
+    }
+    public interface ILockPlayerMovActions
+    {
     }
 }
