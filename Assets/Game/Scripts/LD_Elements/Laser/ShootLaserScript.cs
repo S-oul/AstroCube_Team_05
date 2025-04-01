@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ShootLaserScript : MonoBehaviour
 {
-    [SerializeField] private Material material;
-    private LaserBeam beam;
-    private bool isLaserActive = false;
+    [SerializeField] private Material _material;
+    private LaserBeam _beam;
+    private bool _isLaserActive = false;
 
     private void OnEnable()
     {
@@ -31,21 +31,21 @@ public class ShootLaserScript : MonoBehaviour
             DeactivateLaser();
         }
 
-        if (isLaserActive)
+        if (_isLaserActive)
         {
             Destroy(GameObject.Find("Laser Beam"));
-            beam = new LaserBeam(gameObject.transform.position, gameObject.transform.right, material);
+            _beam = new LaserBeam(gameObject.transform.position, gameObject.transform.right, _material);
         }
     }
 
     private void ActivateLaser()
     {
-        isLaserActive = true;
+        _isLaserActive = true;
     }
 
     private void DeactivateLaser()
     {
-        isLaserActive = false;
+        _isLaserActive = false;
         Destroy(GameObject.Find("Laser Beam"));
     }
 }

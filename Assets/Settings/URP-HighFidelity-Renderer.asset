@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5925261178125771349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b243a9939705f434fb491ca6e7ccc04c, type: 3}
+  m_Name: Axis Selection
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Settings:
+    SelectionMaterial: {fileID: 2100000, guid: 4506b58582bf8af4a8cadcf07aa3e4b6, type: 2}
+    SelectionRenderingLayerMask: 256
+    passEvent: 500
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53,7 +70,10 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
-  m_RendererFeatureMap: adc0de57c6d2eee5
+  - {fileID: -5925261178125771349}
+  - {fileID: 7783406826304031758}
+  - {fileID: 655985460136757421}
+  m_RendererFeatureMap: adc0de57c6d2eee5ab9d66145a3ec5ad0ecc33304537046cadc845e94c871a09
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -96,3 +116,37 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &655985460136757421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b243a9939705f434fb491ca6e7ccc04c, type: 3}
+  m_Name: LockSelection
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Settings:
+    SelectionMaterial: {fileID: 2100000, guid: a8cc2a0665b80a940b723cd79a200aa0, type: 2}
+    SelectionRenderingLayerMask: 64
+    passEvent: 500
+--- !u!114 &7783406826304031758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b243a9939705f434fb491ca6e7ccc04c, type: 3}
+  m_Name: Cube Selection
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Settings:
+    SelectionMaterial: {fileID: 2100000, guid: 75b88fc7761d9be4c977b770b0e31701, type: 2}
+    SelectionRenderingLayerMask: 128
+    passEvent: 500

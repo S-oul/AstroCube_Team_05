@@ -1,20 +1,41 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public GameSettings Settings => settings;
+    [SerializeField] private GameSettings settings;
+
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
 
+    [SerializeField] string nextScene;
+
+    public static GameManager Instance => instance;
+    private static GameManager instance;
+
+    private void Awake()
+    {
+        if (instance) Destroy(this);
+        else instance = this;
+    }
+
     private void OnEnable()
     {
-        EventManager.OnPlayerWin += ShowWinScreen;
-        EventManager.OnPlayerLose += ShowLoseScreen;
+        EventManager.OnSceneChange += ChangeScene;
     }
 
     private void OnDisable()
     {
+        EventManager.OnSceneChange -= ChangeScene;
+        
         EventManager.OnPlayerWin -= ShowWinScreen;
         EventManager.OnPlayerLose -= ShowLoseScreen;
+    }
+
+    private void Start()
+    {
+        EventManager.TriggerSceneStart();
     }
 
     void ShowWinScreen()
@@ -26,6 +47,11 @@ public class GameManager : MonoBehaviour
     void ShowLoseScreen()
     {
         loseScreen.SetActive(true);
-        Debug.Log("Défaite !");
+        Debug.Log("Dï¿½faite !");
+    }
+
+    void ChangeScene()
+    {
+        SceneManager.LoadScene(nextScene);
     }
 }

@@ -5,20 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    public string scene;
     [SerializeField] bool PToReturnToMenu = true;
-
-    public void ChangeScener()
-    {
-        Debug.Log("Changing Scene to " + scene);
-        SceneManager.LoadScene(scene);
-    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P) && PToReturnToMenu)
         {
             Cursor.lockState = CursorLockMode.None;
+            EventManager.TriggerSceneEnd();
             SceneManager.LoadScene("StartMenu");
         }
     }
