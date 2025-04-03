@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("WISE")]
     [SerializeField] AK.Wwise.Event AKWiseEvent;
 
+
+
     Vector3 _gravityDirection;
 
     float _floorDistance = 0.1f;
@@ -65,36 +67,10 @@ public class PlayerMovement : MonoBehaviour
 
     public float defaultSpeed { get; private set; }
 
+
     private float _timerBeforeNextStep = 0;
     public float _timerTNextStep = 1;
 
-    //External Controlable Objects
-    [SerializeField] GameObject _externalControlableRotableObject;
-    Vector2 _externalInput = Vector2.zero;
-
-    // Lock movement and bobbing
-    bool _isLocked = true;
-    public bool IsLocked
-    {
-        get => _isLocked;
-        set
-        {
-            _isLocked = value;
-            if (_isLocked)
-            {
-                _xInput = 0;
-                _zInput = 0;
-                _yInput = 0;
-                _jumpInput = false;
-                _crouchInput = false;
-                _controller.height = _defaultControllerHeight;
-                _controller.center = _defaultControllerCenter;
-                newCamPos = _camera.transform.localPosition;
-                newCamPos.y = _defaultCameraHeight;
-                _ApplyCameraHeight(_defaultCameraHeight);
-            }
-        }
-    }
 
     void Start()
     {
@@ -107,26 +83,12 @@ public class PlayerMovement : MonoBehaviour
 
         defaultSpeed = _gameSettings.PlayerMoveSpeed;
         _currentMoveSpeed = defaultSpeed;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_isLocked)
-        {
-            _horizontalVelocity = Vector3.zero;
-            _verticalVelocity = Vector3.zero;
-            _ApplyCameraHeight(_camera.transform.localPosition.y);
-
-            if (_externalControlableRotableObject != null)
-            {
-                float rotationSpeed = 100f;
-                Vector3 rotationDelta = new Vector3(0f, _externalInput.x, -_externalInput.y) * rotationSpeed * Time.deltaTime;
-                _externalControlableRotableObject.transform.Rotate(rotationDelta, Space.Self);
-            }
-            return;
-        }
-
         /*
         // collect player inputs
         _xInput = Input.GetAxis("Horizontal");
@@ -199,12 +161,11 @@ public class PlayerMovement : MonoBehaviour
 
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
+        ;
     }
 
     void ExecuteFootStep()
     {
-        if (_isLocked) return;
-
         if (_isWalking)
         {
             _timerBeforeNextStep += Time.deltaTime;
@@ -224,24 +185,16 @@ public class PlayerMovement : MonoBehaviour
     #region Inputs
     public void ActionMovement(Vector2 direction)
     {
-        if (_isLocked)
-        {
-            _externalInput = direction;
-            return;
-        }
-
         //Debug.Log("actionMovement direction is " + direction);
         _xInput = direction.x;
         _zInput = direction.y;
     }
     public void ActionJump()
     {
-        if (_isLocked) return;
         _jumpInput = _canJump;
     }
     public void ActionCrouch()
     {
-        if (_isLocked) return;
         _crouchInput = _canCrouch;
     }
     #endregion
@@ -320,7 +273,6 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ActionVerticalMovement(float direction)
     {
-        if (_isLocked) return;
         _yInput = direction;
     }
 }
