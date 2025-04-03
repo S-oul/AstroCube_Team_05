@@ -4,11 +4,13 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
 		_SegmentCount("Segment Count", Float) = 4
+        _Alpha ("Opacity", Float) = 1.0 // New property for opacity control
     }
     SubShader
     {
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
+        Blend SrcAlpha OneMinusSrcAlpha // Enable transparency blending
 
         Pass
         {
@@ -40,6 +42,7 @@
 
             sampler2D _MainTex;
 			float _SegmentCount;
+            float _Alpha; // New variable for opacity
 
             float4 frag (v2f i) : SV_Target
             {
@@ -63,7 +66,11 @@
 				// Reflect outside the inner circle boundary.
 				uv = max(min(uv, 2.0 - uv), -uv);
 
-				return tex2D(_MainTex, uv);
+                // Sample the texture and apply opacity
+                float4 color = tex2D(_MainTex, uv);
+                color.a *= _Alpha; // Apply the opacity multiplier
+
+				return color;
             }
             ENDCG
         }
