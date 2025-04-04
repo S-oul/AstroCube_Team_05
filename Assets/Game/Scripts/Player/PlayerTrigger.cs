@@ -5,7 +5,15 @@ public class PlayerTrigger : MonoBehaviour
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
 
+    PlayerMovement _playerMovement;
+    CharacterController _characterController;
 
+    FloatingZone _flotingZone;
+    private void Start()
+    {
+        _playerMovement = GetComponent<PlayerMovement>();
+        _characterController = GetComponent<CharacterController>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("VictoryZone"))
@@ -13,32 +21,42 @@ public class PlayerTrigger : MonoBehaviour
             EventManager.TriggerPlayerWin();
             Destroy(other.gameObject);
         }
-        if (other.CompareTag("DeathZone"))
+        else if (other.CompareTag("DeathZone"))
         {
             EventManager.TriggerPlayerLose();
         }
-
-        if (other.gameObject.tag == "SlipperyZone")
+        else if (other.CompareTag("SlipperyZone"))
         {
-            GetComponent<PlayerMovement>().SetSlippingState(true);
+            _playerMovement.SetSlippingState(true);
+        }
+        else if (other.CompareTag("SpeedZone"))
+        {
+            _playerMovement.SetSpeed(_playerMovement.defaultSpeed * newSpeedMultiplyer);
+        }
+        else if (other.CompareTag("GravityZone"))
+        {
+            _flotingZone = other.transform.GetComponent<FloatingZone>();
         }
 
-        if (other.gameObject.tag == "SpeedZone")
-        {
-            GetComponent<PlayerMovement>().SetSpeed(GetComponent<PlayerMovement>().defaultSpeed * newSpeedMultiplyer);
-        }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (_flotingZone && other.CompareTag("GravityZone"))
+        {
+            _characterController.Move(Vector3.up * _flotingZone.GravityForce * Time.deltaTime);
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "SlipperyZone")
+        if (other.CompareTag("SlipperyZone"))
         {
-            GetComponent<PlayerMovement>().SetSlippingState(false);
+            _playerMovement.SetSlippingState(false);
         }
 
-        if (other.gameObject.tag == "SpeedZone")
+        if (other.CompareTag("SpeedZone"))
         {
-            GetComponent<PlayerMovement>().SetSpeedToDefault();
+            _playerMovement.SetSpeedToDefault();
         }
     }
 }
