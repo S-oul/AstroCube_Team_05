@@ -47,7 +47,7 @@ jobs:
           find . -iname "globalgamemanager*" -exec rm -f {} \; || true
 
       - name: Setup Wwise SDK
-        uses: Audiokinetic/setup-wwise@Main
+        uses: Audiokinetic/setup-wwise@main
         with:
           wwise-version: 2024.3.1
           email: ${{ secrets.WWISE_EMAIL }}
