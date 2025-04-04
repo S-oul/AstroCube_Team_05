@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - Dev
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -46,22 +45,12 @@ jobs:
           echo "Removing globalgamemanager files..."
           find . -iname "globalgamemanager*" -exec rm -f {} \; || true
 
-      - name: Setup Wwise SDK (placeholder)
-        shell: powershell
-        env:
-          WWISE_EMAIL: ${{ secrets.WWISE_EMAIL }}
-          WWISE_PASSWORD: ${{ secrets.WWISE_PASSWORD }}
-        run: |
-          $wwiseVersion = "2024.3.1"
-          $wwiseRoot = "$env:USERPROFILE\Wwise\$wwiseVersion"
-          $wwiseSdk = "$wwiseRoot\SDK"
-
-          # Simule l'installation (à remplacer par un vrai téléchargement/installation depuis Audiokinetic)
-          New-Item -ItemType Directory -Force -Path $wwiseSdk | Out-Null
-          Write-Host "Simulated Wwise SDK installation at $wwiseSdk"
-
-          "WWISEROOT=$wwiseRoot" | Out-File -FilePath $env:GITHUB_ENV -Append
-          "WWISESDK=$wwiseSdk" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - name: Setup Wwise SDK
+        uses: Audiokinetic/setup-wwise@v1
+        with:
+          wwise-version: 2022.1
+          email: ${{ secrets.WWISE_EMAIL }}
+          password: ${{ secrets.WWISE_PASSWORD }}
 
       - name: Build with Unity
         uses: game-ci/unity-builder@v4
@@ -84,41 +73,41 @@ jobs:
         shell: bash
         run: |
           curl -X POST \
-            -H "Content-Type: application/json" \
-            -d '{
-              "username": "Build Bot",
-              "embeds": [{
-                "title": "✅ '"${{ env.BUILD_TYPE }}"' Succeeded!",
-                "description": "Build for **${{ matrix.targetPlatform }}** is complete on branch **${{ github.ref_name }}**.",
-                "color": 3066993,
-                "fields": [
-                  {
-                    "name": "Download",
-                    "value": "[Click here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-                  }
-                ]
-              }]
-            }' \
-            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+               -H "Content-Type: application/json" \
+               -d '{
+                 "username": "Build Bot",
+                 "embeds": [{
+                   "title": "✅ '"${{ env.BUILD_TYPE }}"' Succeeded!",
+                   "description": "Build for **${{ matrix.targetPlatform }}** is complete on branch **${{ github.ref_name }}**.",
+                   "color": 3066993,
+                   "fields": [
+                     {
+                       "name": "Download",
+                       "value": "[Click here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+                     }
+                   ]
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Send Discord notification on failure
         if: failure()
         shell: bash
         run: |
           curl -X POST \
-            -H "Content-Type: application/json" \
-            -d '{
-              "username": "Build Bot",
-              "embeds": [{
-                "title": "❌ '"${{ env.BUILD_TYPE }}"' Failed!",
-                "description": "Build for **${{ matrix.targetPlatform }}** failed on branch **${{ github.ref_name }}**.",
-                "color": 15158332,
-                "fields": [
-                  {
-                    "name": "Check logs",
-                    "value": "[View details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-                  }
-                ]
-              }]
-            }' \
-            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+               -H "Content-Type: application/json" \
+               -d '{
+                 "username": "Build Bot",
+                 "embeds": [{
+                   "title": "❌ '"${{ env.BUILD_TYPE }}"' Failed!",
+                   "description": "Build for **${{ matrix.targetPlatform }}** failed on branch **${{ github.ref_name }}**.",
+                   "color": 15158332,
+                   "fields": [
+                     {
+                       "name": "Check logs",
+                       "value": "[View details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+                     }
+                   ]
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK_URL }}"
