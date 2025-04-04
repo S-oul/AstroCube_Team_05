@@ -35,6 +35,7 @@ public class PlayerTrigger : MonoBehaviour
         }
         else if (other.CompareTag("GravityZone"))
         {
+            _playerMovement.HasGravity = false;
             _flotingZone = other.transform.GetComponent<FloatingZone>();
         }
 
@@ -45,6 +46,7 @@ public class PlayerTrigger : MonoBehaviour
         if (_flotingZone && other.CompareTag("GravityZone"))
         {
             _characterController.Move(Vector3.up * _flotingZone.GravityForce * Time.deltaTime);
+            
         }
     }
     private void OnTriggerExit(Collider other)
@@ -53,10 +55,14 @@ public class PlayerTrigger : MonoBehaviour
         {
             _playerMovement.SetSlippingState(false);
         }
-
-        if (other.CompareTag("SpeedZone"))
+        else if (other.CompareTag("SpeedZone"))
         {
             _playerMovement.SetSpeedToDefault();
+        }
+        else if (other.CompareTag("GravityZone"))
+        {
+            _flotingZone = null;
+            _playerMovement.HasGravity = true;
         }
     }
 }
