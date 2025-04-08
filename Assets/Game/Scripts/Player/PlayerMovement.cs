@@ -36,8 +36,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject laserToRotate;
     [SerializeField] private float rotationSpeed = 50f;
 
-    // Lock System
-    private bool isPlayerLocked = true;
+    private bool isPlayerLocked = false;
     public bool IsPlayerLocked
     {
         get => isPlayerLocked;
@@ -71,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
     bool _isWalking;
 
     Vector3 newCamPos;
-
     public float defaultSpeed { get; private set; }
 
     private float _timerBeforeNextStep = 0;
@@ -92,6 +90,19 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Bouton B => raycast
+        if (Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            if (!IsPlayerLocked)
+            {
+                ShootRaycastForLaserUnlock();
+            }
+            else
+            {
+                isPlayerLocked = false;
+            }
+        }
+
         if (isPlayerLocked)
         {
             RotateLaserWithJoystick();
@@ -154,6 +165,7 @@ public class PlayerMovement : MonoBehaviour
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
     }
+
     private void RotateLaserWithJoystick()
     {
         if (laserToRotate == null) return;
@@ -161,10 +173,30 @@ public class PlayerMovement : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        // Y = tourner gauche/droite (yaw)
-        // X = lever/abaisser le laser (pitch)
+        // Rotation type tourelle : X haut/bas, Y gauche/droite
         Vector3 rotation = new Vector3(-vertical, horizontal, 0);
         laserToRotate.transform.Rotate(rotation * rotationSpeed * Time.deltaTime, Space.World);
+    }
+
+    private void ShootRaycastForLaserUnlock()
+    {
+        if (_camera == null) return;
+
+        Ray ray = new Ray(_camera.position, _camera.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 100f))
+        {
+            Debug.Log("Raycast hit: " + hit.collider.name);
+
+            if (hit.collider.CompareTag("Lazer"))
+            {
+                IsPlayerLocked = true;
+                Debug.Log("Laser target hit — Player unlocked!");
+            }
+        }
+
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green, 2f);
     }
 
     void ExecuteFootStep()
@@ -245,13 +277,14 @@ public class PlayerMovement : MonoBehaviour
                 _stopWalkingDuration = 0.0f;
                 _startWalkingDuration += Time.deltaTime;
                 newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
-                                                            currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount,
-                                                            _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
+                        currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount,
+                        _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
             }
             else
             {
                 _walkingDuration += Time.deltaTime;
-                newCameraHeight = Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                newCameraHeight = Vector3.up * (currentDefaultHeight +
+                    _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
             }
         }
         else
@@ -262,8 +295,8 @@ public class PlayerMovement : MonoBehaviour
                 _startWalkingDuration = 0.0f;
                 _stopWalkingDuration += Time.deltaTime;
                 newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
-                                                            currentDefaultHeight,
-                                                            _stopWalkingDuration / _gameSettings.StopWalkingTransitionDuration);
+                        currentDefaultHeight,
+                        _stopWalkingDuration / _gameSettings.StopWalkingTransitionDuration);
             }
             else
             {
