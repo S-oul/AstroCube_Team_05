@@ -11,6 +11,8 @@ public class InputHandler : MonoBehaviour
 
     PlayerInput _playerInput;
 
+    bool _gameIsPaused = false;
+
     void Awake()
     {
 
@@ -68,7 +70,7 @@ public class InputHandler : MonoBehaviour
     {
         //Hold 
         print(callbackContext.time - callbackContext.startTime);
-        if (callbackContext.performed) 
+        if (callbackContext.performed)
         {
             if (!_controller.ControlledScript.IsReversing) EventManager.Instance.TriggerReset();
 
@@ -76,10 +78,11 @@ public class InputHandler : MonoBehaviour
         //TAP 
         else if (callbackContext.canceled && callbackContext.time - callbackContext.startTime < .5f)
         {
-            if(!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0) EventManager.Instance.TriggerResetOnce();
+            if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0) EventManager.Instance.TriggerResetOnce();
         }
     }
     #endregion
+
     public void OnInteract(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -89,7 +92,17 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-
+    public void OnGamePause(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            Debug.Log("HIT");
+            
+            _gameIsPaused = !_gameIsPaused;
+            if (_gameIsPaused) EventManager.TriggerGamePause();
+            else EventManager.TriggerGameUnpause();
+        }
+    }
 
     #region Player Movement & NoClip Movement
     public void OnMovement(InputAction.CallbackContext callbackContext) //also used for NoClip

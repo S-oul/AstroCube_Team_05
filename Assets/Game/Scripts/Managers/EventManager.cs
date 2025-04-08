@@ -25,6 +25,9 @@ public class EventManager : MonoBehaviour
 
     public static event Action OnSceneChange;
 
+    public static event Action OnGamePause;
+    public static event Action OnGameUnpause;
+
 
     //Rubik's Cube Events
     public static event Action OnCubeRotated;
@@ -52,6 +55,16 @@ public class EventManager : MonoBehaviour
     public static void TriggerSceneChange()
     {
         OnSceneChange?.Invoke();
+    }
+
+    public static void TriggerGamePause()
+    {
+        OnGamePause?.Invoke();
+    }
+
+    public static void TriggerGameUnpause()
+    {
+        OnGameUnpause?.Invoke();
     }
 
     public static void TriggerButtonPressed()
