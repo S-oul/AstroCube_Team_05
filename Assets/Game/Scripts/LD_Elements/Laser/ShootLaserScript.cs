@@ -16,6 +16,11 @@ public class ShootLaserScript : MonoBehaviour
         _isLaserActive = Application.isPlaying ? false : true;
     }
 
+    private void Start()
+    {
+        ActivateLaser();
+    }
+
     private void OnDisable()
     {
         EventManager.OnButtonPressed -= ActivateLaser;

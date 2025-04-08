@@ -32,12 +32,20 @@ public class PlayerMovement : MonoBehaviour
     [Header("WISE")]
     [SerializeField] AK.Wwise.Event AKWiseEvent;
 
+    [Header("Laser Rotation")]
+    [SerializeField] private GameObject laserToRotate;
+    [SerializeField] private float rotationSpeed = 50f;
 
+    // Lock System
+    private bool isPlayerLocked = true;
+    public bool IsPlayerLocked
+    {
+        get => isPlayerLocked;
+        set => isPlayerLocked = value;
+    }
 
     Vector3 _gravityDirection;
-
     float _floorDistance = 0.1f;
-
     float _currentMoveSpeed;
     Vector3 _verticalVelocity;
     Vector3 _horizontalVelocity;
@@ -49,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
     float _xInput = 0;
     float _zInput = 0;
-    float _yInput = 0;//noclip
+    float _yInput = 0;
     bool _jumpInput = false;
     bool _crouchInput = false;
 
@@ -57,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
     Vector3 _pastHorizontalVelocity;
     GameSettings _gameSettings;
 
-    // HeadBobbing
     float _walkingDuration;
     float _startWalkingDuration;
     float _stopWalkingDuration;
@@ -67,10 +74,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float defaultSpeed { get; private set; }
 
-
     private float _timerBeforeNextStep = 0;
     public float _timerTNextStep = 1;
-
 
     void Start()
     {
@@ -83,24 +88,21 @@ public class PlayerMovement : MonoBehaviour
 
         defaultSpeed = _gameSettings.PlayerMoveSpeed;
         _currentMoveSpeed = defaultSpeed;
-
     }
 
-    // Update is called once per frame
     void Update()
     {
-        /*
-        // collect player inputs
-        _xInput = Input.GetAxis("Horizontal");
-        _zInput = Input.GetAxis("Vertical");
-        if (_canJump) _jumpInput = Input.GetButtonDown("Jump");
-        if (_canCrouch) _crouchInput = Input.GetKey(KeyCode.LeftShift);
-        */
+        if (isPlayerLocked)
+        {
+            RotateLaserWithJoystick();
+            _horizontalVelocity = Vector3.zero;
+            _verticalVelocity = Vector3.zero;
+            _controller.Move(Vector3.zero);
+            return;
+        }
 
-        // check player state
         _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
-        // apply gravity 
         if (_hasGravity)
         {
             _gravityDirection = transform.up;
@@ -111,34 +113,26 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // movePlayer (walking around)
         if (_isSlipping) _pastHorizontalVelocity = _horizontalVelocity;
         _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
 
         if (_isSlipping)
         {
             _horizontalVelocity = _horizontalVelocity * _gameSettings.SlippingMovementControl + _pastHorizontalVelocity;
-
-            //clamp
-            _horizontalVelocity.x = _horizontalVelocity.x > 1 ? 1 : _horizontalVelocity.x;
-            _horizontalVelocity.x = _horizontalVelocity.x < -1 ? -1 : _horizontalVelocity.x;
-            _horizontalVelocity.z = _horizontalVelocity.z > 1 ? 1 : _horizontalVelocity.z;
-            _horizontalVelocity.z = _horizontalVelocity.z < -1 ? -1 : _horizontalVelocity.z;
+            _horizontalVelocity.x = Mathf.Clamp(_horizontalVelocity.x, -1f, 1f);
+            _horizontalVelocity.z = Mathf.Clamp(_horizontalVelocity.z, -1f, 1f);
         }
 
-        // jump
         if (_jumpInput && _isGrounded)
         {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
         }
         _jumpInput = false;
 
-        // crouch
         if (_crouchInput)
         {
             _controller.height *= _gameSettings.CrouchHeight;
             _controller.center = Vector3.up * _gameSettings.CrouchHeight * -1;
-
             newCamPos = _camera.transform.localPosition;
             newCamPos.y = _defaultCameraHeight * _gameSettings.CrouchHeight;
         }
@@ -151,17 +145,26 @@ public class PlayerMovement : MonoBehaviour
         }
         _crouchInput = false;
 
-        // no clip
         _horizontalVelocity += transform.up * _yInput;
 
-        // apply calculated
         _controller.Move(_horizontalVelocity *
                          (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime);
         _controller.Move(_verticalVelocity * Time.deltaTime);
 
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
-        ;
+    }
+    private void RotateLaserWithJoystick()
+    {
+        if (laserToRotate == null) return;
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        // Y = tourner gauche/droite (yaw)
+        // X = lever/abaisser le laser (pitch)
+        Vector3 rotation = new Vector3(-vertical, horizontal, 0);
+        laserToRotate.transform.Rotate(rotation * rotationSpeed * Time.deltaTime, Space.World);
     }
 
     void ExecuteFootStep()
@@ -185,17 +188,31 @@ public class PlayerMovement : MonoBehaviour
     #region Inputs
     public void ActionMovement(Vector2 direction)
     {
-        //Debug.Log("actionMovement direction is " + direction);
+        if (isPlayerLocked) return;
+
         _xInput = direction.x;
         _zInput = direction.y;
     }
+
     public void ActionJump()
     {
+        if (isPlayerLocked) return;
+
         _jumpInput = _canJump;
     }
+
     public void ActionCrouch()
     {
+        if (isPlayerLocked) return;
+
         _crouchInput = _canCrouch;
+    }
+
+    public void ActionVerticalMovement(float direction)
+    {
+        if (isPlayerLocked) return;
+
+        _yInput = direction;
     }
     #endregion
 
@@ -216,6 +233,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void _ApplyCameraHeight(float currentDefaultHeight)
     {
+        if (isPlayerLocked)
+            return;
+
         Vector3 newCameraHeight;
         _isWalking = _horizontalVelocity != Vector3.zero;
         if (_isWalking && !_isSlipping)
@@ -253,7 +273,6 @@ public class PlayerMovement : MonoBehaviour
         _camera.transform.localPosition = newCameraHeight;
     }
 
-    //NoClip
     public void ActivateNoClip()
     {
         GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
@@ -266,13 +285,10 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
         }
     }
+
     public void DeactivateNoClip()
     {
         GetComponent<CharacterController>().excludeLayers = 0;
         _hasGravity = true;
-    }
-    public void ActionVerticalMovement(float direction)
-    {
-        _yInput = direction;
     }
 }
