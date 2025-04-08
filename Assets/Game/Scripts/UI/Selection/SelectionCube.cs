@@ -18,7 +18,7 @@ public class SelectionCube : MonoBehaviour
     [SerializeField]
     bool _isTileLocked;
     [SerializeField]
-    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5;
+    int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5;
 
     private Renderer[] _renderers;
     [SerializeField] Material greyMat;
@@ -82,10 +82,16 @@ public class SelectionCube : MonoBehaviour
             switch (mode)
             {
                 case SelectionMode.AXIS:
-                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisSelectionRenderingLayerMask);
+                    if (renderer.transform.CompareTag("Floor"))
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisSelectionRenderingLayerMask);
+                    else
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisObjectSelectionRenderingLayerMask);                    
                     break;
                 case SelectionMode.CUBE:
-                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
+                    if (renderer.transform.CompareTag("Floor"))
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
+                    else
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeObjectSelectionRenderingLayerMask);                    
                     break;
                 case SelectionMode.LOCKED:
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
