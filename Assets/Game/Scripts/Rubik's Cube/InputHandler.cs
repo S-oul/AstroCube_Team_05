@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class InputHandler : MonoBehaviour
 {
@@ -24,8 +25,17 @@ public class InputHandler : MonoBehaviour
         }
         else Debug.LogError("playerMovment InputMap not found.");
 
+        _playerInput.actions.FindActionMap("OtherActions").Enable();
         _parentChanger = _playerMovement.GetComponent<DetectNewParent>();
+
+        if (!GameManager.Instance.IsRubiksCubeEnabled)
+        {
+            //_controller.enabled = false;
+            //Destroy(_controller);
+            _playerInput.actions.FindActionMap("RubiksCube").Disable();
+        }
     }
+
     #region Rubiks Cube Inputs
     public void OnSwitchColumnsLineLeft(InputAction.CallbackContext callbackContext)
     {

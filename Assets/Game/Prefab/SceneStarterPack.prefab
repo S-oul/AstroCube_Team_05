@@ -742,7 +742,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 5}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7281687720163444837
 CanvasRenderer:
@@ -1221,7 +1221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7096848231623728471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1308,11 +1308,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 478247958473798082}
   - {fileID: 7283349500288409730}
   - {fileID: 6754514075168630696}
   - {fileID: 3511912709207941647}
   - {fileID: 6227492574454345305}
-  - {fileID: 478247958473798082}
   - {fileID: 6136408475106731539}
   - {fileID: 9067813692967913725}
   - {fileID: 1241815597079249713}
@@ -2205,7 +2205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3988452652902072293
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2475,6 +2475,11 @@ PrefabInstance:
       propertyPath: nextScene
       value: LD_Prototype_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1984326907067746037, guid: 3ca506478dcd3f642a904ecd269c31f6,
+        type: 3}
+      propertyPath: _rubiksCubeUI
+      value: 
+      objectReference: {fileID: 6392407863919116640}
     - target: {fileID: 5012748885508976684, guid: 3ca506478dcd3f642a904ecd269c31f6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2767,6 +2772,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4058107949323384988}
   m_SourcePrefab: {fileID: 100100000, guid: b5eeb929aa87481439de01016bcf6589, type: 3}
+--- !u!114 &3719745630170796484 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8895847318250023099, guid: b5eeb929aa87481439de01016bcf6589,
+    type: 3}
+  m_PrefabInstance: {fileID: 5254388986453113215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2d6efe47c40974b98e971437b2e525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4707285373166306195 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 700580131499637484, guid: b5eeb929aa87481439de01016bcf6589,
@@ -2845,6 +2862,61 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2463684442174907702}
     m_Modifications:
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionId
+      value: bdf96abc-9325-4e69-a2e1-51ff4c1f6964
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionId
+      value: 61114138-8631-4775-8c3b-c8ce8976bd1a
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionName
+      value: RubiksCube/GamePause[/Keyboard/escape]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionName
+      value: OtherActions/PauseGame[/Keyboard/escape]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7797271324582534193}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnGamePause
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: InputHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 660084835029549841, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2895,6 +2967,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3706481031665168761, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: _playerHold
+      value: 
+      objectReference: {fileID: 3719745630170796484}
     - target: {fileID: 3706481031665168761, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
       propertyPath: _playerMovement
@@ -2948,6 +3025,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7797271324582534193 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3706481031665168761, guid: a6ec11c84de52ea47a8127f0825703b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 6865007734248762696}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a229c1821968b314b957e56aae85c99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7890705685374540814

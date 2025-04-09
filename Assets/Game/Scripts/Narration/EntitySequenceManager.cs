@@ -9,7 +9,7 @@ using static UnityEngine.Timeline.TimelineAsset;
 
 public class EntitySequenceManager : MonoBehaviour
 {
-    [SerializeField] private Text _text;
+    [SerializeField] private TextAnimation _textAnimation;
     [SerializeField] private Material _distortMat;
     [SerializeField] private UniversalRendererData _data;
     FullScreenPassRendererFeature _distortionRenderFeature;
@@ -17,9 +17,6 @@ public class EntitySequenceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _text.material.SetFloat("_Alpha", 0f);
-        _text.material.SetFloat("_Distort", 1f);
-
         _distortionRenderFeature =  _data.rendererFeatures.First(x => x.name == "Distort") as FullScreenPassRendererFeature;
         _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", 1f);
     }
@@ -30,18 +27,9 @@ public class EntitySequenceManager : MonoBehaviour
         
     }
 
-    public void DisplayText(string text)
+    public void DisplayText()
     {
-        _text.text = text;
-        StartCoroutine(StartDisplayText(2f, 2f, 5f));
-    }
-
-    IEnumerator StartDisplayText(float durationFade, float durationDistort, float durationDisplay)
-    {
-        DOTween.To(() => _text.material.GetFloat("_Alpha"), x => _text.material.SetFloat("_Alpha", x), 1f, durationFade);
-        DOTween.To(() => _text.material.GetFloat("_Distort"), x => _text.material.SetFloat("_Distort", x), 0f, durationDistort);
-        yield return new WaitForSeconds(durationDisplay);
-        DOTween.To(() => _text.material.GetFloat("_Alpha"), x => _text.material.SetFloat("_Alpha", x), 0f, 3f);
+        StartCoroutine(_textAnimation.StartDisplayText(3.0f, 2.0f, 7.0f));
     }
 
     public void DistortScreen(float duration)

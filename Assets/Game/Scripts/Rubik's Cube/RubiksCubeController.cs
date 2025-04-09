@@ -51,7 +51,8 @@ public class RubiksCubeController : MonoBehaviour
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
-        ActionSwitchLineCols(true);
+        if(GameManager.Instance.IsRubiksCubeEnabled)
+            ActionSwitchLineCols(true);
     }
 
 
