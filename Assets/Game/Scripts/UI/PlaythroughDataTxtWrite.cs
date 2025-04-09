@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
-using UnityEditor.Timeline.Actions;
 
 public class PlaythroughDataTxtWrite : MonoBehaviour
 {

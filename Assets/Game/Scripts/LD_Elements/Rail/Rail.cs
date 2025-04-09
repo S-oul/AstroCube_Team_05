@@ -1,11 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static Unity.VisualScripting.Metadata;
 
 public class Rail : MonoBehaviour
 {

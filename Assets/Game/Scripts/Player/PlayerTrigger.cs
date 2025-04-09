@@ -15,7 +15,7 @@ public class PlayerTrigger : MonoBehaviour
         }
         if (other.CompareTag("DeathZone"))
         {
-            EventManager.TriggerPlayerLose();
+            EventManager.Instance.TriggerPlayerLose();
         }
 
         if (other.gameObject.tag == "SlipperyZone")
