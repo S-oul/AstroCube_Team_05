@@ -1,13 +1,14 @@
 using AK.Wwise;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Scene Requirments")]
     [SerializeField] CharacterController _controller;
     [SerializeField] Transform _camera;
-    [SerializeField] Transform _floorCheck;
-    [SerializeField] LayerMask _floorLayer;
+    //[SerializeField] Transform _floorCheck;
+    //[SerializeField] LayerMask _floorLayer;
 
     [Header("Movement")]
     [SerializeField] float _speed = 12f;
@@ -87,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
 
         defaultSpeed = _gameSettings.PlayerMoveSpeed;
         _currentMoveSpeed = defaultSpeed;
-
     }
 
     // Update is called once per frame
@@ -102,18 +102,21 @@ public class PlayerMovement : MonoBehaviour
         */
 
         // check player state
-        _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
+        //_isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
         // apply gravity 
-        if (_hasGravity)
-        {
-            _gravityDirection = transform.up;
-            _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
-            if (_isGrounded)
-            {
-                _verticalVelocity = Vector3.zero;
-            }
-        }
+        //if (_hasGravity)
+        //{
+        //    _gravityDirection = transform.up;
+        //    _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
+        //    if (_isGrounded)
+        //    {
+        //        _verticalVelocity = Vector3.zero;
+        //    }
+        //}
+
+        _gravityDirection = transform.up;
+        _verticalVelocity = _gravityDirection * _gravity * Time.deltaTime;
 
         // movePlayer (walking around)
         if (_isSlipping) _pastHorizontalVelocity = _horizontalVelocity;
@@ -159,11 +162,9 @@ public class PlayerMovement : MonoBehaviour
         _horizontalVelocity += transform.up * _yInput;
 
         // apply calculated Movement
-        _controller.Move(_horizontalVelocity *
+        _controller.SimpleMove(_horizontalVelocity *
                          (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
                          + _externallyAppliedMovement);
-        _controller.Move(_verticalVelocity * Time.deltaTime);
-
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
     }
