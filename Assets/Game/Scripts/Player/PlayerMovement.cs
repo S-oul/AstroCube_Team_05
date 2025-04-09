@@ -162,9 +162,18 @@ public class PlayerMovement : MonoBehaviour
         _horizontalVelocity += transform.up * _yInput;
 
         // apply calculated Movement
-        _controller.SimpleMove(_horizontalVelocity *
-                         (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
-                         + _externallyAppliedMovement);
+        if (_hasGravity)
+        {
+            _controller.SimpleMove(_horizontalVelocity *
+                             (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
+                             + _externallyAppliedMovement);
+        } 
+        else // no clip
+        {
+            _controller.Move(_horizontalVelocity *
+                             (_currentMoveSpeed/10) * Time.deltaTime
+                             + _externallyAppliedMovement);
+        }
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
     }
