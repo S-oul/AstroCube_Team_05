@@ -1,3 +1,4 @@
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,7 +26,10 @@ public class GameManager : MonoBehaviour
         if (instance) Destroy(this);
         else instance = this;
     }
-
+    public void Screenshake(float duration, float amount, int vibrato)
+    {
+        Camera.main.DOShakePosition(duration, amount);
+    }
     private void OnEnable()
     {
         EventManager.OnSceneChange += ChangeScene;
