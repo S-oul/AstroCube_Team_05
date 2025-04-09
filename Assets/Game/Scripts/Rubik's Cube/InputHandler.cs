@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class InputHandler : MonoBehaviour
 {
@@ -25,7 +26,15 @@ public class InputHandler : MonoBehaviour
         else Debug.LogError("playerMovment InputMap not found.");
 
         _parentChanger = _playerMovement.GetComponent<DetectNewParent>();
+
+        if (!GameManager.Instance.IsRubiksCubeEnabled)
+        {
+            //_controller.enabled = false;
+            //Destroy(_controller);
+            _playerInput.actions.FindActionMap("RubiksCube").Disable();
+        }
     }
+
     #region Rubiks Cube Inputs
     public void OnSwitchColumnsLineLeft(InputAction.CallbackContext callbackContext)
     {
@@ -80,6 +89,7 @@ public class InputHandler : MonoBehaviour
         }
     }
     #endregion
+
     public void OnInteract(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -88,8 +98,6 @@ public class InputHandler : MonoBehaviour
             else _playerHold.TryHold();
         }
     }
-
-
 
     #region Player Movement & NoClip Movement
     public void OnMovement(InputAction.CallbackContext callbackContext) //also used for NoClip
