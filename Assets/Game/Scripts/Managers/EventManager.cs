@@ -8,6 +8,8 @@ public class EventManager : MonoBehaviour
 
     private GameSettings _gameSettings;
 
+    public static bool gamePaused = false;
+
     private void Awake()
     {
         if (instance) Destroy(this);
@@ -60,11 +62,13 @@ public class EventManager : MonoBehaviour
     public static void TriggerGamePause()
     {
         OnGamePause?.Invoke();
+        gamePaused = true;
     }
 
     public static void TriggerGameUnpause()
     {
         OnGameUnpause?.Invoke();
+        gamePaused = false;
     }
 
     public static void TriggerButtonPressed()

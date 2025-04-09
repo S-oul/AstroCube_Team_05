@@ -11,8 +11,6 @@ public class InputHandler : MonoBehaviour
 
     PlayerInput _playerInput;
 
-    bool _gameIsPaused = false;
-
     void Awake()
     {
 
@@ -96,8 +94,7 @@ public class InputHandler : MonoBehaviour
     {
         if (callbackContext.performed)
         {            
-            _gameIsPaused = !_gameIsPaused;
-            if (_gameIsPaused) EventManager.TriggerGamePause();
+            if (EventManager.gamePaused == false) EventManager.TriggerGamePause();
             else EventManager.TriggerGameUnpause();
         }
     }
