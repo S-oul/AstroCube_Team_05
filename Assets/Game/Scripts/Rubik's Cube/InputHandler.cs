@@ -95,9 +95,7 @@ public class InputHandler : MonoBehaviour
     public void OnGamePause(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
-            Debug.Log("HIT");
-            
+        {            
             _gameIsPaused = !_gameIsPaused;
             if (_gameIsPaused) EventManager.TriggerGamePause();
             else EventManager.TriggerGameUnpause();

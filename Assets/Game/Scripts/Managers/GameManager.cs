@@ -25,7 +25,9 @@ public class GameManager : MonoBehaviour
         EventManager.OnSceneChange += ChangeScene;
 
         EventManager.OnGamePause += StopDeltTime;
+        EventManager.OnGamePause += UnlockMouse;
         EventManager.OnGameUnpause += ResetDeltaTime;
+        EventManager.OnGameUnpause += LockMouse;
     }
 
     private void OnDisable()
@@ -36,7 +38,9 @@ public class GameManager : MonoBehaviour
         EventManager.OnPlayerLose -= ShowLoseScreen;
 
         EventManager.OnGamePause -= StopDeltTime;
+        EventManager.OnGamePause -= UnlockMouse;
         EventManager.OnGameUnpause -= ResetDeltaTime;
+        EventManager.OnGameUnpause -= LockMouse;
     }
 
     private void Start()
@@ -69,5 +73,15 @@ public class GameManager : MonoBehaviour
     void ResetDeltaTime()
     {
         Time.timeScale = 1f;
+    }
+
+    void LockMouse()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void UnlockMouse()
+    {
+        Cursor.lockState = CursorLockMode.None;
     }
 }
