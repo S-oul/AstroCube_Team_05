@@ -27,12 +27,16 @@ public class HoldableBox : MonoBehaviour, IHoldable
     public void OnHold()
     {
         transform.position = transform.parent.position;
+        if (_rb == null)
+            return;
         _rb.useGravity = false;
         _rb.constraints = RigidbodyConstraints.FreezePosition;
     }
 
     public void OnRelease()
     {
+        if (_rb == null)
+            return;
         _rb.useGravity = true;
         _rb.constraints = RigidbodyConstraints.None;
     }

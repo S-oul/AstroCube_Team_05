@@ -25,6 +25,7 @@ public class InputHandler : MonoBehaviour
         }
         else Debug.LogError("playerMovment InputMap not found.");
 
+        _playerInput.actions.FindActionMap("OtherActions").Enable();
         _parentChanger = _playerMovement.GetComponent<DetectNewParent>();
 
         if (!GameManager.Instance.IsRubiksCubeEnabled)
