@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnSceneChange += ChangeScene;
+
+        EventManager.OnGamePause += StopDeltTime;
+        EventManager.OnGamePause += UnlockMouse;
+        EventManager.OnGameUnpause += ResetDeltaTime;
+        EventManager.OnGameUnpause += LockMouse;
     }
 
     private void OnDisable()
@@ -37,6 +42,11 @@ public class GameManager : MonoBehaviour
         
         EventManager.OnPlayerWin -= ShowWinScreen;
         EventManager.OnPlayerLose -= ShowLoseScreen;
+
+        EventManager.OnGamePause -= StopDeltTime;
+        EventManager.OnGamePause -= UnlockMouse;
+        EventManager.OnGameUnpause -= ResetDeltaTime;
+        EventManager.OnGameUnpause -= LockMouse;
     }
 
     private void Start()
@@ -59,6 +69,26 @@ public class GameManager : MonoBehaviour
     void ChangeScene()
     {
         SceneManager.LoadScene(nextScene);
+    }
+
+    void StopDeltTime()
+    {
+        Time.timeScale = 0;
+    }    
+    
+    void ResetDeltaTime()
+    {
+        Time.timeScale = 1f;
+    }
+
+    void LockMouse()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void UnlockMouse()
+    {
+        Cursor.lockState = CursorLockMode.None;
     }
 
     [Button("Enable Rubik's Cube")]

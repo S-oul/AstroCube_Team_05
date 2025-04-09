@@ -78,7 +78,7 @@ public class InputHandler : MonoBehaviour
     {
         //Hold 
         print(callbackContext.time - callbackContext.startTime);
-        if (callbackContext.performed) 
+        if (callbackContext.performed)
         {
             if (!_controller.ControlledScript.IsReversing) EventManager.Instance.TriggerReset();
 
@@ -86,7 +86,7 @@ public class InputHandler : MonoBehaviour
         //TAP 
         else if (callbackContext.canceled && callbackContext.time - callbackContext.startTime < .5f)
         {
-            if(!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0) EventManager.Instance.TriggerResetOnce();
+            if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0) EventManager.Instance.TriggerResetOnce();
         }
     }
     #endregion
@@ -97,6 +97,15 @@ public class InputHandler : MonoBehaviour
         {
             if (_playerHold.IsHolding) _playerHold.TryRelease();
             else _playerHold.TryHold();
+        }
+    }
+
+    public void OnGamePause(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {            
+            if (EventManager.gamePaused == false) EventManager.TriggerGamePause();
+            else EventManager.TriggerGameUnpause();
         }
     }
 

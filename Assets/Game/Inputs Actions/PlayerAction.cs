@@ -89,6 +89,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GamePause"",
+                    ""type"": ""Button"",
+                    ""id"": ""bdf96abc-9325-4e69-a2e1-51ff4c1f6964"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -267,6 +276,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""action"": ""ShowStrips"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aed6d1c9-f0ef-4677-848f-08e1d95185ed"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""GamePause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0fdf8ce-7a77-47e2-a09a-4223966cb870"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""GamePause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -281,6 +312,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""61114138-8631-4775-8c3b-c8ce8976bd1a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -304,6 +344,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87d755a4-ff25-472b-ac93-872f6bcd7ce0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03293f57-0b1a-4462-8fa1-70c9e9b4e563"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PauseGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -724,9 +786,11 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_RubiksCube_ResetRoom = m_RubiksCube.FindAction("ResetRoom", throwIfNotFound: true);
         m_RubiksCube_MoveOverlayCube = m_RubiksCube.FindAction("MoveOverlayCube", throwIfNotFound: true);
         m_RubiksCube_ShowStrips = m_RubiksCube.FindAction("ShowStrips", throwIfNotFound: true);
+        m_RubiksCube_GamePause = m_RubiksCube.FindAction("GamePause", throwIfNotFound: true);
         // OtherActions
         m_OtherActions = asset.FindActionMap("OtherActions", throwIfNotFound: true);
         m_OtherActions_Interact = m_OtherActions.FindAction("Interact", throwIfNotFound: true);
+        m_OtherActions_PauseGame = m_OtherActions.FindAction("PauseGame", throwIfNotFound: true);
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
@@ -815,6 +879,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_RubiksCube_ResetRoom;
     private readonly InputAction m_RubiksCube_MoveOverlayCube;
     private readonly InputAction m_RubiksCube_ShowStrips;
+    private readonly InputAction m_RubiksCube_GamePause;
     public struct RubiksCubeActions
     {
         private @PlayerAction m_Wrapper;
@@ -826,6 +891,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @ResetRoom => m_Wrapper.m_RubiksCube_ResetRoom;
         public InputAction @MoveOverlayCube => m_Wrapper.m_RubiksCube_MoveOverlayCube;
         public InputAction @ShowStrips => m_Wrapper.m_RubiksCube_ShowStrips;
+        public InputAction @GamePause => m_Wrapper.m_RubiksCube_GamePause;
         public InputActionMap Get() { return m_Wrapper.m_RubiksCube; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -856,6 +922,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ShowStrips.started += instance.OnShowStrips;
             @ShowStrips.performed += instance.OnShowStrips;
             @ShowStrips.canceled += instance.OnShowStrips;
+            @GamePause.started += instance.OnGamePause;
+            @GamePause.performed += instance.OnGamePause;
+            @GamePause.canceled += instance.OnGamePause;
         }
 
         private void UnregisterCallbacks(IRubiksCubeActions instance)
@@ -881,6 +950,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ShowStrips.started -= instance.OnShowStrips;
             @ShowStrips.performed -= instance.OnShowStrips;
             @ShowStrips.canceled -= instance.OnShowStrips;
+            @GamePause.started -= instance.OnGamePause;
+            @GamePause.performed -= instance.OnGamePause;
+            @GamePause.canceled -= instance.OnGamePause;
         }
 
         public void RemoveCallbacks(IRubiksCubeActions instance)
@@ -903,11 +975,13 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_OtherActions;
     private List<IOtherActionsActions> m_OtherActionsActionsCallbackInterfaces = new List<IOtherActionsActions>();
     private readonly InputAction m_OtherActions_Interact;
+    private readonly InputAction m_OtherActions_PauseGame;
     public struct OtherActionsActions
     {
         private @PlayerAction m_Wrapper;
         public OtherActionsActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Interact => m_Wrapper.m_OtherActions_Interact;
+        public InputAction @PauseGame => m_Wrapper.m_OtherActions_PauseGame;
         public InputActionMap Get() { return m_Wrapper.m_OtherActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -920,6 +994,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @PauseGame.started += instance.OnPauseGame;
+            @PauseGame.performed += instance.OnPauseGame;
+            @PauseGame.canceled += instance.OnPauseGame;
         }
 
         private void UnregisterCallbacks(IOtherActionsActions instance)
@@ -927,6 +1004,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @PauseGame.started -= instance.OnPauseGame;
+            @PauseGame.performed -= instance.OnPauseGame;
+            @PauseGame.canceled -= instance.OnPauseGame;
         }
 
         public void RemoveCallbacks(IOtherActionsActions instance)
@@ -1152,10 +1232,12 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnResetRoom(InputAction.CallbackContext context);
         void OnMoveOverlayCube(InputAction.CallbackContext context);
         void OnShowStrips(InputAction.CallbackContext context);
+        void OnGamePause(InputAction.CallbackContext context);
     }
     public interface IOtherActionsActions
     {
         void OnInteract(InputAction.CallbackContext context);
+        void OnPauseGame(InputAction.CallbackContext context);
     }
     public interface IPlayerMovementActions
     {
