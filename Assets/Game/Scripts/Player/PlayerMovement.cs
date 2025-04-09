@@ -206,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSpeed(float newSpeed)
     {
-        _currentMoveSpeed = newSpeed;
+        _currentMoveSpeed = newSpeed * Time.deltaTime;
     }
 
     public void SetSpeedToDefault()
