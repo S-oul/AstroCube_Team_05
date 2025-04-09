@@ -8,6 +8,8 @@ public class EventManager : MonoBehaviour
 
     private GameSettings _gameSettings;
 
+    public static bool gamePaused = false;
+
     private void Awake()
     {
         if (instance) Destroy(this);
@@ -24,6 +26,9 @@ public class EventManager : MonoBehaviour
     public static event Action OnPlayerLose;
 
     public static event Action OnSceneChange;
+
+    public static event Action OnGamePause;
+    public static event Action OnGameUnpause;
 
 
     //Rubik's Cube Events
@@ -52,6 +57,18 @@ public class EventManager : MonoBehaviour
     public static void TriggerSceneChange()
     {
         OnSceneChange?.Invoke();
+    }
+
+    public static void TriggerGamePause()
+    {
+        OnGamePause?.Invoke();
+        gamePaused = true;
+    }
+
+    public static void TriggerGameUnpause()
+    {
+        OnGameUnpause?.Invoke();
+        gamePaused = false;
     }
 
     public static void TriggerButtonPressed()
