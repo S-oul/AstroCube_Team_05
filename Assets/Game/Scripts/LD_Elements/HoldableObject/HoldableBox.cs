@@ -24,7 +24,7 @@ public class HoldableBox : MonoBehaviour, IHoldable
         return transform;
     }
 
-    public void OnHold()
+    public void OnHold(Transform newParent)
     {
         transform.position = transform.parent.position;
         if (_rb == null)

@@ -42,6 +42,9 @@ public class EventManager : MonoBehaviour
     public static event Action<float> OnPlayerReset;
     public static event Action<float> OnPlayerResetOnce;
 
+    public static event Action OnStartSequence;
+    public static event Action OnEndSequence;
+
     public static void TriggerPlayerWin()
     {
         OnPlayerWin?.Invoke();
@@ -97,6 +100,16 @@ public class EventManager : MonoBehaviour
 
     public static void TriggerSceneEnd() {
         OnSceneEnd?.Invoke();
+    }
+
+    public static void TriggerSequenceStart()
+    {
+        OnStartSequence?.Invoke();
+    }
+
+    public static void TriggerSequenceEnd()
+    {
+        OnEndSequence?.Invoke();
     }
 
     public static void TriggerCubeRotated()

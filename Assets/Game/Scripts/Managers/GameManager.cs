@@ -1,7 +1,11 @@
 using DG.Tweening;
 using NaughtyAttributes;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +16,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject loseScreen;
 
     [SerializeField] string nextScene;
+
+    [Header("Entity Sequence")]
+    [SerializeField] EntitySequenceManager _entitySequenceManager;
+    [SerializeField] float _sequenceDuration;
+    [SerializeField] List<GameObject> _objectToDisable;
 
     public static GameManager Instance => instance;
     private static GameManager instance;
@@ -93,6 +102,33 @@ public class GameManager : MonoBehaviour
     void UnlockMouse()
     {
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void StartSequence() => StartCoroutine(ShowSequence());
+    public IEnumerator ShowSequence()
+    {
+        EventManager.TriggerSequenceStart();
+
+        yield return new WaitForSeconds(1.0f);
+
+        foreach (var obj in _objectToDisable)
+        {
+            obj.gameObject.SetActive(false);
+        }
+
+        _entitySequenceManager.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(_sequenceDuration);
+
+        _entitySequenceManager.gameObject.SetActive(false);
+        Debug.Log("DisableEntity"); 
+        foreach (var obj in _objectToDisable)
+        {
+            obj.gameObject.SetActive(true);
+        }
+
+        EventManager.TriggerSequenceEnd();
+        InputHandler.Instance.CanMove = true;
     }
 
     [Button("Enable Rubik's Cube")]
