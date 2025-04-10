@@ -29,12 +29,18 @@ public class EntitySequenceManager : MonoBehaviour
 
     public void DisplayText()
     {
-        StartCoroutine(_textAnimation.StartDisplayText(3.0f, 2.0f, 7.0f));
+        StartCoroutine(_textAnimation.StartDisplayText());
     }
 
     public void DistortScreen(float duration)
     {
         DOTween.To(() => _distortionRenderFeature.passMaterial.GetFloat("_DistortionAmount"), x => _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", x), 5f, duration);
+    }
+
+    public void SetDistortion(float amount)
+    {
+        _distortionRenderFeature = _data.rendererFeatures.First(x => x.name == "Distort") as FullScreenPassRendererFeature;
+        _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", amount);
     }
 
     private void OnDisable()
