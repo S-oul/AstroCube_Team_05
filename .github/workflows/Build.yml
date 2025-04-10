@@ -53,11 +53,6 @@ jobs:
           email: ${{ secrets.WWISE_EMAIL }}
           password: ${{ secrets.WWISE_PASSWORD }}
 
-      - name: Force Unity Script Recompile
-        shell: bash
-        run: |
-          "C:/Program Files/Unity/Hub/Editor/2022.3.15f1/Editor/Unity.exe" -quit -batchmode -projectPath . -executeMethod UnityEditor.SyncVS.SyncSolution
-
       - name: Build with Unity
         uses: game-ci/unity-builder@v4.3.0
         env:
@@ -80,20 +75,7 @@ jobs:
         run: |
           curl -X POST \
                -H "Content-Type: application/json" \
-               -d '{
-                 "username": "Build Bot",
-                 "embeds": [{
-                   "title": "✅ '${{ env.BUILD_TYPE }}' Succeeded!",
-                   "description": "Build for **${{ matrix.targetPlatform }}** is complete on branch **${{ github.ref_name }}**.",
-                   "color": 3066993,
-                   "fields": [
-                     {
-                       "name": "Download",
-                       "value": "[Click here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-                     }
-                   ]
-                 }]
-               }' \
+               -d "{\"username\": \"Build Bot\",\"embeds\": [{\"title\": \"✅ ${{ env.BUILD_TYPE }} Succeeded!\",\"description\": \"Build for **${{ matrix.targetPlatform }}** is complete on branch **${{ github.ref_name }}**.\",\"color\": 3066993,\"fields\": [{\"name\": \"Download\",\"value\": \"[Click here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\"}]}]}" \
                "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Send Discord notification on failure
@@ -102,18 +84,5 @@ jobs:
         run: |
           curl -X POST \
                -H "Content-Type: application/json" \
-               -d '{
-                 "username": "Build Bot",
-                 "embeds": [{
-                   "title": "❌ '${{ env.BUILD_TYPE }}' Failed!",
-                   "description": "Build for **${{ matrix.targetPlatform }}** failed on branch **${{ github.ref_name }}**.",
-                   "color": 15158332,
-                   "fields": [
-                     {
-                       "name": "Check logs",
-                       "value": "[View details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-                     }
-                   ]
-                 }]
-               }' \
+               -d "{\"username\": \"Build Bot\",\"embeds\": [{\"title\": \"❌ ${{ env.BUILD_TYPE }} Failed!\",\"description\": \"Build for **${{ matrix.targetPlatform }}** failed on branch **${{ github.ref_name }}**.\",\"color\": 15158332,\"fields\": [{\"name\": \"Check logs\",\"value\": \"[View details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\"}]}]}" \
                "${{ secrets.DISCORD_WEBHOOK_URL }}"
