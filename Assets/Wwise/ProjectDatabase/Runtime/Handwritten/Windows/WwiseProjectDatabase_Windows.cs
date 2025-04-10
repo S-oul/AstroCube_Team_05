@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+using System.Threading.Tasks;
 
 public partial class WwiseProjectDatabase
 {
@@ -89,6 +90,7 @@ public partial class WwiseProjectDatabase
         }
     }
 
-    // (Toutes les autres méthodes restent inchangées ci-dessous)
-    // Copie tout le reste des méthodes existantes ici sans changement.
+    // Conserve ici toutes les autres méthodes existantes sans aucune modification
+    // (GetSoundBankRefString, GetAllSoundBanksRef, GetSoundBankName, etc...)
 }
+#endif
