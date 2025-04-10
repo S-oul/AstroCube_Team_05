@@ -7,12 +7,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Scene Requirments")]
     [SerializeField] CharacterController _controller;
     [SerializeField] Transform _camera;
-    //[SerializeField] Transform _floorCheck;
-    //[SerializeField] LayerMask _floorLayer;
+    [SerializeField] Transform _floorCheck;
+    [SerializeField] LayerMask _floorLayer;
 
-    [Header("Movement")]
-    [SerializeField] float _speed = 12f;
-    [SerializeField] float _gravity = -9.81f;
     bool _hasGravity = true;
 
     [Header("Jump")]
@@ -101,22 +98,22 @@ public class PlayerMovement : MonoBehaviour
         if (_canCrouch) _crouchInput = Input.GetKey(KeyCode.LeftShift);
         */
 
-        // check player state
-        //_isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
+        //check player state
+       _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
-        // apply gravity 
-        //if (_hasGravity)
-        //{
-        //    _gravityDirection = transform.up;
-        //    _verticalVelocity += _gravityDirection * _gravity * Time.deltaTime;
-        //    if (_isGrounded)
-        //    {
-        //        _verticalVelocity = Vector3.zero;
-        //    }
-        //}
+        //apply gravity
+        if (_hasGravity)
+        {
+            _gravityDirection = transform.up;
+            _verticalVelocity += _gravityDirection * _gameSettings.Gravity * Time.deltaTime;
+            if (_isGrounded)
+            {
+                _verticalVelocity = Vector3.zero;
+            }
+        }
 
-        _gravityDirection = transform.up;
-        _verticalVelocity = _gravityDirection * _gravity * Time.deltaTime;
+        //_gravityDirection = transform.up;
+        //_verticalVelocity = _gravityDirection * _gameSettings.Gravity * Time.deltaTime;
 
         // movePlayer (walking around)
         if (_isSlipping) _pastHorizontalVelocity = _horizontalVelocity;
@@ -164,9 +161,10 @@ public class PlayerMovement : MonoBehaviour
         // apply calculated Movement
         if (_hasGravity)
         {
-            _controller.SimpleMove(_horizontalVelocity *
+            _controller.Move(_horizontalVelocity *
                              (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
                              + _externallyAppliedMovement);
+            _controller.Move(_verticalVelocity * Time.deltaTime);
         } 
         else // no clip
         {
