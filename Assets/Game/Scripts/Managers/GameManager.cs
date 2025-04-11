@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Entity Sequence")]
     [SerializeField] EntitySequenceManager _entitySequenceManager;
+    [SerializeField] Image _fade;
     [SerializeField] float _sequenceDuration;
     [SerializeField] List<GameObject> _objectToDisable;
 
@@ -129,7 +131,10 @@ public class GameManager : MonoBehaviour
     {
         EventManager.TriggerSequenceStart();
 
-        yield return new WaitForSeconds(1.0f);
+        yield return DOTween.To(() => new Color(0, 0, 0, 0), x => _fade.color = x, new Color(0, 0, 0, 1.0f), 1.0f).WaitForCompletion();
+        _fade.color = new Color(0, 0, 0, 0);
+
+        //yield return new WaitForSeconds(1.0f);
 
         foreach (var obj in _objectToDisable)
         {
@@ -148,6 +153,9 @@ public class GameManager : MonoBehaviour
         }
 
         EventManager.TriggerSequenceEnd();
+        _fade.color = new Color(0, 0, 0, 1.0f);
+        yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
+
         InputHandler.Instance.CanMove = true;
     }
 
