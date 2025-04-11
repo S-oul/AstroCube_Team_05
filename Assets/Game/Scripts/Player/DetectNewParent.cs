@@ -14,8 +14,7 @@ public class DetectNewParent : MonoBehaviour
 
     private bool _doGravityRotation;
 
-
-
+    public GameObject currentParent {  get; private set; }
 
     public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
     public bool DoGroundRotation { get => _doGroundRotation; set => _doGroundRotation = value; }
@@ -47,6 +46,7 @@ public class DetectNewParent : MonoBehaviour
                 if (OldTilePlayerPos)
                 {
                     transform.SetParent(OldTilePlayerPos.transform, true);
+                    currentParent = OldTilePlayerPos.gameObject;
                 }
                 //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
 
