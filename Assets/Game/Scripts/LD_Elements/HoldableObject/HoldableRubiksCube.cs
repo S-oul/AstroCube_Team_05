@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class HoldableRubiksCube : MonoBehaviour, IHoldable
 {
+    [SerializeField] private Transform _exitDoor;
     private Transform _originalParent;
     private Transform _originalTransform;
     private Rigidbody _rb;
@@ -14,6 +15,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         _originalParent = transform.parent;
         LayerMask maskCube = LayerMask.GetMask("Holdable");
         _rb = GetComponent<Rigidbody>();
+        _exitDoor.tag = "Untagged";
     }
 
     public Transform GetOriginalParent()
@@ -28,8 +30,9 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
 
     public void OnHold(Transform newParent)
     {
+        _exitDoor.tag = "VictoryZone";
+        Destroy(transform.GetComponent<BoxCollider>());
         StartCoroutine(HoldRubiksCube(newParent));
-        //transform.position = transform.parent.position;
     }
 
     IEnumerator HoldRubiksCube(Transform newParent)

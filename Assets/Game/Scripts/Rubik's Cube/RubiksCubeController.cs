@@ -163,7 +163,7 @@ public class RubiksCubeController : MonoBehaviour
 
             if (_controlledScript == null) return;
 
-            GameManager.Instance.Screenshake(1, 0.2f, 12);
+            GameManager.Instance.Screenshake(_gameSettings.RubikscCubeAxisRotationDuration, 0.4f);
 
             foreach (RubiksMovement cube in _replicatedScript)
             {
