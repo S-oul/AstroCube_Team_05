@@ -127,7 +127,6 @@ public class TextAnimation : MonoBehaviour
             yield return new WaitForSeconds(_intervalBetweenEachLetterMove);
         }
 
-
         yield return new WaitForSeconds(_waitDurationAfterDescramble);
 
         foreach (LetterInfo letter in randomLetters)
