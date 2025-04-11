@@ -257,6 +257,7 @@ public class RubiksMovement : MonoBehaviour
             };
             _moves.Add(move);
         }
+        EventManager.TriggerEndCubeRotation();
     }
 
     RubiksMove CreateRandomMove()

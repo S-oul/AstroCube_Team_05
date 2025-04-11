@@ -30,18 +30,39 @@ public class GameManager : MonoBehaviour
     public bool IsRubiksCubeEnabled => _isRubiksCubeEnabled;
     [SerializeField, ReadOnly] private bool _isRubiksCubeEnabled;
 
+
     private void Awake()
     {
         if (instance) Destroy(this);
         else instance = this;
     }
-    public void Screenshake(float duration, float amount)
+
+    public enum EScreenshakeMode
     {
-        Camera.main.DOShakePosition(duration, amount);
+        RUBIKS_CUBE_ROTATION
     }
+
+    public void Screenshake(EScreenshakeMode mode)
+    {
+        switch (mode)
+        {
+            default:
+                break;
+            case EScreenshakeMode.RUBIKS_CUBE_ROTATION:
+                Camera.main.DOShakePosition(settings.RubiksCubeRotationScreenshakeSettings.x,
+                                            settings.RubiksCubeRotationScreenshakeSettings.y,
+                                            (int)settings.RubiksCubeRotationScreenshakeSettings.z,
+                                            settings.RubiksCubeRotationScreenshakeSettings.w);
+                break;
+        }
+    }
+    void ScreenshakeCubeRotation() => Screenshake(EScreenshakeMode.RUBIKS_CUBE_ROTATION);
+
     private void OnEnable()
     {
         EventManager.OnSceneChange += ChangeScene;
+
+        EventManager.OnStartCubeRotation += ScreenshakeCubeRotation;
 
         EventManager.OnGamePause += StopDeltTime;
         EventManager.OnGamePause += UnlockMouse;
@@ -52,9 +73,8 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnSceneChange -= ChangeScene;
-        
-        EventManager.OnPlayerWin -= ShowWinScreen;
-        EventManager.OnPlayerLose -= ShowLoseScreen;
+
+        EventManager.OnStartCubeRotation -= ScreenshakeCubeRotation;
 
         EventManager.OnGamePause -= StopDeltTime;
         EventManager.OnGamePause -= UnlockMouse;

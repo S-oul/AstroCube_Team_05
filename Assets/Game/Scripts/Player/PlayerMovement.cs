@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("WISE")]
     [SerializeField] AK.Wwise.Event AKWiseEvent;
 
-
+    bool _canMove = true;
 
     Vector3 _gravityDirection;
 
@@ -71,8 +71,20 @@ public class PlayerMovement : MonoBehaviour
     private float _timerBeforeNextStep = 0;
     public float _timerTNextStep = 1;
 
-    
+    private void OnEnable()
+    {
+        EventManager.OnStartCubeRotation += DisableMovement;
+        EventManager.OnEndCubeRotation += EnableMovement;
+    }
 
+    private void OnDisable()
+    {
+        EventManager.OnStartCubeRotation += DisableMovement;
+        EventManager.OnEndCubeRotation += EnableMovement;
+    }
+
+    void EnableMovement() => _canMove = true;
+    void DisableMovement() => _canMove = false;
 
     void Start()
     {
@@ -90,6 +102,8 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!_canMove)
+            return;
         /*
         // collect player inputs
         _xInput = Input.GetAxis("Horizontal");
