@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
 
-    [SerializeField] string nextScene;
+    [SerializeField][Scene] string nextScene;
 
     [Header("Entity Sequence")]
     [SerializeField] EntitySequenceManager _entitySequenceManager;
