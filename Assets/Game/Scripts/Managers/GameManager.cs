@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,10 +16,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
 
-    [SerializeField] string nextScene;
+    [SerializeField][Scene] string nextScene;
 
     [Header("Entity Sequence")]
     [SerializeField] EntitySequenceManager _entitySequenceManager;
+    [SerializeField] Image _fade;
     [SerializeField] float _sequenceDuration;
     [SerializeField] List<GameObject> _objectToDisable;
 
@@ -30,18 +32,39 @@ public class GameManager : MonoBehaviour
     public bool IsRubiksCubeEnabled => _isRubiksCubeEnabled;
     [SerializeField, ReadOnly] private bool _isRubiksCubeEnabled;
 
+
     private void Awake()
     {
         if (instance) Destroy(this);
         else instance = this;
     }
-    public void Screenshake(float duration, float amount)
+
+    public enum EScreenshakeMode
     {
-        Camera.main.DOShakePosition(duration, amount);
+        RUBIKS_CUBE_ROTATION
     }
+
+    public void Screenshake(EScreenshakeMode mode)
+    {
+        switch (mode)
+        {
+            default:
+                break;
+            case EScreenshakeMode.RUBIKS_CUBE_ROTATION:
+                Camera.main.DOShakePosition(settings.RubiksCubeRotationScreenshakeSettings.x,
+                                            settings.RubiksCubeRotationScreenshakeSettings.y,
+                                            (int)settings.RubiksCubeRotationScreenshakeSettings.z,
+                                            settings.RubiksCubeRotationScreenshakeSettings.w);
+                break;
+        }
+    }
+    void ScreenshakeCubeRotation() => Screenshake(EScreenshakeMode.RUBIKS_CUBE_ROTATION);
+
     private void OnEnable()
     {
         EventManager.OnSceneChange += ChangeScene;
+
+        EventManager.OnStartCubeRotation += ScreenshakeCubeRotation;
 
         EventManager.OnGamePause += StopDeltTime;
         EventManager.OnGamePause += UnlockMouse;
@@ -52,9 +75,8 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnSceneChange -= ChangeScene;
-        
-        EventManager.OnPlayerWin -= ShowWinScreen;
-        EventManager.OnPlayerLose -= ShowLoseScreen;
+
+        EventManager.OnStartCubeRotation -= ScreenshakeCubeRotation;
 
         EventManager.OnGamePause -= StopDeltTime;
         EventManager.OnGamePause -= UnlockMouse;
@@ -109,7 +131,10 @@ public class GameManager : MonoBehaviour
     {
         EventManager.TriggerSequenceStart();
 
-        yield return new WaitForSeconds(1.0f);
+        yield return DOTween.To(() => new Color(0, 0, 0, 0), x => _fade.color = x, new Color(0, 0, 0, 1.0f), 1.0f).WaitForCompletion();
+        _fade.color = new Color(0, 0, 0, 0);
+
+        //yield return new WaitForSeconds(1.0f);
 
         foreach (var obj in _objectToDisable)
         {
@@ -128,6 +153,9 @@ public class GameManager : MonoBehaviour
         }
 
         EventManager.TriggerSequenceEnd();
+        _fade.color = new Color(0, 0, 0, 1.0f);
+        yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
+
         InputHandler.Instance.CanMove = true;
     }
 

@@ -163,8 +163,6 @@ public class RubiksCubeController : MonoBehaviour
 
             if (_controlledScript == null) return;
 
-            GameManager.Instance.Screenshake(_gameSettings.RubikscCubeAxisRotationDuration, 0.4f);
-
             foreach (RubiksMovement cube in _replicatedScript)
             {
                 if (!cube) continue;
@@ -183,7 +181,7 @@ public class RubiksCubeController : MonoBehaviour
             }
 
             _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-            EventManager.TriggerCubeRotated();
+            EventManager.TriggerStartCubeRotation();
         }
     }
     public void ActionRotateCubeUI(Vector2 direction)

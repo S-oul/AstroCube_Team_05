@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,9 @@ public class Rail : MonoBehaviour
 {
     public bool IsLoop;
     private float length;
-    private List<Vector3> nodes = new();
+    private List<Transform> nodes = new();
 
-    private void OnValidate()
+    private void Start()
     {
         Init();
     }
@@ -20,7 +21,7 @@ public class Rail : MonoBehaviour
         int children = transform.childCount;
         for (int i = 0; i < children; i++)
         {
-            nodes.Add(transform.GetChild(i).position);
+            nodes.Add(transform.GetChild(i));
             if (nodes.Count > 1)
                 length += Vector3.Distance(transform.GetChild(i - 1).position, transform.GetChild(i).position);
         }
@@ -45,16 +46,16 @@ public class Rail : MonoBehaviour
             
         while (true) {
 
-            if (currentDistance + Vector3.Distance(nodes[i], nodes[y]) < distance) { 
-                currentDistance += Vector3.Distance(nodes[i], nodes[y]);
+            if (currentDistance + Vector3.Distance(nodes[i].position, nodes[y].position) < distance) { 
+                currentDistance += Vector3.Distance(nodes[i].position, nodes[y].position);
             }
             else
             {
                 float dis = distance - currentDistance;
 
-                var percent = (distance - currentDistance) / Vector3.Distance(nodes[i], nodes[y]);
+                var percent = (distance - currentDistance) / Vector3.Distance(nodes[i].position, nodes[y].position);
 
-                return Vector3.Lerp(nodes[i], nodes[y], percent);
+                return Vector3.Lerp(nodes[i].position, nodes[y].position, percent);
             }
 
             i++;
@@ -76,13 +77,13 @@ public class Rail : MonoBehaviour
 
         for (int i = 0; i < nodes.Count; i++)
         {
-            Gizmos.DrawSphere(nodes[i], 0.1f);
+            Gizmos.DrawSphere(nodes[i].position, 0.1f);
 
             if (i > 0)
-                Gizmos.DrawLine(nodes[i], nodes[i - 1]);
+                Gizmos.DrawLine(nodes[i].position, nodes[i - 1].position);
         }
         if (IsLoop && nodes.Count > 1)
-            Gizmos.DrawLine(nodes[0], nodes[^1]);
+            Gizmos.DrawLine(nodes[0].position, nodes[^1].position);
     }
 
     public Vector3 GetClosestPointOnRail(Vector3 target) 
@@ -95,7 +96,7 @@ public class Rail : MonoBehaviour
             if (i < 1)
                 continue;
 
-            Vector3 closestPoint = GetNearestPointOnSegment(nodes[i-1], nodes[i], target);
+            Vector3 closestPoint = GetNearestPointOnSegment(nodes[i-1].position, nodes[i].position, target);
             float distance = Vector3.Distance(closestPoint, target);
 
             if(distance < smallestDistance )
@@ -111,8 +112,10 @@ public class Rail : MonoBehaviour
     {
         for (int n = 0; n < nodes.Count; n++)
         {
-            if (Vector3.Distance(nodes[n], position) <= 0.5f)
+            if (Vector3.Distance(nodes[n].position, position) <= Mathf.Epsilon)
+            {
                 return n;
+            }
         }
         return -1;
     }
