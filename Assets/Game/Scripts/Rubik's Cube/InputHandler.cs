@@ -110,7 +110,7 @@ public class InputHandler : MonoBehaviour
     public void OnResetRoom(InputAction.CallbackContext callbackContext)
     {
         //Hold 
-        print(callbackContext.time - callbackContext.startTime);
+        //print(callbackContext.time - callbackContext.startTime);
         if (callbackContext.performed)
         {
             if (!_controller.ControlledScript.IsReversing) EventManager.Instance.TriggerReset();
