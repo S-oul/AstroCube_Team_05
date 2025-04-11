@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -12,9 +13,29 @@ public class InputHandler : MonoBehaviour
 
     PlayerInput _playerInput;
 
+    public static InputHandler Instance => instance;
+    private static InputHandler instance;
+
+    public Vector2 CameraMovement => _cameraMovement;
+    private Vector2 _cameraMovement;
+
+    public bool CanMove
+    {
+        get => _canMove;
+
+        set
+        {
+            _canMove = value;
+            ToggleCanMove(value);
+        }
+    }
+    [SerializeField, ReadOnly] private bool _canMove;
+
     void Awake()
     {
-
+        if (instance) Destroy(this);
+        else instance = this;
+        _canMove = true;
         _controller = GetComponent<RubiksCubeController>();
         _playerInput = GetComponent<PlayerInput>();
         InputActionMap _actionMap = _playerInput.actions.FindActionMap("PlayerMovement");
@@ -30,9 +51,21 @@ public class InputHandler : MonoBehaviour
 
         if (!GameManager.Instance.IsRubiksCubeEnabled)
         {
-            //_controller.enabled = false;
-            //Destroy(_controller);
             _playerInput.actions.FindActionMap("RubiksCube").Disable();
+        }
+    }
+
+    private void ToggleCanMove(bool canMove)
+    {
+        switch (canMove)
+        {
+            default:
+            case true:
+                _playerInput.actions.FindActionMap("PlayerMovement").Enable();
+                break;
+            case false: 
+                _playerInput.actions.FindActionMap("PlayerMovement").Disable();
+                break;
         }
     }
 
@@ -95,8 +128,8 @@ public class InputHandler : MonoBehaviour
     {
         if (callbackContext.performed)
         {
-            if (_playerHold.IsHolding) _playerHold.TryRelease();
-            else _playerHold.TryHold();
+            _playerHold.TryHold();
+            //if (_playerHold.IsHolding) _playerHold.TryRelease();
         }
     }
 

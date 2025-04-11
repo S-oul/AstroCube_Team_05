@@ -32,7 +32,8 @@ public class EventManager : MonoBehaviour
 
 
     //Rubik's Cube Events
-    public static event Action OnCubeRotated;
+    public static event Action OnStartCubeRotation;
+    public static event Action OnEndCubeRotation;
 
     //Object Events
     public static event Action OnButtonPressed;
@@ -41,6 +42,9 @@ public class EventManager : MonoBehaviour
     //Player Events
     public static event Action<float> OnPlayerReset;
     public static event Action<float> OnPlayerResetOnce;
+
+    public static event Action OnStartSequence;
+    public static event Action OnEndSequence;
 
     public static void TriggerPlayerWin()
     {
@@ -99,8 +103,23 @@ public class EventManager : MonoBehaviour
         OnSceneEnd?.Invoke();
     }
 
-    public static void TriggerCubeRotated()
+    public static void TriggerSequenceStart()
     {
-        OnCubeRotated?.Invoke();
+        OnStartSequence?.Invoke();
+    }
+
+    public static void TriggerSequenceEnd()
+    {
+        OnEndSequence?.Invoke();
+    }
+
+    public static void TriggerStartCubeRotation()
+    {
+        OnStartCubeRotation?.Invoke();
+    }
+
+    public static void TriggerEndCubeRotation()
+    {
+        OnEndCubeRotation?.Invoke();
     }
 }

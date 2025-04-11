@@ -9,6 +9,15 @@ using UnityEngine.UI;
 
 public class TextAnimation : MonoBehaviour
 {
+    [Header("Animation Settings")]
+    [SerializeField] float _durationFadeInText = 2.0f;
+    [SerializeField] float _durationDescrambleForEachLetter = 1.0f;
+    [SerializeField] float _waitDurationAfterDescramble = 5.0f;
+    [SerializeField] float _durationMoveToLineForEachLetter = 3.0f;
+    [SerializeField] float _intervalBetweenEachLetterMove = 0.3f;
+    [SerializeField] float _durationFadeOutText = 2.0f;
+
+    [Header("Display Settings")]
     [SerializeField] private string text;
     [SerializeField][Range(0.0f, 1.0f)] private float _textLerp;
     [SerializeField][Range(0.0f, 1.0f)] private float _intervalSquare;
@@ -100,37 +109,29 @@ public class TextAnimation : MonoBehaviour
         spawnedText.Clear();
     }
 
-    public IEnumerator StartDisplayText(float durationFade, float durationDistort, float durationDisplay)
+    public IEnumerator StartDisplayText()
     {
         List<LetterInfo> randomLetters = spawnedText.ToList();
         Shuffle(randomLetters);
 
         foreach (LetterInfo letter in randomLetters)
         {
-            DOTween.To(() => letter.text.material.GetFloat("_Alpha"), x => letter.text.material.SetFloat("_Alpha", x), 1f, durationFade).SetEase(Ease.InCirc);
+            DOTween.To(() => letter.text.material.GetFloat("_Alpha"), x => letter.text.material.SetFloat("_Alpha", x), 1f, _durationFadeInText).SetEase(Ease.InCirc);
         }
-        yield return new WaitForSeconds(durationFade);
+        yield return new WaitForSeconds(_durationFadeInText);
 
         foreach (LetterInfo letter in randomLetters)
         {
-            DOTween.To(() => letter.text.material.GetFloat("_Distort"), x => letter.text.material.SetFloat("_Distort", x), 0f, durationDistort).SetEase(Ease.OutCirc);
-            yield return new WaitForSeconds(0.3f);
+            DOTween.To(() => letter.text.material.GetFloat("_Distort"), x => letter.text.material.SetFloat("_Distort", x), 0f, _durationDescrambleForEachLetter).SetEase(Ease.OutCirc);
+            letter.text.transform.DOMove(letter.linePosition, _durationMoveToLineForEachLetter).SetEase(Ease.InOutSine);
+            yield return new WaitForSeconds(_intervalBetweenEachLetterMove);
         }
-        yield return new WaitForSeconds(1.0f);
 
+        yield return new WaitForSeconds(_waitDurationAfterDescramble);
 
         foreach (LetterInfo letter in randomLetters)
         {
-            letter.text.transform.DOMove(letter.linePosition, 5).SetEase(Ease.InOutSine);
-            yield return new WaitForSeconds(0.2f);
-        }
-
-
-        yield return new WaitForSeconds(durationDisplay);
-
-        foreach (LetterInfo letter in randomLetters)
-        {
-            DOTween.To(() => letter.text.material.GetFloat("_Alpha"), x => letter.text.material.SetFloat("_Alpha", x), .0f, durationFade).SetEase(Ease.OutCirc);
+            DOTween.To(() => letter.text.material.GetFloat("_Alpha"), x => letter.text.material.SetFloat("_Alpha", x), .0f, _durationFadeOutText).SetEase(Ease.OutCirc);
         }
     }
 

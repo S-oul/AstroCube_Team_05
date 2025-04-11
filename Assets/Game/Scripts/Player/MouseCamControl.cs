@@ -17,21 +17,25 @@ public class MouseCamControl : MonoBehaviour
 
     [SerializeField] bool _doReversedCam = true;
 
-
     Transform _oldTile;
 
     float _yRotation;
     GameSettings _settings;
+    InputHandler _inputHandler;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _settings = GameManager.Instance.Settings;
         Camera.main.fieldOfView = _settings.FOV;
+        _inputHandler = InputHandler.Instance;
     }
 
     void Update()
     {
+        if(_inputHandler == null || !_inputHandler.CanMove)
+            return;
+
         // Camera movement
         float moveX = Input.GetAxis("Mouse X") * _settings.CameraSensibilityMouse * Time.deltaTime;
         float moveY = Input.GetAxis("Mouse Y") * _settings.CameraSensibilityMouse * Time.deltaTime * -1;

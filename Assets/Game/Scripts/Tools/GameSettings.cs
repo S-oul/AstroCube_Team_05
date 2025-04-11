@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,7 @@ public class GameSettings : ScriptableObject
     // Rubik's Cube Properties
     public float RubikscCubeAxisRotationDuration => _rubikscCubeAxisRotationDuration;
     public float UiRubikscCubeRotationDuration => _uiRubikscCubeRotationDuration;
+    public Vector4 RubiksCubeRotationScreenshakeSettings => _rubiksCubeRotationscreenshakeSettings;
 
 
     // Global Properties
@@ -68,6 +70,7 @@ public class GameSettings : ScriptableObject
     [Header("-- RUBIK'S CUBE --")]
     [SerializeField] private float _rubikscCubeAxisRotationDuration = 0.2f;
     [SerializeField] private float _uiRubikscCubeRotationDuration = 0.2f;
+    [SerializeField][InfoBox("Duration, Strength, Vibrato, Randomness", EInfoBoxType.Normal)] private Vector4 _rubiksCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
 
     [Header("-- GLOBAL --")]
     [SerializeField] private float _resetDuration = 2.0f;

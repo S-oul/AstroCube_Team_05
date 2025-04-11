@@ -1356,6 +1356,7 @@ RectTransform:
   - {fileID: 7359090204042306632}
   - {fileID: 1213849457795740624}
   - {fileID: 1059868385709229152}
+  - {fileID: 3761852949640642195}
   - {fileID: 6548761951492327329}
   m_Father: {fileID: 2463684442174907702}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2054,6 +2055,103 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &8230508001233329457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3761852949640642195}
+  - component: {fileID: 3387046744167877013}
+  - component: {fileID: 1560838598964486959}
+  - component: {fileID: 319795002070145894}
+  m_Layer: 5
+  m_Name: FadeInOut
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3761852949640642195
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230508001233329457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.01, y: 1.01, z: 1.01}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 9067813692967913725}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3387046744167877013
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230508001233329457}
+  m_CullTransparentMesh: 1
+--- !u!114 &1560838598964486959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230508001233329457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!95 &319795002070145894
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230508001233329457}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8828803716998034422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2865,7 +2963,42 @@ PrefabInstance:
     - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 15
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[6].m_ActionId
+      value: 59f107cb-0f59-45c8-b182-942f2a69fc22
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_ActionId
+      value: a9377ed4-2696-4ba1-abfc-02eb9ca8e75c
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_ActionId
+      value: 0f690b63-220d-4fba-bb73-64d9c7e24342
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_ActionId
+      value: ae37ff05-363d-4227-a863-d23dae0366db
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[10].m_ActionId
+      value: 43c76a40-73ec-4344-81a8-78f933cf9b88
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionId
+      value: bdf96abc-9325-4e69-a2e1-51ff4c1f6964
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionId
+      value: 61114138-8631-4775-8c3b-c8ce8976bd1a
       objectReference: {fileID: 0}
     - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
@@ -2879,6 +3012,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
+      propertyPath: m_ActionEvents.Array.data[6].m_ActionName
+      value: NoClip/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_ActionName
+      value: NoClip/VerticalMovement[/Keyboard/q,/Keyboard/e,/Keyboard/shift,/Keyboard/space]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_ActionName
+      value: MainScheme/ShowStrips[/Keyboard/t,/XInputControllerWindows/start]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_ActionName
+      value: MainScheme/SwitchColumnsLineRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[10].m_ActionName
+      value: OtherActions/Interact[/Keyboard/i]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionName
+      value: RubiksCube/GamePause[/Keyboard/escape]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionName
+      value: OtherActions/PauseGame[/Keyboard/escape]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_ActionName
       value: RubiksCube/GamePause[/Keyboard/escape]
       objectReference: {fileID: 0}
@@ -2886,6 +3054,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ActionEvents.Array.data[14].m_ActionName
       value: OtherActions/PauseGame[/Keyboard/escape]
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
@@ -2901,6 +3074,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnMovement
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnVerticalMovement
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnShowStripLayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnSwitchColumnsLineRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[10].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnInteract
+      objectReference: {fileID: 0}
+    - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnGamePause
       objectReference: {fileID: 0}
     - target: {fileID: 577583458666012802, guid: a6ec11c84de52ea47a8127f0825703b7,
         type: 3}
