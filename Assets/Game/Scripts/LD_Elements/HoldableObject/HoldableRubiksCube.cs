@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class HoldableRubiksCube : MonoBehaviour, IHoldable
 {
-    [SerializeField] private Transform _exitDoor;
+    [SerializeField] private GameObject _exitDoor;
+    [SerializeField] private Light _light;
     private Transform _originalParent;
     private Transform _originalTransform;
     private Rigidbody _rb;
@@ -15,7 +16,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         _originalParent = transform.parent;
         LayerMask maskCube = LayerMask.GetMask("Holdable");
         _rb = GetComponent<Rigidbody>();
-        _exitDoor.tag = "Untagged";
+        _exitDoor.SetActive(false);
     }
 
     public Transform GetOriginalParent()
@@ -30,7 +31,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
 
     public void OnHold(Transform newParent)
     {
-        _exitDoor.tag = "VictoryZone";
+        _exitDoor.SetActive(true);
         Destroy(transform.GetComponent<BoxCollider>());
         StartCoroutine(HoldRubiksCube(newParent));
     }
@@ -38,11 +39,11 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     IEnumerator HoldRubiksCube(Transform newParent)
     {
         InputHandler.Instance.CanMove = false;
+        DOTween.To(() => _light.intensity, x => _light.intensity = x, 0f, 1).SetEase(Ease.OutCirc);
         transform.DOMove(newParent.position, 1.0f);
         transform.DOScale(newParent.localScale, 1.0f);
         yield return new WaitForSeconds(1.0f);
         transform.parent = newParent;
-
         GameManager.Instance.StartSequence();
     }
 

@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 public class TextAnimation : MonoBehaviour
 {
+    [Header("Editor Settings")]
+    [SerializeField] bool _updateAutomatically;
+
     [Header("Animation Settings")]
     [SerializeField] float _durationFadeInText = 2.0f;
     [SerializeField] float _durationDescrambleForEachLetter = 1.0f;
@@ -38,6 +41,12 @@ public class TextAnimation : MonoBehaviour
     void Update()
     {
         //UpdateTextPosition();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(!Application.isPlaying && _updateAutomatically)
+            SpawnText();
     }
 
     public Vector2 GetCharPosFromIndex(int index)
