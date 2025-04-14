@@ -57,5 +57,10 @@ public class KaleidoscopeManager : MonoBehaviour
             }
         }
     }
+
+    public void IsEnabled(bool isEnabled)
+    {
+        _isEnabled = isEnabled;
+    }
 }
 

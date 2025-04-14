@@ -23,6 +23,5 @@ public class CrossfadeTransition : MonoBehaviour
     public void ChangeSceneAfterAnimation()
     {
         EventManager.TriggerSceneChange();
-
     }
 }
