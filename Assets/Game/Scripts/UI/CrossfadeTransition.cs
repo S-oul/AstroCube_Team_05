@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CrossfadeTransition : MonoBehaviour
 {
-
+    public float currentOpacity;
+    [SerializeField] GameObject _kaleidoscopeCam;
+    Image _screen;
+    float _oldOpacity = 1;
 
     private void OnEnable()
     {
@@ -23,5 +27,31 @@ public class CrossfadeTransition : MonoBehaviour
     public void ChangeSceneAfterAnimation()
     {
         EventManager.TriggerSceneChange();
+    }
+
+    private void Start()
+    {
+        _screen = GetComponent<Image>();
+    }
+
+    private void Update()
+    {
+        if (currentOpacity == _oldOpacity) return;
+
+        _screen.material.SetFloat("_Alpha", currentOpacity);
+
+        if (currentOpacity == 0 && _kaleidoscopeCam.activeSelf == true)
+        {
+            _screen.enabled = false;
+            _kaleidoscopeCam.SetActive(false);
+        }
+
+        if (currentOpacity != 0 && _kaleidoscopeCam.activeSelf == false)
+        {
+            _screen.enabled = true;
+            _kaleidoscopeCam.SetActive(true);
+        }
+
+        _oldOpacity = currentOpacity;
     }
 }
