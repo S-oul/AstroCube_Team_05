@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CrossfadeTransition : MonoBehaviour
 {
     public float currentOpacity;
+    public float segmentCount;
     [SerializeField] GameObject _kaleidoscopeCam;
     Image _screen;
     float _oldOpacity = 1;
@@ -36,9 +37,10 @@ public class CrossfadeTransition : MonoBehaviour
 
     private void Update()
     {
-        if (currentOpacity == _oldOpacity) return;
+        //if (currentOpacity == _oldOpacity) return;
 
         _screen.material.SetFloat("_Alpha", currentOpacity);
+        _screen.material.SetFloat("_SegmentCount", segmentCount);
 
         if (currentOpacity == 0 && _kaleidoscopeCam.activeSelf == true)
         {
