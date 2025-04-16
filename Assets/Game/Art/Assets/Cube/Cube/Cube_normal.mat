@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cube_Shader
-  m_Shader: {fileID: 4800000, guid: a5fd93732a1416d44920c222f6f620a6, type: 3}
+  m_Name: Cube_normal
+  m_Shader: {fileID: 4800000, guid: b83f84661011cf0488d9c8aa73c874e7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,18 +24,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: e5b234c8823b14d469d368b1938e96ac, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0166b052bc52fe848a8c0d86cdeb18b5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample1:
-        m_Texture: {fileID: 2800000, guid: 27b0238e9024c404faee6a91fd52a034, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TextureSample2:
-        m_Texture: {fileID: 2800000, guid: 27b0238e9024c404faee6a91fd52a034, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TextureSample3:
         m_Texture: {fileID: 2800000, guid: 75fab8512205d15408edc82d48ca923e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -58,24 +50,24 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _D_Max: 0.02
-    - _D_Min: 0
-    - _Dis: 0
     - _EnvironmentReflections: 1
-    - _HDR: 2
-    - _Intensity: 0.0013
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _SpecularHighlights: 1
-    - _X_Tile: 2
-    - _X_Tile1: 2
-    - _X_speed: 0.2
-    - _X_speed1: -0.1
-    - _Y_Tile: 2
-    - _Y_Tile1: 2
-    - _Y_speed: 0.2
-    - _Y_speed1: -0.1
+    - _TessEdgeLength: 16
+    - _TessMax: 25
+    - _TessMaxDisp: 25
+    - _TessMin: 10
+    - _TessPhongStrength: 0.5
+    - _TessValue: 16
+    - _TransAmbient: 0.1
+    - _TransDirect: 0.9
+    - _TransNormal: 0.5
+    - _TransScattering: 2
+    - _TransShadow: 0.5
+    - _TransStrength: 1
+    - _TransmissionShadow: 0.5
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
