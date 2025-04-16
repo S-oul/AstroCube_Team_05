@@ -32,12 +32,16 @@ public class RubiksMovement : MonoBehaviour
 
     [Header("AUTO MOVES"), SerializeField]
     bool _DoAutoMoves = false;
+
+    [ShowIf("_DoAutoMoves"), SerializeField] bool _PlayAtStart = false;
+    [ShowIf("_DoAutoMoves"), SerializeField] bool _PlayOnEvent = false;
+
     [ShowIf("_DoAutoMoves"), SerializeField] int ExecuteSequenceXTime = 3;
     [InfoBox("Input -1 to let it run infinitly")]
 
     [ShowIf("_DoAutoMoves"), SerializeField] float TimeToRotate = 2f;
-    [ShowIf("_DoAutoMoves"),SerializeField] float TimeBetweenMoves = .5f;
-    [ShowIf("_DoAutoMoves"),SerializeField] float TimeBetweenSequence = 1f;
+    [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenMoves = .5f;
+    [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenSequence = 1f;
     [ShowIf("_DoAutoMoves"), SerializeField] List<RubiksMove> AutoMovesSequence = new List<RubiksMove>();
 
 
@@ -64,9 +68,13 @@ public class RubiksMovement : MonoBehaviour
         }
 
         if (_doScramble) StartCoroutine(Scramble());
-        else if (_DoAutoMoves && AutoMovesSequence.Count > 0)
+        else if (_PlayAtStart && AutoMovesSequence.Count > 0)
         {
-            StartCoroutine(FollowSequence());
+            StartSequenceCoroutine();
+        }
+        else if (_PlayOnEvent && AutoMovesSequence.Count > 0)
+        {
+            EventManager.OnActivateSequence += StartSequenceCoroutine;
         }
 
     }
@@ -75,9 +83,13 @@ public class RubiksMovement : MonoBehaviour
     {
         EventManager.OnPlayerReset -= ReverseMoves;
         EventManager.OnPlayerResetOnce -= UndoMove;
-
+        EventManager.OnActivateSequence -= StartSequenceCoroutine;
     }
 
+    void StartSequenceCoroutine()
+    {
+        StartCoroutine(FollowSequence());
+    }
     IEnumerator FollowSequence()
     {
         int nbOfSquenceExecuted = 0;
@@ -405,7 +417,7 @@ public class RubiksMovement : MonoBehaviour
     }
     private void OnValidate()
     {
-        if (IsLockXAxis && IsLockYAxis && IsLockZAxis) _isLockXAxis = false;
+        if (_PlayAtStart && _PlayOnEvent) _PlayAtStart = false;
     }
 }
 
