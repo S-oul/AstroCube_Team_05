@@ -23,10 +23,10 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.75
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 697dcc1a69e1a2c4ea5db483875ede85, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -7361,7 +7361,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1953122546}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6c9d426a47e69af47a7813857461ee51,
         type: 3}
@@ -7455,6 +7455,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1116292857}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6c9d426a47e69af47a7813857461ee51,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 479072140612766086}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c9d426a47e69af47a7813857461ee51, type: 3}
 --- !u!1001 &1706734489
@@ -8842,10 +8846,6 @@ PrefabInstance:
     - {fileID: 5978295304203212722, guid: 84abab8cf84190243b77da89d494331b, type: 3}
     - {fileID: 6041951762593787732, guid: 84abab8cf84190243b77da89d494331b, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2463684442174907702, guid: 84abab8cf84190243b77da89d494331b,
-        type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 689700468}
     - targetCorrespondingSourceObject: {fileID: 7283349500288409730, guid: 84abab8cf84190243b77da89d494331b,
         type: 3}
       insertIndex: -1
@@ -9006,12 +9006,6 @@ MonoBehaviour:
   scalingFactor: 1
   m_posOffsetData: {fileID: 0}
   listenerMask: 1
---- !u!4 &1953122546 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2463684442174907702, guid: 84abab8cf84190243b77da89d494331b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1953122542}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1959222000
 GameObject:
   m_ObjectHideFlags: 0
@@ -10065,12 +10059,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5136444804099545311}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.41, y: -2.846, z: 10.011}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.28571427, y: 0.28571427, z: 0.28571427}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1349265830149968662}
+  m_Father: {fileID: 689700468}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1349265830149968662
 Transform:
@@ -10089,7 +10083,6 @@ Transform:
   - {fileID: 1715391376}
   - {fileID: 8238198926041591894}
   - {fileID: 1618983587084112136}
-  - {fileID: 479072140612766086}
   - {fileID: 4022981775600357284}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10476,7 +10469,7 @@ GameObject:
   - component: {fileID: 4726736657968934385}
   - component: {fileID: 6687578179336642370}
   m_Layer: 0
-  m_Name: Point Light (3)
+  m_Name: Exit Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10840,5 +10833,6 @@ SceneRoots:
   - {fileID: 480079439}
   - {fileID: 532104208}
   - {fileID: 246687822}
+  - {fileID: 1646988547}
   - {fileID: 1953122542}
   - {fileID: 1349265830149968662}
