@@ -23,8 +23,6 @@ public class SelectionCube : MonoBehaviour
     private Renderer[] _renderers;
     private Material[] allOldMat = new Material[0];
 
-
-
     public bool IsTileLocked { get => _isTileLocked; set => _isTileLocked = value; }
 
     public enum SelectionMode
@@ -32,7 +30,9 @@ public class SelectionCube : MonoBehaviour
         AXIS,
         CUBE,
         LOCKED,
-        PLAYERONTILE
+        PLAYERONTILE,
+        ENABLE,
+        DISABLE
     }
 
     void Awake()
@@ -68,6 +68,8 @@ public class SelectionCube : MonoBehaviour
 
     public void Select(SelectionMode mode)
     {
+        if (_renderers == null)
+            return;
         foreach (var renderer in _renderers)
         {
             switch (mode)
@@ -92,6 +94,12 @@ public class SelectionCube : MonoBehaviour
                     break;
                 case SelectionMode.PLAYERONTILE:
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    break;
+                case SelectionMode.ENABLE:
+                    renderer.enabled = true;
+                    break;
+                case SelectionMode.DISABLE:
+                    renderer.enabled = false;
                     break;
             }
         }
