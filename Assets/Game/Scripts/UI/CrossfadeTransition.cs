@@ -9,7 +9,7 @@ public class CrossfadeTransition : MonoBehaviour
     public float segmentCount;
     [SerializeField] GameObject _kaleidoscopeCam;
     Image _screen;
-    float _oldOpacity = 1;
+    Animator _transitionAnimator;
 
     private void OnEnable()
     {
@@ -22,7 +22,7 @@ public class CrossfadeTransition : MonoBehaviour
 
     void StartFade()
     {
-        GetComponent<Animator>().SetTrigger("StartFade");
+        _transitionAnimator.SetTrigger("StartFade");
     }
 
     public void ChangeSceneAfterAnimation()
@@ -33,27 +33,32 @@ public class CrossfadeTransition : MonoBehaviour
     private void Start()
     {
         _screen = GetComponent<Image>();
+        _transitionAnimator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         //if (currentOpacity == _oldOpacity) return;
-
-        _screen.material.SetFloat("_Alpha", currentOpacity);
-        _screen.material.SetFloat("_SegmentCount", segmentCount);
-
-        if (currentOpacity == 0 && _kaleidoscopeCam.activeSelf == true)
+        if (!_transitionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CrossfadeEnd") &&
+            !_transitionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CrossfadeStart"))
         {
-            _screen.enabled = false;
-            _kaleidoscopeCam.SetActive(false);
+            Debug.Log("Animation NOT running");
+            if (_kaleidoscopeCam.activeSelf)
+            {
+                _screen.enabled = false;
+                _kaleidoscopeCam.SetActive(false);
+            }
+            return;
         }
+        Debug.Log("Animation is Running");
 
-        if (currentOpacity != 0 && _kaleidoscopeCam.activeSelf == false)
+        if (_kaleidoscopeCam.activeSelf == false)
         {
             _screen.enabled = true;
             _kaleidoscopeCam.SetActive(true);
         }
 
-        _oldOpacity = currentOpacity;
+        _screen.material.SetFloat("_Alpha", currentOpacity);
+        _screen.material.SetFloat("_SegmentCount", segmentCount);
     }
 }
