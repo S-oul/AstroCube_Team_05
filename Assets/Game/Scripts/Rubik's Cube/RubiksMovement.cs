@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
 using System.Linq;
+using NaughtyAttributes;
+using System;
+using System.Data.SqlTypes;
 
 public class RubiksMovement : MonoBehaviour
 {
+    [Header("GD DONT TOUCH")]
 
     [SerializeField] Transform middle;
     [SerializeField] Transform middleGameObject;
@@ -15,15 +19,28 @@ public class RubiksMovement : MonoBehaviour
 
     [SerializeField] bool _doScramble = true;
 
-
+    //PRIVATE THINGS
     private bool _isRotating = false;
-
     private bool _isReversing = false;
     List<RubiksMove> _moves = new List<RubiksMove>();
+
+    [Header("LOCKINGS")]
 
     [SerializeField] bool _isLockXAxis;
     [SerializeField] bool _isLockYAxis;
     [SerializeField] bool _isLockZAxis;
+
+    [Header("AUTO MOVES"), SerializeField]
+    bool _DoAutoMoves = false;
+    [ShowIf("_DoAutoMoves"), SerializeField] int ExecuteSequenceXTime = 3;
+    [InfoBox("Input -1 to let it run infinitly")]
+
+    [ShowIf("_DoAutoMoves"), SerializeField] float TimeToRotate = 2f;
+    [ShowIf("_DoAutoMoves"),SerializeField] float TimeBetweenMoves = .5f;
+    [ShowIf("_DoAutoMoves"),SerializeField] float TimeBetweenSequence = 1f;
+    [ShowIf("_DoAutoMoves"), SerializeField] List<RubiksMove> AutoMovesSequence = new List<RubiksMove>();
+
+
 
     #region Accessor
 
@@ -45,13 +62,47 @@ public class RubiksMovement : MonoBehaviour
         {
             if (t.tag == "Movable") _allBlocks.Add(t);
         }
+
         if (_doScramble) StartCoroutine(Scramble());
+        else if (_DoAutoMoves && AutoMovesSequence.Count > 0)
+        {
+            StartCoroutine(FollowSequence());
+        }
 
     }
+
     void OnDisable()
     {
         EventManager.OnPlayerReset -= ReverseMoves;
         EventManager.OnPlayerResetOnce -= UndoMove;
+
+    }
+
+    IEnumerator FollowSequence()
+    {
+        int nbOfSquenceExecuted = 0;
+        while (nbOfSquenceExecuted != ExecuteSequenceXTime)
+        {
+            int SequenceIndex = 0;
+            while (true) //maybeWhile(SequenceIndex != AutoMovesSequence.Count-1) but true easier
+            {
+                if (!AutoMovesSequence[SequenceIndex].Axis)
+                {
+                    AutoMovesSequence[SequenceIndex].Axis = GetAxisFromCube(AutoMovesSequence[SequenceIndex].cube, AutoMovesSequence[SequenceIndex].orientation);
+                }
+
+                StartCoroutine(RotateAxisCoroutine(AutoMovesSequence[SequenceIndex].Axis, AutoMovesSequence[SequenceIndex].cube, AutoMovesSequence[SequenceIndex].clockWise, TimeToRotate, AutoMovesSequence[SequenceIndex].orientation));
+                yield return new WaitForSeconds(TimeToRotate);
+
+                SequenceIndex++;
+                if (SequenceIndex == AutoMovesSequence.Count) break;
+
+                yield return new WaitForSeconds(TimeBetweenMoves);
+            }
+
+            nbOfSquenceExecuted++;
+            yield return new WaitForSeconds(TimeBetweenSequence);
+        }
 
     }
     IEnumerator Scramble()
@@ -81,7 +132,7 @@ public class RubiksMovement : MonoBehaviour
             if (!_isRotating)
             {
                 RubiksMove m = _moves[_moves.Count - 1];
-                StartCoroutine(RotateAxisCoroutine(m.axis, m.cube, !m.clockWise, time, m.orientation));
+                StartCoroutine(RotateAxisCoroutine(m.Axis, m.cube, !m.clockWise, time, m.orientation));
                 _moves.RemoveAt(_moves.Count - 1);
             }
             yield return null;
@@ -101,11 +152,11 @@ public class RubiksMovement : MonoBehaviour
             yield return null;
 
         if (Moves.Count > 0) yield return null;
-            
+
         _isReversing = true;
         RubiksMove m = Moves[Moves.Count - 1];
 
-        StartCoroutine(RotateAxisCoroutine(m.axis, m.cube, !m.clockWise, time, m.orientation));
+        StartCoroutine(RotateAxisCoroutine(m.Axis, m.cube, !m.clockWise, time, m.orientation));
         Moves.RemoveAt(Moves.Count - 1);
 
         yield return new WaitForSeconds(time + .05f);
@@ -113,7 +164,7 @@ public class RubiksMovement : MonoBehaviour
     }
     void RotateAxis(RubiksMove move, float duration = 0.5f)
     {
-        StartCoroutine(RotateAxisCoroutine(move.axis, move.cube, move.clockWise, duration, move.orientation));
+        StartCoroutine(RotateAxisCoroutine(move.Axis, move.cube, move.clockWise, duration, move.orientation));
     }
 
     /// <summary>
@@ -250,7 +301,7 @@ public class RubiksMovement : MonoBehaviour
         {
             RubiksMove move = new()
             {
-                axis = axis,
+                Axis = axis,
                 cube = selectedCube,
                 orientation = sliceAxis,
                 clockWise = clockWise
@@ -262,13 +313,13 @@ public class RubiksMovement : MonoBehaviour
 
     RubiksMove CreateRandomMove()
     {
-        int ran = Random.Range(0, _allBlocks.Count - 1);
+        int ran = UnityEngine.Random.Range(0, _allBlocks.Count - 1);
         RubiksMove move = new()
         {
             cube = _allBlocks[ran],
             orientation = (SliceAxis)(ran % 3),
-            axis = GetAxisFromCube(_allBlocks[ran], (SliceAxis)(ran % 3)),
-            clockWise = Random.Range(0, 2) % 2 == 0
+            Axis = GetAxisFromCube(_allBlocks[ran], (SliceAxis)(ran % 3)),
+            clockWise = UnityEngine.Random.Range(0, 2) % 2 == 0
         };
 
         return move;
@@ -360,16 +411,19 @@ public class RubiksMovement : MonoBehaviour
 
 namespace RubiksStatic
 {
+    [Serializable]
     class RubiksMove
     {
-        public Transform axis;
+        private Transform axis;
         public Transform cube;
         public SliceAxis orientation;
         public bool clockWise;
 
+        public Transform Axis { get => axis; set => axis = value; }
+
         public void Print()
         {
-            Debug.Log("Axis : " + axis + " cube : " + cube + " Orient : " + orientation + " ClockWise : " + clockWise);
+            Debug.Log("Axis : " + Axis + " cube : " + cube + " Orient : " + orientation + " ClockWise : " + clockWise);
         }
     }
     public enum SliceAxis { X, Y, Z, Useless }
