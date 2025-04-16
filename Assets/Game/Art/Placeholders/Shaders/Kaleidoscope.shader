@@ -5,6 +5,8 @@
         _MainTex ("Texture", 2D) = "white" {}
 		_SegmentCount("Segment Count", Float) = 4
         _Alpha ("Opacity", Float) = 1.0 // New property for opacity control
+        _TEST_VAR1 ("Test Variable 1", Float) = -0.0153
+        _TEST_VAR2 ("Test Variable 2", Float) = 1.44
     }
     SubShader
     {
@@ -32,12 +34,17 @@
                 float4 vertex : SV_POSITION;
             };
 
+            float _TEST_VAR1;
+            float _TEST_VAR2;
+
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = (v.uv-0.20f);
-                o.uv.x = o.uv.x*-1; 
+                // o.uv = (v.uv-0.20f);
+                // o.uv.x = o.uv.x*-1; 
+                o.uv = (v.uv + _TEST_VAR1);
+                o.uv = o.uv * _TEST_VAR2;
                 return o;
             }
 
