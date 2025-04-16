@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] AK.Wwise.Event AKWiseEvent;
 
     [Header("Laser Rotation")]
-    [SerializeField] private GameObject laserToRotate;
+    private GameObject laserToRotate;
     [SerializeField] private float rotationSpeed = 50f;
 
     private bool isPlayerLocked = false;
@@ -191,8 +191,9 @@ public class PlayerMovement : MonoBehaviour
 
             if (hit.collider.CompareTag("Lazer"))
             {
+                laserToRotate = hit.collider.gameObject;
                 IsPlayerLocked = true;
-                Debug.Log("Laser target hit — Player unlocked!");
+                Debug.Log("Laser target hit — Player locked!");
             }
         }
 
