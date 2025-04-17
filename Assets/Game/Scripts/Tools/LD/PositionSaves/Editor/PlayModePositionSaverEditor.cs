@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
+using static PositionSaveFile;
 using static UnityEngine.GraphicsBuffer;
 
 [CustomEditor(typeof(PlayModePositionSaver))]
@@ -15,8 +16,15 @@ public class PlayModePositionSaverEditor : Editor
     {
         GUI.skin.font = _font;
 
+        GUILayout.BeginVertical("GroupBox");
 
-        GUI.backgroundColor = Color.yellow;
+        GUI.backgroundColor = new Color(0.7f, 0.7f, 1f);
+        if (GUILayout.Button("Save End/Right Positions", new GUIStyle(GUI.skin.button)))
+        {
+            SaveRightPositions();
+        }
+        GUILayout.EndVertical();
+
         GUI.backgroundColor = new Color(0.8f, 1f, 0.7f);
         if (GUILayout.Button("Save Positions", new GUIStyle(GUI.skin.button)))
         {
@@ -38,7 +46,7 @@ public class PlayModePositionSaverEditor : Editor
         if(PlayModePositionSaver.PositionsSave != null)
         {
             GUI.backgroundColor = Color.white;
-            GUILayout.Label($"Positions saved : {PlayModePositionSaver.PositionsSave.positions.Count}");
+            GUILayout.Label($"Positions saved : {PlayModePositionSaver.PositionsSave.Positions.Count}");
         }
 
         GUI.backgroundColor = new Color(0.6f, 0.8f, 1f);
@@ -50,14 +58,31 @@ public class PlayModePositionSaverEditor : Editor
         GUILayout.EndHorizontal();
     }
 
+
+    private void SaveRightPositions()
+    {
+        EditorUtility.SetDirty(PlayModePositionSaver.PositionsSave);
+        PlayModePositionSaver.PositionsSave.RightActionInfos = new();
+
+        List<RightActionObject> allImportantObjects = ((PlayModePositionSaver)target).GetComponentsInChildren<RightActionObject>().ToList();
+
+        foreach (RightActionObject o in allImportantObjects)
+        {
+            RightActionInfo info = new(o.gameObject, o.GetActualPose());
+            PlayModePositionSaver.PositionsSave.RightActionInfos.Add(info);
+        }
+
+        AssetDatabase.SaveAssetIfDirty(PlayModePositionSaver.PositionsSave);
+        EditorUtility.ClearDirty(PlayModePositionSaver.PositionsSave);
+    }
+
     private void SavePositions()
     {
         EditorUtility.SetDirty(PlayModePositionSaver.PositionsSave);
-        PlayModePositionSaver.PositionsSave.objects = new();
-        PlayModePositionSaver.PositionsSave.positions = new();
-        PlayModePositionSaver.PositionsSave.eulerAngles = new();
-        PlayModePositionSaver.PositionsSave.scales = new();
-
+        PlayModePositionSaver.PositionsSave.Objects = new();
+        PlayModePositionSaver.PositionsSave.Positions = new();
+        PlayModePositionSaver.PositionsSave.EulerAngles = new();
+        PlayModePositionSaver.PositionsSave.Scales = new();
 
         List<Tile> allTiles = ((PlayModePositionSaver)target).GetComponentsInChildren<Tile>().ToList();
         allTiles.RemoveAt(0);
@@ -68,10 +93,10 @@ public class PlayModePositionSaverEditor : Editor
             transforms.RemoveAt(0);
             foreach (Transform transform in transforms) if (transform != ((PlayModePositionSaver)target).transform)
                 {
-                    PlayModePositionSaver.PositionsSave.objects.Add(transform.gameObject);
-                    PlayModePositionSaver.PositionsSave.positions.Add(transform.localPosition);
-                    PlayModePositionSaver.PositionsSave.eulerAngles.Add(transform.localEulerAngles);
-                    PlayModePositionSaver.PositionsSave.scales.Add(transform.localScale);
+                    PlayModePositionSaver.PositionsSave.Objects.Add(transform.gameObject);
+                    PlayModePositionSaver.PositionsSave.Positions.Add(transform.localPosition);
+                    PlayModePositionSaver.PositionsSave.EulerAngles.Add(transform.localEulerAngles);
+                    PlayModePositionSaver.PositionsSave.Scales.Add(transform.localScale);
                 }
         }
 
@@ -81,11 +106,11 @@ public class PlayModePositionSaverEditor : Editor
 
     private void LoadPositions()
     {
-        for (int i = 0; i < PlayModePositionSaver.PositionsSave.objects.Count; i++)
+        for (int i = 0; i < PlayModePositionSaver.PositionsSave.Objects.Count; i++)
         {
-            PlayModePositionSaver.PositionsSave.objects[i].transform.localPosition = PlayModePositionSaver.PositionsSave.positions[i];
-            PlayModePositionSaver.PositionsSave.objects[i].transform.localEulerAngles = PlayModePositionSaver.PositionsSave.eulerAngles[i];
-            PlayModePositionSaver.PositionsSave.objects[i].transform.localScale = PlayModePositionSaver.PositionsSave.scales[i];
+            PlayModePositionSaver.PositionsSave.Objects[i].transform.localPosition = PlayModePositionSaver.PositionsSave.Positions[i];
+            PlayModePositionSaver.PositionsSave.Objects[i].transform.localEulerAngles = PlayModePositionSaver.PositionsSave.EulerAngles[i];
+            PlayModePositionSaver.PositionsSave.Objects[i].transform.localScale = PlayModePositionSaver.PositionsSave.Scales[i];
         }
     }
 
@@ -93,10 +118,10 @@ public class PlayModePositionSaverEditor : Editor
     {
         EditorUtility.SetDirty(PlayModePositionSaver.PositionsSave);
 
-        PlayModePositionSaver.PositionsSave.objects = new();
-        PlayModePositionSaver.PositionsSave.positions = new();
-        PlayModePositionSaver.PositionsSave.eulerAngles = new();
-        PlayModePositionSaver.PositionsSave.scales = new();
+        PlayModePositionSaver.PositionsSave.Objects = new();
+        PlayModePositionSaver.PositionsSave.Positions = new();
+        PlayModePositionSaver.PositionsSave.EulerAngles = new();
+        PlayModePositionSaver.PositionsSave.Scales = new();
 
         AssetDatabase.SaveAssetIfDirty(PlayModePositionSaver.PositionsSave);
         EditorUtility.ClearDirty(PlayModePositionSaver.PositionsSave);
