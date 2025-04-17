@@ -6,9 +6,19 @@ using UnityEngine.UI;
 public class CrossfadeTransition : MonoBehaviour
 {
     public float currentOpacity;
+    public float segmentCount;
+    public float kaleidoscopeCamZRotation;
+    public float shaderAdjustmentAmount;
+
     [SerializeField] GameObject _kaleidoscopeCam;
     Image _screen;
-    float _oldOpacity = 1;
+    Animator _transitionAnimator;
+
+    //IF YOU CHANGE THESE, I WILL FORKING KILL YOU
+    float VIP_Var1 = -0.133f; // Base 0
+    float VIP_Var2 = 1.9f;    // Base 1 
+
+    bool _isActive = true;
 
     private void OnEnable()
     {
@@ -21,7 +31,7 @@ public class CrossfadeTransition : MonoBehaviour
 
     void StartFade()
     {
-        GetComponent<Animator>().SetTrigger("StartFade");
+        _transitionAnimator.SetTrigger("StartFade");
     }
 
     public void ChangeSceneAfterAnimation()
@@ -32,26 +42,44 @@ public class CrossfadeTransition : MonoBehaviour
     private void Start()
     {
         _screen = GetComponent<Image>();
+        _transitionAnimator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (currentOpacity == _oldOpacity) return;
-
-        _screen.material.SetFloat("_Alpha", currentOpacity);
-
-        if (currentOpacity == 0 && _kaleidoscopeCam.activeSelf == true)
+        if (!_transitionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CrossfadeEnd") &&
+            !_transitionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CrossfadeStart"))
         {
-            _screen.enabled = false;
-            _kaleidoscopeCam.SetActive(false);
+            //Debug.Log("Animation NOT running");
+            if (_isActive)
+            {
+                _screen.enabled = false;
+                _kaleidoscopeCam.GetComponent<Animator>().enabled = true;
+                _kaleidoscopeCam.SetActive(false);
+                _isActive = false;
+            }
+            return;
         }
+        //Debug.Log("Animation is Running");
 
-        if (currentOpacity != 0 && _kaleidoscopeCam.activeSelf == false)
+        if (_isActive == false)
         {
+            Debug.Log("EnablingEverything");
             _screen.enabled = true;
             _kaleidoscopeCam.SetActive(true);
+            _kaleidoscopeCam.GetComponent<Animator>().enabled = false;
+            _isActive = true;
         }
 
-        _oldOpacity = currentOpacity;
+        _screen.material.SetFloat("_Alpha", currentOpacity);
+        _screen.material.SetFloat("_SegmentCount", segmentCount);
+        _kaleidoscopeCam.transform.eulerAngles = new Vector3(
+            _kaleidoscopeCam.transform.eulerAngles.x,
+            _kaleidoscopeCam.transform.eulerAngles.y,
+            kaleidoscopeCamZRotation
+            );
+
+        _screen.material.SetFloat("_TEST_VAR1", Mathf.Lerp(0, VIP_Var1, shaderAdjustmentAmount));
+        _screen.material.SetFloat("_TEST_VAR2", Mathf.Lerp(1, VIP_Var2, shaderAdjustmentAmount));
     }
 }
