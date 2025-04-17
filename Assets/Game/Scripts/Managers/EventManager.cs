@@ -35,6 +35,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnStartCubeRotation;
     public static event Action OnEndCubeRotation;
 
+
     //Object Events
     public static event Action OnButtonPressed;
     public static event Action OnButtonReleased;
@@ -43,7 +44,10 @@ public class EventManager : MonoBehaviour
     public static event Action<float> OnPlayerReset;
     public static event Action<float> OnPlayerResetOnce;
 
-    public static event Action OnStartSequence;
+    public static event Action OnActivateSequence;
+
+
+    public static event Action OnStartNarrativeSequence;
     public static event Action OnEndSequence;
 
     public static void TriggerPlayerWin()
@@ -56,8 +60,8 @@ public class EventManager : MonoBehaviour
         Debug.Log("Lose Event Triggered!");
         OnPlayerLose?.Invoke();
         TriggerReset();
-    }    
-    
+    }
+
     public static void TriggerSceneChange()
     {
         OnSceneChange?.Invoke();
@@ -91,7 +95,7 @@ public class EventManager : MonoBehaviour
     }
     public void TriggerResetOnce()
     {
-        OnPlayerResetOnce?.Invoke(_gameSettings.ResetDuration/4);
+        OnPlayerResetOnce?.Invoke(_gameSettings.ResetDuration / 4);
     }
 
     public static void TriggerSceneStart()
@@ -99,16 +103,17 @@ public class EventManager : MonoBehaviour
         OnSceneStart?.Invoke();
     }
 
-    public static void TriggerSceneEnd() {
+    public static void TriggerSceneEnd()
+    {
         OnSceneEnd?.Invoke();
     }
 
-    public static void TriggerSequenceStart()
+    public static void TriggerNarrativeSequenceStart()
     {
-        OnStartSequence?.Invoke();
+        OnStartNarrativeSequence?.Invoke();
     }
 
-    public static void TriggerSequenceEnd()
+    public static void TriggerNarrativeSequenceEnd()
     {
         OnEndSequence?.Invoke();
     }
@@ -121,5 +126,10 @@ public class EventManager : MonoBehaviour
     public static void TriggerEndCubeRotation()
     {
         OnEndCubeRotation?.Invoke();
+    }
+
+    public static void TriggerActivateCubeSequence()
+    {
+        OnActivateSequence?.Invoke();
     }
 }
