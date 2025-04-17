@@ -799,6 +799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69e8103fc0a831f4e9509008bddf2774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPreview: 0
   middle: {fileID: 5279238479075063523}
   middleGameObject: {fileID: 2643478692873961536}
   Axis:
@@ -813,15 +814,19 @@ MonoBehaviour:
   _isLockYAxis: 0
   _isLockZAxis: 0
   _DoAutoMoves: 0
-  NumberOfTimETHeSequenceExecute: 3
+  _PlayAtStart: 0
+  _PlayOnEvent: 0
+  ExecuteSequenceXTime: 3
   TimeToRotate: 2
-  TimeToPause: 1
-  TimeToPauseBetweenMoves: 2
+  TimeBetweenMoves: 0.5
+  TimeBetweenSequence: 1
   AutoMovesSequence:
-  - cube: {fileID: 1424108025093280315}
+  - axis: {fileID: 0}
+    cube: {fileID: 1424108025093280315}
     orientation: 0
     clockWise: 1
-  - cube: {fileID: 1424108025093280315}
+  - axis: {fileID: 0}
+    cube: {fileID: 1424108025093280315}
     orientation: 0
     clockWise: 0
 --- !u!1 &9198907439087403660
