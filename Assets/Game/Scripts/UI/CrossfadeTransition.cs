@@ -8,10 +8,15 @@ public class CrossfadeTransition : MonoBehaviour
     public float currentOpacity;
     public float segmentCount;
     public float kaleidoscopeCamZRotation;
+    public float shaderAdjustmentAmount;
 
     [SerializeField] GameObject _kaleidoscopeCam;
     Image _screen;
     Animator _transitionAnimator;
+
+    //IF YOU CHANGE THESE, I WILL FORKING KILL YOU
+    float VIP_Var1 = -0.133f; // Base 0
+    float VIP_Var2 = 1.9f;    // Base 1 
 
     bool _isActive = true;
 
@@ -72,5 +77,8 @@ public class CrossfadeTransition : MonoBehaviour
             _kaleidoscopeCam.transform.eulerAngles.y,
             kaleidoscopeCamZRotation
             );
+
+        _screen.material.SetFloat("_TEST_VAR1", Mathf.Lerp(0, VIP_Var1, shaderAdjustmentAmount));
+        _screen.material.SetFloat("_TEST_VAR2", Mathf.Lerp(1, VIP_Var2, shaderAdjustmentAmount));
     }
 }
