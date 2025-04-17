@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
 using System.Linq;
+using NaughtyAttributes.Test;
 
 public class RubiksMovement : MonoBehaviour
 {
 
+    public bool IsPreview {  get => _isPreview;  set => _isPreview = value; }
+    [SerializeField] bool _isPreview;
     [SerializeField] Transform middle;
     [SerializeField] Transform middleGameObject;
 
@@ -14,7 +17,6 @@ public class RubiksMovement : MonoBehaviour
     List<Transform> _allBlocks = new List<Transform>();
 
     [SerializeField] bool _doScramble = true;
-
 
     private bool _isRotating = false;
 
@@ -90,7 +92,12 @@ public class RubiksMovement : MonoBehaviour
         _isReversing = false;
     }
 
-    void UndoMove(float time)
+    public void ResetMovesHistory()
+    {
+        _moves.Clear();
+    }
+
+    public void UndoMove(float time)
     {
         if (IsReversing) return;
         StartCoroutine(ReverseOneMoves(time));
@@ -100,8 +107,10 @@ public class RubiksMovement : MonoBehaviour
         while (_isRotating)
             yield return null;
 
-        if (Moves.Count > 0) yield return null;
-            
+        //if (Moves.Count > 0) yield return null;
+
+        if (Moves.Count == 0) yield break;
+
         _isReversing = true;
         RubiksMove m = Moves[Moves.Count - 1];
 
@@ -141,9 +150,22 @@ public class RubiksMovement : MonoBehaviour
     /// <returns></returns>
     public IEnumerator RotateAxisCoroutine(Transform axis, Transform selectedCube, bool clockWise, float duration = 0.5f, SliceAxis sliceAxis = SliceAxis.Useless)
     {
-        if (_isRotating) yield break;
+        if (_isRotating)
+        {
+            if (_isPreview)
+            {
+                while (_isRotating)
+                {
+                    yield return null;
+                }
+            }
+            else
+                yield break;      
+        }
         _isRotating = true;
 
+        if (!_isPreview)
+            EventManager.TriggerStartCubeRotation();
 
         Vector3 rotationAxis = Vector3.zero;
         {
@@ -180,7 +202,7 @@ public class RubiksMovement : MonoBehaviour
 
         if (isMiddle) middleGameObject.parent = axis;
 
-
+         /* Impulsion - SCRAPPED
         foreach (int i in blockIndexs)
         {
             if (_allBlocks[i].gameObject.name != "Middle")
@@ -211,9 +233,9 @@ public class RubiksMovement : MonoBehaviour
                 }
             }
         }
+        */
 
         int direction = clockWise ? 1 : -1;
-
 
         Quaternion startRotation = axis.localRotation;
         Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) * startRotation;
@@ -238,7 +260,6 @@ public class RubiksMovement : MonoBehaviour
 
         }
 
-
         if (isMiddle)
         {
             middleGameObject.parent = transform.parent;
@@ -257,7 +278,8 @@ public class RubiksMovement : MonoBehaviour
             };
             _moves.Add(move);
         }
-        EventManager.TriggerEndCubeRotation();
+        if (!_isPreview)
+            EventManager.TriggerEndCubeRotation();
     }
 
     RubiksMove CreateRandomMove()
@@ -370,6 +392,22 @@ namespace RubiksStatic
         public void Print()
         {
             Debug.Log("Axis : " + axis + " cube : " + cube + " Orient : " + orientation + " ClockWise : " + clockWise);
+        }
+        public static bool operator ==(RubiksMove x, RubiksMove y)
+        {
+            if (x is null ^ y is null) return false;
+            else if (x is null && y is null) return true;
+            else
+            {
+                return (x.axis == y.axis &&
+                        //x.cube == y.cube &&
+                        x.orientation == y.orientation &&
+                        x.clockWise == y.clockWise);
+            }
+        }
+        public static bool operator !=(RubiksMove x, RubiksMove y)
+        {
+            return !(x == y);
         }
     }
     public enum SliceAxis { X, Y, Z, Useless }
