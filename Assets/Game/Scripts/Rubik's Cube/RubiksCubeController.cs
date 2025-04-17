@@ -4,6 +4,7 @@ using UnityEngine;
 using RubiksStatic;
 using System.Linq;
 using UnityEngine.ProBuilder.Shapes;
+using Unity.VisualScripting;
 
 public class RubiksCubeController : MonoBehaviour
 {
@@ -61,12 +62,14 @@ public class RubiksCubeController : MonoBehaviour
         if(_previewControlledScript == null)
         {
             var previewScript = GameObject.FindAnyObjectByType<PreviewRubiksCube>();
-            _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
+            if(previewScript)
+                _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
         }
     }
     private void Start()
     {
-        HidePreview();        
+        if (_previewControlledScript)        
+            HidePreview();        
     }
 
 
@@ -166,8 +169,10 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript && !_controlledScript.IsRotating && !_previewControlledScript.IsRotating && _canPlayerMoveAxis)
+        if (_controlledScript && !_controlledScript.IsRotating && _canPlayerMoveAxis)
         {
+            if (_previewControlledScript && _previewControlledScript.IsRotating)
+                return;
             if (_cameraPlayerReversed)
             {
                 clockwise = !clockwise;
@@ -202,33 +207,42 @@ public class RubiksCubeController : MonoBehaviour
                 clockWise = clockwise
             };
 
-            bool completeAction = false;
-
-            if (_lastInput != null)
+            if (_previewControlledScript)
             {
-                bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
-                completeAction = isSameFace && _lastInput == input;
+                bool completeAction = false;
+
+                if (_lastInput != null)
+                {
+                    bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
+                    completeAction = isSameFace && _lastInput == input;
+                }
+
+                if (_previewControlledScript && !completeAction)
+                {
+                    _previewControlledScript.UndoMove(0.0f);
+                    HidePreview();
+                    ShowPreview(_selectedSlice, SelectionCube.SelectionMode.AXIS);
+                    Transform equivalence = _previewControlledScript.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
+                    _previewControlledScript.RotateAxis(_previewControlledScript.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.PreviewRubikscCubeAxisRotationDuration, _selectedSlice);
+                    _lastInput = input;
+                    _isPreviewDisplayed = true;
+                }
+
+                if (completeAction)
+                {
+                    HidePreview();
+                    _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+                    _previewControlledScript.ResetMovesHistory();
+                    _lastInput = null;
+                    _isPreviewDisplayed = false;
+                }
             }
-
-            if (_previewControlledScript && !completeAction)
+            else
             {
-                _previewControlledScript.UndoMove(0.0f);
-                HidePreview();
-                ShowPreview(_selectedSlice, SelectionCube.SelectionMode.AXIS);
-                Transform equivalence = _previewControlledScript.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
-                _previewControlledScript.RotateAxis(_previewControlledScript.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.PreviewRubikscCubeAxisRotationDuration, _selectedSlice);
-                _lastInput = input;
-                _isPreviewDisplayed = true;
-            }
-
-            if (completeAction)
-            {
-                HidePreview();
                 _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-                _previewControlledScript.ResetMovesHistory();
-                _lastInput = null;
-                _isPreviewDisplayed = false;
+
             }
+            
 
         }
     }
