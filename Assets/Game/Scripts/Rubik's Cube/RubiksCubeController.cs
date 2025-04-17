@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
 using System.Linq;
+using UnityEngine.ProBuilder.Shapes;
+using Unity.VisualScripting;
 
 public class RubiksCubeController : MonoBehaviour
 {
 
     [SerializeField] GameObject _controlledCube;
     RubiksMovement _controlledScript;
+    RubiksMove _lastInput = null;
+    bool _isPreviewDisplayed;
+
+    [SerializeField] RubiksMovement _previewControlledScript;
 
 
     bool _cameraPlayerReversed = false;
@@ -31,7 +37,7 @@ public class RubiksCubeController : MonoBehaviour
 
     bool _canPlayerMoveAxis = true;
 
-    public LayerMask _detectableLayer;
+    
 
     #region Accesseur
 
@@ -53,6 +59,17 @@ public class RubiksCubeController : MonoBehaviour
         _gameSettings = GameManager.Instance.Settings;
         if(GameManager.Instance.IsRubiksCubeEnabled)
             ActionSwitchLineCols(true);
+        if(_previewControlledScript == null)
+        {
+            var previewScript = GameObject.FindAnyObjectByType<PreviewRubiksCube>();
+            if(previewScript)
+                _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
+        }
+    }
+    private void Start()
+    {
+        if (_previewControlledScript)        
+            HidePreview();        
     }
 
 
@@ -152,8 +169,10 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript && _controlledScript.IsRotating == false && _canPlayerMoveAxis)
+        if (_controlledScript && !_controlledScript.IsRotating && _canPlayerMoveAxis)
         {
+            if (_previewControlledScript && _previewControlledScript.IsRotating)
+                return;
             if (_cameraPlayerReversed)
             {
                 clockwise = !clockwise;
@@ -180,8 +199,51 @@ public class RubiksCubeController : MonoBehaviour
                 cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
             }
 
-            _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-            EventManager.TriggerStartCubeRotation();
+            RubiksMove input = new()
+            {
+                axis = _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice),
+                cube = ActualFace.transform,
+                orientation = _selectedSlice,
+                clockWise = clockwise
+            };
+
+            if (_previewControlledScript)
+            {
+                bool completeAction = false;
+
+                if (_lastInput != null)
+                {
+                    bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
+                    completeAction = isSameFace && _lastInput == input;
+                }
+
+                if (_previewControlledScript && !completeAction)
+                {
+                    _previewControlledScript.UndoMove(0.0f);
+                    HidePreview();
+                    ShowPreview(_selectedSlice, SelectionCube.SelectionMode.AXIS);
+                    Transform equivalence = _previewControlledScript.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
+                    _previewControlledScript.RotateAxis(_previewControlledScript.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.PreviewRubikscCubeAxisRotationDuration, _selectedSlice);
+                    _lastInput = input;
+                    _isPreviewDisplayed = true;
+                }
+
+                if (completeAction)
+                {
+                    HidePreview();
+                    _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+                    _previewControlledScript.ResetMovesHistory();
+                    _lastInput = null;
+                    _isPreviewDisplayed = false;
+                }
+            }
+            else
+            {
+                _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+
+            }
+            
+
         }
     }
     public void ActionRotateCubeUI(Vector2 direction)
@@ -238,6 +300,7 @@ public class RubiksCubeController : MonoBehaviour
         bool isOneTileLocked = false;
 
         if (_controlledScript != null)
+        {
             foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
             {
                 SelectionCube selection = go.GetComponent<SelectionCube>();
@@ -246,22 +309,12 @@ public class RubiksCubeController : MonoBehaviour
                 selectionCubes.Add(selection);
                 if (selection.IsTileLocked) isOneTileLocked = true;
             }
+        }
 
         foreach (SelectionCube selection in selectionCubes) selection.Select(isOneTileLocked ? SelectionCube.SelectionMode.LOCKED : mode);
 
         return !isOneTileLocked;
     }
-
-    /* OLD
-    void ShutDownFace()
-    {
-        foreach (Transform go in controlledCube.transform)
-        {
-            Outline outOutline;
-            if (go.TryGetComponent<Outline>(out outOutline)) outOutline.enabled = false;
-        }
-    }
-    */
 
     void ShutDownFace()
     {
@@ -270,6 +323,29 @@ public class RubiksCubeController : MonoBehaviour
             SelectionCube selection = go.GetComponent<SelectionCube>();
             if (selection == null) continue;
             selection.Unselect();
+        }
+    }
+
+    void ShowPreview(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    {
+        if (_previewControlledScript != null)
+        {
+            foreach (Transform go in _previewControlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
+            {
+                SelectionCube selection = go.GetComponent<SelectionCube>();
+                if (selection == null) continue;
+                selection.Select(SelectionCube.SelectionMode.ENABLE);
+            }
+        }
+    }
+
+    void HidePreview()
+    {
+        foreach (Transform go in _previewControlledScript.transform.parent)
+        {
+            SelectionCube selection = go.GetComponent<SelectionCube>();
+            if (selection == null) continue;
+            selection.Select(SelectionCube.SelectionMode.DISABLE);
         }
     }
 

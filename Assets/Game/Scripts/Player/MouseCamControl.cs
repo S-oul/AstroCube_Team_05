@@ -1,6 +1,7 @@
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class MouseCamControl : MonoBehaviour
 {
@@ -23,6 +24,11 @@ public class MouseCamControl : MonoBehaviour
     GameSettings _settings;
     InputHandler _inputHandler;
 
+
+    // Camera movement
+    float moveX = 0;
+    float moveY = 0;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -30,17 +36,15 @@ public class MouseCamControl : MonoBehaviour
         Camera.main.fieldOfView = _settings.FOV;
         _inputHandler = InputHandler.Instance;
     }
-
+    public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
+    {
+        moveX = callbackContext.ReadValue<Vector2>().x* _settings.CameraSensibilityMouse * Time.deltaTime; 
+        moveY = callbackContext.ReadValue<Vector2>().y* _settings.CameraSensibilityMouse * Time.deltaTime; 
+    }
     void Update()
     {
-        if(_inputHandler == null || !_inputHandler.CanMove)
+        if (_inputHandler == null || !_inputHandler.CanMove)
             return;
-
-        // Camera movement
-        float moveX = Input.GetAxis("Mouse X") * _settings.CameraSensibilityMouse * Time.deltaTime;
-        float moveY = Input.GetAxis("Mouse Y") * _settings.CameraSensibilityMouse * Time.deltaTime * -1;
-        moveX += Input.GetAxis("Joystick X") * _settings.CameraSensibilityJoystick * Time.deltaTime;
-        moveY += Input.GetAxis("Joystick Y") * _settings.CameraSensibilityJoystick * Time.deltaTime;
 
         _yRotation -= moveY;
         _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
