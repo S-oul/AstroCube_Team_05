@@ -49,6 +49,7 @@ public class CrossfadeTransition : MonoBehaviour
             if (_isActive)
             {
                 _screen.enabled = false;
+                _kaleidoscopeCam.GetComponent<Animator>().enabled = true;
                 _kaleidoscopeCam.SetActive(false);
                 _isActive = false;
             }
@@ -59,6 +60,7 @@ public class CrossfadeTransition : MonoBehaviour
         if (_isActive == false)
         {
             _screen.enabled = true;
+            _kaleidoscopeCam.GetComponent<Animator>().enabled = false;
             _kaleidoscopeCam.SetActive(true);
             _isActive = true;
         }
