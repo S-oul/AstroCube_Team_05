@@ -26,7 +26,7 @@ public class KaleidoscopeManager : MonoBehaviour
     {
         
         // DEACTIVATE
-        _isEnabled = false;
+        //_isEnabled = false;
         
         if (Input.GetKeyDown(KeyCode.L))
         {
