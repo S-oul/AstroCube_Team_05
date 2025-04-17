@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 _externallyAppliedMovement = Vector3.zero;
 
     public float defaultSpeed { get; private set; }
-
+    public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
 
     private float _timerBeforeNextStep = 0;
     public float _timerTNextStep = 1;
