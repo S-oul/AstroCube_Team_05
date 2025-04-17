@@ -35,7 +35,7 @@ public class FloorRotationVisualFeedback : MonoBehaviour
         _lastYRotation = _currentYRotation;
 
         _isRotating = Mathf.Abs(delta) > 0;
-        if (delta > 10) return;
+        if (Mathf.Abs(delta) > 10) return;
         _rotationDir = _isRotating ? (delta > 0 ? 1 : -1) : 0;
 
         // decide wether to apply visual feedback. 
@@ -45,7 +45,7 @@ public class FloorRotationVisualFeedback : MonoBehaviour
         if (_rotationDir > 0 && _oldRotationDir <= 0)
         {
             _mainCameraAnimator.SetTrigger("DriftLeft");
-        } 
+        }
         else if (_rotationDir < 0 && _oldRotationDir >= 0)
         {
             _mainCameraAnimator.SetTrigger("DriftRight");
