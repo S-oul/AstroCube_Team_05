@@ -134,8 +134,6 @@ public class GameManager : MonoBehaviour
         yield return DOTween.To(() => new Color(0, 0, 0, 0), x => _fade.color = x, new Color(0, 0, 0, 1.0f), 1.0f).WaitForCompletion();
         _fade.color = new Color(0, 0, 0, 0);
 
-        //yield return new WaitForSeconds(1.0f);
-
         foreach (var obj in _objectToDisable)
         {
             obj.gameObject.SetActive(false);
