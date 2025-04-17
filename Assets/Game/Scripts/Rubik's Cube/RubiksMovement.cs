@@ -9,9 +9,9 @@ using System.Data.SqlTypes;
 
 public class RubiksMovement : MonoBehaviour
 {
-    [Header("GD DONT TOUCH")]
 
     public bool IsPreview {  get => _isPreview;  set => _isPreview = value; }
+    [Header("GD DONT TOUCH")]
     [SerializeField] bool _isPreview;
     [SerializeField] Transform middle;
     [SerializeField] Transform middleGameObject;
@@ -447,7 +447,7 @@ namespace RubiksStatic
     [Serializable]
     class RubiksMove
     {
-        private Transform axis;
+        public Transform axis;
         public Transform cube;
         public SliceAxis orientation;
         public bool clockWise;
