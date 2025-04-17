@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,7 +36,8 @@ public class KaleidoscopeManager : MonoBehaviour
 
             if (_currentOpacity < 1) 
             {
-                _currentOpacity += _fadeSpeed;
+                //_currentOpacity += _fadeSpeed;
+                _currentOpacity = 1;
                 _currentOpacity = _currentOpacity >= 1 ? 1 : _currentOpacity;
                 _screen.material.SetFloat("_Alpha", _currentOpacity);
             }

@@ -7,6 +7,8 @@ public class CrossfadeTransition : MonoBehaviour
 {
     public float currentOpacity;
     public float segmentCount;
+    public float kaleidoscopeCamZRotation;
+
     [SerializeField] GameObject _kaleidoscopeCam;
     Image _screen;
     Animator _transitionAnimator;
@@ -63,5 +65,10 @@ public class CrossfadeTransition : MonoBehaviour
 
         _screen.material.SetFloat("_Alpha", currentOpacity);
         _screen.material.SetFloat("_SegmentCount", segmentCount);
+        _kaleidoscopeCam.transform.eulerAngles = new Vector3(
+            _kaleidoscopeCam.transform.eulerAngles.x,
+            _kaleidoscopeCam.transform.eulerAngles.y,
+            kaleidoscopeCamZRotation
+            );
     }
 }
