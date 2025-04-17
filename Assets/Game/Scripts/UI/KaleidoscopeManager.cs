@@ -24,6 +24,10 @@ public class KaleidoscopeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        // DEACTIVATE
+        _isEnabled = false;
+        
         if (Input.GetKeyDown(KeyCode.L))
         {
             _isEnabled = !_isEnabled;
@@ -60,7 +64,7 @@ public class KaleidoscopeManager : MonoBehaviour
         }
     }
 
-    public void IsEnabled(bool isEnabled)
+    public void SetEnabled(bool isEnabled)
     {
         _isEnabled = isEnabled;
     }
