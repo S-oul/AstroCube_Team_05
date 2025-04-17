@@ -11,6 +11,8 @@ public class CrossfadeTransition : MonoBehaviour
     Image _screen;
     Animator _transitionAnimator;
 
+    bool _isActive = true;
+
     private void OnEnable()
     {
         EventManager.OnPlayerWin += StartFade;
@@ -38,24 +40,25 @@ public class CrossfadeTransition : MonoBehaviour
 
     private void Update()
     {
-        //if (currentOpacity == _oldOpacity) return;
         if (!_transitionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CrossfadeEnd") &&
             !_transitionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CrossfadeStart"))
         {
-            Debug.Log("Animation NOT running");
-            if (_kaleidoscopeCam.activeSelf)
+            //Debug.Log("Animation NOT running");
+            if (_isActive)
             {
                 _screen.enabled = false;
                 _kaleidoscopeCam.SetActive(false);
+                _isActive = false;
             }
             return;
         }
-        Debug.Log("Animation is Running");
+        //Debug.Log("Animation is Running");
 
-        if (_kaleidoscopeCam.activeSelf == false)
+        if (_isActive == false)
         {
             _screen.enabled = true;
             _kaleidoscopeCam.SetActive(true);
+            _isActive = true;
         }
 
         _screen.material.SetFloat("_Alpha", currentOpacity);
