@@ -44,7 +44,9 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         transform.DOScale(newParent.localScale, 1.0f);
         yield return new WaitForSeconds(1.0f);
         transform.parent = newParent;
-        GameManager.Instance.StartSequence();
+        Quaternion angle = Quaternion.LookRotation(Camera.main.transform.position - _exitDoor.transform.position); // Look to exit door
+        angle.y = Mathf.Round(angle.y / 90) * 90;
+        GameManager.Instance.StartSequence(angle);
     }
 
     public void OnRelease() { return; }

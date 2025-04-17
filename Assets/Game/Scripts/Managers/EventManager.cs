@@ -45,10 +45,10 @@ public class EventManager : MonoBehaviour
     public static event Action<float> OnPlayerResetOnce;
 
     public static event Action OnActivateSequence;
-
+    public static event Action OnEndSequence;
 
     public static event Action OnStartNarrativeSequence;
-    public static event Action OnEndSequence;
+    public static event Action OnEndNarrativeSequence;
 
     public static void TriggerPlayerWin()
     {
@@ -115,7 +115,7 @@ public class EventManager : MonoBehaviour
 
     public static void TriggerNarrativeSequenceEnd()
     {
-        OnEndSequence?.Invoke();
+        OnEndNarrativeSequence?.Invoke();
     }
 
     public static void TriggerStartCubeRotation()
@@ -131,5 +131,10 @@ public class EventManager : MonoBehaviour
     public static void TriggerActivateCubeSequence()
     {
         OnActivateSequence?.Invoke();
+    }    
+
+    public static void TriggerEndCubeSequence()
+    {
+        OnEndSequence?.Invoke();
     }
 }
