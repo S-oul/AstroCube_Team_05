@@ -26,13 +26,13 @@ public class PauseMenu : MonoBehaviour
 
     void OpenMenu()
     {
-        kaleidoscopeManager.IsEnabled(true);
+        kaleidoscopeManager.SetEnabled(true);
         UIHolder.SetActive(true);
     }
 
     void CloseMenu()
     {
-        kaleidoscopeManager.IsEnabled(false);
+        kaleidoscopeManager.SetEnabled(false);
         UIHolder.SetActive(false);
     }
 }

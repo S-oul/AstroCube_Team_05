@@ -3,7 +3,9 @@ using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -126,15 +128,13 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
-    public void StartSequence() => StartCoroutine(ShowSequence());
-    public IEnumerator ShowSequence()
+    public void StartSequence(Quaternion cameraAngle) => StartCoroutine(ShowSequence(cameraAngle));
+    public IEnumerator ShowSequence(Quaternion cameraAngle)
     {
         EventManager.TriggerNarrativeSequenceStart();
 
         yield return DOTween.To(() => new Color(0, 0, 0, 0), x => _fade.color = x, new Color(0, 0, 0, 1.0f), 1.0f).WaitForCompletion();
         _fade.color = new Color(0, 0, 0, 0);
-
-        //yield return new WaitForSeconds(1.0f);
 
         foreach (var obj in _objectToDisable)
         {
@@ -154,10 +154,24 @@ public class GameManager : MonoBehaviour
 
         EventManager.TriggerNarrativeSequenceEnd();
         _fade.color = new Color(0, 0, 0, 1.0f);
+        Camera.main.transform.parent.parent.rotation = Quaternion.Euler(0, cameraAngle.eulerAngles.y - 180, 0);
+        Camera.main.transform.parent.parent.position = new Vector3(0, Camera.main.transform.parent.parent.position.y, 0);
+        Camera.main.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
         yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
 
-        InputHandler.Instance.CanMove = true;
+        //Mouse.current.WarpCursorPosition(new Vector2(0,0));
+
+        EventManager.TriggerActivateCubeSequence();
+        EventManager.OnEndSequence += EndNarrativeSequence;
+        yield return Camera.main.transform.parent.parent.DORotate(new Vector3(Camera.main.transform.parent.parent.eulerAngles.x, 359, Camera.main.transform.parent.parent.eulerAngles.z), 10, RotateMode.WorldAxisAdd).WaitForCompletion();
+        //Camera.main.transform.parent.parent.rotation = Quaternion.Euler(0, 0, 0);
+        //Camera.main.transform.parent.parent.rotation = Quaternion.Euler(0, cameraAngle.y, 0);
+
+
     }
+
+    private void EndNarrativeSequence() => InputHandler.Instance.CanMove = true;
 
     [Button("Enable Rubik's Cube")]
     public void EnableRubiksCube() => ToggleRubiksCube(true);

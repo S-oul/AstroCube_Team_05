@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,10 @@ public class KaleidoscopeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        // DEACTIVATE
+        //_isEnabled = false;
+        
         if (Input.GetKeyDown(KeyCode.L))
         {
             _isEnabled = !_isEnabled;
@@ -35,7 +40,8 @@ public class KaleidoscopeManager : MonoBehaviour
 
             if (_currentOpacity < 1) 
             {
-                _currentOpacity += _fadeSpeed;
+                //_currentOpacity += _fadeSpeed;
+                _currentOpacity = 1;
                 _currentOpacity = _currentOpacity >= 1 ? 1 : _currentOpacity;
                 _screen.material.SetFloat("_Alpha", _currentOpacity);
             }
@@ -58,7 +64,7 @@ public class KaleidoscopeManager : MonoBehaviour
         }
     }
 
-    public void IsEnabled(bool isEnabled)
+    public void SetEnabled(bool isEnabled)
     {
         _isEnabled = isEnabled;
     }
