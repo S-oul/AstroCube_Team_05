@@ -20,8 +20,8 @@ public class TextApparition : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!_text)
-            return;
+        if (!other.CompareTag("Player")) return;
+        if (!_text) return;
         StartCoroutine(TextDisplay());
     }
 
