@@ -5,6 +5,7 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeReference] GameObject UIHolder;
+    [SerializeReference] GameObject SettingsUIHolder;
     KaleidoscopeManager kaleidoscopeManager;
 
     private void Start()
@@ -34,5 +35,11 @@ public class PauseMenu : MonoBehaviour
     {
         kaleidoscopeManager.SetEnabled(false);
         UIHolder.SetActive(false);
+    }
+
+    public void SetActiveSettingsMenu(bool isActive = true)
+    {
+        UIHolder.SetActive(!isActive);
+        SettingsUIHolder.SetActive(isActive);
     }
 }
