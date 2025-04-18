@@ -72,11 +72,14 @@ public class RubiksMovement : MonoBehaviour
         {
             StartSequenceCoroutine();
         }
-        else if (_PlayOnEvent && AutoMovesSequence.Count > 0)
+
+    }
+    private void OnEnable()
+    {
+        if (_PlayOnEvent && AutoMovesSequence.Count > 0)
         {
             EventManager.OnActivateSequence += StartSequenceCoroutine;
         }
-
     }
 
     void OnDisable()
@@ -115,8 +118,9 @@ public class RubiksMovement : MonoBehaviour
             nbOfSquenceExecuted++;
             yield return new WaitForSeconds(TimeBetweenSequence);
         }
-
+        EventManager.TriggerEndCubeSequence();
     }
+
     IEnumerator Scramble()
     {
         while (_doScramble)

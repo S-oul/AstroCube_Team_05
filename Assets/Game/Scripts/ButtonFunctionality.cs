@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ButtonFunctionality : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ButtonFunctionality : MonoBehaviour
 
     public void QuitButton()
     {
-        Application.Quit();
+        //Application.Quit();
+        SceneManager.LoadScene("StartMenu");
     }
 }
