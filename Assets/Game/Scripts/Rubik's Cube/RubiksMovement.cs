@@ -407,6 +407,10 @@ public class RubiksMovement : MonoBehaviour
                 }
             }
         }
+
+        if (result.Count(x => x.name.Contains("Middle")) > 1)
+            result.Add(middleGameObject);
+
         return result;
     }
 
