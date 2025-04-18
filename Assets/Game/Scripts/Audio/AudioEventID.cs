@@ -7,6 +7,7 @@ public enum AudioEventID
     // Music
 
     // Sound Effects
+    Button,
 
     // UI Sounds
     MenuPause,

@@ -56,11 +56,11 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnGamePause += () => Play2D(AudioEventID.MenuPause);
+        EventManager.OnButtonPressed += () => Play2D(AudioEventID.Button);
     }
 
     private void OnDisable()
     {
-        EventManager.OnGamePause -= () => Play2D(AudioEventID.MenuPause);
+        EventManager.OnButtonPressed -= () => Play2D(AudioEventID.Button);
     }
 }
