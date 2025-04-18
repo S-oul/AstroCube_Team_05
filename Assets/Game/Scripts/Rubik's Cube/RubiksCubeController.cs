@@ -201,7 +201,7 @@ public class RubiksCubeController : MonoBehaviour
 
             RubiksMove input = new()
             {
-                axis = _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice),
+                Axis = _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice),
                 cube = ActualFace.transform,
                 orientation = _selectedSlice,
                 clockWise = clockwise

@@ -5,12 +5,10 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
-using System.Data.SqlTypes;
 
 public class RubiksMovement : MonoBehaviour
 {
 
-    public bool IsPreview {  get => _isPreview;  set => _isPreview = value; }
     [Header("GD DONT TOUCH")]
     [SerializeField] bool _isPreview;
     [SerializeField] Transform middle;
@@ -49,7 +47,7 @@ public class RubiksMovement : MonoBehaviour
 
 
     #region Accessor
-
+    public bool IsPreview {  get => _isPreview;  set => _isPreview = value; }
     public bool IsRotating { get => _isRotating; }
     public bool IsReversing { get => _isReversing; }
     public bool IsLockXAxis { get => _isLockXAxis; }
