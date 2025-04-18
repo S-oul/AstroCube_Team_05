@@ -35,6 +35,7 @@ public class PauseMenu : MonoBehaviour
     {
         kaleidoscopeManager.SetEnabled(false);
         UIHolder.SetActive(false);
+        SettingsUIHolder.SetActive(false);
     }
 
     public void SetActiveSettingsMenu(bool isActive = true)

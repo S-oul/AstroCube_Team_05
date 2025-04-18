@@ -15,8 +15,8 @@ public class CrossfadeTransition : MonoBehaviour
     Animator _transitionAnimator;
 
     //IF YOU CHANGE THESE, I WILL FORKING KILL YOU
-    float VIP_Var1 = -0.133f; // Base 0
-    float VIP_Var2 = 1.9f;    // Base 1 
+    float VIP_Var1 = -0.1371f; // Base 0
+    float VIP_Var2 = 1.93f;    // Base 1 
 
     bool _isActive = true;
 
