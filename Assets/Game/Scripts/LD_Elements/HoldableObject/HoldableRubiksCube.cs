@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     private Transform _originalParent;
     private Transform _originalTransform;
     private Rigidbody _rb;
+
+    public Action PickUpDelegate { get; set; }
 
     void Start()
     {
@@ -33,6 +36,8 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     {
         _exitDoor.SetActive(true);
         Destroy(transform.GetComponent<BoxCollider>());
+
+        PickUpDelegate?.Invoke();
         StartCoroutine(HoldRubiksCube(newParent));
     }
 
