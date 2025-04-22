@@ -260,7 +260,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 _walkingDuration += Time.deltaTime;
-                newCameraHeight = Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed * _speedMultiplier) % 1) * _gameSettings.HeadBobbingAmount);
+                newCameraHeight = Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
             }
         }
         else

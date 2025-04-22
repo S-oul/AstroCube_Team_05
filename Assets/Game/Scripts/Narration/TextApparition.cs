@@ -6,58 +6,50 @@ using UnityEngine;
 
 public class TextApparition : MonoBehaviour
 {
-    [Header("Text")]
-    [SerializeField] private List<TMP_Text> _text;
+    [field: Header("Components")]
+    [field: SerializeField] public TMP_Text TextMesh { get; private set; }
 
-    [Header("Apparition")]
-    [SerializeField] private float _apparitionDelay;
-    [SerializeField] private float _charFadeInDelay;
-    [SerializeField] private float _charFadeInDuration;
-    [SerializeField] private float _stayDuration;
+    [field: Header("Apparition")]
+    [field: SerializeField] public float ApparitionDelay { get; private set; }
+    [field: SerializeField] public float CharFadeInDelay { get; private set; }
+    [field: SerializeField] public float CharFadeInDuration { get; private set; }
+    [field: SerializeField] public float StayDuration { get; private set; }
 
-    [Header("Disparition")]
-    [SerializeField] float _charFadeOutDelay;
-    [SerializeField] float _charFadeOutDuration;
+    [field: Header("Disparition")]
+    [field: SerializeField] public float CharFadeOutDelay { get; private set; }
+    [field: SerializeField] public float CharFadeOutDuration { get; private set; }
 
-    void Awake()
+    private void Awake()
     {
-        if (_text != null)
+        if (TextMesh != null)
         {
-            foreach (TMP_Text text in _text)
-            {
-                text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
-            }
+            TextMesh.color = new Color(TextMesh.color.r, TextMesh.color.g, TextMesh.color.b, 0);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    
+    public void Display()
     {
-        if (!other.CompareTag("Player")) return;
-        if (_text == null) return;
         StartCoroutine(TextDisplay());
     }
 
     IEnumerator TextDisplay()
     {
-        GetComponent<Collider>().enabled = false;
-        foreach (TMP_Text textMesh in _text)
+        yield return new WaitForSeconds(ApparitionDelay);
+
+        DOTweenTMPAnimator animator = new DOTweenTMPAnimator(TextMesh);
+        for (int i = 0; i < animator.textInfo.characterCount; i++)
         {
-            yield return new WaitForSeconds(_apparitionDelay);
+            animator.DOFadeChar(i, 1, CharFadeInDuration);
+            yield return new WaitForSeconds(CharFadeInDelay);
+        }
 
-            DOTweenTMPAnimator animator = new DOTweenTMPAnimator(textMesh);
-            for (int i = 0; i < animator.textInfo.characterCount; i++)
-            {
-                animator.DOFadeChar(i, 1, _charFadeInDuration);
-                yield return new WaitForSeconds(_charFadeInDelay);
-            }
+        yield return new WaitForSeconds(StayDuration);
 
-            yield return new WaitForSeconds(_stayDuration);
-
-            for (int i = 0; i < animator.textInfo.characterCount; i++)
-            {
-                animator.DOFadeChar(i, 0, _charFadeOutDuration);
-                yield return new WaitForSeconds(_charFadeOutDelay);
-            }
+        for (int i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            animator.DOFadeChar(i, 0, CharFadeOutDuration);
+            yield return new WaitForSeconds(CharFadeOutDelay);
         }
     }
 }
