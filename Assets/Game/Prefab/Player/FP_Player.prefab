@@ -154,9 +154,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1537851944306892503}
+  - component: {fileID: 700580131499637484}
   - component: {fileID: 7069003786607905744}
   - component: {fileID: 8895847318250023099}
-  - component: {fileID: 700580131499637484}
   - component: {fileID: 4747696836999268114}
   - component: {fileID: 390007284634587234}
   - component: {fileID: 2128463034130162547}
@@ -187,6 +187,35 @@ Transform:
   - {fileID: 1431835859388679665}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &700580131499637484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68aaab3c2dd3bd240afbe69cd9b69d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controller: {fileID: 7069003786607905744}
+  _camera: {fileID: 2682455399166526803}
+  _floorCheck: {fileID: 7652035074635611970}
+  _floorLayer:
+    serializedVersion: 2
+    m_Bits: 449
+  _speedMultiplier: 1
+  _canJump: 0
+  _canCrouch: 1
+  _slippingMovementControl: 0.01
+  _enableGravityRotation: 0
+  _resetRotationWhenNoClip: 0
+  AKWiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  _timerTNextStep: 1
 --- !u!143 &7069003786607905744
 CharacterController:
   m_ObjectHideFlags: 0
@@ -230,34 +259,6 @@ MonoBehaviour:
     m_Bits: 64
   _rayDistance: 3
   _holdTransform: {fileID: 8608025456989573920}
---- !u!114 &700580131499637484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5789224619367204211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68aaab3c2dd3bd240afbe69cd9b69d55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _controller: {fileID: 7069003786607905744}
-  _camera: {fileID: 2682455399166526803}
-  _floorCheck: {fileID: 7652035074635611970}
-  _floorLayer:
-    serializedVersion: 2
-    m_Bits: 449
-  _canJump: 0
-  _canCrouch: 1
-  _slippingMovementControl: 0.01
-  _enableGravityRotation: 0
-  _resetRotationWhenNoClip: 0
-  AKWiseEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  _timerTNextStep: 1
 --- !u!114 &4747696836999268114
 MonoBehaviour:
   m_ObjectHideFlags: 0
