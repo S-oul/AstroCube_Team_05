@@ -37,13 +37,13 @@ public class RubiksCubeController : MonoBehaviour
 
     bool _canPlayerMoveAxis = true;
 
-    
+
 
     #region Accesseur
 
     public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
     public bool ShowStripLayerToPlayer { get => _ShowStripLayerToPlayer; set => _ShowStripLayerToPlayer = value; }
-    public RubiksMovement ControlledScript { get => _controlledScript;}
+    public RubiksMovement ControlledScript { get => _controlledScript; }
 
     #endregion
 
@@ -57,19 +57,19 @@ public class RubiksCubeController : MonoBehaviour
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
-        if(GameManager.Instance.IsRubiksCubeEnabled)
+        if (GameManager.Instance.IsRubiksCubeEnabled)
             ActionSwitchLineCols(true);
-        if(_previewControlledScript == null)
+        if (_previewControlledScript == null)
         {
             var previewScript = GameObject.FindAnyObjectByType<PreviewRubiksCube>();
-            if(previewScript)
+            if (previewScript)
                 _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
         }
     }
     private void Start()
     {
-        if (_previewControlledScript)        
-            HidePreview();        
+        if (_previewControlledScript)
+            HidePreview();
     }
 
 
@@ -186,17 +186,13 @@ public class RubiksCubeController : MonoBehaviour
             {
                 if (!cube) continue;
 
-                // HAHAHAHAHAHAHA LA LIGNE EST HORRIBLE ALED JEROME J'T'EN SUPPLIE
-                Transform equivalence = cube.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
-
-                // Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
-                // why won't work ???
-
+                Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
                 // Get The index of the children 
                 // Find the Other child at the index in other cube
                 // Move it
 
                 cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+
             }
 
             RubiksMove input = new()
@@ -242,7 +238,7 @@ public class RubiksCubeController : MonoBehaviour
                 _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
 
             }
-            
+
 
         }
     }
