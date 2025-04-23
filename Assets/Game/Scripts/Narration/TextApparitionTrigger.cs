@@ -17,5 +17,7 @@ public class TextApparitionTrigger : MonoBehaviour
         {
             text.Display();
         }
+
+        GetComponent<Collider>().enabled = false;
     }
 }
