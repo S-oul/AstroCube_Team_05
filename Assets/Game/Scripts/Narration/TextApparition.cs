@@ -6,30 +6,50 @@ using UnityEngine;
 
 public class TextApparition : MonoBehaviour
 {
-    [SerializeField] float _apparitionDuration;
-    [SerializeField] float _stayDuration;
-    [SerializeField] float _disparitionDuration;
-    [SerializeField] TMP_Text _text;
-    Color _invisible = new Color(1,1,1,0);
+    [field: Header("Components")]
+    [field: SerializeField] public TMP_Text TextMesh { get; private set; }
 
-    void Awake()
+    [field: Header("Apparition")]
+    [field: SerializeField] public float ApparitionDelay { get; private set; }
+    [field: SerializeField] public float CharFadeInDelay { get; private set; }
+    [field: SerializeField] public float CharFadeInDuration { get; private set; }
+    [field: SerializeField] public float StayDuration { get; private set; }
+
+    [field: Header("Disparition")]
+    [field: SerializeField] public float CharFadeOutDelay { get; private set; }
+    [field: SerializeField] public float CharFadeOutDuration { get; private set; }
+
+    private void Awake()
     {
-        if(_text)
-            _text.color = _invisible;
+        if (TextMesh != null)
+        {
+            TextMesh.color = new Color(TextMesh.color.r, TextMesh.color.g, TextMesh.color.b, 0);
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    
+    public void Display()
     {
-        if (!other.CompareTag("Player")) return;
-        if (!_text) return;
         StartCoroutine(TextDisplay());
     }
 
     IEnumerator TextDisplay()
     {
-        yield return _text.DOColor(Color.white, _apparitionDuration).WaitForCompletion();
-        GetComponent<Collider>().enabled = false;
-        yield return new WaitForSeconds(_stayDuration);
-        _text.DOColor(_invisible, _disparitionDuration);
+        yield return new WaitForSeconds(ApparitionDelay);
+
+        DOTweenTMPAnimator animator = new DOTweenTMPAnimator(TextMesh);
+        for (int i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            animator.DOFadeChar(i, 1, CharFadeInDuration);
+            yield return new WaitForSeconds(CharFadeInDelay);
+        }
+
+        yield return new WaitForSeconds(StayDuration);
+
+        for (int i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            animator.DOFadeChar(i, 0, CharFadeOutDuration);
+            yield return new WaitForSeconds(CharFadeOutDelay);
+        }
     }
 }

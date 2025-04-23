@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
 
     bool _hasGravity = true;
 
+    [Header("Movement Modifiers")]
+    [SerializeField, Range(0.0f,2.0f)] float _speedMultiplier = 1.0f;
+
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
 
@@ -95,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
         _defaultControllerHeight = _controller.height;
         _defaultControllerCenter = _controller.center;
 
-        defaultSpeed = _gameSettings.PlayerMoveSpeed;
+        defaultSpeed = _gameSettings.PlayerMoveSpeed * _speedMultiplier;
         _currentMoveSpeed = defaultSpeed;
     }
 
