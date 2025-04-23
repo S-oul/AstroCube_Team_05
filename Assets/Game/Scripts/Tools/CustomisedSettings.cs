@@ -9,165 +9,148 @@ using UnityEngine.Rendering;
 
 public class CustomisedSettings : ScriptableObject
 {
+    //Current
     public float defaultFOV => _defaultFOV;
     public float minFOV => _minimumFOV;
     public float maxFOV => _maximumFOV;
-    public float? customFov { 
-        get
-        {
-            if (customFov == null) return defaultFOV;
-            else return customFov;
-        } 
+    public float customFov 
+    {
+        get => _customFov ?? defaultFOV;
         set
         {
-            if (customFov < minFOV)
+            if (value < minFOV)
             {
-                customFov = minFOV;
+               _customFov = minFOV;
             }
-            else if (customFov > maxFOV)
+            else if (value > maxFOV)
             {
-                customFov = maxFOV;
+               _customFov = maxFOV;
             }
-            else { customFov = value; }
+            else {_customFov = value; }
         }
     }
 
     public float defaultMouse => _defaultMouse;
     public float minMouse => _minimumMouse;
     public float maxMouse => _maximumMouse;
-    public float? customMouse
+    public float customMouse
     {
-        get
-        {
-            if (customMouse == null) return defaultMouse;
-            else return customMouse;
-        }
+        get => _customMouse ?? defaultMouse;
         set
         {
-            if (customMouse < minMouse)
+            if (value < minMouse)
             {
-                customMouse = minMouse;
+               _customMouse = minMouse;
             }
-            else if (customMouse > maxMouse)
+            else if (value > maxMouse)
             {
-                customMouse = maxMouse;
+               _customMouse = maxMouse;
             }
-            else { customMouse = value; }
+            else { _customMouse = value; }
         }
     }
 
     public float defaultJoystick => _defaultJoystick;
     public float minJoystick => _minimumJoystick;
     public float maxJoystick => _maximumJoystick;
-    public float? customJoystick
+    public float customJoystick
     {
-        get
-        {
-            if (customJoystick == null) return defaultJoystick;
-            else return customJoystick;
-        }
+        get => _customJoystick ?? defaultJoystick;
         set
         {
-            if (customJoystick < minJoystick)
+            if (value < minJoystick)
             {
-                customJoystick = minJoystick;
+                _customJoystick = minJoystick;
             }
-            else if (customJoystick > maxJoystick)
+            else if (value > maxJoystick)
             {
-                customJoystick = maxJoystick;
+                _customJoystick = maxJoystick;
             }
-            else { customJoystick = value; }
+            else { _customJoystick = value; }
         }
     }
 
     public float defaultVolume => _defaultVolume;
     public float minVolume => _minimumVolume;
     public float maxVolume => _maximumVolume;
-    public float? customVolume
+    public float customVolume
     {
-        get
-        {
-            if (customVolume == null) return defaultVolume;
-            else return customVolume;
-        }
+        get => _customVolume ?? defaultVolume;
         set
         {
-            if (customVolume < minVolume)
+            if (value < minVolume)
             {
-                customVolume = minVolume;
+                _customVolume = minVolume;
             }
-            else if (customVolume > maxVolume)
+            else if (value > maxVolume)
             {
-                customVolume = maxVolume;
+                _customVolume = maxVolume;
             }
-            else { customVolume = value; }
+            else { _customVolume = value; }
         }
     }
 
     public bool defaultVibration => _defaultVibration;
-    public bool? customVibration {
-        get
-        {
-            if (customVibration == null) return defaultVibration;
-            else return customVibration;
-        }
-        set { customVibration = value; }
+    public bool customVibration
+    {
+        get => _customVibration ?? _defaultVibration;
+        set 
+        { _customVibration = value; }
     }
 
     public bool defaultPreview => _defaultPreview;
-    public bool? customPreview
+    public bool customPreview
     {
-        get
-        {
-            if (customPreview == null) return defaultPreview;
-            else return customPreview;
-        }
-        set { customPreview = value; }
+        get => _customPreview ?? defaultPreview;
+        set { _customPreview = value; }
     }
 
     public bool defaultSubtitles => _defaultSubtitles;
-    public bool? customSubtitles
+    public bool customSubtitles
     {
-        get
-        {
-            if (customSubtitles == null) return defaultSubtitles;
-            else return customSubtitles;
-        }
-        set { customSubtitles = value; }
+        get => _customSubtitles ?? defaultSubtitles;
+        set { _customSubtitles = value; }
     }
 
     [Header("FOV")]
 
     [SerializeField, Label("Default")] float _defaultFOV;
     [SerializeField, Label("Minimum")] float _minimumFOV;
-    [SerializeField, Label("Maximum")] float _maximumFOV;    
-    
+    [SerializeField, Label("Maximum")] float _maximumFOV;
+    float? _customFov;
+
     [Header("MouseSensibility")]
 
     [SerializeField, Label("Default")] float _defaultMouse;
     [SerializeField, Label("Minimum")] float _minimumMouse;
     [SerializeField, Label("Maximum")] float _maximumMouse;
+    float? _customMouse;
 
     [Header("JoystickSensibility")]
 
     [SerializeField, Label("Default")] float _defaultJoystick;
     [SerializeField, Label("Minimum")] float _minimumJoystick;
     [SerializeField, Label("Maximum")] float _maximumJoystick;
+    float? _customJoystick;
 
     [Header("Volume")]
 
     [SerializeField, Label("Default")] float _defaultVolume;
     [SerializeField, Label("Minimum")] float _minimumVolume;
     [SerializeField, Label("Maximum")] float _maximumVolume;
+    float? _customVolume;
 
     [Header("Vibration")]
     [SerializeField, Label("Default")] bool _defaultVibration;
+    bool? _customVibration;
 
     [Header("Preview")]
     [SerializeField, Label("Default")] bool _defaultPreview;
+    bool? _customPreview;
 
     [Header("Subtitles")]
     [SerializeField, Label("Default")] bool _defaultSubtitles;
+    bool? _customSubtitles;
 
 
 }
