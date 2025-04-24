@@ -17,7 +17,7 @@ public class InputHandler : MonoBehaviour
     private static InputHandler instance;
 
     public Vector2 CameraMovement => _cameraMovement;
-    private Vector2 _cameraMovement;    
+    private Vector2 _cameraMovement;
 
     public bool CanMove
     {
@@ -33,7 +33,11 @@ public class InputHandler : MonoBehaviour
 
     void Start()
     {
-        if (instance) Destroy(this);
+        if (instance)
+        {
+            Destroy(this);
+            return;
+        }
         else instance = this;
         _canMove = true;
         _controller = GetComponent<RubiksCubeController>();
@@ -46,7 +50,7 @@ public class InputHandler : MonoBehaviour
             if (_playerMovement != null)
             {
                 _actionMap.Enable();
-                _parentChanger = _playerMovement.GetComponent<DetectNewParent>();   
+                _parentChanger = _playerMovement.GetComponent<DetectNewParent>();
             }
             else Debug.LogWarning("playerMovement script is missing from InputHandler Inspector");
         }
@@ -68,7 +72,7 @@ public class InputHandler : MonoBehaviour
             case true:
                 _playerInput.actions.FindActionMap("PlayerMovement").Enable();
                 break;
-            case false: 
+            case false:
                 _playerInput.actions.FindActionMap("PlayerMovement").Disable();
                 break;
         }
@@ -141,7 +145,7 @@ public class InputHandler : MonoBehaviour
     public void OnGamePause(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {            
+        {
             if (EventManager.gamePaused == false) EventManager.TriggerGamePause();
             else EventManager.TriggerGameUnpause();
         }
@@ -150,8 +154,8 @@ public class InputHandler : MonoBehaviour
     #region Player Movement & NoClip Movement
     public void OnMovement(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
-        if(!_controller.ControlledScript.IsReversing)
-        _playerMovement.ActionMovement(callbackContext.ReadValue<Vector2>());
+        if (!_controller.ControlledScript.IsReversing)
+            _playerMovement.ActionMovement(callbackContext.ReadValue<Vector2>());
     }
     public void OnJump(InputAction.CallbackContext callbackContext)
     {
