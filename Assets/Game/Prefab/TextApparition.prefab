@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9149098160270758009}
-  - component: {fileID: 75182878856014550}
   - component: {fileID: 3180344804455205594}
+  - component: {fileID: 5412677764720345557}
   m_Layer: 0
   m_Name: TextManager
   m_TagString: Untagged
@@ -33,20 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5719741783536101410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &75182878856014550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437225079263639191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d36afdbd0ff07e741bec78ab18fb9f81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _apparitionDuration: 1
-  _text: {fileID: 587198266319705486}
 --- !u!65 &3180344804455205594
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68,6 +54,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5412677764720345557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437225079263639191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3eda8a84578fa43b6f848d3c3fe5ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _texts:
+  - {fileID: 5282722652446184263}
 --- !u!1 &5418314781516247049
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,6 +181,7 @@ GameObject:
   - component: {fileID: 8181991608531168729}
   - component: {fileID: 7315907976614247589}
   - component: {fileID: 587198266319705486}
+  - component: {fileID: 5282722652446184263}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -305,6 +306,25 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5282722652446184263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5532532797038312269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d36afdbd0ff07e741bec78ab18fb9f81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <TextMesh>k__BackingField: {fileID: 587198266319705486}
+  <ApparitionDelay>k__BackingField: 0
+  <CharFadeInDelay>k__BackingField: 0.04
+  <CharFadeInDuration>k__BackingField: 0.5
+  <StayDuration>k__BackingField: 0.5
+  <CharFadeOutDelay>k__BackingField: 0.03
+  <CharFadeOutDuration>k__BackingField: 0.4
 --- !u!1 &6105811318730755229
 GameObject:
   m_ObjectHideFlags: 0

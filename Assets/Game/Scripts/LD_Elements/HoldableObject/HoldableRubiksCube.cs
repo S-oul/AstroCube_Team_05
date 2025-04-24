@@ -8,6 +8,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
 {
     [SerializeField] private GameObject _exitDoor;
     [SerializeField] private Light _light;
+    [SerializeField] private InputDisplay inputDisplay;
     private Transform _originalParent;
     private Transform _originalTransform;
     private Rigidbody _rb;
@@ -36,7 +37,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     {
         _exitDoor.SetActive(true);
         Destroy(transform.GetComponent<BoxCollider>());
-
+        inputDisplay.OnDoInput?.Invoke();
         PickUpDelegate?.Invoke();
         StartCoroutine(HoldRubiksCube(newParent));
     }

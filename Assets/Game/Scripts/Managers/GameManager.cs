@@ -69,9 +69,13 @@ public class GameManager : MonoBehaviour
         EventManager.OnStartCubeRotation += ScreenshakeCubeRotation;
 
         EventManager.OnGamePause += StopDeltTime;
-        EventManager.OnGamePause += UnlockMouse;
         EventManager.OnGameUnpause += ResetDeltaTime;
-        EventManager.OnGameUnpause += LockMouse;
+
+        if (InputSystemManager.Instance.CurrentInputMode == InputSystemManager.EInputMode.KEYBOARD)
+        {
+            EventManager.OnGamePause += UnlockMouse;
+            EventManager.OnGameUnpause += LockMouse;
+        }
     }
 
     private void OnDisable()
@@ -80,10 +84,21 @@ public class GameManager : MonoBehaviour
 
         EventManager.OnStartCubeRotation -= ScreenshakeCubeRotation;
 
+        /*
         EventManager.OnGamePause -= StopDeltTime;
-        EventManager.OnGamePause -= UnlockMouse;
         EventManager.OnGameUnpause -= ResetDeltaTime;
         EventManager.OnGameUnpause -= LockMouse;
+        EventManager.OnGamePause -= UnlockMouse;
+        */
+
+        foreach (System.Delegate d in EventManager.OnGamePauseCallStack)
+        {
+            EventManager.OnGamePause -= d as Action;
+        }
+        foreach (System.Delegate d in EventManager.OnGameUnpauseCallStack)
+        {
+            EventManager.OnGameUnpause -= d as Action;
+        }
     }
 
     private void Start()

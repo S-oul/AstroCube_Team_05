@@ -11,6 +11,7 @@ public class RubiksMovement : MonoBehaviour
 
     [Header("GD DONT TOUCH")]
     [SerializeField] bool _isPreview;
+    [SerializeField] bool _isArtCube;
     [SerializeField] Transform middle;
     [SerializeField] Transform middleGameObject;
 
@@ -47,7 +48,7 @@ public class RubiksMovement : MonoBehaviour
 
 
     #region Accessor
-    public bool IsPreview {  get => _isPreview;  set => _isPreview = value; }
+    public bool IsPreview { get => _isPreview; set => _isPreview = value; }
     public bool IsRotating { get => _isRotating; }
     public bool IsReversing { get => _isReversing; }
     public bool IsLockXAxis { get => _isLockXAxis; }
@@ -224,7 +225,7 @@ public class RubiksMovement : MonoBehaviour
                 }
             }
             else
-                yield break;      
+                yield break;
         }
         _isRotating = true;
 
@@ -258,6 +259,11 @@ public class RubiksMovement : MonoBehaviour
 
             if (isOnSamePlane)
             {
+                if (_isArtCube)
+                {
+                    block.GetComponentInChildren<ArtRubiksAnimator>().StartAnimRota();
+                }
+
                 if (block.name == "Corner") isMiddle = false;
                 block.transform.SetParent(axis, true);
                 blockIndexs.Add(_allBlocks.IndexOf(block));
@@ -266,38 +272,38 @@ public class RubiksMovement : MonoBehaviour
 
         if (isMiddle) middleGameObject.parent = axis;
 
-         /* Impulsion - SCRAPPED
-        foreach (int i in blockIndexs)
-        {
-            if (_allBlocks[i].gameObject.name != "Middle")
-            {
-                var tiles = _allBlocks[i].transform.GetComponentsInChildren<Tile>().ToList();
-                foreach (Tile tile in tiles)
-                {
-                    if (!tile.IsOccupied)
-                        continue;
-                    switch (sliceAxis)
-                    {
-                        case SliceAxis.X:
-                            if (transform.localPosition.z - _allBlocks[i].transform.localPosition.z < 0 && clockWise
-                                || transform.localPosition.z - _allBlocks[i].transform.localPosition.z > 0 && !clockWise)
-                                tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - _allBlocks[i].transform.localPosition.z).normalized);
-                            break;
-                        case SliceAxis.Y:
-                            if (transform.localPosition.y - _allBlocks[i].transform.localPosition.y < 0 && clockWise
-                                || transform.localPosition.y - _allBlocks[i].transform.localPosition.y > 0 && !clockWise)
-                                tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - _allBlocks[i].transform.localPosition.y, 0).normalized);
-                            break;
-                        case SliceAxis.Z:
-                            if (transform.localPosition.x - _allBlocks[i].transform.localPosition.x < 0 && clockWise
-                                || transform.localPosition.x - _allBlocks[i].transform.localPosition.x > 0 && !clockWise)
-                                tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - _allBlocks[i].transform.localPosition.x, 0, 0).normalized);
-                            break;
-                    }
-                }
-            }
-        }
-        */
+        /* Impulsion - SCRAPPED
+       foreach (int i in blockIndexs)
+       {
+           if (_allBlocks[i].gameObject.name != "Middle")
+           {
+               var tiles = _allBlocks[i].transform.GetComponentsInChildren<Tile>().ToList();
+               foreach (Tile tile in tiles)
+               {
+                   if (!tile.IsOccupied)
+                       continue;
+                   switch (sliceAxis)
+                   {
+                       case SliceAxis.X:
+                           if (transform.localPosition.z - _allBlocks[i].transform.localPosition.z < 0 && clockWise
+                               || transform.localPosition.z - _allBlocks[i].transform.localPosition.z > 0 && !clockWise)
+                               tile.OnPropulsion?.Invoke(new Vector3(0, 0, transform.localPosition.z - _allBlocks[i].transform.localPosition.z).normalized);
+                           break;
+                       case SliceAxis.Y:
+                           if (transform.localPosition.y - _allBlocks[i].transform.localPosition.y < 0 && clockWise
+                               || transform.localPosition.y - _allBlocks[i].transform.localPosition.y > 0 && !clockWise)
+                               tile.OnPropulsion?.Invoke(new Vector3(0, transform.localPosition.y - _allBlocks[i].transform.localPosition.y, 0).normalized);
+                           break;
+                       case SliceAxis.Z:
+                           if (transform.localPosition.x - _allBlocks[i].transform.localPosition.x < 0 && clockWise
+                               || transform.localPosition.x - _allBlocks[i].transform.localPosition.x > 0 && !clockWise)
+                               tile.OnPropulsion?.Invoke(new Vector3(transform.localPosition.x - _allBlocks[i].transform.localPosition.x, 0, 0).normalized);
+                           break;
+                   }
+               }
+           }
+       }
+       */
 
         int direction = clockWise ? 1 : -1;
 
@@ -436,8 +442,6 @@ public class RubiksMovement : MonoBehaviour
                         closestAxis = t;
                     }
                 }
-
-
             }
         }
         return closestAxis;

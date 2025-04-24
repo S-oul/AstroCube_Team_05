@@ -8,19 +8,16 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance) Destroy(gameObject);
+        else Instance = this; 
+
     }
 
     public void Play2D(AudioEventID id)
     {
         var def = _database.GetSoundFromID(id);
         def?.WwiseEvent?.Post(gameObject);
+        Debug.Log($"Playing 2D sound: {def?.WwiseEvent?.Name}");
     }
 
     public void Play3D(AudioEventID id, GameObject source)
@@ -56,11 +53,16 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnButtonPressed += () => Play2D(AudioEventID.Button);
+        EventManager.OnButtonPressed += _OnButtonPressed;
     }
 
     private void OnDisable()
     {
-        EventManager.OnButtonPressed -= () => Play2D(AudioEventID.Button);
+        EventManager.OnButtonPressed -= _OnButtonPressed;
+    }
+
+    private void _OnButtonPressed()
+    {
+        Play2D(AudioEventID.Button);
     }
 }
