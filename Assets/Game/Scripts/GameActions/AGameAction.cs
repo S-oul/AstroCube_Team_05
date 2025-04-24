@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using System;
+using UnityEngine;
 
+[Serializable]
 public abstract class AGameAction : MonoBehaviour {
 
     public const float DEFAULT_SHORT_TIME = 0.2f;
@@ -14,6 +17,8 @@ public abstract class AGameAction : MonoBehaviour {
 
     [Header("Duration")]
     public DURATION_MODE durationMode = DURATION_MODE.UNTIL_ACTION_END;
+
+    [HideIf("durationMode", DURATION_MODE.UNTIL_ACTION_END)]
     public float waitTime = 1f;
     private float _waitCountdown = -1f;
 
