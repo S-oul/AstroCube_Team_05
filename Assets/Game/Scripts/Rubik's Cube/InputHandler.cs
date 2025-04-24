@@ -129,6 +129,7 @@ public class InputHandler : MonoBehaviour
     }
     #endregion
 
+    #region Other Actions
     public void OnInteract(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -146,6 +147,7 @@ public class InputHandler : MonoBehaviour
             else EventManager.TriggerGameUnpause();
         }
     }
+    #endregion
 
     #region Player Movement & NoClip Movement
     public void OnMovement(InputAction.CallbackContext callbackContext) //also used for NoClip
