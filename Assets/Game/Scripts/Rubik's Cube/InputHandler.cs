@@ -17,7 +17,7 @@ public class InputHandler : MonoBehaviour
     private static InputHandler instance;
 
     public Vector2 CameraMovement => _cameraMovement;
-    private Vector2 _cameraMovement;
+    private Vector2 _cameraMovement;    
 
     public bool CanMove
     {
@@ -31,23 +31,28 @@ public class InputHandler : MonoBehaviour
     }
     [SerializeField, ReadOnly] private bool _canMove;
 
-    void Awake()
+    void Start()
     {
         if (instance) Destroy(this);
         else instance = this;
         _canMove = true;
         _controller = GetComponent<RubiksCubeController>();
-        _playerInput = GetComponent<PlayerInput>();
+
+        _playerInput = InputSystemManager.Instance.PlayerInputs;
+
         InputActionMap _actionMap = _playerInput.actions.FindActionMap("PlayerMovement");
         if (_actionMap != null)
         {
-            if (_playerMovement != null) _actionMap.Enable();
-            else Debug.LogError("playerMovement script is missing from InputHandler Inspector");
+            if (_playerMovement != null)
+            {
+                _actionMap.Enable();
+                _parentChanger = _playerMovement.GetComponent<DetectNewParent>();   
+            }
+            else Debug.LogWarning("playerMovement script is missing from InputHandler Inspector");
         }
-        else Debug.LogError("playerMovment InputMap not found.");
+        else Debug.LogWarning("PlayerMovement InputMap not found.");
 
         _playerInput.actions.FindActionMap("OtherActions").Enable();
-        _parentChanger = _playerMovement.GetComponent<DetectNewParent>();
 
         if (!GameManager.Instance.IsRubiksCubeEnabled)
         {
