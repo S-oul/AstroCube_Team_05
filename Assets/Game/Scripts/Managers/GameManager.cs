@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] EntitySequenceManager _entitySequenceManager;
     [SerializeField] Image _fade;
     [SerializeField] float _sequenceDuration;
+    [SerializeField] Transform _artifact;
     [SerializeField] List<GameObject> _objectToDisable;
 
     public static GameManager Instance => instance;
@@ -147,9 +148,11 @@ public class GameManager : MonoBehaviour
         {
             obj.gameObject.SetActive(false);
         }
-
+        _artifact.gameObject.SetActive(false);
         _entitySequenceManager.gameObject.SetActive(true);
 
+        EnableRubiksCube();
+        
         yield return new WaitForSeconds(_sequenceDuration);
 
         _entitySequenceManager.gameObject.SetActive(false);
