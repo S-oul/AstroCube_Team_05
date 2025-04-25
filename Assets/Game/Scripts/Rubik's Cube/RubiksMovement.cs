@@ -143,7 +143,10 @@ public class RubiksMovement : MonoBehaviour
     IEnumerator ReverseAllMoves(float time)
     {
         while (_isRotating) yield return null;
-        time /= _moves.Count();
+        if(_moves.Count() != 0)
+            time /= _moves.Count();
+        else
+            time = 0.0f;
         _isReversing = true;
         while (_moves.Count > 0)
         {
