@@ -22,13 +22,17 @@ public class GameActionChangeLight : AGameAction
     [BoxGroup("EndValues"), ShowIf("_changeRange"), SerializeField] private float _endRange = 1f;
     [BoxGroup("EndValues"), ShowIf("_changeRange"), SerializeField] private float _fadeRangeDuration = 1f;
 
+    [BoxGroup("EndValues"), SerializeField] private bool _changeShadowStrength = false;
+    [BoxGroup("EndValues"), ShowIf("_changeShadowStrength"), SerializeField] private float _endShadowStrength = 1f;
+    [BoxGroup("EndValues"), ShowIf("_changeShadowStrength"), SerializeField] private float _fadeShadowStrengthDuration = 1f;
+
     private Tweener _fadeIntensity;
     private Tweener _fadeColor;
     private Tweener _fadeRange;
+    private Tweener _fadeShadowStrength;
 
     protected override void ExecuteSpecific()
     {
-
         if (_changeIntensity)
             _fadeIntensity = _light.DOIntensity(_endIntensity, _fadeIntensityDuration).SetEase(_easeMode);
 
@@ -37,11 +41,14 @@ public class GameActionChangeLight : AGameAction
 
         if (_changeRange)
             _fadeRange = DOTween.To(() => _light.range, x => _light.range = x, _endRange, _fadeRangeDuration).SetEase(_easeMode);
+
+        if (_changeShadowStrength && _light.shadows != LightShadows.None)
+            _fadeShadowStrength = DOTween.To(() => _light.shadowStrength, x => _light.shadowStrength = x, _endShadowStrength, _fadeShadowStrengthDuration).SetEase(_easeMode);
     }
 
     protected override bool IsFinishedSpecific()
     {
-        return _fadeIntensity.active || _fadeColor.active || _fadeRange.active;
+        return _fadeIntensity.active || _fadeColor.active || _fadeRange.active || _fadeShadowStrength.active;
     }
 
     public override string BuildGameObjectName()
