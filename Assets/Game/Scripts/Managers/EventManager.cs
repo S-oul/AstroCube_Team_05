@@ -50,6 +50,13 @@ public class EventManager : MonoBehaviour
     public static event Action OnStartNarrativeSequence;
     public static event Action OnEndNarrativeSequence;
 
+    // Custom Settings Events
+    public static event Action<float> OnFOVChange;
+    public static event Action<float> OnMouseChange;
+    public static event Action<float> OnJoystickChange;
+    public static event Action<bool> OnVibrationChange;
+    public static event Action<bool> OnPreviewChange;
+
     public static void TriggerPlayerWin()
     {
         OnPlayerWin?.Invoke();
@@ -137,4 +144,28 @@ public class EventManager : MonoBehaviour
     {
         OnEndSequence?.Invoke();
     }
+
+    // Custom Settings Events
+
+    public static void TriggerFOVChange(float newFOV)
+    {
+        OnFOVChange?.Invoke(newFOV);
+    }
+    public static void TriggerMouseChange(float newMouse)
+    {
+        OnMouseChange?.Invoke(newMouse);
+    }
+    public static void TriggerJoystickChange(float newJoystick)
+    {
+        OnJoystickChange?.Invoke(newJoystick); // currently does not do anything and is never called. 
+    }
+    public static void TriggerVibrationChange(bool newVibration)
+    {
+        OnVibrationChange?.Invoke(newVibration);
+    }
+    public static void TriggerPreviewChange(bool newPreview)
+    {
+        OnPreviewChange?.Invoke(newPreview);
+    }
+
 }

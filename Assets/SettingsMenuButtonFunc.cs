@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class SettingsMenuButtonFunc : MonoBehaviour
 {
-    [SerializeField] CustomisedSettings _cs;
+    [SerializeField] CustomisedSettings _cs;  
 
     [SerializeField] Slider _fovSlider;
     [SerializeField] Slider _mouseSlider;

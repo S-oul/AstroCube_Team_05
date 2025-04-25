@@ -27,6 +27,7 @@ public class CustomisedSettings : ScriptableObject
                _customFov = maxFOV;
             }
             else {_customFov = value; }
+            EventManager.TriggerFOVChange(customFov);
         }
     }
 
@@ -47,6 +48,7 @@ public class CustomisedSettings : ScriptableObject
                _customMouse = maxMouse;
             }
             else { _customMouse = value; }
+            EventManager.TriggerMouseChange(customMouse);
         }
     }
 
@@ -95,7 +97,10 @@ public class CustomisedSettings : ScriptableObject
     {
         get => _customVibration ?? _defaultVibration;
         set 
-        { _customVibration = value; }
+        { 
+            _customVibration = value; 
+            EventManager.TriggerVibrationChange(customVibration);
+        }
     }
 
     public bool defaultPreview => _defaultPreview;
@@ -118,6 +123,7 @@ public class CustomisedSettings : ScriptableObject
     [SerializeField, Label("Minimum")] float _minimumFOV;
     [SerializeField, Label("Maximum")] float _maximumFOV;
     float? _customFov;
+
 
     [Header("MouseSensibility")]
 

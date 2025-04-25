@@ -29,17 +29,20 @@ public class MouseCamControl : MonoBehaviour
     float moveX = 0;
     float moveY = 0;
 
+    float _cameraSensibilityMouse;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _settings = GameManager.Instance.Settings;
-        Camera.main.fieldOfView = _settings.FOV;
+        UpdateCameraFOV(_settings.FOV);
         _inputHandler = InputHandler.Instance;
+        _cameraSensibilityMouse = _settings.CameraSensibilityMouse;
     }
     public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
-        moveX = callbackContext.ReadValue<Vector2>().x* _settings.CameraSensibilityMouse * Time.deltaTime; 
-        moveY = callbackContext.ReadValue<Vector2>().y* _settings.CameraSensibilityMouse * Time.deltaTime; 
+        moveX = callbackContext.ReadValue<Vector2>().x* _cameraSensibilityMouse * Time.deltaTime; 
+        moveY = callbackContext.ReadValue<Vector2>().y* _cameraSensibilityMouse * Time.deltaTime; 
     }
     void Update()
     {
@@ -89,5 +92,25 @@ public class MouseCamControl : MonoBehaviour
             _oldTile = collider.transform;
             if (rubiksCubeController != null && _oldTile.parent != null) rubiksCubeController.SetActualCube(_oldTile.parent);
         }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.OnFOVChange += UpdateCameraFOV;
+        EventManager.OnMouseChange += UpdateCameraMouseSensitivity;
+    }
+    private void OnDisable()
+    {
+        EventManager.OnFOVChange -= UpdateCameraFOV;
+        EventManager.OnMouseChange -= UpdateCameraMouseSensitivity;
+    }
+
+    void UpdateCameraFOV(float newFOV)
+    {
+        Camera.main.fieldOfView = newFOV;
+    }    
+    void UpdateCameraMouseSensitivity(float newCamMouseSen)
+    {
+        _cameraSensibilityMouse = newCamMouseSen;
     }
 }
