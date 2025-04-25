@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class NoClip : MonoBehaviour
 {
-    [SerializeField] PlayerInput _playerInput;
+    PlayerInput _playerInput;
 
     PlayerMovement _playerMovement;
     bool _noClipEnabled = false;
@@ -17,6 +17,7 @@ public class NoClip : MonoBehaviour
 
     private void Start()
     {
+        _playerInput = InputSystemManager.Instance.PlayerInputs;
         if (_playerInput == null)
         {
             Debug.LogError("PlayerInput missing from NoClip inspector.");

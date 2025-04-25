@@ -294,7 +294,7 @@ public class RubiksCubeController : MonoBehaviour
     {
         List<SelectionCube> selectionCubes = new List<SelectionCube>();
         bool isOneTileLocked = false;
-
+        bool isPlayerOnATile = false;
         if (_controlledScript != null)
         {
             foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
@@ -302,14 +302,30 @@ public class RubiksCubeController : MonoBehaviour
                 SelectionCube selection = go.GetComponent<SelectionCube>();
                 if (selection == null) continue;
 
+
                 selectionCubes.Add(selection);
-                if (selection.IsTileLocked) isOneTileLocked = true;
+                if (selection.IsTileLocked ) isOneTileLocked = true;
+                if (_detectParentForGroundRotation.OldTilePlayerPos == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
         }
 
-        foreach (SelectionCube selection in selectionCubes) selection.Select(isOneTileLocked ? SelectionCube.SelectionMode.LOCKED : mode);
+        foreach (SelectionCube selection in selectionCubes) 
+        {
+            if (isOneTileLocked)
+            {
+                selection.Select(SelectionCube.SelectionMode.LOCKED);
+            }else if (isPlayerOnATile) 
+            {
+                selection.Select(SelectionCube.SelectionMode.PLAYERONTILE);
+            }
+            else
+            {
+                selection.Select(mode);
+            }
+        } 
+            
 
-        return !isOneTileLocked;
+        return !(isPlayerOnATile || isOneTileLocked);
     }
 
     void ShutDownFace()

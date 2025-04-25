@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeReference] GameObject UIHolder;
-    KaleidoscopeManager kaleidoscopeManager;
+    [SerializeField] GameObject _UIHolder;
+    [SerializeField] GameObject _firstSelected;
+    KaleidoscopeManager _kaleidoscopeManager;
 
     private void Start()
     {
-        kaleidoscopeManager = GetComponentInChildren<KaleidoscopeManager>();
+        _kaleidoscopeManager = GetComponentInChildren<KaleidoscopeManager>();
     }
 
     private void OnEnable()
@@ -26,13 +29,14 @@ public class PauseMenu : MonoBehaviour
 
     void OpenMenu()
     {
-        kaleidoscopeManager.SetEnabled(true);
-        UIHolder.SetActive(true);
+        _kaleidoscopeManager.SetEnabled(true);
+        _UIHolder.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(_firstSelected);
     }
 
     void CloseMenu()
     {
-        kaleidoscopeManager.SetEnabled(false);
-        UIHolder.SetActive(false);
+        _kaleidoscopeManager.SetEnabled(false);
+        _UIHolder.SetActive(false);
     }
 }

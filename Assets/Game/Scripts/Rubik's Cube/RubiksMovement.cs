@@ -468,6 +468,12 @@ namespace RubiksStatic
         {
             Debug.Log("Axis : " + Axis + " cube : " + cube + " Orient : " + orientation + " ClockWise : " + clockWise);
         }
+
+        public override bool Equals(object o)
+        {
+            return this == o as RubiksMove;
+        }
+
         public static bool operator ==(RubiksMove x, RubiksMove y)
         {
             if (x is null ^ y is null) return false;

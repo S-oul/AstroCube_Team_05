@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] EntitySequenceManager _entitySequenceManager;
     [SerializeField] Image _fade;
     [SerializeField] float _sequenceDuration;
+    [SerializeField] Transform _artifact;
     [SerializeField] List<GameObject> _objectToDisable;
 
     public static GameManager Instance => instance;
@@ -68,9 +69,10 @@ public class GameManager : MonoBehaviour
 
         EventManager.OnStartCubeRotation += ScreenshakeCubeRotation;
 
-        EventManager.OnGamePause += StopDeltTime;
-        EventManager.OnGamePause += UnlockMouse;
+        EventManager.OnGamePause += StopDeltaTime;
         EventManager.OnGameUnpause += ResetDeltaTime;
+
+        EventManager.OnGamePause += UnlockMouse;
         EventManager.OnGameUnpause += LockMouse;
     }
 
@@ -80,10 +82,10 @@ public class GameManager : MonoBehaviour
 
         EventManager.OnStartCubeRotation -= ScreenshakeCubeRotation;
 
-        EventManager.OnGamePause -= StopDeltTime;
-        EventManager.OnGamePause -= UnlockMouse;
+        EventManager.OnGamePause -= StopDeltaTime;
         EventManager.OnGameUnpause -= ResetDeltaTime;
         EventManager.OnGameUnpause -= LockMouse;
+        EventManager.OnGamePause -= UnlockMouse;
     }
 
     private void Start()
@@ -108,7 +110,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(nextScene);
     }
 
-    void StopDeltTime()
+    void StopDeltaTime()
     {
         Time.timeScale = 0;
     }    
@@ -120,12 +122,18 @@ public class GameManager : MonoBehaviour
 
     void LockMouse()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        if (InputSystemManager.Instance.CurrentInputMode == InputSystemManager.EInputMode.KEYBOARD)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     void UnlockMouse()
     {
-        Cursor.lockState = CursorLockMode.None;
+        if (InputSystemManager.Instance.CurrentInputMode == InputSystemManager.EInputMode.KEYBOARD || Cursor.lockState == CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     public void StartSequence(Quaternion cameraAngle) => StartCoroutine(ShowSequence(cameraAngle));
@@ -140,13 +148,15 @@ public class GameManager : MonoBehaviour
         {
             obj.gameObject.SetActive(false);
         }
-
+        _artifact.gameObject.SetActive(false);
         _entitySequenceManager.gameObject.SetActive(true);
 
+        EnableRubiksCube();
+        
         yield return new WaitForSeconds(_sequenceDuration);
 
         _entitySequenceManager.gameObject.SetActive(false);
-        Debug.Log("DisableEntity"); 
+
         foreach (var obj in _objectToDisable)
         {
             obj.gameObject.SetActive(true);
@@ -165,10 +175,6 @@ public class GameManager : MonoBehaviour
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;
         yield return Camera.main.transform.parent.parent.DORotate(new Vector3(Camera.main.transform.parent.parent.eulerAngles.x, 359, Camera.main.transform.parent.parent.eulerAngles.z), 10, RotateMode.WorldAxisAdd).WaitForCompletion();
-        //Camera.main.transform.parent.parent.rotation = Quaternion.Euler(0, 0, 0);
-        //Camera.main.transform.parent.parent.rotation = Quaternion.Euler(0, cameraAngle.y, 0);
-
-
     }
 
     private void EndNarrativeSequence() => InputHandler.Instance.CanMove = true;
