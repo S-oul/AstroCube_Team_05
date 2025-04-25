@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class TextApparition : MonoBehaviour
 {
-    [field: Header("Components")]
-    [field: SerializeField] public TMP_Text TextMesh { get; private set; }
+    // À mettre sur le même objet que le script
+    private TMP_Text _textMesh;
 
     [field: Header("Apparition")]
     [field: SerializeField] public float ApparitionDelay { get; private set; }
@@ -21,10 +21,8 @@ public class TextApparition : MonoBehaviour
 
     private void Awake()
     {
-        if (TextMesh != null)
-        {
-            TextMesh.color = new Color(TextMesh.color.r, TextMesh.color.g, TextMesh.color.b, 0);
-        }
+        if (TryGetComponent<TMP_Text>(out _textMesh)) _textMesh.color = new Color(_textMesh.color.r, _textMesh.color.g, _textMesh.color.b, 0);
+        else Debug.LogWarning("TextApparition sans texte associé sur : " + name);
     }
 
     
@@ -37,7 +35,7 @@ public class TextApparition : MonoBehaviour
     {
         yield return new WaitForSeconds(ApparitionDelay);
 
-        DOTweenTMPAnimator animator = new DOTweenTMPAnimator(TextMesh);
+        DOTweenTMPAnimator animator = new DOTweenTMPAnimator(_textMesh);
         for (int i = 0; i < animator.textInfo.characterCount; i++)
         {
             animator.DOFadeChar(i, 1, CharFadeInDuration);
