@@ -317,7 +317,7 @@
 				<AuxBus Id="3217397620" Name="AUX_REVLarge" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\WU_BUS\BUS_Rev\AUX_REVLarge" GUID="{16E79169-583D-4729-952A-D97524F8612C}" Color="26"/>
 			</AuxBusses>
 		</SoundBank>
-		<SoundBank Id="4254072057" Type="User" GUID="{653AB8BF-84AF-4F6C-B01A-9079A6DBFE3E}" Color="25" Language="SFX" Hash="{9B4CB621-FAF9-64B1-8D77-4A9CD00741DD}">
+		<SoundBank Id="4254072057" Type="User" GUID="{653AB8BF-84AF-4F6C-B01A-9079A6DBFE3E}" Color="25" Language="SFX" Hash="{6DA96F27-CBE8-8516-F8E6-94A8C29149B9}">
 			<ObjectPath>\SoundBanks\Default Work Unit\WU_SFX_SBK\SFX_SBK</ObjectPath>
 			<ShortName>SFX_SBK</ShortName>
 			<Path>SFX_SBK.bnk</Path>
@@ -334,13 +334,17 @@
 					<ShortName>SFX\GPE\SFX_Button_Pressed_04.wav</ShortName>
 					<CachePath>7C/{7C2D63EA-8B83-EE7E-AD99-50F0F2207028}.wem</CachePath>
 				</File>
-				<File Id="65255290" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX\Cube\Rotation\SFX_Cube_Rotation_01.wav</ShortName>
-					<CachePath>8D/{8D03038A-FCAE-709A-206D-CC0FBB1264A3}.wem</CachePath>
+				<File Id="89101749" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX\Rotation\Cube\SFX_Cube_Rotation_01.wav</ShortName>
+					<CachePath>96/{966E5A2D-936E-5F3E-B114-E939B69130FB}.wem</CachePath>
 				</File>
-				<File Id="70247869" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX\Cube\Rotation\SFX_Cube_Rotation_02.wav</ShortName>
-					<CachePath>30/{3028A0F2-A026-254D-5AD0-254C34E38CCE}.wem</CachePath>
+				<File Id="129079898" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX\Rotation\Cube\SFX_Cube_Rotation_02.wav</ShortName>
+					<CachePath>AA/{AAA34151-D6FF-8BD7-1C2F-B872AACC5FD5}.wem</CachePath>
+				</File>
+				<File Id="260156793" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX\Rotation\Cube\SFX_Cube_Rotation_03.wav</ShortName>
+					<CachePath>7D/{7D645828-CE18-9E11-34EE-92941597DF4D}.wem</CachePath>
 				</File>
 				<File Id="289915932" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX\GPE\SFX_Button_Pressed_02.wav</ShortName>
@@ -350,17 +354,13 @@
 					<ShortName>SFX\Laser\SFX_Laser_Reflected_01.wav</ShortName>
 					<CachePath>F0/{F0BCF6B5-46DE-B47B-B389-C8E2992D010A}.wem</CachePath>
 				</File>
-				<File Id="463737970" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX\Cube\Rotation\SFX_Cube_Rotation_04.wav</ShortName>
-					<CachePath>0E/{0E2ABF00-5C33-12CD-BFD6-7F06AC02D55A}.wem</CachePath>
+				<File Id="331691619" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX\Rotation\Cube\SFX_Cube_Rotation_04.wav</ShortName>
+					<CachePath>12/{12156399-C078-900D-33AD-F7C793CE2897}.wem</CachePath>
 				</File>
 				<File Id="557721353" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX\Laser\SFX_Laser_Emitting_03.wav</ShortName>
 					<CachePath>84/{844F891B-D4AF-FEDE-2A13-A598210A6D35}.wem</CachePath>
-				</File>
-				<File Id="578434559" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>SFX\Cube\Rotation\SFX_Cube_Rotation_03.wav</ShortName>
-					<CachePath>73/{73D0F58E-4084-8124-7214-EDC23A778B4B}.wem</CachePath>
 				</File>
 				<File Id="663617190" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>SFX\Laser\SFX_Laser_Emitting_01.wav</ShortName>
@@ -408,12 +408,12 @@
 						<MediaRef Id="829273026"/>
 					</MediaRefs>
 				</Event>
-				<Event Id="2382781056" Name="SFX_CubeRotation" ObjectPath="\Events\Default Work Unit\WU_SFX_Event\SFX_CubeRotation" GUID="{18B4444E-625C-45C6-8667-5B00E709C178}" Color="25" DurationType="OneShot" DurationMin="0.081899926" DurationMax="0.11902438">
+				<Event Id="2382781056" Name="SFX_CubeRotation" ObjectPath="\Events\Default Work Unit\WU_SFX_Event\SFX_CubeRotation" GUID="{18B4444E-625C-45C6-8667-5B00E709C178}" Color="25" DurationType="OneShot" DurationMin="0.47810298" DurationMax="0.56856346">
 					<MediaRefs>
-						<MediaRef Id="65255290"/>
-						<MediaRef Id="70247869"/>
-						<MediaRef Id="463737970"/>
-						<MediaRef Id="578434559"/>
+						<MediaRef Id="89101749"/>
+						<MediaRef Id="129079898"/>
+						<MediaRef Id="260156793"/>
+						<MediaRef Id="331691619"/>
 					</MediaRefs>
 				</Event>
 				<Event Id="2922909946" Name="SFX_LaserEmetting_LP" ObjectPath="\Events\Default Work Unit\WU_SFX_Event\SFX_LaserEmetting_LP" GUID="{8820A444-5D06-4959-916B-453471D62653}" Color="25" MaxAttenuation="10" DurationType="Infinite">
@@ -450,5 +450,5 @@
 			</AuxBusses>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{F978928C-C5A8-1A3A-A0A7-8A61A217E21C}</FileHash>
+	<FileHash>{DEFD80C1-733A-605A-0246-BAB7A857FA53}</FileHash>
 </SoundBanksInfo>
