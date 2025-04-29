@@ -8,15 +8,23 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance) Destroy(gameObject);
-        else Instance = this; 
+        if (AudioManager.Instance)
+        {
+            DestroyImmediate(this);
+            return;
+        }
+        else
+        {
+            DontDestroyOnLoad(this);
+            Instance = this;
+        } 
 
     }
 
     public void Play2D(AudioEventID id)
     {
         var def = _database.GetSoundFromID(id);
-        def?.WwiseEvent?.Post(gameObject);
+        def?.WwiseEvent?.Post(Instance.gameObject);
         Debug.Log($"Playing 2D sound: {def?.WwiseEvent?.Name}");
     }
 
@@ -53,17 +61,14 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnButtonPressed += () => Play2D(AudioEventID.SFX_Button);
+        EventManager.OnPlayerFootSteps += () => Play2D(AudioEventID.MC_FT);
+        EventManager.OnStartCubeRotation += () => Play2D(AudioEventID.SFX_CubeRotation);
     }
 
     private void OnDisable()
     {
-        EventManager.OnButtonPressed -= () => Play2D(AudioEventID.SFX_Button);
-        EventManager.OnButtonPressed -= () => Play2D(AudioEventID.SFX_Button);
-    }
+        EventManager.OnPlayerFootSteps -= () => Play2D(AudioEventID.MC_FT);
+        EventManager.OnStartCubeRotation -= () => Play2D(AudioEventID.SFX_CubeRotation);
 
-    private void _OnButtonPressed()
-    {
-        Play2D(AudioEventID.SFX_Button);
     }
 }
