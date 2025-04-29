@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneChangeButton : MonoBehaviour
 {
-    [SerializeField] string _sceneName;
-
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Confined;
-    }
+    [SerializeField][Scene] string _sceneName;
 
     public void ChangeScene()
     {

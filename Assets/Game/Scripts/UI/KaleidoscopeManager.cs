@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,14 +7,21 @@ using UnityEngine.UI;
 
 public class KaleidoscopeManager : MonoBehaviour
 {
+    public static KaleidoscopeManager Instance { get; private set; }
+    
     [SerializeField] GameObject _sourceCamera;
     [SerializeField] float _fadeSpeed = 0.1f;
-
+    
     Image _screen;
     Material _kaleidoscopeMat;
     bool _isEnabled = false;
     float _currentOpacity = 0;
-    
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

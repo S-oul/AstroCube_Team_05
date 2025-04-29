@@ -75,6 +75,12 @@ public class Reseter : MonoBehaviour
 
     IEnumerator Reset(float duration)
     {
+        if (gameObject.CompareTag("Player"))
+        {
+            InputHandler.Instance.CanMove = false;
+            GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
+        }
+
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
@@ -85,6 +91,12 @@ public class Reseter : MonoBehaviour
         }
         transform.position = _startPos.position;
         transform.rotation = _startPos.rotation;
+
+        if (gameObject.CompareTag("Player"))
+        {
+            InputHandler.Instance.CanMove = true;
+            GetComponent<CharacterController>().excludeLayers = 0;
+        }
     }
 
 }

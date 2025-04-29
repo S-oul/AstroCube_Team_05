@@ -52,7 +52,7 @@ public class MouseCamControl : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * moveX);
 
-        if (_doReversedCam)
+        /*if (_doReversedCam)
         {
 
             Vector3 forward = _playerTransform.forward;
@@ -68,7 +68,7 @@ public class MouseCamControl : MonoBehaviour
             {
                 rubiksCubeController.CameraPlayerReversed = true;
             }
-        }
+        }*/
 
         /*if (_MoveOverlayCubeWithCamRota)
         {

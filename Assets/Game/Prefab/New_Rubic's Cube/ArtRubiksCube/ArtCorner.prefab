@@ -357,32 +357,32 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 35
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 35
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 35
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.176
+      value: 0.082
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.835
+      value: -1.214
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.836
+      value: -1.235
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
@@ -426,6 +426,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 27477d173a67daf41b8119a7584af549,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2de122bc9d535c3459c0ba42c4ee9ba5, type: 2}
@@ -437,7 +442,15 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 27477d173a67daf41b8119a7584af549,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8275727242386313075}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 27477d173a67daf41b8119a7584af549,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2737368572150619668}
   m_SourcePrefab: {fileID: 100100000, guid: 27477d173a67daf41b8119a7584af549, type: 3}
 --- !u!4 &7065495851046290572 stripped
 Transform:
@@ -445,3 +458,43 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7315840823350862695}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7585890973850017334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 27477d173a67daf41b8119a7584af549,
+    type: 3}
+  m_PrefabInstance: {fileID: 7315840823350862695}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8275727242386313075
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7585890973850017334}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1035ca3f91c5d5f43839165b74a1c1ac, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2737368572150619668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7585890973850017334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5033fe1cf60422b42a9e55e69e6e8283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.35
