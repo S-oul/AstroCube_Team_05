@@ -56,11 +56,12 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnButtonPressed += () => Play2D(AudioEventID.Button);
+        EventManager.OnButtonPressed += () => Play2D(AudioEventID.SFX_Button);
     }
 
     private void OnDisable()
     {
-        EventManager.OnButtonPressed -= () => Play2D(AudioEventID.Button);
+        EventManager.OnButtonPressed -= () => Play2D(AudioEventID.SFX_Button);
+        EventManager.OnButtonPressed -= () => Play2D(AudioEventID.SFX_Button);
     }
 }
