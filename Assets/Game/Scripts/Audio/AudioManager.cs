@@ -64,6 +64,6 @@ public class AudioManager : MonoBehaviour
 
     private void _OnButtonPressed()
     {
-        Play2D(AudioEventID.Button);
+        Play2D(AudioEventID.SFX_Button);
     }
 }
