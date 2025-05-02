@@ -64,7 +64,6 @@ public class CrossfadeTransition : MonoBehaviour
 
         if (_isActive == false)
         {
-            Debug.Log("EnablingEverything");
             _screen.enabled = true;
             _kaleidoscopeCam.SetActive(true);
             _kaleidoscopeCam.GetComponent<Animator>().enabled = false;

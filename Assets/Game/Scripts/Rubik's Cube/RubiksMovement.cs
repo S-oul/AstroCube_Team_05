@@ -5,6 +5,7 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
+using System.Security.Cryptography;
 
 public class RubiksMovement : MonoBehaviour
 {
@@ -472,7 +473,9 @@ namespace RubiksStatic
         public override bool Equals(object o)
         {
             return this == o as RubiksMove;
-        }
+        }        
+        
+        public override int GetHashCode() => (axis, cube, orientation, clockWise).GetHashCode();
 
         public static bool operator ==(RubiksMove x, RubiksMove y)
         {
