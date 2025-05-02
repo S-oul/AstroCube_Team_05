@@ -30,9 +30,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("NoClip")]
     [SerializeField] bool _resetRotationWhenNoClip = false;
 
-    [Header("WISE")]
-    [SerializeField] AK.Wwise.Event AKWiseEvent;
-
     bool _canMove = true;
 
     Vector3 _gravityDirection;
@@ -199,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
         float stepDuration = _timerTNextStep / _currentMoveSpeedFactor;
         if (_timerBeforeNextStep >= stepDuration) {
             _timerBeforeNextStep = 0;
-            AKWiseEvent.Post(gameObject);
+            EventManager.TriggerPlayerFootSteps();
         }
     }
 
