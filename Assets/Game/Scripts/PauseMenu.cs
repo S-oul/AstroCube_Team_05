@@ -44,7 +44,7 @@ public class PauseMenu : MonoBehaviour
 
     public void SetActiveSettingsMenu(bool isActive = true)
     {
-        UIHolder.SetActive(!isActive);
+        _UIHolder.SetActive(!isActive);
         SettingsUIHolder.SetActive(isActive);
     }
 }
