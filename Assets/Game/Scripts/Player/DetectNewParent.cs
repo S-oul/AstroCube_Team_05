@@ -6,7 +6,7 @@ public class DetectNewParent : MonoBehaviour
     [SerializeField] LayerMask _detectableLayer;
     Vector3 currentRotationDir;
 
-    [SerializeField] SelectionCube OldTilePlayerPos;
+    [SerializeField] SelectionCube _oldTilePlayerPos;
     Transform OldTilePlayerPosTransform;
 
 
@@ -14,10 +14,11 @@ public class DetectNewParent : MonoBehaviour
 
     private bool _doGravityRotation;
 
-    public GameObject currentParent {  get; private set; }
+    public GameObject currentParent { get; private set; }
 
     public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
     public bool DoGroundRotation { get => _doGroundRotation; set => _doGroundRotation = value; }
+    public SelectionCube OldTilePlayerPos { get => _oldTilePlayerPos; private set => _oldTilePlayerPos = value; }
 
     private void Awake()
     {
@@ -33,29 +34,29 @@ public class DetectNewParent : MonoBehaviour
     }
     private void Update()
     {
-        if (_doGroundRotation)
+        RaycastHit _raycastInfo;
+        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
         {
-            RaycastHit _raycastInfo;
-            if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
+            if (OldTilePlayerPosTransform != _raycastInfo.collider.transform)
             {
                 OldTilePlayerPosTransform = _raycastInfo.collider.transform;
-
-                //if (OldTilePlayerPos) OldTilePlayerPos.SetIsTileLock(false);
-
-                OldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
-                if (OldTilePlayerPos)
-                {
-                    transform.SetParent(OldTilePlayerPos.transform, true);
-                    currentParent = OldTilePlayerPos.gameObject;
-                }
-                //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
-
+                _oldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
             }
+
         }
-        else if (transform.parent != null)
+
+        if (_doGroundRotation && _oldTilePlayerPos)
+        {
+
+            transform.SetParent(_oldTilePlayerPos.transform, true);
+            currentParent = _oldTilePlayerPos.gameObject;
+
+            //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
+        }
+        /*else if (transform.parent != null)
         {
             transform.SetParent(null, true);
-        }
+        }*/
 
 
     }

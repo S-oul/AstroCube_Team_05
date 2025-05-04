@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,9 +8,12 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
 {
     [SerializeField] private GameObject _exitDoor;
     [SerializeField] private Light _light;
+    [SerializeField] private InputDisplay inputDisplay;
     private Transform _originalParent;
     private Transform _originalTransform;
     private Rigidbody _rb;
+
+    public Action PickUpDelegate { get; set; }
 
     void Start()
     {
@@ -33,6 +37,8 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     {
         _exitDoor.SetActive(true);
         Destroy(transform.GetComponent<BoxCollider>());
+        inputDisplay.OnResolve?.Invoke();
+        PickUpDelegate?.Invoke();
         StartCoroutine(HoldRubiksCube(newParent));
     }
 
@@ -40,8 +46,11 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     {
         InputHandler.Instance.CanMove = false;
         DOTween.To(() => _light.intensity, x => _light.intensity = x, 0f, 1).SetEase(Ease.OutCirc);
-        transform.DOMove(newParent.position, 1.0f);
-        transform.DOScale(newParent.localScale, 1.0f);
+
+        transform.DOMove(newParent.position + new Vector3(-1.6f,0,0),4.0f);
+        transform.DOScale(newParent.localScale*2, 1.0f);
+        transform.DORotateQuaternion(new Quaternion(.45f,24,4,1), 7.0f);
+
         yield return new WaitForSeconds(1.0f);
         transform.parent = newParent;
         Quaternion angle = Quaternion.LookRotation(Camera.main.transform.position - _exitDoor.transform.position); // Look to exit door

@@ -32,6 +32,7 @@ public class CrossfadeTransition : MonoBehaviour
     void StartFade()
     {
         _transitionAnimator.SetTrigger("StartFade");
+        InputHandler.Instance.CanMove = false;
     }
 
     public void ChangeSceneAfterAnimation()
@@ -39,10 +40,16 @@ public class CrossfadeTransition : MonoBehaviour
         EventManager.TriggerSceneChange();
     }
 
+    public void EndAnim()
+    {
+        InputHandler.Instance.CanMove = true;
+    }
+
     private void Start()
     {
         _screen = GetComponent<Image>();
         _transitionAnimator = GetComponent<Animator>();
+        InputHandler.Instance.CanMove = false;
     }
 
     private void Update()

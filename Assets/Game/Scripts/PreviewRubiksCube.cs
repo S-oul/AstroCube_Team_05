@@ -33,7 +33,11 @@ public class PreviewRubiksCube : MonoBehaviour
         {
             SelectionCube selection = go.GetComponent<SelectionCube>();
             if (selection == null) continue;
-            selection.Select(SelectionCube.SelectionMode.DISABLE);
+            var _renderers = selection.GetComponentsInChildren<Renderer>();
+            foreach(var r in _renderers)
+            {
+                r.enabled = false;
+            }
         }
     }
     private void Awake()
