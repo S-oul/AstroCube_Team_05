@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject _UIHolder;
     [SerializeField] GameObject _firstSelected;
     KaleidoscopeManager _kaleidoscopeManager;
+    [SerializeReference] GameObject SettingsUIHolder;
 
     private void Start()
     {
@@ -38,5 +39,12 @@ public class PauseMenu : MonoBehaviour
     {
         _kaleidoscopeManager.SetEnabled(false);
         _UIHolder.SetActive(false);
+        SettingsUIHolder.SetActive(false);
+    }
+
+    public void SetActiveSettingsMenu(bool isActive = true)
+    {
+        UIHolder.SetActive(!isActive);
+        SettingsUIHolder.SetActive(isActive);
     }
 }

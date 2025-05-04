@@ -5,6 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctionality : MonoBehaviour
 {
+    PauseMenu _pauseMenu;
+
+    private void Start()
+    {
+        _pauseMenu = GetComponentInParent<PauseMenu>();
+    }
+
     public void ContinueButton()
     {
         EventManager.TriggerGameUnpause();
@@ -12,12 +19,13 @@ public class ButtonFunctionality : MonoBehaviour
 
     public void SettingsButton()
     {
-        Debug.Log("You clicked on the SETTINGS button.");
+        _pauseMenu.SetActiveSettingsMenu();
     }
 
     public void QuitButton()
     {
         //Application.Quit();
+        Time.timeScale = 1;
         SceneManager.LoadScene("StartMenu");
     }
 }
