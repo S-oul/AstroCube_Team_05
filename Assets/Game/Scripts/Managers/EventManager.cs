@@ -31,6 +31,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnGamePause;
     public static event Action OnGameUnpause;
 
+    public static event Action OnSeeExit;
 
     //Rubik's Cube Events
     public static event Action OnStartCubeRotation;
@@ -81,6 +82,10 @@ public class EventManager : MonoBehaviour
     {
         OnGameUnpause?.Invoke();
         gamePaused = false;
+    }
+    public static void TriggerSeeExit()
+    {
+        OnSeeExit?.Invoke();
     }
 
     public static void TriggerButtonPressed()
