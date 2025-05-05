@@ -61,14 +61,33 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnPlayerFootSteps += () => Play2D(AudioEventID.MC_FT);
-        EventManager.OnStartCubeRotation += () => Play2D(AudioEventID.SFX_CubeRotation);
+        EventManager.OnPlayerFootSteps += OnPlayerFootSteps;
+        EventManager.OnStartCubeRotation += OnStartCubeRotation;
     }
 
     private void OnDisable()
     {
-        EventManager.OnPlayerFootSteps -= () => Play2D(AudioEventID.MC_FT);
-        EventManager.OnStartCubeRotation -= () => Play2D(AudioEventID.SFX_CubeRotation);
+        EventManager.OnPlayerFootSteps -= OnPlayerFootSteps;
+        EventManager.OnStartCubeRotation -= OnStartCubeRotation;
 
+    }
+
+    private void OnPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
+    {
+        switch (_groundTypePlayerIsWalkingOn)
+        {
+            case GroundTypePlayerIsWalkingOn.Default:
+                Play2D(AudioEventID.MC_FT);
+                break;
+            case GroundTypePlayerIsWalkingOn.Grass: //example of implémentation
+                Play2D(AudioEventID.SFX_CubeRotation); //Placeholder Must change in future
+                break;
+        }
+    }
+
+
+    private void OnStartCubeRotation()
+    {
+        Play2D(AudioEventID.SFX_CubeRotation);
     }
 }
