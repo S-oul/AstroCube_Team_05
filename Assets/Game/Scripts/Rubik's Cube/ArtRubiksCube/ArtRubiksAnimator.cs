@@ -35,4 +35,5 @@ public class ArtRubiksAnimator : MonoBehaviour
         yield return new WaitForSeconds(delay);
         StartAnimIdle();
     }
+
 }
