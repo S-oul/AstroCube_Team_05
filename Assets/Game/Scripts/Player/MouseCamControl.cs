@@ -5,6 +5,9 @@ using UnityEngine.InputSystem.XR;
 
 public class MouseCamControl : MonoBehaviour
 {
+    [Header("Customised Settings")]
+    [SerializeField] CustomisedSettings _customSettings; 
+    
     [Header("Camera Movement")]
     [SerializeField] Transform _playerTransform;
 
@@ -12,6 +15,10 @@ public class MouseCamControl : MonoBehaviour
     [SerializeField] RubiksCubeController rubiksCubeController;
     [SerializeField] LayerMask _detectableLayer;
     [SerializeField] float _maxDistance;
+
+    [Header("Cameras")]
+    [SerializeField] Camera _mainCamera;
+    [SerializeField] Camera _kaleidoCam;
 
     //To Fix
     //[SerializeField] bool _MoveOverlayCubeWithCamRota = true;
@@ -35,9 +42,9 @@ public class MouseCamControl : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _settings = GameManager.Instance.Settings;
-        UpdateCameraFOV(_settings.FOV);
+        UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
-        _cameraSensibilityMouse = _settings.CameraSensibilityMouse;
+        _cameraSensibilityMouse = _customSettings.customMouse;
     }
     public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
@@ -46,6 +53,8 @@ public class MouseCamControl : MonoBehaviour
     }
     void Update()
     {
+        Debug.Log("Camera FOV is " + Camera.main.fieldOfView);
+        
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
 
@@ -107,7 +116,8 @@ public class MouseCamControl : MonoBehaviour
 
     void UpdateCameraFOV(float newFOV)
     {
-        Camera.main.fieldOfView = newFOV;
+        _mainCamera.fieldOfView = newFOV;
+        _kaleidoCam.fieldOfView = newFOV;
     }    
     void UpdateCameraMouseSensitivity(float newCamMouseSen)
     {

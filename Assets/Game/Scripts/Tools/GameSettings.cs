@@ -9,8 +9,6 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     // Player Properties
-    public float CameraSensibilityJoystick => cameraSensibilityJoystick;
-    public float CameraSensibilityMouse => cameraSensibilityMouse;
     public float PlayerMoveSpeed => _playerMoveSpeed;
     public float Gravity => _gravity;
     public float JumpHeight => _jumpHeight;
@@ -21,7 +19,6 @@ public class GameSettings : ScriptableObject
     public float HeadBobbingSpeed => _headBobbingSpeed;
     public float StartWalkingTransitionDuration => _startWalkingTransitionDuration;
     public float StopWalkingTransitionDuration => _stopWalkingTransitionDuration;
-    public float FOV => _FOV;
     public AnimationCurve HeadBobbingCurve => _headBobbingCurve;
     public bool EnableGravityRotation => _enableGravityRotation;
 
@@ -42,8 +39,6 @@ public class GameSettings : ScriptableObject
 
 
     [Header("-- PLAYER --")]
-    [SerializeField] private float cameraSensibilityJoystick = 1000f;
-    [SerializeField] private float cameraSensibilityMouse = 100f;
 
     [Header("- Movement")]
     [SerializeField] float _playerMoveSpeed = 12f;
@@ -72,9 +67,6 @@ public class GameSettings : ScriptableObject
     [SerializeField] float _startStairsTransitionDuration = 0.5f;
     [SerializeField] float _stopStairsTransitionDuration = 0.5f;
     [SerializeField] AnimationCurve _headBobbingStairsCurve;
-
-    [Header("- Camera")]
-    [SerializeField] float _FOV = 60f;
 
 
     [Header("- GravityRotation")]
