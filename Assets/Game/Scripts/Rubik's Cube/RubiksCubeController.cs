@@ -38,7 +38,6 @@ public class RubiksCubeController : MonoBehaviour
     bool _canPlayerMoveAxis = true;
 
 
-
     #region Accesseur
 
     public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
@@ -143,6 +142,7 @@ public class RubiksCubeController : MonoBehaviour
                 _detectParentForGroundRotation.DoGroundRotation = false;
                 if (_controlledScript.IsLockXAxis)
                 {
+                    _player.SetParent(null);
                     ActionSwitchLineCols(true);
                     return;
                 }
@@ -159,6 +159,7 @@ public class RubiksCubeController : MonoBehaviour
                 _detectParentForGroundRotation.DoGroundRotation = false;
                 if (_controlledScript.IsLockZAxis)
                 {
+                    _player.SetParent(null);
                     ActionSwitchLineCols(true);
                     return;
                 }

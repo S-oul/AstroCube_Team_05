@@ -8,15 +8,23 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance) Destroy(gameObject);
-        else Instance = this; 
+        if (AudioManager.Instance)
+        {
+            DestroyImmediate(this);
+            return;
+        }
+        else
+        {
+            DontDestroyOnLoad(this);
+            Instance = this;
+        } 
 
     }
 
     public void Play2D(AudioEventID id)
     {
         var def = _database.GetSoundFromID(id);
-        def?.WwiseEvent?.Post(gameObject);
+        def?.WwiseEvent?.Post(Instance.gameObject);
         Debug.Log($"Playing 2D sound: {def?.WwiseEvent?.Name}");
     }
 
@@ -53,16 +61,33 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnButtonPressed += _OnButtonPressed;
+        EventManager.OnPlayerFootSteps += OnPlayerFootSteps;
+        EventManager.OnStartCubeRotation += OnStartCubeRotation;
     }
 
     private void OnDisable()
     {
-        EventManager.OnButtonPressed -= _OnButtonPressed;
+        EventManager.OnPlayerFootSteps -= OnPlayerFootSteps;
+        EventManager.OnStartCubeRotation -= OnStartCubeRotation;
+
     }
 
-    private void _OnButtonPressed()
+    private void OnPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
     {
-        Play2D(AudioEventID.Button);
+        switch (_groundTypePlayerIsWalkingOn)
+        {
+            case GroundTypePlayerIsWalkingOn.Default:
+                Play2D(AudioEventID.MC_FT);
+                break;
+            case GroundTypePlayerIsWalkingOn.Grass: //example of implémentation
+                Play2D(AudioEventID.SFX_CubeRotation); //Placeholder Must change in future
+                break;
+        }
+    }
+
+
+    private void OnStartCubeRotation()
+    {
+        Play2D(AudioEventID.SFX_CubeRotation);
     }
 }
