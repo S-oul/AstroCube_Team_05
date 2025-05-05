@@ -8,22 +8,31 @@ public class ControllerVibrater : MonoBehaviour
     [SerializeField] float _minimumFrequency;
     [SerializeField] float _maxumumFrequency;
     [SerializeField] float _duration;
-    
+        
     Gamepad _gamePad;
     Coroutine _stopVibrationCoroutine;
+    bool _vibrationIsActive = true;
 
     private void OnEnable()
     {
         EventManager.OnStartCubeRotation += CubeRotationVibrate;
+        EventManager.OnVibrationChange += SetVibrationIsActive;
     }
 
     private void OnDisable()
     {
         EventManager.OnStartCubeRotation -= CubeRotationVibrate;
+        EventManager.OnVibrationChange -= SetVibrationIsActive;
+    }
+
+    void SetVibrationIsActive(bool isActive)
+    {
+        _vibrationIsActive = isActive;
     }
 
     void CubeRotationVibrate()
     {
+        if (_vibrationIsActive == false) { return; }
         VibrateController(_minimumFrequency, _maxumumFrequency, _duration);
     }
 
