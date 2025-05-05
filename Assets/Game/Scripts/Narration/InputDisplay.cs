@@ -5,13 +5,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static InputSystemManager;
 
 public class InputDisplay : MonoBehaviour
 {
-    [SerializeField] bool _playAtStart;
+    private enum EDisplayType
+    {
+        PLAY_ON_TRIGGER,
+        PLAY_AT_START,
+        PLAY_ON_CALL
+    }
+
+    [SerializeField] EDisplayType _displayType;
     [SerializeField] float _fadeInDuration = 1;
     [SerializeField] float _fadeOutDuration = 1;
     [SerializeField] CanvasGroup _canvasGroup;
@@ -19,8 +27,13 @@ public class InputDisplay : MonoBehaviour
     [HorizontalLine(color: EColor.Blue)]
     [InfoBox("If false, input display should be stopped by code", EInfoBoxType.Normal)]
     [SerializeField] bool _resolveAutomaticallyOnInput = true;
+    [SerializeField] bool _resolveOnLeaveTrigger = false;
     [SerializeField, ShowIf("_resolveAutomaticallyOnInput")] EInputType _expectedInput;
-    bool _isInZone = false;
+
+    [SerializeField] UnityEvent _onStartShowText;
+    [SerializeField] UnityEvent _onEndShowText;
+
+    bool _isDisplayed = false;
     Collider _colider;
 
     public Action OnResolve;
@@ -31,7 +44,7 @@ public class InputDisplay : MonoBehaviour
 
         _canvasGroup.gameObject.SetActive(true);
         _canvasGroup.alpha = 0f;
-        if(_playAtStart)
+        if(_displayType == EDisplayType.PLAY_AT_START)
             _FadeDisplay(1, _fadeInDuration);
     }
 
@@ -60,42 +73,60 @@ public class InputDisplay : MonoBehaviour
         if(_colider == null) 
             _colider = GetComponent<Collider>();
         if (_colider != null)
-            _colider.enabled = !_playAtStart;
+            _colider.enabled = _displayType == EDisplayType.PLAY_ON_TRIGGER;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
         if (!_canvasGroup) return;
 
         if (!other.CompareTag("Player")) return;
-        _isInZone = true;
-        _FadeDisplay(1, _fadeInDuration);
+
+        StartDisplay();
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
         if (!_canvasGroup) return;
 
         if (!other.CompareTag("Player")) return;
-        _isInZone = false;
-        _FadeDisplay(0, _fadeOutDuration);
+
+        if(_resolveOnLeaveTrigger)
+            EndDisplay();
+        else
+        {
+            _FadeDisplay(0, _fadeOutDuration);
+            _isDisplayed = false;
+        }
     }
+    private void _End(InputAction.CallbackContext callbackContext) => _End();
 
     private void _End()
     {
+        if (!_isDisplayed) return;
         if (!_canvasGroup) return;
-
-        if (!_isInZone && !_playAtStart) return;
-        StartCoroutine(_StartEnd());
+        
+        StartCoroutine(_EndDisplay());
     }
 
-    private void _End(InputAction.CallbackContext callbackContext) => _End();
-
-    private IEnumerator _StartEnd()
+    public void StartDisplay()
     {
+        _isDisplayed = true;
+        _onStartShowText?.Invoke();
+        _FadeDisplay(1, _fadeOutDuration);
+    }
+
+    public void EndDisplay() => StartCoroutine(_EndDisplay()); 
+
+    private IEnumerator _EndDisplay()
+    {
+        _isDisplayed = false;
         _FadeDisplay(0, _fadeOutDuration);
         yield return new WaitForSeconds(_fadeOutDuration);
-        Destroy(gameObject);  
+        _onEndShowText?.Invoke();
+        gameObject.SetActive(false);
     }
 
     private void _FadeDisplay(float newAlpha, float duration)
