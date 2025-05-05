@@ -198,11 +198,15 @@ public class GameManager : MonoBehaviour
 
     private void PreviewSetActive(bool isEnabled = true)
     {
+        // PreviewRubiksCube functionality cannot yet be toggled during playmode. 
+
+        /*
         if (_previewRubiksCube == null)
         {
             Debug.Log("No 'Preview Rubic's Cube' is present in this scene.");
             return;
         }
         _previewRubiksCube.SetActive(isEnabled);
+        */
     }
 }
