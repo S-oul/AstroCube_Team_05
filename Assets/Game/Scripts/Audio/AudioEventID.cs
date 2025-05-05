@@ -7,7 +7,9 @@ public enum AudioEventID
     // Music
 
     // Sound Effects
-    Button,
+    SFX_Button,
+    MC_FT,
+    SFX_CubeRotation,
 
     // UI Sounds
     MenuPause,

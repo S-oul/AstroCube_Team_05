@@ -30,12 +30,12 @@ public class PlayerMovement : MonoBehaviour
     [Header("NoClip")]
     [SerializeField] bool _resetRotationWhenNoClip = false;
 
-    [Header("WISE")]
-    [SerializeField] AK.Wwise.Event AKWiseEvent;
-
     bool _canMove = true;
 
     Vector3 _gravityDirection;
+
+    private GroundTypePlayerIsWalkingOn _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
+
 
     float _floorDistance = 0.1f;
 
@@ -68,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
     Vector3 newCamPos;
 
     Vector3 _externallyAppliedMovement = Vector3.zero;
+
+    public bool isOnDefaultGround;
 
     public float defaultSpeed { get; private set; }
     public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
@@ -199,7 +201,8 @@ public class PlayerMovement : MonoBehaviour
         float stepDuration = _timerTNextStep / _currentMoveSpeedFactor;
         if (_timerBeforeNextStep >= stepDuration) {
             _timerBeforeNextStep = 0;
-            AKWiseEvent.Post(gameObject);
+            UpdateGroundType();
+            EventManager.TriggerPlayerFootSteps(_currentGroundType);            
         }
     }
 
@@ -303,4 +306,31 @@ public class PlayerMovement : MonoBehaviour
     {
         _externallyAppliedMovement = directon * speed;
     }
+
+    private void UpdateGroundType()
+    {
+        Ray ray = new Ray(_floorCheck.position, -transform.up);
+        if (Physics.Raycast(ray, out RaycastHit hit, _floorDistance + 0.2f, _floorLayer))
+        {
+            string groundTag = hit.collider.tag;
+            Debug.Log("Ground tag detected: " + groundTag);
+            switch (groundTag)
+            {
+                case "Floor_Default":
+                default:
+                    _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
+                    break;
+                case "Floor_Grass":
+                    _currentGroundType = GroundTypePlayerIsWalkingOn.Grass;
+                    break;
+            }
+            Debug.Log("Ground type detected: " + groundTag);
+        }
+        else
+        {
+            Debug.Log("No ground or tag detected , setting to default.");
+            _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
+        }
+    }
+
 }
