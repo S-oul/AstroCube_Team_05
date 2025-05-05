@@ -530,7 +530,7 @@ Shader "Test_Rotation"
 				float2 temp_cast_0 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
 				float temp_output_15_0 = ( ( (texCoord14*1.0 + appendResult27) + ( tex2D( _TextureSample1, temp_cast_0 ).r * _Float0 ) ).y - 0.5 );
 				float2 temp_cast_1 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
-				float smoothstepResult20 = smoothstep( 0.07 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
+				float smoothstepResult20 = smoothstep( 0.02 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
 				float2 texCoord39 = input.ase_texcoord6.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner40 = ( 1.0 * _Time.y * float2( -1,0 ) + texCoord39);
 				float smoothstepResult31 = smoothstep( 0.0 , 0.97 , tex2D( _TextureSample2, panner40 ).r);
@@ -895,7 +895,7 @@ Shader "Test_Rotation"
 				float2 temp_cast_0 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
 				float temp_output_15_0 = ( ( (texCoord14*1.0 + appendResult27) + ( tex2D( _TextureSample1, temp_cast_0 ).r * _Float0 ) ).y - 0.5 );
 				float2 temp_cast_1 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
-				float smoothstepResult20 = smoothstep( 0.07 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
+				float smoothstepResult20 = smoothstep( 0.02 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
 				float2 texCoord39 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner40 = ( 1.0 * _Time.y * float2( -1,0 ) + texCoord39);
 				float smoothstepResult31 = smoothstep( 0.0 , 0.97 , tex2D( _TextureSample2, panner40 ).r);
@@ -1210,7 +1210,7 @@ Shader "Test_Rotation"
 				float2 temp_cast_0 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
 				float temp_output_15_0 = ( ( (texCoord14*1.0 + appendResult27) + ( tex2D( _TextureSample1, temp_cast_0 ).r * _Float0 ) ).y - 0.5 );
 				float2 temp_cast_1 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
-				float smoothstepResult20 = smoothstep( 0.07 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
+				float smoothstepResult20 = smoothstep( 0.02 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
 				float2 texCoord39 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner40 = ( 1.0 * _Time.y * float2( -1,0 ) + texCoord39);
 				float smoothstepResult31 = smoothstep( 0.0 , 0.97 , tex2D( _TextureSample2, panner40 ).r);
@@ -1495,7 +1495,7 @@ Shader "Test_Rotation"
 				float2 temp_cast_0 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
 				float temp_output_15_0 = ( ( (texCoord14*1.0 + appendResult27) + ( tex2D( _TextureSample1, temp_cast_0 ).r * _Float0 ) ).y - 0.5 );
 				float2 temp_cast_1 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
-				float smoothstepResult20 = smoothstep( 0.07 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
+				float smoothstepResult20 = smoothstep( 0.02 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
 				float2 texCoord39 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner40 = ( 1.0 * _Time.y * float2( -1,0 ) + texCoord39);
 				float smoothstepResult31 = smoothstep( 0.0 , 0.97 , tex2D( _TextureSample2, panner40 ).r);
@@ -1774,7 +1774,7 @@ Shader "Test_Rotation"
 				float2 temp_cast_0 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
 				float temp_output_15_0 = ( ( (texCoord14*1.0 + appendResult27) + ( tex2D( _TextureSample1, temp_cast_0 ).r * _Float0 ) ).y - 0.5 );
 				float2 temp_cast_1 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
-				float smoothstepResult20 = smoothstep( 0.07 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
+				float smoothstepResult20 = smoothstep( 0.02 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
 				float2 texCoord39 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner40 = ( 1.0 * _Time.y * float2( -1,0 ) + texCoord39);
 				float smoothstepResult31 = smoothstep( 0.0 , 0.97 , tex2D( _TextureSample2, panner40 ).r);
@@ -2092,7 +2092,7 @@ Shader "Test_Rotation"
 				float2 temp_cast_0 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
 				float temp_output_15_0 = ( ( (texCoord14*1.0 + appendResult27) + ( tex2D( _TextureSample1, temp_cast_0 ).r * _Float0 ) ).y - 0.5 );
 				float2 temp_cast_1 = (( simplePerlin2D47 + tex2D( _TextureSample0, panner37 ).r )).xx;
-				float smoothstepResult20 = smoothstep( 0.07 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
+				float smoothstepResult20 = smoothstep( 0.02 , 0.0 , ( temp_output_15_0 * temp_output_15_0 ));
 				float2 texCoord39 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner40 = ( 1.0 * _Time.y * float2( -1,0 ) + texCoord39);
 				float smoothstepResult31 = smoothstep( 0.0 , 0.97 , tex2D( _TextureSample2, panner40 ).r);
@@ -2170,7 +2170,7 @@ Node;AmplifyShaderEditor.PannerNode;40;-1472,576;Inherit;False;3;0;FLOAT2;0,0;Fa
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;16;-1248,224;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;21;-1200,512;Inherit;True;Property;_TextureSample2;Texture Sample 0;1;0;Create;True;0;0;0;False;0;False;-1;27b0238e9024c404faee6a91fd52a034;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SmoothstepOpNode;31;-832,480;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0.97;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SmoothstepOpNode;20;-912,128;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0.07;False;2;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SmoothstepOpNode;20;-912,128;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0.02;False;2;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleSubtractOpNode;32;-560,272;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;49;-320,240;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.VertexColorNode;44;-624,-304;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -2226,4 +2226,4 @@ WireConnection;45;2;49;0
 WireConnection;1;2;50;0
 WireConnection;1;3;49;0
 ASEEND*/
-//CHKSM=BF602F01E6E373701B53CC74009CC456EE67C1F3
+//CHKSM=0EED644D93C85688FE050312FBD554E81918EB59
