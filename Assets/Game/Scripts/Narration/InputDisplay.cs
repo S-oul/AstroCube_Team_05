@@ -40,7 +40,11 @@ public class InputDisplay : MonoBehaviour
         if (!_canvasGroup) return;
 
         if (_resolveAutomaticallyOnInput)
+        {
+            if (InputSystemManager.Instance == null)
+                print("aaaah");
             InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed += _End;
+        }
         else
             OnResolve += _End;
     }
