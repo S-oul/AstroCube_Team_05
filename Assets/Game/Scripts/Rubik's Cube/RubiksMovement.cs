@@ -5,6 +5,7 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
+using System.Security.Cryptography;
 
 public class RubiksMovement : MonoBehaviour
 {
@@ -142,7 +143,10 @@ public class RubiksMovement : MonoBehaviour
     IEnumerator ReverseAllMoves(float time)
     {
         while (_isRotating) yield return null;
-        time /= _moves.Count();
+        if(_moves.Count() != 0)
+            time /= _moves.Count();
+        else
+            time = 0.0f;
         _isReversing = true;
         while (_moves.Count > 0)
         {
@@ -472,7 +476,9 @@ namespace RubiksStatic
         public override bool Equals(object o)
         {
             return this == o as RubiksMove;
-        }
+        }        
+        
+        public override int GetHashCode() => (axis, cube, orientation, clockWise).GetHashCode();
 
         public static bool operator ==(RubiksMove x, RubiksMove y)
         {
