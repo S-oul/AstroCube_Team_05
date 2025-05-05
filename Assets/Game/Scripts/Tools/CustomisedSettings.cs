@@ -107,7 +107,11 @@ public class CustomisedSettings : ScriptableObject
     public bool customPreview
     {
         get => _customPreview ?? defaultPreview;
-        set { _customPreview = value; }
+        set 
+        { 
+            _customPreview = value;
+            EventManager.TriggerPreviewChange(customPreview);
+        }
     }
 
     public bool defaultSubtitles => _defaultSubtitles;
