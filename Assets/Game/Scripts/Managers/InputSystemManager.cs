@@ -89,4 +89,26 @@ public class InputSystemManager : MonoBehaviour
 
         }
     }
+
+    private void OnEnable()
+    {
+        EventManager.OnGamePause += DeactivateActionMap;
+        EventManager.OnGameUnpause += ActivateActionMap;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnGamePause -= DeactivateActionMap;
+        EventManager.OnGameUnpause -= ActivateActionMap;
+    }
+
+    void DeactivateActionMap()
+    {
+        _playerInputs.currentActionMap.Disable();
+    }    
+    void ActivateActionMap()
+    {
+        _playerInputs.currentActionMap.Enable();
+    }
+    
 }
