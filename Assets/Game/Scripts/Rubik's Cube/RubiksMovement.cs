@@ -101,7 +101,7 @@ public class RubiksMovement : MonoBehaviour
         while (nbOfSquenceExecuted != ExecuteSequenceXTime)
         {
             int SequenceIndex = 0;
-            while (true) //maybeWhile(SequenceIndex != AutoMovesSequence.Count-1) but true easier
+            while (true) //maybe While(SequenceIndex != AutoMovesSequence.Count-1) but true easier
             {
                 if (!AutoMovesSequence[SequenceIndex].Axis)
                 {
@@ -317,7 +317,7 @@ public class RubiksMovement : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * GameManager.Instance.Settings.AnimationSpeedCurve.Evaluate(elapsedTime);
             axis.localRotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
             yield return null;
         }
