@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,9 @@ public class GameSettings : ScriptableObject
 
     // Global Properties
     public float ResetDuration => _resetDuration;
+    public float StencilFadeInDuration => _stencilFadeInDuration;
+    public float StencilFadeOutDuration => _stencilFadeOutDuration;
+    public float StencilStayDuration => _stencilStayDuration;
 
 
     [Header("-- PLAYER --")]
@@ -83,5 +87,11 @@ public class GameSettings : ScriptableObject
 
     [Header("-- GLOBAL --")]
     [SerializeField] private float _resetDuration = 2.0f;
+
+
+    [Header("- Show Exit")]
+    [SerializeField] float _stencilFadeInDuration = 0.5f;
+    [SerializeField] float _stencilFadeOutDuration = 0.5f;
+    [SerializeField] float _stencilStayDuration = 2.0f;
 
 }
