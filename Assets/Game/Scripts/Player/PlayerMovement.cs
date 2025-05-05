@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
 
     bool _hasGravity = true;
 
+    [Header("Movement Modifiers")]
+    [SerializeField, Range(0.0f,2.0f)] float _speedMultiplier = 1.0f;
+
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
 
@@ -19,16 +22,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _canCrouch = true;
 
     [Header("Slipping")]
-    [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
+    [SerializeField] [Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
 
     [Header("GravityRotation")]
     [SerializeField] bool _enableGravityRotation = true;
 
     [Header("NoClip")]
     [SerializeField] bool _resetRotationWhenNoClip = false;
-
-    [Header("WISE")]
-    [SerializeField] AK.Wwise.Event AKWiseEvent;
 
     bool _canMove = true;
 
@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     float _floorDistance = 0.1f;
 
     float _currentMoveSpeed;
+    float _currentMoveSpeedFactor = 1f;
     Vector3 _verticalVelocity;
     Vector3 _horizontalVelocity;
     bool _isGrounded;
@@ -47,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     float _xInput = 0;
     float _zInput = 0;
-    float _yInput = 0;//noclip
+    float _yInput = 0; //noclip
     bool _jumpInput = false;
     bool _crouchInput = false;
 
@@ -83,8 +84,8 @@ public class PlayerMovement : MonoBehaviour
         EventManager.OnEndCubeRotation += EnableMovement;
     }
 
-    void EnableMovement() => _canMove = true;
-    void DisableMovement() => _canMove = false;
+    public void EnableMovement() => _canMove = true;
+    public void DisableMovement() => _canMove = false;
 
     void Start()
     {
@@ -95,15 +96,14 @@ public class PlayerMovement : MonoBehaviour
         _defaultControllerHeight = _controller.height;
         _defaultControllerCenter = _controller.center;
 
-        defaultSpeed = _gameSettings.PlayerMoveSpeed;
+        defaultSpeed = _gameSettings.PlayerMoveSpeed * _speedMultiplier;
         _currentMoveSpeed = defaultSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_canMove)
-            return;
+        if (!_canMove) return;
         /*
         // collect player inputs
         _xInput = Input.GetAxis("Horizontal");
@@ -113,15 +113,13 @@ public class PlayerMovement : MonoBehaviour
         */
 
         //check player state
-       _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
+        _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
 
         //apply gravity
-        if (_hasGravity)
-        {
+        if (_hasGravity) {
             _gravityDirection = transform.up;
             _verticalVelocity += _gravityDirection * _gameSettings.Gravity * Time.deltaTime;
-            if (_isGrounded)
-            {
+            if (_isGrounded) {
                 _verticalVelocity = Vector3.zero;
             }
         }
@@ -133,8 +131,7 @@ public class PlayerMovement : MonoBehaviour
         if (_isSlipping) _pastHorizontalVelocity = _horizontalVelocity;
         _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
 
-        if (_isSlipping)
-        {
+        if (_isSlipping) {
             _horizontalVelocity = _horizontalVelocity * _gameSettings.SlippingMovementControl + _pastHorizontalVelocity;
 
             //clamp
@@ -145,89 +142,93 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // jump
-        if (_jumpInput && _isGrounded)
-        {
+        if (_jumpInput && _isGrounded) {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
         }
+
         _jumpInput = false;
 
         // crouch
-        if (_crouchInput)
-        {
+        if (_crouchInput) {
             _controller.height *= _gameSettings.CrouchHeight;
             _controller.center = Vector3.up * _gameSettings.CrouchHeight * -1;
 
             newCamPos = _camera.transform.localPosition;
             newCamPos.y = _defaultCameraHeight * _gameSettings.CrouchHeight;
-        }
-        else
-        {
+        } else {
             _controller.height = _defaultControllerHeight;
             _controller.center = _defaultControllerCenter;
             newCamPos = _camera.transform.localPosition;
             newCamPos.y = _defaultCameraHeight;
         }
+
         _crouchInput = false;
 
         // no clip
         _horizontalVelocity += transform.up * _yInput;
 
         // apply calculated Movement
-        if (_hasGravity)
-        {
+        float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
+        if (_hasGravity) {
             _controller.Move(_horizontalVelocity *
-                             (_crouchInput ? _currentMoveSpeed : _currentMoveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
+                             (_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
                              + _externallyAppliedMovement);
             _controller.Move(_verticalVelocity * Time.deltaTime);
-        } 
-        else // no clip
+        } else // no clip
         {
             _controller.Move(_horizontalVelocity *
-                             (_currentMoveSpeed/10) * Time.deltaTime
+                             (moveSpeed / 10) * Time.deltaTime
                              + _externallyAppliedMovement);
         }
+
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
     }
 
     void ExecuteFootStep()
     {
-        if (_isWalking)
-        {
+        if (_isWalking) {
             _timerBeforeNextStep += Time.deltaTime;
-        }
-        else
-        {
+        } else {
             _timerBeforeNextStep = 0;
         }
 
-        if (_timerBeforeNextStep >= _timerTNextStep)
-        {
+        float stepDuration = _timerTNextStep / _currentMoveSpeedFactor;
+        if (_timerBeforeNextStep >= stepDuration) {
             _timerBeforeNextStep = 0;
-            AKWiseEvent.Post(gameObject);
+            EventManager.TriggerPlayerFootSteps();
         }
     }
 
     #region Inputs
+
     public void ActionMovement(Vector2 direction)
     {
         //Debug.Log("actionMovement direction is " + direction);
         _xInput = direction.x;
         _zInput = direction.y;
     }
+
     public void ActionJump()
     {
         _jumpInput = _canJump;
     }
+
     public void ActionCrouch()
     {
         _crouchInput = _canCrouch;
     }
+
     #endregion
 
     public void SetSpeed(float newSpeed)
     {
         _currentMoveSpeed = newSpeed * Time.deltaTime;
+    }
+
+    public void SetSpeedFactor(float speedFactor)
+    {
+        _currentMoveSpeedFactor = speedFactor;
     }
 
     public void SetSpeedToDefault()
@@ -244,38 +245,30 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 newCameraHeight;
         _isWalking = _horizontalVelocity != Vector3.zero;
-        if (_isWalking && !_isSlipping)
-        {
-            if (_startWalkingDuration <= _gameSettings.StartWalkingTransitionDuration)
-            {
+        if (_isWalking && !_isSlipping) {
+            if (_startWalkingDuration <= _gameSettings.StartWalkingTransitionDuration) {
                 _stopWalkingDuration = 0.0f;
                 _startWalkingDuration += Time.deltaTime;
                 newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
-                                                            currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount,
-                                                            _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
-            }
-            else
-            {
+                    currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount,
+                    _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
+            } else {
                 _walkingDuration += Time.deltaTime;
                 newCameraHeight = Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
             }
-        }
-        else
-        {
+        } else {
             _walkingDuration = 0.0f;
-            if (_stopWalkingDuration <= _gameSettings.StopWalkingTransitionDuration)
-            {
+            if (_stopWalkingDuration <= _gameSettings.StopWalkingTransitionDuration) {
                 _startWalkingDuration = 0.0f;
                 _stopWalkingDuration += Time.deltaTime;
                 newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
-                                                            currentDefaultHeight,
-                                                            _stopWalkingDuration / _gameSettings.StopWalkingTransitionDuration);
-            }
-            else
-            {
+                    currentDefaultHeight,
+                    _stopWalkingDuration / _gameSettings.StopWalkingTransitionDuration);
+            } else {
                 newCameraHeight = Vector3.up * currentDefaultHeight;
             }
         }
+
         _camera.transform.localPosition = newCameraHeight;
     }
 
@@ -287,16 +280,17 @@ public class PlayerMovement : MonoBehaviour
         _verticalVelocity = Vector3.zero;
         _controller.Move(Vector3.zero);
         transform.SetParent(null);
-        if (_resetRotationWhenNoClip)
-        {
+        if (_resetRotationWhenNoClip) {
             transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
         }
     }
+
     public void DeactivateNoClip()
     {
         GetComponent<CharacterController>().excludeLayers = 0;
         _hasGravity = true;
     }
+
     public void ActionVerticalMovement(float direction)
     {
         _yInput = direction;
