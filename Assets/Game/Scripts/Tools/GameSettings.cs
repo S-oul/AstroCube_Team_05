@@ -55,12 +55,19 @@ public class GameSettings : ScriptableObject
     [Header("- Slipping")]
     [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
 
-    [Header("- HeadBobbing")]
+    [Header("- HeadBobbing Walking")]
     [SerializeField] float _headBobbingAmount = 2.0f;
     [SerializeField] float _headBobbingSpeed = 3.0f;
     [SerializeField] float _startWalkingTransitionDuration = 0.5f;
     [SerializeField] float _stopWalkingTransitionDuration = 0.5f;
     [SerializeField] AnimationCurve _headBobbingCurve;
+
+    [Header("- HeadBobbing Stairs")] // Not implemented yet
+    [SerializeField] float _headBobbingStairsAmount = 2.0f;
+    [SerializeField] float _headBobbingStairsSpeed = 3.0f;
+    [SerializeField] float _startStairsTransitionDuration = 0.5f;
+    [SerializeField] float _stopStairsTransitionDuration = 0.5f;
+    [SerializeField] AnimationCurve _headBobbingStairsCurve;
 
     [Header("- Camera")]
     [SerializeField] float _FOV = 60f;
