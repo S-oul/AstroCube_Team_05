@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TextApparition : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class TextApparition : MonoBehaviour
     [field: SerializeField] public float CharFadeInDelay { get; private set; }
     [field: SerializeField] public float CharFadeInDuration { get; private set; }
     [field: SerializeField] public float StayDuration { get; private set; }
+
+    [SerializeField] private UnityEvent OnEndTextApparition;
 
     [field: Header("Disparition")]
     [field: SerializeField] public float CharFadeOutDelay { get; private set; }
@@ -49,5 +52,7 @@ public class TextApparition : MonoBehaviour
             animator.DOFadeChar(i, 0, CharFadeOutDuration);
             yield return new WaitForSeconds(CharFadeOutDelay);
         }
+
+        OnEndTextApparition?.Invoke();
     }
 }
