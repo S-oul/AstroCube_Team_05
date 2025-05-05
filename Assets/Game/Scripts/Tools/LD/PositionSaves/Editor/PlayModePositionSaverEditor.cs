@@ -69,6 +69,7 @@ public class PlayModePositionSaverEditor : Editor
         foreach (RightActionObject o in allImportantObjects)
         {
             RightActionInfo info = new(o.gameObject, o.GetActualPose());
+            o.RightPose = o.GetActualPose();
             PlayModePositionSaver.PositionsSave.RightActionInfos.Add(info);
         }
 
