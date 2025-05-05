@@ -317,11 +317,15 @@ public class RubiksMovement : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            elapsedTime += Time.deltaTime * GameManager.Instance.Settings.AnimationSpeedCurve.Evaluate(elapsedTime);
-            axis.localRotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            float percent = GameManager.Instance.Settings.AnimationSpeedCurve.Evaluate(elapsedTime/ duration);
+            axis.localRotation = Quaternion.LerpUnclamped(startRotation, targetRotation, percent);
             yield return null;
         }
+        
+        
         axis.localRotation = targetRotation;
+
 
         foreach (int i in blockIndexs)
         {
