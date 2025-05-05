@@ -81,17 +81,22 @@ public class PlayerMovement : MonoBehaviour
     {
         EventManager.OnStartCubeRotation += DisableMovement;
         EventManager.OnEndCubeRotation += EnableMovement;
+        EventManager.OnEndCubeRotation += UnParentPlayer;
+
     }
 
     private void OnDisable()
     {
-        EventManager.OnStartCubeRotation += DisableMovement;
-        EventManager.OnEndCubeRotation += EnableMovement;
+        EventManager.OnStartCubeRotation -= DisableMovement;
+        EventManager.OnEndCubeRotation -= EnableMovement;
+        EventManager.OnEndCubeRotation -= UnParentPlayer;
+
     }
 
     public void EnableMovement() => _canMove = true;
     public void DisableMovement() => _canMove = false;
 
+    public void UnParentPlayer() => transform.SetParent(null);
     void Start()
     {
         _gameSettings = GameManager.Instance.Settings;

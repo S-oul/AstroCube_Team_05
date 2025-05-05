@@ -280,6 +280,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SeeExit"",
+                    ""type"": ""Button"",
+                    ""id"": ""168f3b64-1dc7-47ba-9ce5-f6cf4f631228"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -324,6 +333,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65b4db67-d982-4799-b0ad-e69022992df4"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SeeExit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12c51660-693e-4c89-8514-182c30d1fef0"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SeeExit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -717,6 +748,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_OtherActions = asset.FindActionMap("OtherActions", throwIfNotFound: true);
         m_OtherActions_Interact = m_OtherActions.FindAction("Interact", throwIfNotFound: true);
         m_OtherActions_PauseGame = m_OtherActions.FindAction("PauseGame", throwIfNotFound: true);
+        m_OtherActions_SeeExit = m_OtherActions.FindAction("SeeExit", throwIfNotFound: true);
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
@@ -893,12 +925,14 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private List<IOtherActionsActions> m_OtherActionsActionsCallbackInterfaces = new List<IOtherActionsActions>();
     private readonly InputAction m_OtherActions_Interact;
     private readonly InputAction m_OtherActions_PauseGame;
+    private readonly InputAction m_OtherActions_SeeExit;
     public struct OtherActionsActions
     {
         private @PlayerAction m_Wrapper;
         public OtherActionsActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Interact => m_Wrapper.m_OtherActions_Interact;
         public InputAction @PauseGame => m_Wrapper.m_OtherActions_PauseGame;
+        public InputAction @SeeExit => m_Wrapper.m_OtherActions_SeeExit;
         public InputActionMap Get() { return m_Wrapper.m_OtherActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -914,6 +948,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @PauseGame.started += instance.OnPauseGame;
             @PauseGame.performed += instance.OnPauseGame;
             @PauseGame.canceled += instance.OnPauseGame;
+            @SeeExit.started += instance.OnSeeExit;
+            @SeeExit.performed += instance.OnSeeExit;
+            @SeeExit.canceled += instance.OnSeeExit;
         }
 
         private void UnregisterCallbacks(IOtherActionsActions instance)
@@ -924,6 +961,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @PauseGame.started -= instance.OnPauseGame;
             @PauseGame.performed -= instance.OnPauseGame;
             @PauseGame.canceled -= instance.OnPauseGame;
+            @SeeExit.started -= instance.OnSeeExit;
+            @SeeExit.performed -= instance.OnSeeExit;
+            @SeeExit.canceled -= instance.OnSeeExit;
         }
 
         public void RemoveCallbacks(IOtherActionsActions instance)
@@ -1146,6 +1186,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     {
         void OnInteract(InputAction.CallbackContext context);
         void OnPauseGame(InputAction.CallbackContext context);
+        void OnSeeExit(InputAction.CallbackContext context);
     }
     public interface IPlayerMovementActions
     {

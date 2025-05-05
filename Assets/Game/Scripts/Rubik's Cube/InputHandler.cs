@@ -151,6 +151,14 @@ public class InputHandler : MonoBehaviour
             else EventManager.TriggerGameUnpause();
         }
     }
+
+    public void OnSeeExit(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            EventManager.TriggerSeeExit();
+        }
+    }
     #endregion
 
     #region Player Movement & NoClip Movement
