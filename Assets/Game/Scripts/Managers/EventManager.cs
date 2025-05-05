@@ -51,7 +51,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnStartNarrativeSequence;
     public static event Action OnEndNarrativeSequence;
 
-    public static event Action OnPlayerFootSteps;
+    public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
 
 
     public static Delegate[] OnGamePauseCallStack => OnGamePause.GetInvocationList();
@@ -103,9 +103,9 @@ public class EventManager : MonoBehaviour
         OnButtonReleased?.Invoke();
     }
 
-    public static void TriggerPlayerFootSteps()
+    public static void TriggerPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
     {
-        OnPlayerFootSteps?.Invoke();
+        OnPlayerFootSteps?.Invoke(_groundTypePlayerIsWalkingOn);
     }
     
     public void TriggerReset()
