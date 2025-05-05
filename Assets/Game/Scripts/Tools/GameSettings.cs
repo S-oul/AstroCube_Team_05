@@ -1,3 +1,5 @@
+using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,11 +28,17 @@ public class GameSettings : ScriptableObject
 
     // Rubik's Cube Properties
     public float RubikscCubeAxisRotationDuration => _rubikscCubeAxisRotationDuration;
+    public float PreviewRubikscCubeAxisRotationDuration => _previewRubikscCubeAxisRotationDuration;
     public float UiRubikscCubeRotationDuration => _uiRubikscCubeRotationDuration;
+    public AnimationCurve AnimationSpeedCurve => _AnimationSpeedCurve;
+    public Vector4 RubiksCubeRotationScreenshakeSettings => _rubiksCubeRotationscreenshakeSettings;
 
 
     // Global Properties
     public float ResetDuration => _resetDuration;
+    public float StencilFadeInDuration => _stencilFadeInDuration;
+    public float StencilFadeOutDuration => _stencilFadeOutDuration;
+    public float StencilStayDuration => _stencilStayDuration;
 
 
     [Header("-- PLAYER --")]
@@ -51,12 +59,19 @@ public class GameSettings : ScriptableObject
     [Header("- Slipping")]
     [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
 
-    [Header("- HeadBobbing")]
+    [Header("- HeadBobbing Walking")]
     [SerializeField] float _headBobbingAmount = 2.0f;
     [SerializeField] float _headBobbingSpeed = 3.0f;
     [SerializeField] float _startWalkingTransitionDuration = 0.5f;
     [SerializeField] float _stopWalkingTransitionDuration = 0.5f;
     [SerializeField] AnimationCurve _headBobbingCurve;
+
+    [Header("- HeadBobbing Stairs")] // Not implemented yet
+    [SerializeField] float _headBobbingStairsAmount = 2.0f;
+    [SerializeField] float _headBobbingStairsSpeed = 3.0f;
+    [SerializeField] float _startStairsTransitionDuration = 0.5f;
+    [SerializeField] float _stopStairsTransitionDuration = 0.5f;
+    [SerializeField] AnimationCurve _headBobbingStairsCurve;
 
     [Header("- Camera")]
     [SerializeField] float _FOV = 60f;
@@ -67,9 +82,20 @@ public class GameSettings : ScriptableObject
 
     [Header("-- RUBIK'S CUBE --")]
     [SerializeField] private float _rubikscCubeAxisRotationDuration = 0.2f;
+    [SerializeField] private float _previewRubikscCubeAxisRotationDuration = 0.2f;
     [SerializeField] private float _uiRubikscCubeRotationDuration = 0.2f;
+
+    [SerializeField] AnimationCurve _AnimationSpeedCurve = new AnimationCurve();
+
+    [SerializeField][InfoBox("Duration, Strength, Vibrato, Randomness", EInfoBoxType.Normal)] private Vector4 _rubiksCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
 
     [Header("-- GLOBAL --")]
     [SerializeField] private float _resetDuration = 2.0f;
+
+
+    [Header("- Show Exit")]
+    [SerializeField] float _stencilFadeInDuration = 0.5f;
+    [SerializeField] float _stencilFadeOutDuration = 0.5f;
+    [SerializeField] float _stencilStayDuration = 2.0f;
 
 }

@@ -2,7 +2,7 @@
     "name": "PlayerAction",
     "maps": [
         {
-            "name": "MainScheme",
+            "name": "RubiksCube",
             "id": "3220ae63-91c2-431b-8878-6f326ca05dad",
             "actions": [
                 {
@@ -47,16 +47,7 @@
                     "id": "78276d6b-79fd-420a-8476-517d456cada6",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "a04cb8c7-d18f-472d-8156-0fb92a8155a2",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -82,7 +73,7 @@
                 {
                     "name": "",
                     "id": "5d0045fc-563d-4af0-8ab4-3668efe26c64",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -93,7 +84,7 @@
                 {
                     "name": "",
                     "id": "4c496ed6-b0c7-4b00-92f4-0bf741f16882",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -104,7 +95,7 @@
                 {
                     "name": "",
                     "id": "bb90cf7c-9693-4f9a-befa-0ddc0c7eb815",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -115,7 +106,7 @@
                 {
                     "name": "",
                     "id": "ccc39771-3e5f-4d31-b672-1737daebaf39",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -175,28 +166,6 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "ResetRoom",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "02323f2f-ac41-4220-a812-269b51b04dce",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5a58869a-454b-42ad-a735-514435f05137",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -265,15 +234,105 @@
                     "action": "ShowStrips",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "OtherActions",
+            "id": "678b8938-da03-411b-b951-8274e221c472",
+            "actions": [
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "43c76a40-73ec-4344-81a8-78f933cf9b88",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PauseGame",
+                    "type": "Button",
+                    "id": "61114138-8631-4775-8c3b-c8ce8976bd1a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SeeExit",
+                    "type": "Button",
+                    "id": "168f3b64-1dc7-47ba-9ce5-f6cf4f631228",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d0135966-d1ae-482d-ba16-1a5fdc5e8d7e",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "ccab694f-2ab8-47cc-bc3f-8940fec7ae36",
+                    "id": "18b6dee6-397f-4fbd-9e56-70de2d7e02bd",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "87d755a4-ff25-472b-ac93-872f6bcd7ce0",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03293f57-0b1a-4462-8fa1-70c9e9b4e563",
                     "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "ShowStrips",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "65b4db67-d982-4799-b0ad-e69022992df4",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "SeeExit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "12c51660-693e-4c89-8514-182c30d1fef0",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "SeeExit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -293,22 +352,13 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "a6f4235f-4eb5-4b3f-8276-3b9b62e72abd",
-                    "expectedControlType": "",
+                    "name": "Camera",
+                    "type": "Value",
+                    "id": "97a6a1b7-54b3-4c63-91b6-03a2d94e7eae",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Crouch",
-                    "type": "Button",
-                    "id": "de88368b-19c7-4edb-b35c-d85ca1f76c7f",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -380,45 +430,23 @@
                 },
                 {
                     "name": "",
-                    "id": "1f0bf818-f1d2-4714-b0e1-d89b0b798df0",
-                    "path": "<Keyboard>/space",
+                    "id": "efc102d9-74f8-4d80-9624-fd2ddd2e1007",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
+                    "groups": ";Joystick;Gamepad",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf81e828-570d-4cc7-8df3-d8308579f166",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=0.1,y=0.1)",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ee1b49fc-6575-484b-baef-b8baf15df26b",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b160170d-8414-4e79-86de-6a0bff4dcb7a",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cdfa5e52-0778-4fe7-9364-72a266f04e8b",
-                    "path": "<Gamepad>/rightStickPress",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Crouch",
+                    "action": "Camera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -614,6 +642,12 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "LockPlayerMov",
+            "id": "36e24ca8-43f0-4e9e-98b3-81b50699bd57",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

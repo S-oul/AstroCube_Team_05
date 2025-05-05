@@ -24,7 +24,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     ""name"": ""PlayerAction"",
     ""maps"": [
         {
-            ""name"": ""MainScheme"",
+            ""name"": ""RubiksCube"",
             ""id"": ""3220ae63-91c2-431b-8878-6f326ca05dad"",
             ""actions"": [
                 {
@@ -69,16 +69,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""id"": ""78276d6b-79fd-420a-8476-517d456cada6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Interact"",
-                    ""type"": ""Button"",
-                    ""id"": ""a04cb8c7-d18f-472d-8156-0fb92a8155a2"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -104,7 +95,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5d0045fc-563d-4af0-8ab4-3668efe26c64"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -115,7 +106,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4c496ed6-b0c7-4b00-92f4-0bf741f16882"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -126,7 +117,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bb90cf7c-9693-4f9a-befa-0ddc0c7eb815"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -137,7 +128,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ccc39771-3e5f-4d31-b672-1737daebaf39"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -197,28 +188,6 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""ResetRoom"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""02323f2f-ac41-4220-a812-269b51b04dce"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5a58869a-454b-42ad-a735-514435f05137"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -287,15 +256,105 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""action"": ""ShowStrips"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""OtherActions"",
+            ""id"": ""678b8938-da03-411b-b951-8274e221c472"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""43c76a40-73ec-4344-81a8-78f933cf9b88"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""61114138-8631-4775-8c3b-c8ce8976bd1a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SeeExit"",
+                    ""type"": ""Button"",
+                    ""id"": ""168f3b64-1dc7-47ba-9ce5-f6cf4f631228"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d0135966-d1ae-482d-ba16-1a5fdc5e8d7e"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ccab694f-2ab8-47cc-bc3f-8940fec7ae36"",
+                    ""id"": ""18b6dee6-397f-4fbd-9e56-70de2d7e02bd"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87d755a4-ff25-472b-ac93-872f6bcd7ce0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03293f57-0b1a-4462-8fa1-70c9e9b4e563"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""ShowStrips"",
+                    ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65b4db67-d982-4799-b0ad-e69022992df4"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SeeExit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12c51660-693e-4c89-8514-182c30d1fef0"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SeeExit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -315,22 +374,13 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""a6f4235f-4eb5-4b3f-8276-3b9b62e72abd"",
-                    ""expectedControlType"": """",
+                    ""name"": ""Camera"",
+                    ""type"": ""Value"",
+                    ""id"": ""97a6a1b7-54b3-4c63-91b6-03a2d94e7eae"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Crouch"",
-                    ""type"": ""Button"",
-                    ""id"": ""de88368b-19c7-4edb-b35c-d85ca1f76c7f"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -402,45 +452,23 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1f0bf818-f1d2-4714-b0e1-d89b0b798df0"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""efc102d9-74f8-4d80-9624-fd2ddd2e1007"",
+                    ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
+                    ""groups"": "";Joystick;Gamepad"",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf81e828-570d-4cc7-8df3-d8308579f166"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""ScaleVector2(x=0.1,y=0.1)"",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ee1b49fc-6575-484b-baef-b8baf15df26b"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b160170d-8414-4e79-86de-6a0bff4dcb7a"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Crouch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cdfa5e52-0778-4fe7-9364-72a266f04e8b"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Crouch"",
+                    ""action"": ""Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -636,6 +664,12 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""LockPlayerMov"",
+            ""id"": ""36e24ca8-43f0-4e9e-98b3-81b50699bd57"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": [
@@ -701,32 +735,39 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // MainScheme
-        m_MainScheme = asset.FindActionMap("MainScheme", throwIfNotFound: true);
-        m_MainScheme_ClockWise = m_MainScheme.FindAction("ClockWise", throwIfNotFound: true);
-        m_MainScheme_CounterClockWise = m_MainScheme.FindAction("CounterClockWise", throwIfNotFound: true);
-        m_MainScheme_SwitchColumnsLineLeft = m_MainScheme.FindAction("SwitchColumnsLineLeft", throwIfNotFound: true);
-        m_MainScheme_SwitchColumnsLineRight = m_MainScheme.FindAction("SwitchColumnsLineRight", throwIfNotFound: true);
-        m_MainScheme_ResetRoom = m_MainScheme.FindAction("ResetRoom", throwIfNotFound: true);
-        m_MainScheme_Interact = m_MainScheme.FindAction("Interact", throwIfNotFound: true);
-        m_MainScheme_MoveOverlayCube = m_MainScheme.FindAction("MoveOverlayCube", throwIfNotFound: true);
-        m_MainScheme_ShowStrips = m_MainScheme.FindAction("ShowStrips", throwIfNotFound: true);
+        // RubiksCube
+        m_RubiksCube = asset.FindActionMap("RubiksCube", throwIfNotFound: true);
+        m_RubiksCube_ClockWise = m_RubiksCube.FindAction("ClockWise", throwIfNotFound: true);
+        m_RubiksCube_CounterClockWise = m_RubiksCube.FindAction("CounterClockWise", throwIfNotFound: true);
+        m_RubiksCube_SwitchColumnsLineLeft = m_RubiksCube.FindAction("SwitchColumnsLineLeft", throwIfNotFound: true);
+        m_RubiksCube_SwitchColumnsLineRight = m_RubiksCube.FindAction("SwitchColumnsLineRight", throwIfNotFound: true);
+        m_RubiksCube_ResetRoom = m_RubiksCube.FindAction("ResetRoom", throwIfNotFound: true);
+        m_RubiksCube_MoveOverlayCube = m_RubiksCube.FindAction("MoveOverlayCube", throwIfNotFound: true);
+        m_RubiksCube_ShowStrips = m_RubiksCube.FindAction("ShowStrips", throwIfNotFound: true);
+        // OtherActions
+        m_OtherActions = asset.FindActionMap("OtherActions", throwIfNotFound: true);
+        m_OtherActions_Interact = m_OtherActions.FindAction("Interact", throwIfNotFound: true);
+        m_OtherActions_PauseGame = m_OtherActions.FindAction("PauseGame", throwIfNotFound: true);
+        m_OtherActions_SeeExit = m_OtherActions.FindAction("SeeExit", throwIfNotFound: true);
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
-        m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
-        m_PlayerMovement_Crouch = m_PlayerMovement.FindAction("Crouch", throwIfNotFound: true);
+        m_PlayerMovement_Camera = m_PlayerMovement.FindAction("Camera", throwIfNotFound: true);
         // NoClip
         m_NoClip = asset.FindActionMap("NoClip", throwIfNotFound: true);
         m_NoClip_Movement = m_NoClip.FindAction("Movement", throwIfNotFound: true);
         m_NoClip_VerticalMovement = m_NoClip.FindAction("VerticalMovement", throwIfNotFound: true);
+        // LockPlayerMov
+        m_LockPlayerMov = asset.FindActionMap("LockPlayerMov", throwIfNotFound: true);
     }
 
     ~@PlayerAction()
     {
-        UnityEngine.Debug.Assert(!m_MainScheme.enabled, "This will cause a leak and performance issues, PlayerAction.MainScheme.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_RubiksCube.enabled, "This will cause a leak and performance issues, PlayerAction.RubiksCube.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_OtherActions.enabled, "This will cause a leak and performance issues, PlayerAction.OtherActions.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, PlayerAction.PlayerMovement.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_NoClip.enabled, "This will cause a leak and performance issues, PlayerAction.NoClip.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_LockPlayerMov.enabled, "This will cause a leak and performance issues, PlayerAction.LockPlayerMov.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -785,38 +826,36 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // MainScheme
-    private readonly InputActionMap m_MainScheme;
-    private List<IMainSchemeActions> m_MainSchemeActionsCallbackInterfaces = new List<IMainSchemeActions>();
-    private readonly InputAction m_MainScheme_ClockWise;
-    private readonly InputAction m_MainScheme_CounterClockWise;
-    private readonly InputAction m_MainScheme_SwitchColumnsLineLeft;
-    private readonly InputAction m_MainScheme_SwitchColumnsLineRight;
-    private readonly InputAction m_MainScheme_ResetRoom;
-    private readonly InputAction m_MainScheme_Interact;
-    private readonly InputAction m_MainScheme_MoveOverlayCube;
-    private readonly InputAction m_MainScheme_ShowStrips;
-    public struct MainSchemeActions
+    // RubiksCube
+    private readonly InputActionMap m_RubiksCube;
+    private List<IRubiksCubeActions> m_RubiksCubeActionsCallbackInterfaces = new List<IRubiksCubeActions>();
+    private readonly InputAction m_RubiksCube_ClockWise;
+    private readonly InputAction m_RubiksCube_CounterClockWise;
+    private readonly InputAction m_RubiksCube_SwitchColumnsLineLeft;
+    private readonly InputAction m_RubiksCube_SwitchColumnsLineRight;
+    private readonly InputAction m_RubiksCube_ResetRoom;
+    private readonly InputAction m_RubiksCube_MoveOverlayCube;
+    private readonly InputAction m_RubiksCube_ShowStrips;
+    public struct RubiksCubeActions
     {
         private @PlayerAction m_Wrapper;
-        public MainSchemeActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ClockWise => m_Wrapper.m_MainScheme_ClockWise;
-        public InputAction @CounterClockWise => m_Wrapper.m_MainScheme_CounterClockWise;
-        public InputAction @SwitchColumnsLineLeft => m_Wrapper.m_MainScheme_SwitchColumnsLineLeft;
-        public InputAction @SwitchColumnsLineRight => m_Wrapper.m_MainScheme_SwitchColumnsLineRight;
-        public InputAction @ResetRoom => m_Wrapper.m_MainScheme_ResetRoom;
-        public InputAction @Interact => m_Wrapper.m_MainScheme_Interact;
-        public InputAction @MoveOverlayCube => m_Wrapper.m_MainScheme_MoveOverlayCube;
-        public InputAction @ShowStrips => m_Wrapper.m_MainScheme_ShowStrips;
-        public InputActionMap Get() { return m_Wrapper.m_MainScheme; }
+        public RubiksCubeActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ClockWise => m_Wrapper.m_RubiksCube_ClockWise;
+        public InputAction @CounterClockWise => m_Wrapper.m_RubiksCube_CounterClockWise;
+        public InputAction @SwitchColumnsLineLeft => m_Wrapper.m_RubiksCube_SwitchColumnsLineLeft;
+        public InputAction @SwitchColumnsLineRight => m_Wrapper.m_RubiksCube_SwitchColumnsLineRight;
+        public InputAction @ResetRoom => m_Wrapper.m_RubiksCube_ResetRoom;
+        public InputAction @MoveOverlayCube => m_Wrapper.m_RubiksCube_MoveOverlayCube;
+        public InputAction @ShowStrips => m_Wrapper.m_RubiksCube_ShowStrips;
+        public InputActionMap Get() { return m_Wrapper.m_RubiksCube; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MainSchemeActions set) { return set.Get(); }
-        public void AddCallbacks(IMainSchemeActions instance)
+        public static implicit operator InputActionMap(RubiksCubeActions set) { return set.Get(); }
+        public void AddCallbacks(IRubiksCubeActions instance)
         {
-            if (instance == null || m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_RubiksCubeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_RubiksCubeActionsCallbackInterfaces.Add(instance);
             @ClockWise.started += instance.OnClockWise;
             @ClockWise.performed += instance.OnClockWise;
             @ClockWise.canceled += instance.OnClockWise;
@@ -832,9 +871,6 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ResetRoom.started += instance.OnResetRoom;
             @ResetRoom.performed += instance.OnResetRoom;
             @ResetRoom.canceled += instance.OnResetRoom;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
             @MoveOverlayCube.started += instance.OnMoveOverlayCube;
             @MoveOverlayCube.performed += instance.OnMoveOverlayCube;
             @MoveOverlayCube.canceled += instance.OnMoveOverlayCube;
@@ -843,7 +879,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ShowStrips.canceled += instance.OnShowStrips;
         }
 
-        private void UnregisterCallbacks(IMainSchemeActions instance)
+        private void UnregisterCallbacks(IRubiksCubeActions instance)
         {
             @ClockWise.started -= instance.OnClockWise;
             @ClockWise.performed -= instance.OnClockWise;
@@ -860,9 +896,6 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ResetRoom.started -= instance.OnResetRoom;
             @ResetRoom.performed -= instance.OnResetRoom;
             @ResetRoom.canceled -= instance.OnResetRoom;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
             @MoveOverlayCube.started -= instance.OnMoveOverlayCube;
             @MoveOverlayCube.performed -= instance.OnMoveOverlayCube;
             @MoveOverlayCube.canceled -= instance.OnMoveOverlayCube;
@@ -871,35 +904,95 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ShowStrips.canceled -= instance.OnShowStrips;
         }
 
-        public void RemoveCallbacks(IMainSchemeActions instance)
+        public void RemoveCallbacks(IRubiksCubeActions instance)
         {
-            if (m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_RubiksCubeActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IMainSchemeActions instance)
+        public void SetCallbacks(IRubiksCubeActions instance)
         {
-            foreach (var item in m_Wrapper.m_MainSchemeActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_RubiksCubeActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_MainSchemeActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_RubiksCubeActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public MainSchemeActions @MainScheme => new MainSchemeActions(this);
+    public RubiksCubeActions @RubiksCube => new RubiksCubeActions(this);
+
+    // OtherActions
+    private readonly InputActionMap m_OtherActions;
+    private List<IOtherActionsActions> m_OtherActionsActionsCallbackInterfaces = new List<IOtherActionsActions>();
+    private readonly InputAction m_OtherActions_Interact;
+    private readonly InputAction m_OtherActions_PauseGame;
+    private readonly InputAction m_OtherActions_SeeExit;
+    public struct OtherActionsActions
+    {
+        private @PlayerAction m_Wrapper;
+        public OtherActionsActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Interact => m_Wrapper.m_OtherActions_Interact;
+        public InputAction @PauseGame => m_Wrapper.m_OtherActions_PauseGame;
+        public InputAction @SeeExit => m_Wrapper.m_OtherActions_SeeExit;
+        public InputActionMap Get() { return m_Wrapper.m_OtherActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OtherActionsActions set) { return set.Get(); }
+        public void AddCallbacks(IOtherActionsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_OtherActionsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_OtherActionsActionsCallbackInterfaces.Add(instance);
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @PauseGame.started += instance.OnPauseGame;
+            @PauseGame.performed += instance.OnPauseGame;
+            @PauseGame.canceled += instance.OnPauseGame;
+            @SeeExit.started += instance.OnSeeExit;
+            @SeeExit.performed += instance.OnSeeExit;
+            @SeeExit.canceled += instance.OnSeeExit;
+        }
+
+        private void UnregisterCallbacks(IOtherActionsActions instance)
+        {
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @PauseGame.started -= instance.OnPauseGame;
+            @PauseGame.performed -= instance.OnPauseGame;
+            @PauseGame.canceled -= instance.OnPauseGame;
+            @SeeExit.started -= instance.OnSeeExit;
+            @SeeExit.performed -= instance.OnSeeExit;
+            @SeeExit.canceled -= instance.OnSeeExit;
+        }
+
+        public void RemoveCallbacks(IOtherActionsActions instance)
+        {
+            if (m_Wrapper.m_OtherActionsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IOtherActionsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_OtherActionsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_OtherActionsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public OtherActionsActions @OtherActions => new OtherActionsActions(this);
 
     // PlayerMovement
     private readonly InputActionMap m_PlayerMovement;
     private List<IPlayerMovementActions> m_PlayerMovementActionsCallbackInterfaces = new List<IPlayerMovementActions>();
     private readonly InputAction m_PlayerMovement_Movement;
-    private readonly InputAction m_PlayerMovement_Jump;
-    private readonly InputAction m_PlayerMovement_Crouch;
+    private readonly InputAction m_PlayerMovement_Camera;
     public struct PlayerMovementActions
     {
         private @PlayerAction m_Wrapper;
         public PlayerMovementActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_PlayerMovement_Movement;
-        public InputAction @Jump => m_Wrapper.m_PlayerMovement_Jump;
-        public InputAction @Crouch => m_Wrapper.m_PlayerMovement_Crouch;
+        public InputAction @Camera => m_Wrapper.m_PlayerMovement_Camera;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -912,12 +1005,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
-            @Jump.started += instance.OnJump;
-            @Jump.performed += instance.OnJump;
-            @Jump.canceled += instance.OnJump;
-            @Crouch.started += instance.OnCrouch;
-            @Crouch.performed += instance.OnCrouch;
-            @Crouch.canceled += instance.OnCrouch;
+            @Camera.started += instance.OnCamera;
+            @Camera.performed += instance.OnCamera;
+            @Camera.canceled += instance.OnCamera;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -925,12 +1015,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
-            @Jump.started -= instance.OnJump;
-            @Jump.performed -= instance.OnJump;
-            @Jump.canceled -= instance.OnJump;
-            @Crouch.started -= instance.OnCrouch;
-            @Crouch.performed -= instance.OnCrouch;
-            @Crouch.canceled -= instance.OnCrouch;
+            @Camera.started -= instance.OnCamera;
+            @Camera.performed -= instance.OnCamera;
+            @Camera.canceled -= instance.OnCamera;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -1002,6 +1089,44 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         }
     }
     public NoClipActions @NoClip => new NoClipActions(this);
+
+    // LockPlayerMov
+    private readonly InputActionMap m_LockPlayerMov;
+    private List<ILockPlayerMovActions> m_LockPlayerMovActionsCallbackInterfaces = new List<ILockPlayerMovActions>();
+    public struct LockPlayerMovActions
+    {
+        private @PlayerAction m_Wrapper;
+        public LockPlayerMovActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_LockPlayerMov; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LockPlayerMovActions set) { return set.Get(); }
+        public void AddCallbacks(ILockPlayerMovActions instance)
+        {
+            if (instance == null || m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(ILockPlayerMovActions instance)
+        {
+        }
+
+        public void RemoveCallbacks(ILockPlayerMovActions instance)
+        {
+            if (m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ILockPlayerMovActions instance)
+        {
+            foreach (var item in m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_LockPlayerMovActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public LockPlayerMovActions @LockPlayerMov => new LockPlayerMovActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1047,26 +1172,33 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_XRSchemeIndex];
         }
     }
-    public interface IMainSchemeActions
+    public interface IRubiksCubeActions
     {
         void OnClockWise(InputAction.CallbackContext context);
         void OnCounterClockWise(InputAction.CallbackContext context);
         void OnSwitchColumnsLineLeft(InputAction.CallbackContext context);
         void OnSwitchColumnsLineRight(InputAction.CallbackContext context);
         void OnResetRoom(InputAction.CallbackContext context);
-        void OnInteract(InputAction.CallbackContext context);
         void OnMoveOverlayCube(InputAction.CallbackContext context);
         void OnShowStrips(InputAction.CallbackContext context);
+    }
+    public interface IOtherActionsActions
+    {
+        void OnInteract(InputAction.CallbackContext context);
+        void OnPauseGame(InputAction.CallbackContext context);
+        void OnSeeExit(InputAction.CallbackContext context);
     }
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
-        void OnCrouch(InputAction.CallbackContext context);
+        void OnCamera(InputAction.CallbackContext context);
     }
     public interface INoClipActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnVerticalMovement(InputAction.CallbackContext context);
+    }
+    public interface ILockPlayerMovActions
+    {
     }
 }

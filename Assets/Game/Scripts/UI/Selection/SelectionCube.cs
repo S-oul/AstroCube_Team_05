@@ -18,13 +18,10 @@ public class SelectionCube : MonoBehaviour
     [SerializeField]
     bool _isTileLocked;
     [SerializeField]
-    int _defaultRenderingLayerMask, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5;
+    int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
 
     private Renderer[] _renderers;
-    [SerializeField] Material greyMat;
     private Material[] allOldMat = new Material[0];
-
-
 
     public bool IsTileLocked { get => _isTileLocked; set => _isTileLocked = value; }
 
@@ -33,7 +30,9 @@ public class SelectionCube : MonoBehaviour
         AXIS,
         CUBE,
         LOCKED,
-        PLAYERONTILE
+        PLAYERONTILE,
+        ENABLE,
+        DISABLE
     }
 
     void Awake()
@@ -48,7 +47,7 @@ public class SelectionCube : MonoBehaviour
     {
         IsTileLocked = locking;
         if (locking) SetTileMatToLock();
-        else SetTilestoBaseMat();
+        else Unselect();
     }
 
     public void SetTileMatToLock()
@@ -60,38 +59,47 @@ public class SelectionCube : MonoBehaviour
         foreach (Renderer r in _renderers)
         {
             allOldMat[i++] = r.material;
-            r.material = greyMat;
-        }
-    }
-
-    public void SetTilestoBaseMat()
-    {
-        _isTileLocked = false;
-
-        int i = 0;
-        foreach (Renderer r in _renderers)
-        {
-            r.material = allOldMat[i++];
+            if (r.transform.CompareTag("Floor"))
+                r.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+            else
+                r.renderingLayerMask = (uint)Mathf.Pow(2, _objectLockRenderingLayerMask);
         }
     }
 
     public void Select(SelectionMode mode)
     {
+        if (_renderers == null)
+            return;
         foreach (var renderer in _renderers)
         {
             switch (mode)
             {
                 case SelectionMode.AXIS:
-                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisSelectionRenderingLayerMask);
+                    if (renderer.transform.CompareTag("Floor"))
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisSelectionRenderingLayerMask);
+                    else
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisObjectSelectionRenderingLayerMask);                    
                     break;
                 case SelectionMode.CUBE:
-                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
+                    if (renderer.transform.CompareTag("Floor"))
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
+                    else
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeObjectSelectionRenderingLayerMask);                    
                     break;
                 case SelectionMode.LOCKED:
-                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    if (renderer.transform.CompareTag("Floor"))
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    else
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _objectLockRenderingLayerMask);
                     break;
                 case SelectionMode.PLAYERONTILE:
                     renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    break;
+                case SelectionMode.ENABLE:
+                    renderer.enabled = true;
+                    break;
+                case SelectionMode.DISABLE:
+                    renderer.enabled = false;
                     break;
             }
         }

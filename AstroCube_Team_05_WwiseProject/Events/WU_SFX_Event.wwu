@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WwiseDocument Type="WorkUnit" ID="{426AA850-3F63-4654-BEFF-66BC2020DF91}" SchemaVersion="119" RootDocumentID="{AE0BEDAB-3260-42DA-8E2E-2B2702E66E00}" ParentDocumentID="{AE0BEDAB-3260-42DA-8E2E-2B2702E66E00}">
+<WwiseDocument Type="WorkUnit" ID="{426AA850-3F63-4654-BEFF-66BC2020DF91}" SchemaVersion="123" RootDocumentID="{AE0BEDAB-3260-42DA-8E2E-2B2702E66E00}" ParentDocumentID="{AE0BEDAB-3260-42DA-8E2E-2B2702E66E00}">
 	<Events>
 		<WorkUnit Name="WU_SFX_Event" ID="{426AA850-3F63-4654-BEFF-66BC2020DF91}" OwnerID="{AE0BEDAB-3260-42DA-8E2E-2B2702E66E00}" PersistMode="Nested">
 			<PropertyList>
@@ -57,6 +57,31 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="SFX_RC_Button" ID="{C9018A48-1F61-471C-8198-7608CE2320FD}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="SFX_GhostlyWhipersStart" ID="{BF56C758-6AFB-4D5C-8B41-54F28154477F}">
+					<ChildrenList>
+						<Action Name="" ID="{67A12CAC-8842-40EA-9C25-5367D3A708ED}" ShortID="854311287">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GhostlyWhispers" ID="{9D1D5348-C6A7-4AA4-9F02-CE1288207525}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="SFX_GhostlyWhipersStop" ID="{F2C1BE93-2596-429E-AE14-5B776EE90421}">
+					<ChildrenList>
+						<Action Name="" ID="{41D22665-4D39-4FDF-A9B7-2F706D3744AD}" ShortID="606694929">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GhostlyWhispers" ID="{9D1D5348-C6A7-4AA4-9F02-CE1288207525}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

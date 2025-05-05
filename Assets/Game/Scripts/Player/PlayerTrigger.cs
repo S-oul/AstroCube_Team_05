@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTrigger : MonoBehaviour
@@ -6,7 +5,15 @@ public class PlayerTrigger : MonoBehaviour
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
 
+    PlayerMovement _playerMovement;
+    CharacterController _characterController;
 
+    FloatingZone _flotingZone;
+    private void Start()
+    {
+        _playerMovement = GetComponent<PlayerMovement>();
+        _characterController = GetComponent<CharacterController>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("VictoryZone"))
@@ -14,32 +21,60 @@ public class PlayerTrigger : MonoBehaviour
             EventManager.TriggerPlayerWin();
             Destroy(other.gameObject);
         }
-        if (other.CompareTag("DeathZone"))
+        else if (other.CompareTag("DeathZone"))
         {
-            EventManager.TriggerPlayerLose();
+            EventManager.Instance.TriggerPlayerLose();
+        }
+        else if (other.CompareTag("SlipperyZone"))
+        {
+            _playerMovement.SetSlippingState(true);
+        }
+        else if (other.CompareTag("SpeedZone"))
+        {
+            _playerMovement.SetSpeed(_playerMovement.defaultSpeed * newSpeedMultiplyer);
+        }
+        else if (other.CompareTag("GravityZone"))
+        {
+            _playerMovement.HasGravity = false;
+            _flotingZone = other.transform.GetComponent<FloatingZone>();
         }
 
-        if (other.gameObject.tag == "SlipperyZone")
-        {
-            GetComponent<PlayerMovement>().SetSlippingState(true);
-        }
-
-        if (other.gameObject.tag == "SpeedZone")
-        {
-            GetComponent<PlayerMovement>().SetSpeed(GetComponent<PlayerMovement>().defaultSpeed * newSpeedMultiplyer);
-        }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "SlipperyZone")
+        if (_flotingZone && other.CompareTag("GravityZone"))
         {
-            GetComponent<PlayerMovement>().SetSlippingState(false);
+            _characterController.Move(Vector3.up * _flotingZone.GravityForce * Time.deltaTime);
+            
         }
 
-        if (other.gameObject.tag == "SpeedZone")
+        if (other.gameObject.tag == "ConveyerBelt")
         {
-            GetComponent<PlayerMovement>().SetSpeedToDefault();
+            Vector3 dir = other.GetComponent<ConveyerBeltManager>().direction;
+            float speed = other.GetComponent<ConveyerBeltManager>().speed;
+            GetComponent<PlayerMovement>().SetExternallyAppliedMovement(dir, speed);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("SlipperyZone"))
+        {
+            _playerMovement.SetSlippingState(false);
+        }
+        else if (other.CompareTag("SpeedZone"))
+        {
+            _playerMovement.SetSpeedToDefault();
+        }
+        else if (other.CompareTag("GravityZone"))
+        {
+            _flotingZone = null;
+            _playerMovement.HasGravity = true;
+        }
+
+        if (other.gameObject.tag == "ConveyerBelt")
+        {
+            GetComponent<PlayerMovement>().SetExternallyAppliedMovement(Vector3.zero);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DetectNewParent : MonoBehaviour
@@ -5,7 +6,7 @@ public class DetectNewParent : MonoBehaviour
     [SerializeField] LayerMask _detectableLayer;
     Vector3 currentRotationDir;
 
-    [SerializeField] SelectionCube OldTilePlayerPos;
+    [SerializeField] SelectionCube _oldTilePlayerPos;
     Transform OldTilePlayerPosTransform;
 
 
@@ -13,49 +14,63 @@ public class DetectNewParent : MonoBehaviour
 
     private bool _doGravityRotation;
 
-
-
+    public GameObject currentParent { get; private set; }
 
     public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
     public bool DoGroundRotation { get => _doGroundRotation; set => _doGroundRotation = value; }
+    public SelectionCube OldTilePlayerPos { get => _oldTilePlayerPos; private set => _oldTilePlayerPos = value; }
 
-    private void Start()
+    private void Awake()
     {
+        EventManager.OnPlayerReset += DisableParentChangerfor;
+        EventManager.OnPlayerResetOnce += DisableParentChangerfor;
+
         currentRotationDir = transform.up;
+    }
+    private void OnDisable()
+    {
+        EventManager.OnPlayerReset -= DisableParentChangerfor;
+        EventManager.OnPlayerResetOnce -= DisableParentChangerfor;
     }
     private void Update()
     {
-        if (_doGroundRotation)
+        RaycastHit _raycastInfo;
+        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
         {
-            RaycastHit _raycastInfo;
-            if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
+            if (OldTilePlayerPosTransform != _raycastInfo.collider.transform)
             {
                 OldTilePlayerPosTransform = _raycastInfo.collider.transform;
-
-                //if (OldTilePlayerPos) OldTilePlayerPos.SetIsTileLock(false);
-
-
-
-                OldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
-                if (OldTilePlayerPos)
-                {
-                    //print(OldTilePlayerPos);
-                    transform.SetParent(OldTilePlayerPos.transform, true);
-                }
-                //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
-
+                _oldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
             }
+
         }
-        else if (transform.parent != null)
+
+        if (_doGroundRotation && _oldTilePlayerPos)
+        {
+
+            transform.SetParent(_oldTilePlayerPos.transform, true);
+            currentParent = _oldTilePlayerPos.gameObject;
+
+            //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
+        }
+        /*else if (transform.parent != null)
         {
             transform.SetParent(null, true);
-        }
+        }*/
 
 
     }
 
-
-
+    public void DisableParentChangerfor(float duration)
+    {
+        StartCoroutine(DisableParentChanger(duration));
+    }
+    IEnumerator DisableParentChanger(float duration)
+    {
+        DoGroundRotation = false;
+        yield return new WaitForSeconds(duration);
+        DoGroundRotation = true;
+    }
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (!_doGravityRotation) return;
