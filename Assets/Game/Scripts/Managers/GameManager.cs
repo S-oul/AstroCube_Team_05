@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnSceneChange += ChangeScene;
 
-        EventManager.OnStartCubeRotation += ScreenshakeCubeRotation;
+        EventManager.OnEndCubeRotation += ScreenshakeCubeRotation;
 
         EventManager.OnGamePause += StopDeltaTime;
         EventManager.OnGameUnpause += ResetDeltaTime;
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnSceneChange -= ChangeScene;
 
-        EventManager.OnStartCubeRotation -= ScreenshakeCubeRotation;
+        EventManager.OnEndCubeRotation -= ScreenshakeCubeRotation;
 
         EventManager.OnGamePause -= StopDeltaTime;
         EventManager.OnGameUnpause -= ResetDeltaTime;
