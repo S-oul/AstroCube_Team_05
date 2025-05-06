@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float _sequenceDuration;
     [SerializeField] Transform _artifact;
     [SerializeField] List<GameObject> _objectToDisable;
+    CameraAnimator _cameraAnimator;
 
     public static GameManager Instance => instance;
     private static GameManager instance;
@@ -59,16 +60,21 @@ public class GameManager : MonoBehaviour
                 Camera.main.DOShakePosition(settings.RubiksEndCubeRotationScreenshakeSettings.x,
                                             settings.RubiksEndCubeRotationScreenshakeSettings.y,
                                             (int)settings.RubiksEndCubeRotationScreenshakeSettings.z,
-                                            settings.RubiksEndCubeRotationScreenshakeSettings.w);
+                                            settings.RubiksEndCubeRotationScreenshakeSettings.w,
+                                            true,
+                                            ShakeRandomnessMode.Harmonic);
                 break;
             case EScreenshakeMode.START_RUBIKS_CUBE_ROTATION:
-                Camera.main.DOShakePosition(settings.RubiksStartCubeRotationScreenshakeSettings.x,
+                Camera.main.DOShakePosition(settings.RubikscCubeAxisRotationDuration,
                                             settings.RubiksStartCubeRotationScreenshakeSettings.y,
                                             (int)settings.RubiksStartCubeRotationScreenshakeSettings.z,
-                                            settings.RubiksStartCubeRotationScreenshakeSettings.w);
+                                            settings.RubiksStartCubeRotationScreenshakeSettings.w,
+                                            true,
+                                            ShakeRandomnessMode.Harmonic);
                 break;
         }
     }
+
     void ScreenshakeCubeRotationStart() => Screenshake(EScreenshakeMode.START_RUBIKS_CUBE_ROTATION);
     void ScreenshakeCubeRotationEnd() => Screenshake(EScreenshakeMode.END_RUBIKS_CUBE_ROTATION);
 
@@ -128,12 +134,12 @@ public class GameManager : MonoBehaviour
 
     void StopDeltaTime()
     {
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0;
     }    
     
     void ResetDeltaTime()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = 1f;
     }
 
     void LockMouse()
@@ -180,15 +186,19 @@ public class GameManager : MonoBehaviour
 
         EventManager.TriggerNarrativeSequenceEnd();
         _fade.color = new Color(0, 0, 0, 1.0f);
-        Camera.main.transform.parent.parent.rotation = Quaternion.Euler(0, cameraAngle.eulerAngles.y - 180, 0);
-        Camera.main.transform.parent.parent.position = new Vector3(0, Camera.main.transform.parent.parent.position.y, 0);
+
+        _cameraAnimator = Camera.main.transform.parent.parent.GetComponent<CameraAnimator>(); 
+        _cameraAnimator.transform.rotation = Quaternion.Euler(0, cameraAngle.eulerAngles.y - 180, 0);
+        _cameraAnimator.transform.position = new Vector3(0, _cameraAnimator.transform.position.y, 0);
         Camera.main.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
 
+
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;
-        yield return Camera.main.transform.parent.parent.DORotate(new Vector3(Camera.main.transform.parent.parent.eulerAngles.x, 359, Camera.main.transform.parent.parent.eulerAngles.z), 10, RotateMode.WorldAxisAdd).SetEase(Ease.InOutSine).WaitForCompletion();
+
+        yield return StartCoroutine(_cameraAnimator.TurnAround());
     }
 
     private void EndNarrativeSequence() => InputHandler.Instance.CanMove = true;
