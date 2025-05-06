@@ -182,6 +182,7 @@ public class RubiksCubeController : MonoBehaviour
             ShutDownFace();
 
             if (_controlledScript == null) return;
+            if (ActualFace == null) return;
 
             foreach (RubiksMovement cube in _replicatedScript)
             {
@@ -269,6 +270,24 @@ public class RubiksCubeController : MonoBehaviour
 
             _isCameraRotating = false;
         }
+    }
+
+    public bool IsPlayerOnTile(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    {
+        if (_controlledScript != null)
+        {
+            foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
+            {
+                SelectionCube selection = go.GetComponent<SelectionCube>();
+                if (selection == null) continue;
+
+                if (_detectParentForGroundRotation.OldTilePlayerPos == selection && sliceAxis != SliceAxis.Y)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /* OLD
