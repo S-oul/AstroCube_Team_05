@@ -11,6 +11,7 @@ public class GameActionMoveRubiksCube : AGameAction
 
     [SerializeField] private RubiksMove _move = new();
     [SerializeField] private RubiksMovement _RubiksScript;
+    [SerializeField] private RubiksCubeController _RubiksControllerScript;
     [SerializeField] private float _rotationDuration;
     private bool _isTurning = false;
 
@@ -22,6 +23,11 @@ public class GameActionMoveRubiksCube : AGameAction
     private IEnumerator DoMove()
     {
         _isTurning = true;
+        if (_RubiksControllerScript)
+        {
+            if (_RubiksControllerScript.IsPlayerOnTile(_move.orientation, _move.cube))
+                yield break;
+        }
         yield return _RubiksScript.RotateAxisCoroutine(_move.axis, _move.cube, _move.clockWise, _rotationDuration);
         _isTurning = false;
     }
