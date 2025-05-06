@@ -36,7 +36,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
 
     public void OnHold(Transform newParent)
     {
-        _exitDoor.SetActive(true);
+        //_exitDoor.SetActive(true);
         Destroy(transform.GetComponent<BoxCollider>());
         inputDisplay.OnResolve?.Invoke();
         PickUpDelegate?.Invoke();
