@@ -278,11 +278,11 @@ public class RubiksCubeController : MonoBehaviour
         }
     }
 
-    public bool IsPlayerOnTile(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    public bool IsPlayerOnTile(SliceAxis sliceAxis, Transform cube)
     {
         if (_controlledScript != null)
         {
-            foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
+            foreach (Transform go in _controlledScript.GetCubesFromFace(cube, sliceAxis))
             {
                 SelectionCube selection = go.GetComponent<SelectionCube>();
                 if (selection == null) continue;
