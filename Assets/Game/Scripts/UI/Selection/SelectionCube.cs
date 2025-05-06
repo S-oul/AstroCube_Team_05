@@ -91,9 +91,12 @@ public class SelectionCube : MonoBehaviour
                         renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
                     else
                         renderer.renderingLayerMask = (uint)Mathf.Pow(2, _objectLockRenderingLayerMask);
-                    break;
+                    break;                    
                 case SelectionMode.PLAYERONTILE:
-                    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    if (renderer.transform.CompareTag("Floor"))
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
+                    else
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _objectLockRenderingLayerMask);
                     break;
                 case SelectionMode.ENABLE:
                     renderer.enabled = true;
