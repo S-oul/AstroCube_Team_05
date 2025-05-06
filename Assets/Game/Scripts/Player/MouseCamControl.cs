@@ -52,9 +52,7 @@ public class MouseCamControl : MonoBehaviour
         moveY = callbackContext.ReadValue<Vector2>().y* _cameraSensibilityMouse * Time.deltaTime; 
     }
     void Update()
-    {
-        Debug.Log("Camera FOV is " + Camera.main.fieldOfView);
-        
+    {        
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
 
@@ -63,30 +61,6 @@ public class MouseCamControl : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * moveX);
-
-        /*if (_doReversedCam)
-        {
-
-            Vector3 forward = _playerTransform.forward;
-            forward.y = 0; // Ignore vertical tilt if needed
-            float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
-            float normalizedAngle = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
-
-            if (normalizedAngle >= 315 || normalizedAngle < 135)
-            {
-                rubiksCubeController.CameraPlayerReversed = false;
-            }
-            else
-            {
-                rubiksCubeController.CameraPlayerReversed = true;
-            }
-        }*/
-
-        /*if (_MoveOverlayCubeWithCamRota)
-        {
-            _cameraOverlay.Rotate(Vector3.up * moveX);
-            _cameraOverlay.Rotate(_cameraOverlay.forward * moveY);
-        }*/
 
         //Raycast
 
