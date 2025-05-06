@@ -1,8 +1,6 @@
 using System.Threading;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 
 public class MouseCamControl : MonoBehaviour
 {

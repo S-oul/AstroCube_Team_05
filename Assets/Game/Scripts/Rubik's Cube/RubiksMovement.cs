@@ -5,7 +5,6 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
-using System.Security.Cryptography;
 
 public class RubiksMovement : MonoBehaviour
 {
@@ -93,6 +92,7 @@ public class RubiksMovement : MonoBehaviour
 
     void StartSequenceCoroutine()
     {
+        _DoAutoMoves = true;
         StartCoroutine(FollowSequence());
     }
     IEnumerator FollowSequence()
@@ -233,8 +233,11 @@ public class RubiksMovement : MonoBehaviour
         }
         _isRotating = true;
 
-        if (!_isPreview)
-            EventManager.TriggerStartCubeRotation();
+        if (!_isPreview || !_isArtCube)
+        {
+            if (!_DoAutoMoves) EventManager.TriggerStartCubeRotation();
+            else EventManager.TriggerStartCubeSequenceRotation();
+        }
 
         Vector3 rotationAxis = Vector3.zero;
         {
@@ -356,8 +359,12 @@ public class RubiksMovement : MonoBehaviour
             };
             _moves.Add(move);
         }
-        if (!_isPreview)
-            EventManager.TriggerEndCubeRotation();
+        if (!_isPreview || !_isArtCube)
+        {
+            if(!_DoAutoMoves) EventManager.TriggerEndCubeRotation();
+            else EventManager.TriggerEndCubeSequenceRotation();
+        }
+
     }
 
     RubiksMove CreateRandomMove()
