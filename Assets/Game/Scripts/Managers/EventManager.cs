@@ -49,11 +49,11 @@ public class EventManager : MonoBehaviour
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
 
-    public static event Action OnStartNarrativeSequence;
-    public static event Action OnEndNarrativeSequence;
-
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
 
+    //Narrative Events
+    public static event Action OnStartNarrativeSequence;
+    public static event Action OnEndNarrativeSequence;
 
     public static Delegate[] OnGamePauseCallStack => OnGamePause.GetInvocationList();
     public static Delegate[] OnGameUnpauseCallStack => OnGameUnpause.GetInvocationList();
