@@ -32,6 +32,7 @@ public class ExitDoor : MonoBehaviour
     {
         _gameSettings = GameManager.Instance.Settings;
         _isShowing = false;
+        SeeExitThroughWalls();
     }
 
     private void OnEnable()

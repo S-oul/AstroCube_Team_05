@@ -314,7 +314,7 @@ Camera:
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 1
+  m_FOVAxisMode: 0
   m_Iso: 200
   m_ShutterSpeed: 0.005
   m_Aperture: 16
@@ -2014,6 +2014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484b62bcc36bb634dbeb9b2f7bd11c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customSettings: {fileID: 11400000, guid: d3f72fb16dd4e334bae13fde4221e290, type: 2}
   _minimumFrequency: 1
   _maxumumFrequency: 100
   _duration: 0.2
@@ -2468,6 +2469,16 @@ PrefabInstance:
       objectReference: {fileID: 145360440301363746}
     - target: {fileID: 5528389872019300487, guid: b5eeb929aa87481439de01016bcf6589,
         type: 3}
+      propertyPath: _kaleidoCam
+      value: 
+      objectReference: {fileID: 8398676858657982314}
+    - target: {fileID: 5528389872019300487, guid: b5eeb929aa87481439de01016bcf6589,
+        type: 3}
+      propertyPath: _mainCamera
+      value: 
+      objectReference: {fileID: 28189408900664097}
+    - target: {fileID: 5528389872019300487, guid: b5eeb929aa87481439de01016bcf6589,
+        type: 3}
       propertyPath: rubiksCubeController
       value: 
       objectReference: {fileID: 3751596808873362060}
@@ -2520,6 +2531,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4058107949323384988}
   m_SourcePrefab: {fileID: 100100000, guid: b5eeb929aa87481439de01016bcf6589, type: 3}
+--- !u!20 &28189408900664097 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5228521866593890910, guid: b5eeb929aa87481439de01016bcf6589,
+    type: 3}
+  m_PrefabInstance: {fileID: 5254388986453113215}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &311768437557877240 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5528389872019300487, guid: b5eeb929aa87481439de01016bcf6589,
