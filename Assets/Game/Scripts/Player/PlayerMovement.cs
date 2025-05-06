@@ -199,7 +199,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isWalking) {
             _timerBeforeNextStep += Time.deltaTime;
-        } else {
+            EventManager.TriggerPlayerFootSteps(_currentGroundType);
+
+        }
+        else {
             _timerBeforeNextStep = 0;
         }
 
@@ -207,7 +210,8 @@ public class PlayerMovement : MonoBehaviour
         if (_timerBeforeNextStep >= stepDuration) {
             _timerBeforeNextStep = 0;
             UpdateGroundType();
-            EventManager.TriggerPlayerFootSteps(_currentGroundType);            
+            EventManager.TriggerPlayerFootSteps(_currentGroundType);
+
         }
     }
 
