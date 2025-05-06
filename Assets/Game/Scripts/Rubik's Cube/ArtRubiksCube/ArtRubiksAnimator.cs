@@ -4,13 +4,23 @@ using UnityEngine;
 public class ArtRubiksAnimator : MonoBehaviour
 {
     [SerializeField] float _delay = .1f;
-    Animator animator;
+    [SerializeField] Animator animatorCube;
+
+    [SerializeField] Animator animatorFx;
+
+    [SerializeField] TypeFace _type;
+    public enum TypeFace
+    {
+        Face,
+        Edge,
+        Coin
+    }
 
     void Awake()
     {
         //EventManager.OnEndCubeRotation += StartAnimIdle;
 
-        animator = GetComponent<Animator>();
+        animatorCube = GetComponent<Animator>();
         StartCoroutine(waitforXToStartIdle(_delay));
     }
 
@@ -22,13 +32,27 @@ public class ArtRubiksAnimator : MonoBehaviour
 
     public void StartAnimRota()
     {
-        animator.speed = 1/GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
-        animator.SetTrigger("DoRotation");
+        animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
+        animatorCube.SetTrigger("DoRotation");
+
+        switch (_type)
+        {
+            case TypeFace.Face:
+                animatorFx.SetTrigger("FaceTrigger");
+                break;
+            case TypeFace.Edge:
+                animatorFx.SetTrigger("EdgeTrigger");
+                break;
+            case TypeFace.Coin:
+                animatorFx.SetTrigger("CoinTrigger");
+                break;
+
+        }
     }
 
     void StartAnimIdle()
     {
-        animator.SetTrigger("StartAnim");
+        animatorCube.SetTrigger("StartAnim");
     }
     IEnumerator waitforXToStartIdle(float delay)
     {
