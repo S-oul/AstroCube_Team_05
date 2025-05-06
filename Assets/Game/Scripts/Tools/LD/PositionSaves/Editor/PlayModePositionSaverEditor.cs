@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 using static PositionSaveFile;
-using static UnityEngine.GraphicsBuffer;
 
 [CustomEditor(typeof(PlayModePositionSaver))]
 public class PlayModePositionSaverEditor : Editor
