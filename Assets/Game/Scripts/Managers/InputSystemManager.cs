@@ -34,7 +34,8 @@ public class InputSystemManager : MonoBehaviour
         INTERACT,
         PAUSE_GAME,
         MOVEMENT,
-        CAMERA
+        CAMERA,
+        SEE_EXIT
     }
 
     private void Awake()
@@ -86,7 +87,30 @@ public class InputSystemManager : MonoBehaviour
                 return("Movement");
             case EInputType.CAMERA:
                 return("Camera");
-
+            case EInputType.SEE_EXIT:
+                return("SeeExit");
         }
     }
+
+    private void OnEnable()
+    {
+        EventManager.OnGamePause += DeactivateActionMap;
+        EventManager.OnGameUnpause += ActivateActionMap;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnGamePause -= DeactivateActionMap;
+        EventManager.OnGameUnpause -= ActivateActionMap;
+    }
+
+    void DeactivateActionMap()
+    {
+        _playerInputs.currentActionMap.Disable();
+    }    
+    void ActivateActionMap()
+    {
+        _playerInputs.currentActionMap.Enable();
+    }
+    
 }

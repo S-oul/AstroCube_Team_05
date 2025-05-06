@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
 
     public enum EScreenshakeMode
     {
-        RUBIKS_CUBE_ROTATION
+        START_RUBIKS_CUBE_ROTATION,
+        END_RUBIKS_CUBE_ROTATION
     }
 
     public void Screenshake(EScreenshakeMode mode)
@@ -54,21 +55,30 @@ public class GameManager : MonoBehaviour
         {
             default:
                 break;
-            case EScreenshakeMode.RUBIKS_CUBE_ROTATION:
-                Camera.main.DOShakePosition(settings.RubiksCubeRotationScreenshakeSettings.x,
-                                            settings.RubiksCubeRotationScreenshakeSettings.y,
-                                            (int)settings.RubiksCubeRotationScreenshakeSettings.z,
-                                            settings.RubiksCubeRotationScreenshakeSettings.w);
+            case EScreenshakeMode.END_RUBIKS_CUBE_ROTATION:
+                Camera.main.DOShakePosition(settings.RubiksEndCubeRotationScreenshakeSettings.x,
+                                            settings.RubiksEndCubeRotationScreenshakeSettings.y,
+                                            (int)settings.RubiksEndCubeRotationScreenshakeSettings.z,
+                                            settings.RubiksEndCubeRotationScreenshakeSettings.w);
+                break;
+            case EScreenshakeMode.START_RUBIKS_CUBE_ROTATION:
+                Camera.main.DOShakePosition(settings.RubiksStartCubeRotationScreenshakeSettings.x,
+                                            settings.RubiksStartCubeRotationScreenshakeSettings.y,
+                                            (int)settings.RubiksStartCubeRotationScreenshakeSettings.z,
+                                            settings.RubiksStartCubeRotationScreenshakeSettings.w);
                 break;
         }
     }
-    void ScreenshakeCubeRotation() => Screenshake(EScreenshakeMode.RUBIKS_CUBE_ROTATION);
+    void ScreenshakeCubeRotationStart() => Screenshake(EScreenshakeMode.START_RUBIKS_CUBE_ROTATION);
+    void ScreenshakeCubeRotationEnd() => Screenshake(EScreenshakeMode.END_RUBIKS_CUBE_ROTATION);
+
 
     private void OnEnable()
     {
         EventManager.OnSceneChange += ChangeScene;
 
-        EventManager.OnStartCubeRotation += ScreenshakeCubeRotation;
+        EventManager.OnStartCubeRotation += ScreenshakeCubeRotationStart;
+        EventManager.OnEndCubeRotation += ScreenshakeCubeRotationEnd;
 
         EventManager.OnGamePause += StopDeltaTime;
         EventManager.OnGameUnpause += ResetDeltaTime;
@@ -83,7 +93,8 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnSceneChange -= ChangeScene;
 
-        EventManager.OnStartCubeRotation -= ScreenshakeCubeRotation;
+        EventManager.OnStartCubeRotation -= ScreenshakeCubeRotationStart;
+        EventManager.OnEndCubeRotation -= ScreenshakeCubeRotationEnd;
 
         EventManager.OnGamePause -= StopDeltaTime;
         EventManager.OnGameUnpause -= ResetDeltaTime;
