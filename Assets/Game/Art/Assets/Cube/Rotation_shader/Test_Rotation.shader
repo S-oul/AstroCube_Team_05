@@ -173,27 +173,24 @@ Shader "Test_Rotation"
 			HLSLPROGRAM
 
 			
-            #pragma multi_compile_fragment _ALPHATEST_ON
-            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
-            #pragma multi_compile_instancing
-            #pragma instancing_options renderinglayer
-            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-            #pragma multi_compile_fog
-            #define ASE_FOG 1
-            #define ASE_VERSION 19801
-            #define ASE_SRP_VERSION 140011
+
+			#pragma multi_compile_fragment _ALPHATEST_ON
+			#pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+			#pragma multi_compile_fog
+			#define ASE_FOG 1
+			#define ASE_VERSION 19801
+			#define ASE_SRP_VERSION 140011
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
 
 			
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-		
 
 			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ LIGHTMAP_ON
@@ -206,8 +203,16 @@ Shader "Test_Rotation"
 			#define SHADERPASS SHADERPASS_UNLIT
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -217,10 +222,12 @@ Shader "Test_Rotation"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+			#if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
@@ -610,17 +617,16 @@ Shader "Test_Rotation"
 			HLSLPROGRAM
 
 			
-            #pragma multi_compile _ALPHATEST_ON
-            #pragma multi_compile_instancing
-            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-            #define ASE_FOG 1
-            #define ASE_VERSION 19801
-            #define ASE_SRP_VERSION 140011
+
+			#pragma multi_compile _ALPHATEST_ON
+			#pragma multi_compile_instancing
+			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+			#define ASE_FOG 1
+			#define ASE_VERSION 19801
+			#define ASE_SRP_VERSION 140011
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
@@ -630,6 +636,10 @@ Shader "Test_Rotation"
 			#define SHADERPASS SHADERPASS_SHADOWCASTER
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -953,22 +963,25 @@ Shader "Test_Rotation"
 			HLSLPROGRAM
 
 			
-            #pragma multi_compile _ALPHATEST_ON
-            #pragma multi_compile_instancing
-            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-            #define ASE_FOG 1
-            #define ASE_VERSION 19801
-            #define ASE_SRP_VERSION 140011
+
+			#pragma multi_compile _ALPHATEST_ON
+			#pragma multi_compile_instancing
+			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+			#define ASE_FOG 1
+			#define ASE_VERSION 19801
+			#define ASE_SRP_VERSION 140011
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -1265,14 +1278,13 @@ Shader "Test_Rotation"
 			HLSLPROGRAM
 
 			
-            #define ASE_FOG 1
-            #define ASE_VERSION 19801
-            #define ASE_SRP_VERSION 140011
+
+			#define ASE_FOG 1
+			#define ASE_VERSION 19801
+			#define ASE_SRP_VERSION 140011
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -1282,8 +1294,16 @@ Shader "Test_Rotation"
 			#define SHADERPASS SHADERPASS_DEPTHONLY
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1292,10 +1312,12 @@ Shader "Test_Rotation"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+			#if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -1545,14 +1567,13 @@ Shader "Test_Rotation"
 			HLSLPROGRAM
 
 			
-            #define ASE_FOG 1
-            #define ASE_VERSION 19801
-            #define ASE_SRP_VERSION 140011
+
+			#define ASE_FOG 1
+			#define ASE_VERSION 19801
+			#define ASE_SRP_VERSION 140011
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -1563,8 +1584,16 @@ Shader "Test_Rotation"
 			#define SHADERPASS SHADERPASS_DEPTHONLY
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1573,10 +1602,12 @@ Shader "Test_Rotation"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+			#if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -1831,23 +1862,20 @@ Shader "Test_Rotation"
 			HLSLPROGRAM
 
 			
-            #pragma multi_compile _ALPHATEST_ON
-            #pragma multi_compile_instancing
-            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-            #define ASE_FOG 1
-            #define ASE_VERSION 19801
-            #define ASE_SRP_VERSION 140011
+
+        	#pragma multi_compile _ALPHATEST_ON
+        	#pragma multi_compile_instancing
+        	#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+        	#define ASE_FOG 1
+        	#define ASE_VERSION 19801
+        	#define ASE_SRP_VERSION 140011
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
         	#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
 
 			
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -1859,8 +1887,16 @@ Shader "Test_Rotation"
 			#define SHADERPASS SHADERPASS_DEPTHNORMALSONLY
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1869,10 +1905,12 @@ Shader "Test_Rotation"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+			#if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -2171,7 +2209,7 @@ Node;AmplifyShaderEditor.TextureCoordinatesNode;10;-3504,32;Inherit;False;0;-1;2
 Node;AmplifyShaderEditor.TextureCoordinatesNode;38;-3696,368;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.PannerNode;36;-3216,48;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-2,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PannerNode;37;-3248,384;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-1,0;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.RangedFloatNode;25;-2992,624;Inherit;False;Property;_Float0;Float 0;3;0;Create;True;0;0;0;False;0;False;0.7;1;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;25;-2752,656;Inherit;False;Property;_Float0;Float 0;3;0;Create;True;0;0;0;False;0;False;0.7;0.5161213;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;11;-2992,368;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;27b0238e9024c404faee6a91fd52a034;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.NoiseGeneratorNode;47;-2960,160;Inherit;False;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;28;-2656,176;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.1;False;1;FLOAT;0
@@ -2181,7 +2219,7 @@ Node;AmplifyShaderEditor.TextureCoordinatesNode;14;-2496,-96;Inherit;False;0;-1;
 Node;AmplifyShaderEditor.DynamicAppendNode;27;-2336,128;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;-0.11;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SamplerNode;13;-2416,336;Inherit;True;Property;_TextureSample1;Texture Sample 1;2;0;Create;True;0;0;0;False;0;False;-1;e5b234c8823b14d469d368b1938e96ac;e5b234c8823b14d469d368b1938e96ac;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.ScaleAndOffsetNode;26;-2160,32;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT;1;False;2;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;24;-2032,496;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;24;-2064,400;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;22;-1856,32;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.BreakToComponentsNode;23;-1616,64;Inherit;False;FLOAT2;1;0;FLOAT2;0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15
 Node;AmplifyShaderEditor.TextureCoordinatesNode;39;-1760,608;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -2199,15 +2237,15 @@ Node;AmplifyShaderEditor.SimpleSubtractOpNode;32;-640,304;Inherit;True;2;0;FLOAT
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;62;-96,544;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;64;0,912;Inherit;False;Constant;_Float3;Float 3;6;0;Create;True;0;0;0;False;0;False;0.29;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;63;-16,800;Inherit;False;Constant;_Float2;Float 2;6;0;Create;True;0;0;0;False;0;False;0.16;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;49;-304,272;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SmoothstepOpNode;60;208,512;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0.02;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SaturateNode;49;-336,192;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.VertexColorNode;44;-624,-304;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;46;-640,-48;Inherit;False;Property;_HDR;HDR;4;0;Create;True;0;0;0;False;0;False;0;2;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.GradientSampleNode;51;-304,-496;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;50;-32,-96;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.GradientNode;52;-560,-576;Inherit;False;0;2;2;0.7936035,0.05882353,0.8862745,0.7823606;1,1,1,1;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;45;-304,-112;Inherit;False;3;3;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;58;448,336;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;58;448,304;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;-288,144;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -2248,10 +2286,10 @@ WireConnection;32;0;20;0
 WireConnection;32;1;31;0
 WireConnection;62;0;55;0
 WireConnection;62;1;57;0
-WireConnection;49;0;32;0
 WireConnection;60;0;62;0
 WireConnection;60;1;63;0
 WireConnection;60;2;64;0
+WireConnection;49;0;32;0
 WireConnection;51;0;52;0
 WireConnection;51;1;49;0
 WireConnection;50;0;51;0
@@ -2264,4 +2302,4 @@ WireConnection;58;1;60;0
 WireConnection;1;2;50;0
 WireConnection;1;3;58;0
 ASEEND*/
-//CHKSM=77CA4E47DFEDB297DA9070F551DFE3934214D7A0
+//CHKSM=AAFDE5CC58ACA42E872FD2F8B8273300AF26985C
