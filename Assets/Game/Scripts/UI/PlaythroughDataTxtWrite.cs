@@ -1,19 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
 
 public class PlaythroughDataTxtWrite : MonoBehaviour
 {
-    [SerializeField] string path = Application.dataPath + "/PlaythroughData.txt";
-
     TrackerTestDesign _ttd;
 
     float _completionTime;
     int _numOfMoves;
-    
-    // Start is called before the first frame update
+
+
+    /// <summary>
+    /// WARN SACHA WINDOWS ONLY
+    /// </summary>
+    string path;
+    void Awake()
+    {
+        Debug.LogWarning("Playtrhough Data only works on Windows");
+        string exeDirectory = Directory.GetParent(Application.dataPath).FullName;
+        path = Path.Combine(exeDirectory, "PlaythroughData.txt");
+    }
     void Start()
     {
         _ttd = GetComponent<TrackerTestDesign>();
