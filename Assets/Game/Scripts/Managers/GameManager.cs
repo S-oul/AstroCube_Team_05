@@ -59,16 +59,21 @@ public class GameManager : MonoBehaviour
                 Camera.main.DOShakePosition(settings.RubiksEndCubeRotationScreenshakeSettings.x,
                                             settings.RubiksEndCubeRotationScreenshakeSettings.y,
                                             (int)settings.RubiksEndCubeRotationScreenshakeSettings.z,
-                                            settings.RubiksEndCubeRotationScreenshakeSettings.w);
+                                            settings.RubiksEndCubeRotationScreenshakeSettings.w,
+                                            true,
+                                            ShakeRandomnessMode.Harmonic);
                 break;
             case EScreenshakeMode.START_RUBIKS_CUBE_ROTATION:
-                Camera.main.DOShakePosition(settings.RubiksStartCubeRotationScreenshakeSettings.x,
+                Camera.main.DOShakePosition(settings.RubikscCubeAxisRotationDuration,
                                             settings.RubiksStartCubeRotationScreenshakeSettings.y,
                                             (int)settings.RubiksStartCubeRotationScreenshakeSettings.z,
-                                            settings.RubiksStartCubeRotationScreenshakeSettings.w);
+                                            settings.RubiksStartCubeRotationScreenshakeSettings.w,
+                                            true,
+                                            ShakeRandomnessMode.Harmonic);
                 break;
         }
     }
+
     void ScreenshakeCubeRotationStart() => Screenshake(EScreenshakeMode.START_RUBIKS_CUBE_ROTATION);
     void ScreenshakeCubeRotationEnd() => Screenshake(EScreenshakeMode.END_RUBIKS_CUBE_ROTATION);
 
@@ -128,12 +133,12 @@ public class GameManager : MonoBehaviour
 
     void StopDeltaTime()
     {
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0;
     }    
     
     void ResetDeltaTime()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = 1f;
     }
 
     void LockMouse()
@@ -186,9 +191,11 @@ public class GameManager : MonoBehaviour
 
         yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
 
+        //Mouse.current.WarpCursorPosition(new Vector2(0,0));
+
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;
-        yield return Camera.main.transform.parent.parent.DORotate(new Vector3(Camera.main.transform.parent.parent.eulerAngles.x, 359, Camera.main.transform.parent.parent.eulerAngles.z), 10, RotateMode.WorldAxisAdd).SetEase(Ease.InOutSine).WaitForCompletion();
+        yield return Camera.main.transform.parent.parent.DORotate(new Vector3(Camera.main.transform.parent.parent.eulerAngles.x, 359, Camera.main.transform.parent.parent.eulerAngles.z), 10, RotateMode.WorldAxisAdd).WaitForCompletion();
     }
 
     private void EndNarrativeSequence() => InputHandler.Instance.CanMove = true;
