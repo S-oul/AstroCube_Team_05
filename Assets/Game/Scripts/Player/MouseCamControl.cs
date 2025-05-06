@@ -5,6 +5,9 @@ using UnityEngine.InputSystem.XR;
 
 public class MouseCamControl : MonoBehaviour
 {
+    [Header("Customised Settings")]
+    [SerializeField] CustomisedSettings _customSettings; 
+    
     [Header("Camera Movement")]
     [SerializeField] Transform _playerTransform;
 
@@ -12,6 +15,10 @@ public class MouseCamControl : MonoBehaviour
     [SerializeField] RubiksCubeController rubiksCubeController;
     [SerializeField] LayerMask _detectableLayer;
     [SerializeField] float _maxDistance;
+
+    [Header("Cameras")]
+    [SerializeField] Camera _mainCamera;
+    [SerializeField] Camera _kaleidoCam;
 
     //To Fix
     //[SerializeField] bool _MoveOverlayCubeWithCamRota = true;
@@ -35,9 +42,9 @@ public class MouseCamControl : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _settings = GameManager.Instance.Settings;
-        UpdateCameraFOV(_settings.FOV);
+        UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
-        _cameraSensibilityMouse = _settings.CameraSensibilityMouse;
+        _cameraSensibilityMouse = _customSettings.customMouse;
     }
     public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
@@ -45,7 +52,7 @@ public class MouseCamControl : MonoBehaviour
         moveY = callbackContext.ReadValue<Vector2>().y* _cameraSensibilityMouse * Time.deltaTime; 
     }
     void Update()
-    {
+    {        
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
 
@@ -54,30 +61,6 @@ public class MouseCamControl : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * moveX);
-
-        /*if (_doReversedCam)
-        {
-
-            Vector3 forward = _playerTransform.forward;
-            forward.y = 0; // Ignore vertical tilt if needed
-            float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
-            float normalizedAngle = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
-
-            if (normalizedAngle >= 315 || normalizedAngle < 135)
-            {
-                rubiksCubeController.CameraPlayerReversed = false;
-            }
-            else
-            {
-                rubiksCubeController.CameraPlayerReversed = true;
-            }
-        }*/
-
-        /*if (_MoveOverlayCubeWithCamRota)
-        {
-            _cameraOverlay.Rotate(Vector3.up * moveX);
-            _cameraOverlay.Rotate(_cameraOverlay.forward * moveY);
-        }*/
 
         //Raycast
 
@@ -107,7 +90,8 @@ public class MouseCamControl : MonoBehaviour
 
     void UpdateCameraFOV(float newFOV)
     {
-        Camera.main.fieldOfView = newFOV;
+        _mainCamera.fieldOfView = newFOV;
+        _kaleidoCam.fieldOfView = newFOV * (4f/7f);
     }    
     void UpdateCameraMouseSensitivity(float newCamMouseSen)
     {
