@@ -9,6 +9,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     [SerializeField] private GameObject _exitDoor;
     [SerializeField] private Light _light;
     [SerializeField] private InputDisplay inputDisplay;
+    [SerializeField] private GameActionsSequencer _sequencer;
     private Transform _originalParent;
     private Transform _originalTransform;
     private Rigidbody _rb;
@@ -39,6 +40,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         Destroy(transform.GetComponent<BoxCollider>());
         inputDisplay.OnResolve?.Invoke();
         PickUpDelegate?.Invoke();
+        if(_sequencer != null) _sequencer.Play();
         StartCoroutine(HoldRubiksCube(newParent));
     }
 
