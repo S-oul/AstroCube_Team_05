@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.GridBrushBase;
 
-public class FloorRotationVisualFeedback : MonoBehaviour
+public class CameraAnimator : MonoBehaviour
 {
     [SerializeField] Animator _mainCameraAnimator;
     GameObject _parentCubePart;
@@ -15,20 +16,18 @@ public class FloorRotationVisualFeedback : MonoBehaviour
 
     int _oldRotationDir = 0;
 
-    // Start is called before the first frame update
     void Start()
     {   
         _parentCubePart = GetComponent<DetectNewParent>().currentParent;
         if (_parentCubePart != null) _lastYRotation = _parentCubePart.transform.eulerAngles.y;
     }
 
-    // Update is called once per frame
     void Update()
     {
         _parentCubePart = GetComponent<DetectNewParent>().currentParent;
         if (_parentCubePart == null) { return; }
 
-        // determin if the parint is rotating and in what direction
+        // determine if the parent is rotating and in what direction
         _currentYRotation = _parentCubePart.transform.eulerAngles.y;
         float delta = Mathf.DeltaAngle(_lastYRotation, _currentYRotation);
 
@@ -39,8 +38,6 @@ public class FloorRotationVisualFeedback : MonoBehaviour
         _rotationDir = _isRotating ? (delta > 0 ? 1 : -1) : 0;
 
         // decide wether to apply visual feedback. 
-
-        //.Log("rotDir is: " +  _rotationDir + "\noldRotDir is: " + _oldRotationDir + "\n");
 
         if (_rotationDir > 0 && _oldRotationDir <= 0)
         {
@@ -60,5 +57,13 @@ public class FloorRotationVisualFeedback : MonoBehaviour
         }
 
         _oldRotationDir = _rotationDir;
+    }
+
+    public IEnumerator TurnAround()
+    {
+        if(_mainCameraAnimator)
+            _mainCameraAnimator.SetTrigger("TurnAround");
+        AnimationClip anim = _mainCameraAnimator.runtimeAnimatorController.animationClips.First(x => x.name == "TurnAround");
+        yield return new WaitForSeconds(anim.length);
     }
 }

@@ -1457,6 +1457,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1314974916}
+    - targetCorrespondingSourceObject: {fileID: 6391590145115135529, guid: 108c8f31068174e438eed5957446880e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1144704292}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 108c8f31068174e438eed5957446880e, type: 3}
 --- !u!1 &206549626
@@ -2674,6 +2678,124 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 443385149}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &516468808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 516468809}
+  - component: {fileID: 516468811}
+  - component: {fileID: 516468810}
+  m_Layer: 0
+  m_Name: Light - Cube - Outer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &516468809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516468808}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0.4500001, y: 0.23290013, z: -0.4}
+  m_LocalScale: {x: 0.09999998, y: 0.09999998, z: 0.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 941220943}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &516468810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516468808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+--- !u!108 &516468811
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516468808}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 2
+  m_Shape: 0
+  m_Color: {r: 0.83447504, g: 0, b: 1, a: 1}
+  m_Intensity: 5
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 1
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1001 &529436406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3317,6 +3439,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1091177799}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &654011651 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4707285373166306195, guid: 84abab8cf84190243b77da89d494331b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1091177799}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654011650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68aaab3c2dd3bd240afbe69cd9b69d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &662727910 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1833692369952463729, guid: 84abab8cf84190243b77da89d494331b,
@@ -4826,7 +4960,7 @@ GameObject:
   - component: {fileID: 898854132}
   - component: {fileID: 898854131}
   m_Layer: 0
-  m_Name: Point Light (10)
+  m_Name: Light - Bottom Floor - Stair Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5439,7 +5573,23 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1974121715710071806, guid: 8e1348a47aca4af47853c416fe7a43c2, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2435526421803340246, guid: 8e1348a47aca4af47853c416fe7a43c2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1829981223}
+    - targetCorrespondingSourceObject: {fileID: 2435526421803340246, guid: 8e1348a47aca4af47853c416fe7a43c2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 516468809}
+    - targetCorrespondingSourceObject: {fileID: 2435526421803340246, guid: 8e1348a47aca4af47853c416fe7a43c2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4394367507852753078}
+    - targetCorrespondingSourceObject: {fileID: 2435526421803340246, guid: 8e1348a47aca4af47853c416fe7a43c2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1244252127}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e1348a47aca4af47853c416fe7a43c2, type: 3}
 --- !u!4 &941220943 stripped
@@ -5454,6 +5604,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 95744887}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &985026461 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6309475072304813264, guid: 84abab8cf84190243b77da89d494331b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1091177799}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e8103fc0a831f4e9509008bddf2774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &985319504
 GameObject:
   m_ObjectHideFlags: 0
@@ -7543,10 +7705,6 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2463684442174907702, guid: 84abab8cf84190243b77da89d494331b,
         type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1244252127}
-    - targetCorrespondingSourceObject: {fileID: 2463684442174907702, guid: 84abab8cf84190243b77da89d494331b,
-        type: 3}
       insertIndex: -1
       addedObject: {fileID: 197476390}
     - targetCorrespondingSourceObject: {fileID: 7283349500288409730, guid: 84abab8cf84190243b77da89d494331b,
@@ -7723,6 +7881,12 @@ CanvasGroup:
     type: 3}
   m_PrefabInstance: {fileID: 1091177799}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1144704292 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1155431975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1146727000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7822,6 +7986,99 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1146727000}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1155431975
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 348200372}
+    m_Modifications:
+    - target: {fileID: 5514036978782600907, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_Name
+      value: StairsLeft_4x4x4 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514036978782600907, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 99.999954
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.553
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.23200007
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.483
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 270
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6dd4f33f1308a7142b2cdfbc52574d4c, type: 3}
 --- !u!1001 &1182241657
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8438,7 +8695,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 38208186}
+    m_TransformParent: {fileID: 941220943}
     m_Modifications:
     - target: {fileID: 3890188226217922917, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
@@ -8448,27 +8705,27 @@ PrefabInstance:
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1000.0003
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1000.0001
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1000.00024
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.7628813
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.3711882
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
@@ -8478,22 +8735,22 @@ PrefabInstance:
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710677
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.50000006
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.50000006
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
@@ -8551,6 +8808,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube_1x4x4 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890188226217922917, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4519196441395071967, guid: ced2bf74aa2ec0e43a79669bc4a01d06,
         type: 3}
@@ -8859,6 +9121,12 @@ Transform:
   - {fileID: 16784527}
   m_Father: {fileID: 1284104523}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1390364479 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8736786780861327006, guid: 84abab8cf84190243b77da89d494331b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1091177799}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1442602692 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6391590145115135529, guid: 108c8f31068174e438eed5957446880e,
@@ -9749,6 +10017,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube_WindowLeft_4x4x2
       objectReference: {fileID: 0}
+    - target: {fileID: 8304595696009026153, guid: a31206db2aff59d4bb57b6bbef44f97c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8679572714289840339, guid: a31206db2aff59d4bb57b6bbef44f97c,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -10264,7 +10537,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 282186209}
-  - {fileID: 4394367507852753078}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1589370439
@@ -10412,6 +10684,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StairsLeft_4x4x4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514036978782600907, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7862488210607257053, guid: 6dd4f33f1308a7142b2cdfbc52574d4c,
         type: 3}
@@ -11305,6 +11582,124 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1811533468}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1829981222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1829981223}
+  - component: {fileID: 1829981225}
+  - component: {fileID: 1829981224}
+  m_Layer: 0
+  m_Name: Light - Cube - Inner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1829981223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829981222}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0.26099998, y: 0.2329001, z: -0.4}
+  m_LocalScale: {x: 0.09999998, y: 0.09999998, z: 0.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 941220943}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1829981224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829981222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+--- !u!108 &1829981225
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829981222}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 2
+  m_Shape: 0
+  m_Color: {r: 0.83447504, g: 0, b: 1, a: 1}
+  m_Intensity: 5
+  m_Range: 1
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 1
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1001 &1839457582
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12573,6 +12968,326 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1196258308}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2058804863
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 100882949823798961, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 5944202557945304347}
+    - target: {fileID: 144985807175891795, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 6635774791065287976}
+    - target: {fileID: 308202329277818594, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Cube - Outer
+      objectReference: {fileID: 0}
+    - target: {fileID: 518840220519377188, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _playerMovement
+      value: 
+      objectReference: {fileID: 654011651}
+    - target: {fileID: 625214121521790301, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 1870770333822779260}
+    - target: {fileID: 651989608312601209, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _move.axis
+      value: 
+      objectReference: {fileID: 1390364479}
+    - target: {fileID: 651989608312601209, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _move.cube
+      value: 
+      objectReference: {fileID: 941220943}
+    - target: {fileID: 651989608312601209, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _RubiksScript
+      value: 
+      objectReference: {fileID: 985026461}
+    - target: {fileID: 905841798556981296, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: NARRA - NAR03
+      objectReference: {fileID: 0}
+    - target: {fileID: 906416640482763981, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 2778116208891592112}
+    - target: {fileID: 1653671891274260963, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 2778116208891592112}
+    - target: {fileID: 1677042277719289107, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Window 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1699618047185646017, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 3168404714593225407}
+    - target: {fileID: 1737722089965374210, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Cube - Outer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1964741763573989416, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Bottom Floor - Entryway
+      objectReference: {fileID: 0}
+    - target: {fileID: 2262440246268237017, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _playerMovement
+      value: 
+      objectReference: {fileID: 654011651}
+    - target: {fileID: 2717815483651652600, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Cube - Inner
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326899098178904105, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Middle Floor - Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525656714537788802, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 1778258761950333064}
+    - target: {fileID: 3866841760582510711, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 7289925903106023869}
+    - target: {fileID: 4028757583081759609, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Door 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4109185598523721874, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Bottom Floor - Stair Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4293386342276075435, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 7289925903106023869}
+    - target: {fileID: 4340396547374609350, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Middle Floor - Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875332659227401749, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 516468811}
+    - target: {fileID: 5103692780494576195, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Cube - Inner
+      objectReference: {fileID: 0}
+    - target: {fileID: 5343987875559791940, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 5944202557945304347}
+    - target: {fileID: 5490307978319261385, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Door 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602357929247654398, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _move.axis
+      value: 
+      objectReference: {fileID: 1390364479}
+    - target: {fileID: 5602357929247654398, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _move.cube
+      value: 
+      objectReference: {fileID: 941220943}
+    - target: {fileID: 5602357929247654398, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _RubiksScript
+      value: 
+      objectReference: {fileID: 985026461}
+    - target: {fileID: 5670789872301601182, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Window 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001970927954352150, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Door 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011428435217956283, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 3168404714593225407}
+    - target: {fileID: 6339779390917883404, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Middle Floor - Stair Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 6780826140159329557, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Middle Floor - Stair Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863964468932713715, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 898854132}
+    - target: {fileID: 6984579040609273277, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 1778258761950333064}
+    - target: {fileID: 7064270333412628323, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 6635774791065287976}
+    - target: {fileID: 7104240434661456613, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Window 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144844677717056131, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Door 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372405570073402757, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 1829981225}
+    - target: {fileID: 7552388719520364555, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 516468811}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616379753101580219, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862420775488841476, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Bottom Floor - Stair Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384798870499595380, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: MOVE RUBIKSCUBE AT AXIS ZFront (UnityEngine.Transform) OF CUBE Middle
+        (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8487770587543645604, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Top Floor - Window 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502840725300371093, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 1829981225}
+    - target: {fileID: 8640055893673442609, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 898854132}
+    - target: {fileID: 8901843083015629688, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: MOVE RUBIKSCUBE AT AXIS ZFront (UnityEngine.Transform) OF CUBE Middle
+        (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921421698149409507, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: m_Name
+      value: CHANGE LIGHT Light - Bottom Floor - Entryway
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958864624226417621, guid: 1b9f282b4183d9544aa0c62835b03ae7,
+        type: 3}
+      propertyPath: _light
+      value: 
+      objectReference: {fileID: 1870770333822779260}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1b9f282b4183d9544aa0c62835b03ae7, type: 3}
 --- !u!4 &2075450805 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2435526421803340246, guid: 8e1348a47aca4af47853c416fe7a43c2,
@@ -12897,7 +13612,7 @@ GameObject:
   - component: {fileID: 7289925903106023869}
   - component: {fileID: 3627611030671515205}
   m_Layer: 0
-  m_Name: Point Light (7)
+  m_Name: Light - Middle Floor - Stair Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13110,7 +13825,7 @@ GameObject:
   - component: {fileID: 6635774791065287976}
   - component: {fileID: 3788002419577089312}
   m_Layer: 0
-  m_Name: Point Light (5)
+  m_Name: Light - Top Floor - Door 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13320,7 +14035,7 @@ GameObject:
   - component: {fileID: 2778116208891592112}
   - component: {fileID: 7093835736823288159}
   m_Layer: 0
-  m_Name: Point Light (6)
+  m_Name: Light - Top Floor - Door 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13338,7 +14053,7 @@ GameObject:
   - component: {fileID: 1870770333822779260}
   - component: {fileID: 1020015000912789349}
   m_Layer: 0
-  m_Name: Point Light (7)
+  m_Name: Light - Top Floor - Window 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13402,7 +14117,7 @@ GameObject:
   - component: {fileID: 1778258761950333064}
   - component: {fileID: 8871955106756794279}
   m_Layer: 0
-  m_Name: Point Light (13)
+  m_Name: Light - Middle Floor - Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13633,7 +14348,7 @@ GameObject:
   - component: {fileID: 5944202557945304347}
   - component: {fileID: 8495409816917671423}
   m_Layer: 0
-  m_Name: Point Light (6)
+  m_Name: Light - Top Floor - Window 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13651,7 +14366,7 @@ GameObject:
   - component: {fileID: 3168404714593225407}
   - component: {fileID: 6032765227294628952}
   m_Layer: 0
-  m_Name: Point Light (12)
+  m_Name: Light - Bottom Floor - Entryway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13825,42 +14540,57 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1589370436}
+    m_TransformParent: {fileID: 941220943}
     m_Modifications:
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.016799998
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.016799998
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0168
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.479
       objectReference: {fileID: 0}
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.23000006
       objectReference: {fileID: 0}
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.018
+      value: -0.40192005
       objectReference: {fileID: 0}
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6939471894025662584, guid: d0b064d02721cde4fbe1418a587d15ec,
         type: 3}
@@ -13988,3 +14718,4 @@ SceneRoots:
   - {fileID: 211924071}
   - {fileID: 1589370436}
   - {fileID: 1091177799}
+  - {fileID: 2058804863}

@@ -1,6 +1,4 @@
-using AK.Wwise;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerMovement : MonoBehaviour
 {
