@@ -91,7 +91,7 @@ public class MouseCamControl : MonoBehaviour
     void UpdateCameraFOV(float newFOV)
     {
         _mainCamera.fieldOfView = newFOV;
-        _kaleidoCam.fieldOfView = newFOV;
+        _kaleidoCam.fieldOfView = newFOV * (4f/7f);
     }    
     void UpdateCameraMouseSensitivity(float newCamMouseSen)
     {
