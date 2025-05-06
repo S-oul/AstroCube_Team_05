@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using RubiksStatic;
 using System.Linq;
-using UnityEngine.ProBuilder.Shapes;
-using Unity.VisualScripting;
 
 public class RubiksCubeController : MonoBehaviour
 {

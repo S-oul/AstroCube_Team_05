@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -9,7 +7,7 @@ public class ApplicationVersion : MonoBehaviour
     void Start()
     {
         text = GetComponent<TextMeshProUGUI>();
-        text.text = "   Version : " + Application.version;
+        text.text = "  Version : " + Application.version;
     }
 
 }
