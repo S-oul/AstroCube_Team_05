@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class ControllerVibrater : MonoBehaviour
 {
+    [SerializeField] CustomisedSettings customSettings;
     [SerializeField] float _minimumFrequency;
     [SerializeField] float _maxumumFrequency;
     [SerializeField] float _duration;
@@ -23,6 +24,11 @@ public class ControllerVibrater : MonoBehaviour
     {
         EventManager.OnStartCubeRotation -= CubeRotationVibrate;
         EventManager.OnVibrationChange -= SetVibrationIsActive;
+    }
+
+    private void Start()
+    {
+        _vibrationIsActive = customSettings.customVibration;
     }
 
     void SetVibrationIsActive(bool isActive)

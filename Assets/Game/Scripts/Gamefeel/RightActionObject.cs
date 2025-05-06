@@ -29,7 +29,7 @@ public class RightActionObject : MonoBehaviour
         var infos = PlayModePositionSaver.PositionsSave;
         if (infos == null || infos.RightActionInfos == null)
         {
-            Debug.LogWarning("You must save object in their final positions");
+            //Debug.LogWarning("You must save object in their final positions");
             return;            
         }
         else if(infos.RightActionInfos == null)
