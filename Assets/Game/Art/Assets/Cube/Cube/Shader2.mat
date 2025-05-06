@@ -12,7 +12,9 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _RECEIVESHADOWS_OFF
+  - _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -23,6 +25,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Cube_DefaultMaterial_Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TextureSample0:
         m_Texture: {fileID: 2800000, guid: a1df82c5c992a5143bbbb2ba6030c4e7, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -32,7 +38,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample2:
-        m_Texture: {fileID: 2800000, guid: 75fab8512205d15408edc82d48ca923e, type: 3}
+        m_Texture: {fileID: 2800000, guid: e5b234c8823b14d469d368b1938e96ac, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -61,10 +67,15 @@ Material:
     - _F_Scale: 0.79
     - _Float0: 1
     - _Float1: 0.15
-    - _HDR: 2
+    - _Float2: 1
+    - _Float3: 0
+    - _Float4: 0
+    - _HDR: 0.1
+    - _Max: 0.38
+    - _Min: 0.07
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _SpecularHighlights: 1
     - _TessEdgeLength: 16
     - _TessMax: 25
