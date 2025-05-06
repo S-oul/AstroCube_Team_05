@@ -5,7 +5,6 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
-using System.Security.Cryptography;
 
 public class RubiksMovement : MonoBehaviour
 {
