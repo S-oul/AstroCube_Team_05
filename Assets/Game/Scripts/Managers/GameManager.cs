@@ -61,16 +61,16 @@ public class GameManager : MonoBehaviour
                                             settings.RubiksEndCubeRotationScreenshakeSettings.y,
                                             (int)settings.RubiksEndCubeRotationScreenshakeSettings.z,
                                             settings.RubiksEndCubeRotationScreenshakeSettings.w,
-                                            true,
-                                            ShakeRandomnessMode.Harmonic);
+                                            false,
+                                            ShakeRandomnessMode.Full);
                 break;
             case EScreenshakeMode.START_RUBIKS_CUBE_ROTATION:
                 Camera.main.DOShakePosition(settings.RubikscCubeAxisRotationDuration,
                                             settings.RubiksStartCubeRotationScreenshakeSettings.y,
                                             (int)settings.RubiksStartCubeRotationScreenshakeSettings.z,
                                             settings.RubiksStartCubeRotationScreenshakeSettings.w,
-                                            true,
-                                            ShakeRandomnessMode.Harmonic);
+                                            false,
+                                            ShakeRandomnessMode.Full);
                 break;
         }
     }
