@@ -182,19 +182,6 @@ public class RubiksCubeController : MonoBehaviour
             if (_controlledScript == null) return;
             if (ActualFace == null) return;
 
-            foreach (RubiksMovement cube in _replicatedScript)
-            {
-                if (!cube) continue;
-
-                Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
-                // Get The index of the children 
-                // Find the Other child at the index in other cube
-                // Move it
-
-                cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-
-            }
-
             RubiksMove input = new()
             {
                 Axis = _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice),
@@ -226,6 +213,18 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (completeAction)
                 {
+                    foreach (RubiksMovement cube in _replicatedScript)
+                    {
+                        if (!cube) continue;
+
+                        Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
+                        // Get The index of the children 
+                        // Find the Other child at the index in other cube
+                        // Move it
+
+                        cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+                    }
+
                     HidePreview();
                     _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
                     _previewControlledScript.ResetMovesHistory();
@@ -235,11 +234,20 @@ public class RubiksCubeController : MonoBehaviour
             }
             else
             {
+                foreach (RubiksMovement cube in _replicatedScript)
+                {
+                    if (!cube) continue;
+
+                    Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
+                    // Get The index of the children 
+                    // Find the Other child at the index in other cube
+                    // Move it
+
+                    cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+                }
+
                 _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-
             }
-
-
         }
     }
     public void ActionRotateCubeUI(Vector2 direction)
