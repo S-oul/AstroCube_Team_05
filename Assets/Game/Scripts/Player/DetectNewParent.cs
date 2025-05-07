@@ -17,7 +17,7 @@ public class DetectNewParent : MonoBehaviour
     public GameObject currentParent { get; private set; }
 
     public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
-    public bool DoGroundRotation { get => _doGroundRotation; set => _doGroundRotation = value; }
+
     public SelectionCube OldTilePlayerPos { get => _oldTilePlayerPos; private set => _oldTilePlayerPos = value; }
 
     private void Awake()
@@ -32,6 +32,7 @@ public class DetectNewParent : MonoBehaviour
         EventManager.OnPlayerReset -= DisableParentChangerfor;
         EventManager.OnPlayerResetOnce -= DisableParentChangerfor;
     }
+
     private void Update()
     {
         RaycastHit _raycastInfo;
@@ -42,23 +43,20 @@ public class DetectNewParent : MonoBehaviour
                 OldTilePlayerPosTransform = _raycastInfo.collider.transform;
                 _oldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
             }
-
         }
 
         if (_doGroundRotation && _oldTilePlayerPos)
         {
-
             transform.SetParent(_oldTilePlayerPos.transform, true);
             currentParent = _oldTilePlayerPos.gameObject;
-
-            //if(!OldTilePlayerPos) _raycastInfo.transform.parent.parent.TryGetComponent(out OldTilePlayerPos);
         }
-        /*else if (transform.parent != null)
-        {
+    }
+
+    public void ToggleParentChanger(bool isOn)
+    {
+        _doGroundRotation = isOn;
+        if (!_doGroundRotation)
             transform.SetParent(null, true);
-        }*/
-
-
     }
 
     public void DisableParentChangerfor(float duration)
@@ -67,9 +65,9 @@ public class DetectNewParent : MonoBehaviour
     }
     IEnumerator DisableParentChanger(float duration)
     {
-        DoGroundRotation = false;
+        _doGroundRotation = false;
         yield return new WaitForSeconds(duration);
-        DoGroundRotation = true;
+        _doGroundRotation = true;
     }
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
