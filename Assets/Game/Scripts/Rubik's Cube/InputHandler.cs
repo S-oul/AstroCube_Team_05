@@ -229,4 +229,20 @@ public class InputHandler : MonoBehaviour
             _controller.ShowStripLayerToPlayer = !_controller.ShowStripLayerToPlayer;
     }
     #endregion
+
+    public void BlockMovement()
+    {
+        DisableInputs(new List<EInputType>
+        {
+            EInputType.MOVEMENT,
+        });
+    }
+
+    public void DeBlockMovement()
+    {
+        EnableInputs(new List<EInputType>
+        {
+            EInputType.MOVEMENT,
+        });
+    }
 }
