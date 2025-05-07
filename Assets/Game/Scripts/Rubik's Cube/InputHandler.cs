@@ -1,6 +1,8 @@
 using NaughtyAttributes;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static InputSystemManager;
 
 public class InputHandler : MonoBehaviour
 {
@@ -9,7 +11,6 @@ public class InputHandler : MonoBehaviour
     [SerializeField] DetectNewParent _parentChanger;
 
     RubiksCubeController _controller;
-
     PlayerInput _playerInput;
 
     public static InputHandler Instance => instance;
@@ -21,7 +22,6 @@ public class InputHandler : MonoBehaviour
     public bool CanMove
     {
         get => _canMove;
-
         set
         {
             _canMove = value;
@@ -29,6 +29,38 @@ public class InputHandler : MonoBehaviour
         }
     }
     [SerializeField, ReadOnly] private bool _canMove;
+
+    private static HashSet<EInputType> _disabledInputs = new HashSet<EInputType>();
+    private static bool _globalInputEnabled = true;
+
+    public static void DisableAllInputs()
+    {
+        _globalInputEnabled = false;
+    }
+
+    public static void EnableAllInputs()
+    {
+        _globalInputEnabled = true;
+        _disabledInputs.Clear();
+    }
+
+    public static void DisableInputs(List<EInputType> types)
+    {
+        _globalInputEnabled = true;
+        foreach (var type in types)
+            _disabledInputs.Add(type);
+    }
+
+    public static void EnableInputs(List<EInputType> types)
+    {
+        foreach (var type in types)
+            _disabledInputs.Remove(type);
+    }
+
+    public static bool IsInputEnabled(EInputType type)
+    {
+        return _globalInputEnabled && !_disabledInputs.Contains(type);
+    }
 
     void Start()
     {
@@ -38,9 +70,9 @@ public class InputHandler : MonoBehaviour
             return;
         }
         else instance = this;
+
         _canMove = true;
         _controller = GetComponent<RubiksCubeController>();
-
         _playerInput = InputSystemManager.Instance.PlayerInputs;
 
         InputActionMap _actionMap = _playerInput.actions.FindActionMap("PlayerMovement");
@@ -65,141 +97,152 @@ public class InputHandler : MonoBehaviour
 
     private void ToggleCanMove(bool canMove)
     {
+        if (_playerInput == null) return;
+
         switch (canMove)
         {
-            default:
             case true:
-                _playerInput.actions.FindActionMap("PlayerMovement").Enable();
+                _playerInput.actions.FindActionMap("PlayerMovement")?.Enable();
                 break;
             case false:
-                _playerInput.actions.FindActionMap("PlayerMovement").Disable();
+                _playerInput.actions.FindActionMap("PlayerMovement")?.Disable();
                 break;
         }
     }
 
     #region Rubiks Cube Inputs
-    public void OnSwitchColumnsLineLeft(InputAction.CallbackContext callbackContext)
+    public void OnSwitchColumnsLineLeft(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
+        if (!IsInputEnabled(EInputType.SWITCH_COLUMNS_LINE_LEFT)) return;
+        if (ctx.performed)
             _controller.ActionSwitchLineCols(true);
-        }
     }
-    public void OnSwitchColumnsLineRight(InputAction.CallbackContext callbackContext)
+
+    public void OnSwitchColumnsLineRight(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
+        if (!IsInputEnabled(EInputType.SWITCH_COLUMNS_LINE_RIGHT)) return;
+        if (ctx.performed)
             _controller.ActionSwitchLineCols(false);
-        }
     }
-    public void OnClockWise(InputAction.CallbackContext callbackContext)
+
+    public void OnClockWise(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
+        if (!IsInputEnabled(EInputType.CLOCKWISE)) return;
+        if (ctx.performed)
             _controller.ActionMakeTurn(false);
-        }
     }
-    public void OnCounterClockWise(InputAction.CallbackContext callbackContext)
+
+    public void OnCounterClockWise(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
+        if (!IsInputEnabled(EInputType.COUNTER_CLOCKWISE)) return;
+        if (ctx.performed)
             _controller.ActionMakeTurn(true);
-        }
     }
 
-    public void OnMoveOverlayCube(InputAction.CallbackContext callbackContext)
+    public void OnMoveOverlayCube(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
-            _controller.ActionRotateCubeUI(callbackContext.ReadValue<Vector2>());
-        }
+        if (!IsInputEnabled(EInputType.MOVE_OVERLAY_CUBE)) return;
+        if (ctx.performed)
+            _controller.ActionRotateCubeUI(ctx.ReadValue<Vector2>());
     }
 
-    public void OnResetRoom(InputAction.CallbackContext callbackContext)
+    public void OnResetRoom(InputAction.CallbackContext ctx)
     {
-        //Hold 
-        //print(callbackContext.time - callbackContext.startTime);
-        if (callbackContext.performed)
-        {
-            if (!_controller.ControlledScript.IsReversing) EventManager.Instance.TriggerReset();
+        if (!IsInputEnabled(EInputType.RESET_ROOM)) return;
 
-        }
-        //TAP 
-        else if (callbackContext.canceled && callbackContext.time - callbackContext.startTime < .5f)
+        if (ctx.performed)
         {
-            if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0) EventManager.Instance.TriggerResetOnce();
+            if (!_controller.ControlledScript.IsReversing)
+                EventManager.Instance.TriggerReset();
+        }
+        else if (ctx.canceled && ctx.time - ctx.startTime < 0.5f)
+        {
+            if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0)
+                EventManager.Instance.TriggerResetOnce();
         }
     }
     #endregion
 
     #region Other Actions
-    public void OnInteract(InputAction.CallbackContext callbackContext)
+    public void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
+        if (!IsInputEnabled(EInputType.INTERACT)) return;
+        if (ctx.performed)
             _playerHold.TryHold();
-            //if (_playerHold.IsHolding) _playerHold.TryRelease();
-        }
     }
 
-    public void OnGamePause(InputAction.CallbackContext callbackContext)
+    public void OnGamePause(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
+        if (!IsInputEnabled(EInputType.GAME_PAUSE)) return;
+        if (ctx.performed)
         {
-            if (EventManager.gamePaused == false) EventManager.TriggerGamePause();
+            if (!EventManager.gamePaused) EventManager.TriggerGamePause();
             else EventManager.TriggerGameUnpause();
         }
     }
 
-    public void OnSeeExit(InputAction.CallbackContext callbackContext)
+    public void OnSeeExit(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
+        if (!IsInputEnabled(EInputType.SEE_EXIT)) return;
+        if (ctx.performed)
             EventManager.TriggerSeeExit();
-        }
     }
     #endregion
 
     #region Player Movement & NoClip Movement
-    public void OnMovement(InputAction.CallbackContext callbackContext) //also used for NoClip
+    public void OnMovement(InputAction.CallbackContext ctx)
     {
+        if (!IsInputEnabled(EInputType.MOVEMENT)) return;
         if (!_controller.ControlledScript.IsReversing)
-            _playerMovement.ActionMovement(callbackContext.ReadValue<Vector2>());
+            _playerMovement.ActionMovement(ctx.ReadValue<Vector2>());
     }
-    public void OnJump(InputAction.CallbackContext callbackContext)
+
+    public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (!callbackContext.performed && !_controller.ControlledScript.IsReversing)
-        {
+        if (!IsInputEnabled(EInputType.MOVEMENT)) return;
+        if (!ctx.performed && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionJump();
-        }
     }
-    public void OnCrouch(InputAction.CallbackContext callbackContext)
+
+    public void OnCrouch(InputAction.CallbackContext ctx)
     {
-        if (!callbackContext.performed && !_controller.ControlledScript.IsReversing)
-        {
+        if (!IsInputEnabled(EInputType.MOVEMENT)) return;
+        if (!ctx.performed && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionCrouch();
-        }
     }
     #endregion
 
     #region Noclip
-    public void OnVerticalMovement(InputAction.CallbackContext callbackContext)
+    public void OnVerticalMovement(InputAction.CallbackContext ctx)
     {
-        if (!callbackContext.performed)
-        {
-            _playerMovement.ActionVerticalMovement(callbackContext.ReadValue<float>());
-        }
+        if (!IsInputEnabled(EInputType.MOVEMENT)) return;
+        if (!ctx.performed)
+            _playerMovement.ActionVerticalMovement(ctx.ReadValue<float>());
     }
     #endregion
 
     #region UI
-    public void OnShowStripLayer(InputAction.CallbackContext callbackContext)
+    public void OnShowStripLayer(InputAction.CallbackContext ctx)
     {
-        if (callbackContext.performed)
-        {
+        if (!IsInputEnabled(EInputType.SHOW_STRIPS)) return;
+        if (ctx.performed)
             _controller.ShowStripLayerToPlayer = !_controller.ShowStripLayerToPlayer;
-        }
     }
     #endregion
 
+    public void BlockMovement()
+    {
+        DisableInputs(new List<EInputType>
+        {
+            EInputType.MOVEMENT,
+        });
+    }
+
+    public void DeBlockMovement()
+    {
+        EnableInputs(new List<EInputType>
+        {
+            EInputType.MOVEMENT,
+        });
+    }
 }
