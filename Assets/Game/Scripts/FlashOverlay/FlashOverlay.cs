@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,30 +18,27 @@ public class FlashOverlay : MonoBehaviour
         Instance = this;
     }
 
-    public void Play(float duration)
+    public void Play(float duration) { Play(duration, 1f); }
+    public void Play(float duration, float targetAlpha)
     {
-        StartCoroutine(_CoroutinePlay(duration));
+        StartCoroutine(_CoroutinePlay(duration, targetAlpha));
     }
 
-    private IEnumerator _CoroutinePlay(float duration)
+    private IEnumerator _CoroutinePlay(float duration, float targetAlpha)
     {
         IsPlaying = true;
 
-        float timer = 0f;
-
-        Color imageColor = _image.color;
-
         float halfDuration = duration / 2f;
-        while (timer < duration) {
-            timer += Time.deltaTime;
-            float alpha = Mathf.PingPong(timer, halfDuration) / halfDuration;
-            imageColor.a = alpha;
-            _image.color = imageColor;
-            yield return _waitForEndOfFrame;
-        }
 
-        imageColor.a = 0f;
-        _image.color = imageColor;
+        Color baseColor = _image.color;
+        Color targetColor = baseColor;
+        targetColor.a = targetAlpha;
+
+        _image.DOColor(targetColor, halfDuration);
+        yield return new WaitForSeconds(halfDuration);
+
+        _image.DOColor(baseColor, halfDuration);
+        yield return new WaitForSeconds(halfDuration);
 
         IsPlaying = false;
     }
