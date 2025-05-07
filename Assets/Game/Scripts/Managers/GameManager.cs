@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -36,7 +37,9 @@ public class GameManager : MonoBehaviour
     public bool IsRubiksCubeEnabled => _isRubiksCubeEnabled;
     [SerializeField, ReadOnly] private bool _isRubiksCubeEnabled;
 
-    [SerializeField] GameObject _previewRubiksCube; 
+    [SerializeField] GameObject _previewRubiksCube;
+
+
 
     private void Awake()
     {
@@ -114,6 +117,7 @@ public class GameManager : MonoBehaviour
     {
         EventManager.TriggerSceneStart();
     }
+
 
     void ShowWinScreen()
     {
@@ -193,7 +197,6 @@ public class GameManager : MonoBehaviour
         Camera.main.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
-
 
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;

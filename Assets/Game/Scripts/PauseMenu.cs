@@ -9,12 +9,12 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject _UIHolder;
     [SerializeField] GameObject _firstSelected;
-    KaleidoscopeManager _kaleidoscopeManager;
+    PostProcessManager _kaleidoscopeManager;
     [SerializeReference] GameObject SettingsUIHolder;
 
     private void Start()
     {
-        _kaleidoscopeManager = GetComponentInChildren<KaleidoscopeManager>();
+        _kaleidoscopeManager = GetComponentInChildren<PostProcessManager>();
     }
 
     private void OnEnable()
