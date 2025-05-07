@@ -1,7 +1,6 @@
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 
 public class MouseCamControl : MonoBehaviour
 {
@@ -33,8 +32,7 @@ public class MouseCamControl : MonoBehaviour
 
 
     // Camera movement
-    float moveX = 0;
-    float moveY = 0;
+    Vector2 mousePos = new();
 
     float _cameraSensibilityMouse;
 
@@ -48,19 +46,19 @@ public class MouseCamControl : MonoBehaviour
     }
     public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
-        moveX = callbackContext.ReadValue<Vector2>().x* _cameraSensibilityMouse * Time.deltaTime; 
-        moveY = callbackContext.ReadValue<Vector2>().y* _cameraSensibilityMouse * Time.deltaTime; 
+        mousePos = callbackContext.ReadValue<Vector2>() * _cameraSensibilityMouse * Time.deltaTime;
     }
+
     void Update()
-    {        
+    {
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
 
-        _yRotation -= moveY;
+        _yRotation -= mousePos.y;
         _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
 
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
-        _playerTransform.Rotate(Vector3.up * moveX);
+        _playerTransform.Rotate(Vector3.up * mousePos.x);
 
         //Raycast
 
@@ -81,11 +79,13 @@ public class MouseCamControl : MonoBehaviour
     {
         EventManager.OnFOVChange += UpdateCameraFOV;
         EventManager.OnMouseChange += UpdateCameraMouseSensitivity;
+        EventManager.OnEndNarrativeSequence += ResetMousePosition;
     }
     private void OnDisable()
     {
         EventManager.OnFOVChange -= UpdateCameraFOV;
         EventManager.OnMouseChange -= UpdateCameraMouseSensitivity;
+        EventManager.OnEndNarrativeSequence -= ResetMousePosition;
     }
 
     void UpdateCameraFOV(float newFOV)
@@ -96,5 +96,11 @@ public class MouseCamControl : MonoBehaviour
     void UpdateCameraMouseSensitivity(float newCamMouseSen)
     {
         _cameraSensibilityMouse = newCamMouseSen;
+    }
+
+    void ResetMousePosition()
+    {
+        mousePos = Vector2.zero;
+        _yRotation = 0.0f;
     }
 }

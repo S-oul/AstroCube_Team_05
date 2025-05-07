@@ -10,7 +10,10 @@ public class GameActionMoveRubiksCube : AGameAction
 {
 
     [SerializeField] private RubiksMove _move = new();
-    [SerializeField] private RubiksMovement _RubiksScript;
+    [SerializeField] private RubiksMovement _rubiksScript;
+    [SerializeField] private RubiksCubeController _rubiksControllerScript;
+    [SerializeField] private float _rotationDuration;
+    [SerializeField] private bool _stopWhenPlayerOnTile = false;
     private bool _isTurning = false;
 
     protected override void ExecuteSpecific()
@@ -21,7 +24,12 @@ public class GameActionMoveRubiksCube : AGameAction
     private IEnumerator DoMove()
     {
         _isTurning = true;
-        yield return _RubiksScript.RotateAxisCoroutine(_move.axis, _move.cube, _move.clockWise);
+        if (_rubiksControllerScript)
+        {
+            if (_rubiksControllerScript.IsPlayerOnTile(_move.orientation, _move.cube) && _stopWhenPlayerOnTile)
+                yield break;
+        }
+        yield return _rubiksScript.RotateAxisCoroutine(_move.axis, _move.cube, _move.clockWise, _rotationDuration);
         _isTurning = false;
     }
 

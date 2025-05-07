@@ -59,6 +59,7 @@ public class GameActionsSequencer : MonoBehaviour
     {
         if (_isRunning) return;
         if (_gameActionsList.Count == 0) return;
+        // print("Playing sequencer : " + name);
         _currentGameActionIndex = 0;
         _isRunning = true;
         _gameActionsList[_currentGameActionIndex].Execute();
@@ -70,10 +71,11 @@ public class GameActionsSequencer : MonoBehaviour
         if (!_isRunning) return;
         _currentGameActionIndex = 0;
         _isRunning = false;
-
+        // print("Finished sequencer : " + name);
         if (withAutoReplay && replayOnStop) {
             Play();
         }
+        //else print("Stopped sequencer : " + name);
     }
 
     public bool IsRunning()
