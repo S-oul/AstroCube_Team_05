@@ -105,7 +105,7 @@
 										</Sound>
 									</ChildrenList>
 								</RandomSequenceContainer>
-								<Sound Name="AMB_Cube_Atmosphere_LP_01" ID="{570C6C41-670B-4749-A414-376D7709C6A3}" ShortID="569384103">
+								<Sound Name="AMB_Cube_Atmosphere_LP" ID="{570C6C41-670B-4749-A414-376D7709C6A3}" ShortID="569384103">
 									<PropertyList>
 										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
@@ -216,6 +216,36 @@
 									</ObjectLists>
 									<ActiveSourceList>
 										<ActiveSource Name="AMB_Cube_Atmosphere_LP_01" ID="{7691C356-E652-4615-854F-908ECA2FAB2A}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="AMB_PAD_Global_LP" ID="{C4DBE038-0122-42ED-B8F6-739EE9DBE592}" ShortID="718346244">
+									<PropertyList>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-25</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="AMB_PAD_Global_LP" ID="{97332BA5-3714-4361-BECD-2D78ABAFC943}">
+											<Language>SFX</Language>
+											<AudioFile>3.Export\AMB\AMB_PAD_Global_LP.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="818614971"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="AMB_PAD_Global_LP" ID="{97332BA5-3714-4361-BECD-2D78ABAFC943}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
