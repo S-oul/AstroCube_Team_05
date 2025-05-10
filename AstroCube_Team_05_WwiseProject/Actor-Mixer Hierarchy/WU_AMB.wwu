@@ -60,6 +60,11 @@
 											</ReferenceList>
 											<ChildrenList>
 												<AudioFileSource Name="AMB_Transition_Atmosphere_01" ID="{6DFB1FA6-13AB-4F0E-AE74-F6952862E92E}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="6.1908032752911"/>
+														<Property Name="LoopBegin" Type="Real64" Value="0"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+													</PropertyList>
 													<Language>SFX</Language>
 													<AudioFile>AMB\AMB_Transition_Atmosphere_01.wav</AudioFile>
 													<MediaIDList>
@@ -82,6 +87,11 @@
 											</ReferenceList>
 											<ChildrenList>
 												<AudioFileSource Name="AMB_Transition_Atmosphere_02" ID="{7650F1AF-268A-4979-BA0C-9D3A74D83445}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="6.96231248126767"/>
+														<Property Name="LoopBegin" Type="Real64" Value="0"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+													</PropertyList>
 													<Language>SFX</Language>
 													<AudioFile>AMB\AMB_Transition_Atmosphere_02.wav</AudioFile>
 													<MediaIDList>
@@ -127,6 +137,82 @@
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{004E0D6F-035E-4B0B-9423-0F2336A03C83}" ShortID="756073052">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Volume"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="RTPC_Meter" ID="{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{702FAB09-77D9-4A93-B2A1-2A0584F744F4}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="3"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-48</XPos>
+																				<YPos>0</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>-9</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{193282F0-3BBF-4B3C-95D5-41B6FA039FE4}" ShortID="621795228">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Lowpass"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="RTPC_Meter" ID="{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{0E5EA8CA-C3D7-40B5-AA05-2E065BD725D9}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="65537"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-48</XPos>
+																				<YPos>0</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>50</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
 									<ActiveSourceList>
 										<ActiveSource Name="AMB_Cube_Atmosphere_LP_01" ID="{7691C356-E652-4615-854F-908ECA2FAB2A}" Platform="Linked"/>
 									</ActiveSourceList>

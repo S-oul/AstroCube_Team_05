@@ -160,6 +160,7 @@
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="1"/>
 										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="OverrideEffect" Type="bool" Value="True"/>
 										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
@@ -276,6 +277,19 @@
 										</Sound>
 									</ChildrenList>
 									<ObjectLists>
+										<ObjectList Name="Effects">
+											<Reference>
+												<Local>
+													<EffectSlot Name="" ID="{8D37806A-93DE-45FB-8A6D-F1FA71CFD75A}" ShortID="22004217">
+														<ReferenceList>
+															<Reference Name="Effect" PluginName="Wwise Meter" CompanyID="0" PluginID="129" PluginType="3">
+																<ObjectRef Name="EF_Meter" ID="{7A541130-2C27-4899-9F21-85FB05597353}" WorkUnitID="{B3393AFF-EB5C-4809-A2D5-90DB1B3E876C}"/>
+															</Reference>
+														</ReferenceList>
+													</EffectSlot>
+												</Local>
+											</Reference>
+										</ObjectList>
 										<ObjectList Name="RTPC">
 											<Reference>
 												<Local>

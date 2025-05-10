@@ -18,7 +18,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{ADB093C7-DFD3-2EF3-56A6-430137D610B4}",
+    "Hash": "{F15F8D28-0F53-77B7-03BB-A8DEF57F5E37}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -71,6 +71,15 @@
       "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2970777206",
+      "Name": "RTPC_Meter",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter",
+      "GUID": "{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}",
+      "Color": "10"
      }
     ],
     "SwitchGroups": [
@@ -168,7 +177,7 @@
     "GUID": "{D8A3959E-27EB-4F77-8F83-21C2E065E718}",
     "Color": "17",
     "Language": "SFX",
-    "Hash": "{D13CCD6C-1039-154A-1CC8-55ED2F2D7F47}",
+    "Hash": "{3394221A-FA7E-E1EA-63E2-AF2278B67E05}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_AMB_SBK\\AMB_SBK",
     "ShortName": "AMB_SBK",
     "Path": "AMB_SBK.bnk",
@@ -179,7 +188,7 @@
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "AMB\\AMB_Transition_Atmosphere_01.wav",
-      "CachePath": "DA/{DABE9162-EF87-2F8D-31B2-0814AE6C59D2}.wem"
+      "CachePath": "DF/{DFC2553D-09D6-5A19-BC8C-AE31AF76046A}.wem"
      },
      {
       "Id": "347484034",
@@ -195,7 +204,7 @@
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "AMB\\AMB_Transition_Atmosphere_02.wav",
-      "CachePath": "B7/{B774E6FA-E28F-E0C3-F3C1-B7DA838DAF34}.wem"
+      "CachePath": "F4/{F4E797B3-644E-F11D-6499-288C318E9867}.wem"
      }
     ],
     "Events": [
@@ -262,6 +271,15 @@
       "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2970777206",
+      "Name": "RTPC_Meter",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter",
+      "GUID": "{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}",
+      "Color": "10"
      }
     ]
    },
@@ -814,7 +832,7 @@
     "GUID": "{653AB8BF-84AF-4F6C-B01A-9079A6DBFE3E}",
     "Color": "25",
     "Language": "SFX",
-    "Hash": "{6DA96F27-CBE8-8516-F8E6-94A8C29149B9}",
+    "Hash": "{B14CE2A1-A3B1-1BE8-A382-6440B813B798}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_SFX_SBK\\SFX_SBK",
     "ShortName": "SFX_SBK",
     "Path": "SFX_SBK.bnk",
@@ -874,14 +892,6 @@
       "Location": "Memory",
       "ShortName": "SFX\\GPE\\SFX_Button_Pressed_02.wav",
       "CachePath": "D8/{D801EA04-2AF7-FCFD-09BA-CA6AE9D15C2F}.wem"
-     },
-     {
-      "Id": "301063775",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "ghostly-whispers.wav",
-      "CachePath": "24/{24C57FC0-A077-75BF-C1F8-0DB458FAA340}.wem"
      },
      {
       "Id": "312887753",
@@ -980,6 +990,18 @@
       "CachePath": "8E/{8EEA669E-9201-13E7-4E7A-E04730A590F4}.wem"
      }
     ],
+    "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "2766983158",
+       "Name": "EF_Meter",
+       "ObjectPath": "\\Effects\\Default Work Unit\\EF_Meter",
+       "GUID": "{7A541130-2C27-4899-9F21-85FB05597353}",
+       "LibName": "Wwise Meter",
+       "LibId": "8454147"
+      }
+     ]
+    },
     "Events": [
      {
       "Id": "125802325",
@@ -1031,30 +1053,6 @@
       ]
      },
      {
-      "Id": "2983164677",
-      "Name": "SFX_GhostlyWhipersStart",
-      "ObjectPath": "\\Events\\Default Work Unit\\WU_SFX_Event\\SFX_GhostlyWhipersStart",
-      "GUID": "{BF56C758-6AFB-4D5C-8B41-54F28154477F}",
-      "Color": "25",
-      "DurationType": "Infinite",
-      "MediaRefs": [
-       {
-        "Id": "301063775"
-       }
-      ]
-     },
-     {
-      "Id": "1833291943",
-      "Name": "SFX_GhostlyWhipersStop",
-      "ObjectPath": "\\Events\\Default Work Unit\\WU_SFX_Event\\SFX_GhostlyWhipersStop",
-      "GUID": "{F2C1BE93-2596-429E-AE14-5B776EE90421}",
-      "Color": "25",
-      "MaxAttenuation": "0",
-      "DurationType": "OneShot",
-      "DurationMin": "0",
-      "DurationMax": "0"
-     },
-     {
       "Id": "2922909946",
       "Name": "SFX_LaserEmetting_LP",
       "ObjectPath": "\\Events\\Default Work Unit\\WU_SFX_Event\\SFX_LaserEmetting_LP",
@@ -1072,7 +1070,14 @@
        {
         "Id": "663617190"
        }
-      ]
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "2766983158"
+        }
+       ]
+      }
      },
      {
       "Id": "4087256891",
@@ -1158,6 +1163,6 @@
     ]
    }
   ],
-  "FileHash": "{D055938C-93CC-2FC7-789D-F5BFE5ED7DEE}"
+  "FileHash": "{097F86D2-D632-C898-464C-55BEA52D9422}"
  }
 }

@@ -21,6 +21,32 @@
 				<Event Name="SFX_LaserEmetting_LP" ID="{8820A444-5D06-4959-916B-453471D62653}">
 					<ChildrenList>
 						<Action Name="" ID="{BB71EFB1-9CBD-4299-B057-CD2E9D861224}" ShortID="561216273">
+							<PropertyList>
+								<Property Name="FadeInCurve" Type="int16" Value="5"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.75"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_RC_LaserEmetting" ID="{2C510CEB-4CDA-473A-9393-1A799227D44F}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{2B6B88DC-DB5C-45BE-80E4-BAA455AE894F}" ShortID="134274073">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="36"/>
+								<Property Name="SeekPercent" Type="Real64">
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{57C38AC7-C747-49B1-8E48-A5F0B4BDA00E}">
+												<PropertyList>
+													<Property Name="Enabled" Type="bool" Value="True"/>
+													<Property Name="Max" Type="Real64" Value="100"/>
+												</PropertyList>
+											</Modifier>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="SFX_RC_LaserEmetting" ID="{2C510CEB-4CDA-473A-9393-1A799227D44F}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
