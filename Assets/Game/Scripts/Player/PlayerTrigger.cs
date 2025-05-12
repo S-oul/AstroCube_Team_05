@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public class PlayerTrigger : MonoBehaviour
@@ -8,6 +10,7 @@ public class PlayerTrigger : MonoBehaviour
 
     [Header("Portal")]
     [SerializeField] AnimationCurve curve;
+    [SerializeField] Volume vol;
 
     PlayerMovement _playerMovement;
     CharacterController _characterController;
@@ -63,8 +66,15 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             float t = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curve.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
-            foreach(Camera c in Camera.allCameras)
+
+            vol.profile.TryGet<ChromaticAberration>(out var ca);
+
+            ca.intensity = new ClampedFloatParameter(Mathf.Lerp(.1f, 1, t), 0, 1, true);
+
+            foreach (Camera c in Camera.allCameras)
+            {
                 c.fieldOfView = t;
+            }
             print(t);
         }
     }
