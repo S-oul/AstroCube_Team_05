@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerTrigger : MonoBehaviour
 {
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
+
+    [Header("Portal")]
+    [SerializeField] AnimationCurve curve;
 
     PlayerMovement _playerMovement;
     CharacterController _characterController;
@@ -55,6 +59,13 @@ public class PlayerTrigger : MonoBehaviour
             float speed = other.GetComponent<ConveyerBeltManager>().speed;
             GetComponent<PlayerMovement>().SetExternallyAppliedMovement(dir, speed);
         }
+
+        if (other.CompareTag("Portal"))
+        {
+            float t = Mathf.Lerp(10, GameManager.Instance.CustomSettings.customFov, curve.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
+            Camera.main.fieldOfView = t;
+            print(t);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -75,6 +86,10 @@ public class PlayerTrigger : MonoBehaviour
         if (other.gameObject.tag == "ConveyerBelt")
         {
             GetComponent<PlayerMovement>().SetExternallyAppliedMovement(Vector3.zero);
+        }
+        if (other.CompareTag("Portal"))
+        {
+            Camera.main.fieldOfView = GameManager.Instance.CustomSettings.customFov;
         }
     }
 }
