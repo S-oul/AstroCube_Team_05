@@ -289,6 +289,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchMoveCam"",
+                    ""type"": ""Button"",
+                    ""id"": ""99388977-4188-4cf0-8811-a5589a37305f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -366,6 +375,17 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""SeeExit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""675c2378-74f3-4495-b326-ab55271f1859"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchMoveCam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -760,6 +780,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_OtherActions_Interact = m_OtherActions.FindAction("Interact", throwIfNotFound: true);
         m_OtherActions_PauseGame = m_OtherActions.FindAction("PauseGame", throwIfNotFound: true);
         m_OtherActions_SeeExit = m_OtherActions.FindAction("SeeExit", throwIfNotFound: true);
+        m_OtherActions_SwitchMoveCam = m_OtherActions.FindAction("SwitchMoveCam", throwIfNotFound: true);
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
@@ -937,6 +958,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_OtherActions_Interact;
     private readonly InputAction m_OtherActions_PauseGame;
     private readonly InputAction m_OtherActions_SeeExit;
+    private readonly InputAction m_OtherActions_SwitchMoveCam;
     public struct OtherActionsActions
     {
         private @PlayerAction m_Wrapper;
@@ -944,6 +966,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_OtherActions_Interact;
         public InputAction @PauseGame => m_Wrapper.m_OtherActions_PauseGame;
         public InputAction @SeeExit => m_Wrapper.m_OtherActions_SeeExit;
+        public InputAction @SwitchMoveCam => m_Wrapper.m_OtherActions_SwitchMoveCam;
         public InputActionMap Get() { return m_Wrapper.m_OtherActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -962,6 +985,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SeeExit.started += instance.OnSeeExit;
             @SeeExit.performed += instance.OnSeeExit;
             @SeeExit.canceled += instance.OnSeeExit;
+            @SwitchMoveCam.started += instance.OnSwitchMoveCam;
+            @SwitchMoveCam.performed += instance.OnSwitchMoveCam;
+            @SwitchMoveCam.canceled += instance.OnSwitchMoveCam;
         }
 
         private void UnregisterCallbacks(IOtherActionsActions instance)
@@ -975,6 +1001,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SeeExit.started -= instance.OnSeeExit;
             @SeeExit.performed -= instance.OnSeeExit;
             @SeeExit.canceled -= instance.OnSeeExit;
+            @SwitchMoveCam.started -= instance.OnSwitchMoveCam;
+            @SwitchMoveCam.performed -= instance.OnSwitchMoveCam;
+            @SwitchMoveCam.canceled -= instance.OnSwitchMoveCam;
         }
 
         public void RemoveCallbacks(IOtherActionsActions instance)
@@ -1198,6 +1227,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnPauseGame(InputAction.CallbackContext context);
         void OnSeeExit(InputAction.CallbackContext context);
+        void OnSwitchMoveCam(InputAction.CallbackContext context);
     }
     public interface IPlayerMovementActions
     {
