@@ -20,16 +20,18 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
     {
         Debug.LogWarning("Playtrhough Data only works on Windows");
         string exeDirectory = Directory.GetParent(Application.dataPath).FullName;
-        if (GameManager.Instance.playthoughDataFileName == null)
+        if (GameManager.Instance.Settings.playthoughDataFileName == null)
         {
+            Debug.Log("MAKING NEW FILE");
             _fileName = "PlaythroughData_" + DateTime.Now.ToString() + ".txt";
             _fileName = _fileName.Replace(" ", "_");
             _fileName = _fileName.Replace("/", ".");
             _fileName = _fileName.Replace(":", ".");
+            GameManager.Instance.Settings.playthoughDataFileName = _fileName;
         }
         else
         {
-            _fileName = GameManager.Instance.playthoughDataFileName;
+            _fileName = GameManager.Instance.Settings.playthoughDataFileName;
         }
         path = Path.Combine(Application.persistentDataPath, _fileName);
     }

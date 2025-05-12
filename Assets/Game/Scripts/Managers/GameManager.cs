@@ -15,8 +15,6 @@ public class GameManager : MonoBehaviour
 {
     public GameSettings Settings => settings;
 
-    public string playthoughDataFileName { get; set; }
-
     [SerializeField] private GameSettings settings;
 
     [SerializeField] private GameObject winScreen;
