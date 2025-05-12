@@ -3,7 +3,12 @@
 	<Effects>
 		<WorkUnit Name="Default Work Unit" ID="{B3393AFF-EB5C-4809-A2D5-90DB1B3E876C}" PersistMode="Standalone">
 			<ChildrenList>
-				<Effect Name="EF_Meter" ID="{7A541130-2C27-4899-9F21-85FB05597353}" PluginName="Wwise Meter" CompanyID="0" PluginID="129" PluginType="3">					<PluginData>
+				<Effect Name="EF_Meter" ID="{7A541130-2C27-4899-9F21-85FB05597353}" PluginName="Wwise Meter" CompanyID="0" PluginID="129" PluginType="3">
+					<PropertyList>
+						<Property Name="MeterScope" Type="int32" Value="1"/>
+						<Property Name="ReleaseTime" Type="Real32" Value="0"/>
+					</PropertyList>
+					<PluginData>
 	<GameParameter Name="RTPC_Meter_Glb" ID="{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}"/>
 </PluginData>
 				</Effect>
