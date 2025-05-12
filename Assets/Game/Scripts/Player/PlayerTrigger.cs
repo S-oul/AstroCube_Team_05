@@ -62,8 +62,9 @@ public class PlayerTrigger : MonoBehaviour
 
         if (other.CompareTag("Portal"))
         {
-            float t = Mathf.Lerp(10, GameManager.Instance.CustomSettings.customFov, curve.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
-            Camera.main.fieldOfView = t;
+            float t = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curve.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
+            foreach(Camera c in Camera.allCameras)
+                c.fieldOfView = t;
             print(t);
         }
     }
