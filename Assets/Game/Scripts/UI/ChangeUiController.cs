@@ -41,7 +41,7 @@ public class ChangeUiController : MonoBehaviour
 
             if (name.Contains("XInputControllerWindows")) _sprite.sprite = _Xbox;
             else if (name.Contains("Playstation")|| name.Contains("DualSense")) _sprite.sprite = _PS;
-            else _sprite.sprite = _Keyboard; ;
+            else _sprite.sprite = _Keyboard;
         }
     }
 
