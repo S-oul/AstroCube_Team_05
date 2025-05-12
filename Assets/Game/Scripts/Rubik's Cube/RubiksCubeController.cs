@@ -195,6 +195,10 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (_lastInput != null)
                 {
+                    if(_lastInput.cube == null)
+                    {
+                        Debug.LogError("This error happens once in a while then disappears, please report to Ema");
+                    }
                     bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
                     completeAction = isSameFace && _lastInput == input;
                 }

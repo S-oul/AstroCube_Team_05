@@ -45,6 +45,11 @@ public class GameManager : MonoBehaviour
     {
         if (instance) Destroy(this);
         else instance = this;
+
+        if(PreviewRubiksCube == null)
+        {
+            PreviewRubiksCube = FindAnyObjectByType<PreviewRubiksCube>();
+        }
     }
 
     public enum EScreenshakeMode

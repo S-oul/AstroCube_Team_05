@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,7 +26,7 @@ public class GlobalManager : MonoBehaviour
     }
     private void Start()
     {
-        _gm.PreviewRubiksCube.gameObject.SetActive(CustomSettings);
+        _gm.PreviewRubiksCube.gameObject.SetActive(CustomSettings.customPreview);
     }
 
     private void OnEnable()
@@ -42,8 +44,16 @@ public class GlobalManager : MonoBehaviour
 
         Time.timeScale = 1f;
         Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
 
-        _gm.PreviewRubiksCube.gameObject.SetActive(isEnabled);
+        SceneManager.LoadScene(scene.name);
+    }
+
+    private static IEnumerator WaitForLoadLevel(string sceneName)
+    {
+        var asyncLoadLevel = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        while (!asyncLoadLevel.isDone)
+        {
+            yield return null;
+        }
     }
 }
