@@ -13,8 +13,9 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID AMB_CUBE_ATMOSPHERE_LP = 3794630063U;
+        static const AkUniqueID AMB_PAD_GLOBAL_LP = 2515429708U;
         static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
+        static const AkUniqueID AMB_SP_RC_PULSESHARD = 3134303699U;
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID MC_FT = 2275400278U;
         static const AkUniqueID SFX_BUTTON = 125802325U;
@@ -44,8 +45,8 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID RTPC_METER_DISTANCE = 625851808U;
         static const AkUniqueID RTPC_METER_GLB = 344904358U;
-        static const AkUniqueID RTPC_METER_PORTAL = 401071423U;
     } // namespace GAME_PARAMETERS
 
     namespace BANKS
