@@ -7,16 +7,15 @@ using UnityEngine;
 public class StarFXManager : MonoBehaviour
 {
     public GameObject starPrefab;
-    public int num;
-    public Vector3 point;
-    public float radius;
+    public int _num;
+    public float _radius;
 
     private void Start()
     {
         SpawnStarsInCircle();
     }
     [Button("Spawn Stars In Circle")]
-    public void SpawnStarsInCircle() => SpawnStarsInCircle(num, transform.position, radius);
+    public void SpawnStarsInCircle() => SpawnStarsInCircle(_num, transform.position, _radius);
     public void SpawnStarsInCircle(int num, Vector3 point, float radius)
     {
 
@@ -36,9 +35,12 @@ public class StarFXManager : MonoBehaviour
             var spawnPos = point + spawnDir * radius; // Radius is just the distance away from the point
 
             /* Now spawn */
-            var enemy = Instantiate(starPrefab, spawnPos, Quaternion.identity) as GameObject;
+            StarFXMovement star = Instantiate(starPrefab, spawnPos, Quaternion.identity).GetComponent<StarFXMovement>();
 
-            enemy.transform.parent = transform;
+            star.StartPos = spawnPos;
+            //star.Tangeant = GetCircleTangents(spawnPos, transform.position, radius);
+            //Debug.Log(star.Tangeant);
+            star.transform.SetParent(transform, false);
         }
     }
 }
