@@ -17,9 +17,26 @@
 						<Property Name="Color" Type="int16" Value="17"/>
 						<Property Name="OverrideColor" Type="bool" Value="True"/>
 					</PropertyList>
-					<RTPCValueList ShowAll="true"/>
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="SFX_LaserEmetting_LP" ID="{8820A444-5D06-4959-916B-453471D62653}" WorkUnitID="{426AA850-3F63-4654-BEFF-66BC2020DF91}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="AMB_Cube_Atmosphere_LP" ID="{420E1F9F-776F-4761-B136-8791B21D4E96}" WorkUnitID="{AB89A74D-55C3-45EC-96E3-D508A0A19E14}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true">
+						<RTPCValue>
+							<GameParameterRef Name="RTPC_Meter" ID="{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}"/>
+							<Value>-48</Value>
+						</RTPCValue>
+					</RTPCValueList>
 					<CurrentStateList ShowAll="true"/>
-					<CurrentSwitchList ShowAll="true"/>
+					<CurrentSwitchList ShowAll="true">
+						<CurrentSwitchRef Name="Carpet" ID="{4918267E-FE45-4119-8F88-D52FDFCC4A90}"/>
+					</CurrentSwitchList>
 				</SoundcasterSession>
 				<SoundcasterSession Name="SC_FOL" ID="{00FCAB0C-B5A2-4B7C-8F48-51027CFAFB1F}">
 					<PropertyList>
