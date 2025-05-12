@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using AmplifyShaderEditor;
+using System;
 
 public class PlaythroughDataTxtWrite : MonoBehaviour
 {
@@ -18,7 +20,8 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
     {
         Debug.LogWarning("Playtrhough Data only works on Windows");
         string exeDirectory = Directory.GetParent(Application.dataPath).FullName;
-        path = Path.Combine(exeDirectory, "PlaythroughData.txt");
+        //path = Path.Combine(exeDirectory, "PlaythroughData.txt");
+        path = Path.Combine(Application.persistentDataPath, "PlaythroughData_"+ DateTime.Now.ToString() +".txt");
     }
     void Start()
     {
@@ -36,12 +39,12 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnSceneEnd += AddDataEntry;
+        EventManager.OnPlayerWin += AddDataEntry;
     }
 
     private void OnDisable()
     {
-        EventManager.OnSceneEnd -= AddDataEntry;
+        EventManager.OnPlayerWin -= AddDataEntry;
     }
 
     void AddDataEntry()
