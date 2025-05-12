@@ -18,7 +18,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{69F1EE37-083C-4D0D-0C12-CDB6B4EE7695}",
+    "Hash": "{377DE9D1-6095-54D0-08E4-4A632E577B56}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -52,7 +52,7 @@
      {
       "Id": "4180996447",
       "Name": "BUS_Rev",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev",
       "GUID": "{3868CBF2-2967-4437-973A-6650E18DF0CB}",
       "Color": "26"
      }
@@ -61,24 +61,31 @@
      {
       "Id": "2517974655",
       "Name": "AUX_REVShort",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVShort",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVShort",
       "GUID": "{E33075AF-4FFC-4AE3-B70E-9749EDB6ABAF}",
       "Color": "26"
      },
      {
       "Id": "3217397620",
       "Name": "AUX_REVLarge",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
      }
     ],
     "GameParameters": [
      {
-      "Id": "2970777206",
-      "Name": "RTPC_Meter",
-      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter",
+      "Id": "344904358",
+      "Name": "RTPC_Meter_Glb",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter_Glb",
       "GUID": "{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}",
+      "Color": "10"
+     },
+     {
+      "Id": "401071423",
+      "Name": "RTPC_Meter_Portal",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter_Portal",
+      "GUID": "{3B920A5A-34C9-461D-A5DB-AEACE93A0237}",
       "Color": "10"
      }
     ],
@@ -149,7 +156,7 @@
      {
       "Id": "4180996447",
       "Name": "BUS_Rev",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev",
       "GUID": "{3868CBF2-2967-4437-973A-6650E18DF0CB}",
       "Color": "26"
      }
@@ -158,14 +165,14 @@
      {
       "Id": "2517974655",
       "Name": "AUX_REVShort",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVShort",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVShort",
       "GUID": "{E33075AF-4FFC-4AE3-B70E-9749EDB6ABAF}",
       "Color": "26"
      },
      {
       "Id": "3217397620",
       "Name": "AUX_REVLarge",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
      }
@@ -177,11 +184,19 @@
     "GUID": "{D8A3959E-27EB-4F77-8F83-21C2E065E718}",
     "Color": "17",
     "Language": "SFX",
-    "Hash": "{D7317EA0-B894-24C6-11E9-706EF325BDD1}",
+    "Hash": "{7AD80764-55AC-E852-5F8F-9097FC6127C2}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_AMB_SBK\\AMB_SBK",
     "ShortName": "AMB_SBK",
     "Path": "AMB_SBK.bnk",
     "Media": [
+     {
+      "Id": "158228601",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_08.wav",
+      "CachePath": "CE/{CEE878F2-A2BF-8C9D-8ADC-B0EAFD2901F1}.wem"
+     },
      {
       "Id": "270108792",
       "Language": "SFX",
@@ -189,6 +204,14 @@
       "Location": "Memory",
       "ShortName": "AMB\\AMB_Transition_Atmosphere_01.wav",
       "CachePath": "D9/{D9761FC4-9888-DE82-A980-654D07E84F19}.wem"
+     },
+     {
+      "Id": "302584607",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_02.wav",
+      "CachePath": "7A/{7A85FDA9-1830-6D80-5CD4-5E5A7E53F13B}.wem"
      },
      {
       "Id": "347484034",
@@ -199,6 +222,38 @@
       "CachePath": "42/{424509B9-7531-6793-5E52-052E345B738F}.wem"
      },
      {
+      "Id": "512930111",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_06.wav",
+      "CachePath": "F3/{F37B0A23-BB71-5162-DBFE-76A3489F79B6}.wem"
+     },
+     {
+      "Id": "593251270",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_04.wav",
+      "CachePath": "5B/{5B58FA1F-32FD-D52B-EA79-BCFC60DE6EE5}.wem"
+     },
+     {
+      "Id": "635046396",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_05.wav",
+      "CachePath": "9A/{9A5BEB06-2FD4-4F2E-AF34-6AD5118415AB}.wem"
+     },
+     {
+      "Id": "665013933",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_10.wav",
+      "CachePath": "B1/{B139F03F-B1EC-A71E-65F5-E226555B215C}.wem"
+     },
+     {
       "Id": "722162420",
       "Language": "SFX",
       "Streaming": "false",
@@ -207,19 +262,71 @@
       "CachePath": "A5/{A55F2BAA-757D-D49C-5456-A6584F556ACE}.wem"
      },
      {
+      "Id": "775619567",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\SP\\AMB_SP_Portal_LP.wav",
+      "CachePath": "06/{063CBFEA-1235-0167-6DB6-7948FB39B887}.wem"
+     },
+     {
       "Id": "818614971",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "3.Export\\AMB\\AMB_PAD_Global_LP.wav",
       "CachePath": "33/{330CBEC7-EF1D-98DC-986F-47062CAF9BEB}.wem"
+     },
+     {
+      "Id": "842157947",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_03.wav",
+      "CachePath": "22/{2277AAF2-CD80-836C-359C-0AAF01833FB2}.wem"
+     },
+     {
+      "Id": "941527389",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_07.wav",
+      "CachePath": "AC/{AC3319E6-FBDE-EC8E-0668-675FC21CE1D0}.wem"
+     },
+     {
+      "Id": "1006255207",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_01.wav",
+      "CachePath": "11/{114A74CD-C792-8A58-29ED-BB9CCF7F149D}.wem"
+     },
+     {
+      "Id": "1017814692",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "3.Export\\AMB\\RFX\\AMB_RFX_Portal_Whispers_09.wav",
+      "CachePath": "1E/{1E50B3BA-5FFB-C5FB-0E04-A9C150DE19A5}.wem"
      }
     ],
+    "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "2766983158",
+       "Name": "EF_Meter",
+       "ObjectPath": "\\Effects\\Default Work Unit\\EF_Meter",
+       "GUID": "{7A541130-2C27-4899-9F21-85FB05597353}",
+       "LibName": "Wwise Meter",
+       "LibId": "8454147"
+      }
+     ]
+    },
     "Events": [
      {
       "Id": "3794630063",
       "Name": "AMB_Cube_Atmosphere_LP",
-      "ObjectPath": "\\Events\\Default Work Unit\\WU_AMB_Event\\AMB_Cube_Atmosphere_LP",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_AMB_Event\\AMB_PAD\\AMB_Cube_Atmosphere_LP",
       "GUID": "{420E1F9F-776F-4761-B136-8791B21D4E96}",
       "Color": "17",
       "DurationType": "Infinite",
@@ -233,9 +340,60 @@
       ]
      },
      {
+      "Id": "3061115295",
+      "Name": "AMB_SP_Portal_LP",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_AMB_Event\\AMB_SP\\AMB_SP_Portal_LP",
+      "GUID": "{57DB938F-A8EB-4029-A9B7-E60BF391288B}",
+      "Color": "17",
+      "MaxAttenuation": "15",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "158228601"
+       },
+       {
+        "Id": "302584607"
+       },
+       {
+        "Id": "512930111"
+       },
+       {
+        "Id": "593251270"
+       },
+       {
+        "Id": "635046396"
+       },
+       {
+        "Id": "665013933"
+       },
+       {
+        "Id": "775619567"
+       },
+       {
+        "Id": "842157947"
+       },
+       {
+        "Id": "941527389"
+       },
+       {
+        "Id": "1006255207"
+       },
+       {
+        "Id": "1017814692"
+       }
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "2766983158"
+        }
+       ]
+      }
+     },
+     {
       "Id": "2906819207",
       "Name": "AMB_Transition",
-      "ObjectPath": "\\Events\\Default Work Unit\\WU_AMB_Event\\AMB_Transition",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_AMB_Event\\AMB_PAD\\AMB_Transition",
       "GUID": "{9D5532FE-E886-45E8-BFBD-395CB568309F}",
       "Color": "17",
       "DurationType": "OneShot",
@@ -261,7 +419,7 @@
      {
       "Id": "4180996447",
       "Name": "BUS_Rev",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev",
       "GUID": "{3868CBF2-2967-4437-973A-6650E18DF0CB}",
       "Color": "26"
      }
@@ -270,24 +428,31 @@
      {
       "Id": "2517974655",
       "Name": "AUX_REVShort",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVShort",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVShort",
       "GUID": "{E33075AF-4FFC-4AE3-B70E-9749EDB6ABAF}",
       "Color": "26"
      },
      {
       "Id": "3217397620",
       "Name": "AUX_REVLarge",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
      }
     ],
     "GameParameters": [
      {
-      "Id": "2970777206",
-      "Name": "RTPC_Meter",
-      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter",
+      "Id": "344904358",
+      "Name": "RTPC_Meter_Glb",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter_Glb",
       "GUID": "{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}",
+      "Color": "10"
+     },
+     {
+      "Id": "401071423",
+      "Name": "RTPC_Meter_Portal",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter_Portal",
+      "GUID": "{3B920A5A-34C9-461D-A5DB-AEACE93A0237}",
       "Color": "10"
      }
     ]
@@ -298,7 +463,7 @@
     "GUID": "{E7778272-12C3-43D2-BA1A-810432583A58}",
     "Color": "15",
     "Language": "SFX",
-    "Hash": "{48058717-B625-5C9A-AD4B-EEC445B7DDDC}",
+    "Hash": "{BB4FBCFF-21AB-0B15-48ED-7C5B68285D16}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_MC_SBK\\MC_SBK",
     "ShortName": "MC_SBK",
     "Path": "MC_SBK.bnk",
@@ -725,7 +890,7 @@
      {
       "Id": "4180996447",
       "Name": "BUS_Rev",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev",
       "GUID": "{3868CBF2-2967-4437-973A-6650E18DF0CB}",
       "Color": "26"
      }
@@ -734,16 +899,25 @@
      {
       "Id": "2517974655",
       "Name": "AUX_REVShort",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVShort",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVShort",
       "GUID": "{E33075AF-4FFC-4AE3-B70E-9749EDB6ABAF}",
       "Color": "26"
      },
      {
       "Id": "3217397620",
       "Name": "AUX_REVLarge",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "401071423",
+      "Name": "RTPC_Meter_Portal",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Meter_Portal",
+      "GUID": "{3B920A5A-34C9-461D-A5DB-AEACE93A0237}",
+      "Color": "10"
      }
     ],
     "SwitchGroups": [
@@ -813,7 +987,7 @@
      {
       "Id": "4180996447",
       "Name": "BUS_Rev",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev",
       "GUID": "{3868CBF2-2967-4437-973A-6650E18DF0CB}",
       "Color": "26"
      }
@@ -822,14 +996,14 @@
      {
       "Id": "2517974655",
       "Name": "AUX_REVShort",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVShort",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVShort",
       "GUID": "{E33075AF-4FFC-4AE3-B70E-9749EDB6ABAF}",
       "Color": "26"
      },
      {
       "Id": "3217397620",
       "Name": "AUX_REVLarge",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
      }
@@ -841,7 +1015,7 @@
     "GUID": "{653AB8BF-84AF-4F6C-B01A-9079A6DBFE3E}",
     "Color": "25",
     "Language": "SFX",
-    "Hash": "{B14CE2A1-A3B1-1BE8-A382-6440B813B798}",
+    "Hash": "{41F606BB-2674-0DAB-D7BF-89E0CD73AF61}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_SFX_SBK\\SFX_SBK",
     "ShortName": "SFX_SBK",
     "Path": "SFX_SBK.bnk",
@@ -1149,7 +1323,7 @@
      {
       "Id": "4180996447",
       "Name": "BUS_Rev",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev",
       "GUID": "{3868CBF2-2967-4437-973A-6650E18DF0CB}",
       "Color": "26"
      }
@@ -1158,20 +1332,20 @@
      {
       "Id": "2517974655",
       "Name": "AUX_REVShort",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVShort",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVShort",
       "GUID": "{E33075AF-4FFC-4AE3-B70E-9749EDB6ABAF}",
       "Color": "26"
      },
      {
       "Id": "3217397620",
       "Name": "AUX_REVLarge",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS\\BUS_Rev\\AUX_REVLarge",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Rev\\BUS_Rev\\AUX_REVLarge",
       "GUID": "{16E79169-583D-4729-952A-D97524F8612C}",
       "Color": "26"
      }
     ]
    }
   ],
-  "FileHash": "{93DCFDF8-20D6-86DD-3FF4-9E91B9C435DF}"
+  "FileHash": "{66F85141-0C07-B99A-862D-04579B87DAB9}"
  }
 }

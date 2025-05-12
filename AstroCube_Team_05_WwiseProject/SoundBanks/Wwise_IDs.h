@@ -14,6 +14,7 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID AMB_CUBE_ATMOSPHERE_LP = 3794630063U;
+        static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID MC_FT = 2275400278U;
         static const AkUniqueID SFX_BUTTON = 125802325U;
@@ -43,7 +44,8 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
-        static const AkUniqueID RTPC_METER = 2970777206U;
+        static const AkUniqueID RTPC_METER_GLB = 344904358U;
+        static const AkUniqueID RTPC_METER_PORTAL = 401071423U;
     } // namespace GAME_PARAMETERS
 
     namespace BANKS
