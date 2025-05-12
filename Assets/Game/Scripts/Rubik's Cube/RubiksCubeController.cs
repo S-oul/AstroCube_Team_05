@@ -56,15 +56,15 @@ public class RubiksCubeController : MonoBehaviour
         _gameSettings = GameManager.Instance.Settings;
         if (GameManager.Instance.IsRubiksCubeEnabled)
             ActionSwitchLineCols(true);
+    }
+    private void Start()
+    {
         if (_previewControlledScript == null)
         {
             var previewScript = GameObject.FindAnyObjectByType<PreviewRubiksCube>();
             if (previewScript)
                 _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
         }
-    }
-    private void Start()
-    {
         if (_previewControlledScript)
             HidePreview();
     }
