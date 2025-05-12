@@ -132,12 +132,11 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionSwitchLineCols(bool isLeft)
     {
-
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
         switch (_selectedSlice)
         {
             case SliceAxis.X:
-                _detectParentForGroundRotation.DoGroundRotation = false;
+                _detectParentForGroundRotation.ToggleParentChanger(false);
                 if (_controlledScript.IsLockXAxis)
                 {
                     _player.SetParent(null);
@@ -146,7 +145,7 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
             case SliceAxis.Y:
-                _detectParentForGroundRotation.DoGroundRotation = true;
+                _detectParentForGroundRotation.ToggleParentChanger(true);
                 if (_controlledScript.IsLockYAxis)
                 {
                     ActionSwitchLineCols(true);
@@ -154,7 +153,7 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
             case SliceAxis.Z:
-                _detectParentForGroundRotation.DoGroundRotation = false;
+                _detectParentForGroundRotation.ToggleParentChanger(false);
                 if (_controlledScript.IsLockZAxis)
                 {
                     _player.SetParent(null);
