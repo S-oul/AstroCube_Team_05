@@ -56,15 +56,15 @@ public class RubiksCubeController : MonoBehaviour
         _gameSettings = GameManager.Instance.Settings;
         if (GameManager.Instance.IsRubiksCubeEnabled)
             ActionSwitchLineCols(true);
+    }
+    private void Start()
+    {
         if (_previewControlledScript == null)
         {
             var previewScript = GameObject.FindAnyObjectByType<PreviewRubiksCube>();
             if (previewScript)
                 _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
         }
-    }
-    private void Start()
-    {
         if (_previewControlledScript)
             HidePreview();
     }
@@ -195,6 +195,10 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (_lastInput != null)
                 {
+                    if(_lastInput.cube == null)
+                    {
+                        Debug.LogError("This error happens once in a while then disappears, please report to Ema");
+                    }
                     bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
                     completeAction = isSameFace && _lastInput == input;
                 }
