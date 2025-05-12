@@ -9,10 +9,13 @@ public class CrossfadeTransition : MonoBehaviour
     public float segmentCount;
     public float kaleidoscopeCamZRotation;
     public float shaderAdjustmentAmount;
+    public float blackScreenOpacity;
 
     [SerializeField] GameObject _kaleidoscopeCam;
+    [SerializeField] Image _blackScreen;
     Image _screen;
     Animator _transitionAnimator;
+    Color _blackScreenColor;
 
     //IF YOU CHANGE THESE, I WILL FORKING KILL YOU
     float VIP_Var1 = -0.1371f; // Base 0
@@ -50,6 +53,7 @@ public class CrossfadeTransition : MonoBehaviour
         _screen = GetComponent<Image>();
         _transitionAnimator = GetComponent<Animator>();
         InputHandler.Instance.CanMove = false;
+        _blackScreenColor = _blackScreen.color;
     }
 
     private void Update()
@@ -87,5 +91,7 @@ public class CrossfadeTransition : MonoBehaviour
 
         _screen.material.SetFloat("_TEST_VAR1", Mathf.Lerp(0, VIP_Var1, shaderAdjustmentAmount));
         _screen.material.SetFloat("_TEST_VAR2", Mathf.Lerp(1, VIP_Var2, shaderAdjustmentAmount));
+        _blackScreenColor.a = blackScreenOpacity;
+        _blackScreen.color = _blackScreenColor;
     }
 }

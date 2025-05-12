@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour
     {
         var def = _database.GetSoundFromID(id);
         def?.WwiseEvent?.Post(Instance.gameObject);
-        Debug.Log($"Playing 2D sound: {def?.WwiseEvent?.Name}");
+        //Debug.Log($"Playing 2D sound: {def?.WwiseEvent?.Name}");
     }
 
     public void Play3D(AudioEventID id, GameObject source)

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEngine.Windows.Speech.PhraseRecognitionSystem;
 
 public class EventManager : MonoBehaviour
 {
@@ -35,7 +34,12 @@ public class EventManager : MonoBehaviour
 
     //Rubik's Cube Events
     public static event Action OnStartCubeRotation;
+    public static event Action OnStartCubeSequenceRotation;
+
+
     public static event Action OnEndCubeRotation;
+    public static event Action OnEndCubeSequenceRotation;
+
 
 
     //Object Events
@@ -49,11 +53,11 @@ public class EventManager : MonoBehaviour
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
 
-    public static event Action OnStartNarrativeSequence;
-    public static event Action OnEndNarrativeSequence;
-
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
 
+    //Narrative Events
+    public static event Action OnStartNarrativeSequence;
+    public static event Action OnEndNarrativeSequence;
 
     public static Delegate[] OnGamePauseCallStack => OnGamePause.GetInvocationList();
     public static Delegate[] OnGameUnpauseCallStack => OnGameUnpause.GetInvocationList();
@@ -145,6 +149,15 @@ public class EventManager : MonoBehaviour
     public static void TriggerStartCubeRotation()
     {
         OnStartCubeRotation?.Invoke();
+    }
+
+    public static void TriggerStartCubeSequenceRotation()
+    {
+        OnStartCubeSequenceRotation?.Invoke();
+    }
+    public static void TriggerEndCubeSequenceRotation() 
+    {
+        OnEndCubeSequenceRotation?.Invoke();
     }
 
     public static void TriggerEndCubeRotation()

@@ -10,22 +10,6 @@ using static UnityEngine.Timeline.TimelineAsset;
 public class EntitySequenceManager : MonoBehaviour
 {
     [SerializeField] private TextAnimation _textAnimation;
-    [SerializeField] private Material _distortMat;
-    [SerializeField] private UniversalRendererData _data;
-    FullScreenPassRendererFeature _distortionRenderFeature;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        _distortionRenderFeature =  _data.rendererFeatures.First(x => x.name == "Distort") as FullScreenPassRendererFeature;
-        _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", 1f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void DisplayText()
     {
@@ -34,17 +18,16 @@ public class EntitySequenceManager : MonoBehaviour
 
     public void DistortScreen(float duration)
     {
-        DOTween.To(() => _distortionRenderFeature.passMaterial.GetFloat("_DistortionAmount"), x => _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", x), 5f, duration);
+        PostProcessManager.Instance.SetScreenDistortion(1.0f, duration);
     }
 
     public void SetDistortion(float amount)
     {
-        _distortionRenderFeature = _data.rendererFeatures.First(x => x.name == "Distort") as FullScreenPassRendererFeature;
-        _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", amount);
+        PostProcessManager.Instance.SetScreenDistortion(amount);
     }
 
     private void OnDisable()
     {
-        _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", 1);
+        PostProcessManager.Instance.SetScreenDistortion(0.0f);
     }
 }

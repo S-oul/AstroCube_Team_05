@@ -14,11 +14,11 @@ public class GameActionKaleidoscope : AGameAction
     {
         switch (_kaleidoscopeAction) {
             case KaleidoscopeAction.Start:
-                KaleidoscopeManager.Instance.SetEnabled(true);
+                PostProcessManager.Instance.SetEnabled(true);
                 break;
 
             case KaleidoscopeAction.Stop:
-                KaleidoscopeManager.Instance.SetEnabled(false);
+                PostProcessManager.Instance.SetEnabled(false);
                 break;
         }
     }

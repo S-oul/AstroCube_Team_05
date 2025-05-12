@@ -1,7 +1,5 @@
 using NaughtyAttributes;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -9,8 +7,6 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     // Player Properties
-    public float CameraSensibilityJoystick => cameraSensibilityJoystick;
-    public float CameraSensibilityMouse => cameraSensibilityMouse;
     public float PlayerMoveSpeed => _playerMoveSpeed;
     public float Gravity => _gravity;
     public float JumpHeight => _jumpHeight;
@@ -21,7 +17,6 @@ public class GameSettings : ScriptableObject
     public float HeadBobbingSpeed => _headBobbingSpeed;
     public float StartWalkingTransitionDuration => _startWalkingTransitionDuration;
     public float StopWalkingTransitionDuration => _stopWalkingTransitionDuration;
-    public float FOV => _FOV;
     public AnimationCurve HeadBobbingCurve => _headBobbingCurve;
     public bool EnableGravityRotation => _enableGravityRotation;
 
@@ -31,9 +26,9 @@ public class GameSettings : ScriptableObject
     public float PreviewRubikscCubeAxisRotationDuration => _previewRubikscCubeAxisRotationDuration;
     public float UiRubikscCubeRotationDuration => _uiRubikscCubeRotationDuration;
     public AnimationCurve AnimationSpeedCurve => _AnimationSpeedCurve;
-    public Vector4 RubiksCubeRotationScreenshakeSettings => _rubiksCubeRotationscreenshakeSettings;
+    public Vector4 RubiksEndCubeRotationScreenshakeSettings => _rubiksEndCubeRotationscreenshakeSettings;
 
-
+    public Vector4 RubiksStartCubeRotationScreenshakeSettings => _rubiksStartCubeRotationscreenshakeSettings;
     // Global Properties
     public float ResetDuration => _resetDuration;
     public float StencilFadeInDuration => _stencilFadeInDuration;
@@ -42,8 +37,6 @@ public class GameSettings : ScriptableObject
 
 
     [Header("-- PLAYER --")]
-    [SerializeField] private float cameraSensibilityJoystick = 1000f;
-    [SerializeField] private float cameraSensibilityMouse = 100f;
 
     [Header("- Movement")]
     [SerializeField] float _playerMoveSpeed = 12f;
@@ -73,9 +66,6 @@ public class GameSettings : ScriptableObject
     [SerializeField] float _stopStairsTransitionDuration = 0.5f;
     [SerializeField] AnimationCurve _headBobbingStairsCurve;
 
-    [Header("- Camera")]
-    [SerializeField] float _FOV = 60f;
-
 
     [Header("- GravityRotation")]
     [SerializeField] bool _enableGravityRotation = false;
@@ -87,8 +77,9 @@ public class GameSettings : ScriptableObject
 
     [SerializeField] AnimationCurve _AnimationSpeedCurve = new AnimationCurve();
 
-    [SerializeField][InfoBox("Duration, Strength, Vibrato, Randomness", EInfoBoxType.Normal)] private Vector4 _rubiksCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
-
+    [SerializeField][InfoBox("Duration, Strength, Vibrato, Randomness", EInfoBoxType.Normal)] 
+    private Vector4 _rubiksEndCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
+    [SerializeField] private Vector4 _rubiksStartCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
     [Header("-- GLOBAL --")]
     [SerializeField] private float _resetDuration = 2.0f;
 

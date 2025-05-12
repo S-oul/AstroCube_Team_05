@@ -1,6 +1,4 @@
-using AK.Wwise;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -199,7 +197,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isWalking) {
             _timerBeforeNextStep += Time.deltaTime;
-        } else {
+            EventManager.TriggerPlayerFootSteps(_currentGroundType);
+
+        }
+        else {
             _timerBeforeNextStep = 0;
         }
 
@@ -207,7 +208,8 @@ public class PlayerMovement : MonoBehaviour
         if (_timerBeforeNextStep >= stepDuration) {
             _timerBeforeNextStep = 0;
             UpdateGroundType();
-            EventManager.TriggerPlayerFootSteps(_currentGroundType);            
+            EventManager.TriggerPlayerFootSteps(_currentGroundType);
+
         }
     }
 
@@ -318,7 +320,7 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, _floorDistance + 0.2f, _floorLayer))
         {
             string groundTag = hit.collider.tag;
-            Debug.Log("Ground tag detected: " + groundTag);
+            //Debug.Log("Ground tag detected: " + groundTag);
             switch (groundTag)
             {
                 case "Floor_Default":
@@ -329,11 +331,11 @@ public class PlayerMovement : MonoBehaviour
                     _currentGroundType = GroundTypePlayerIsWalkingOn.Grass;
                     break;
             }
-            Debug.Log("Ground type detected: " + groundTag);
+            //Debug.Log("Ground type detected: " + groundTag);
         }
         else
         {
-            Debug.Log("No ground or tag detected , setting to default.");
+            //Debug.Log("No ground or tag detected , setting to default.");
             _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
         }
     }

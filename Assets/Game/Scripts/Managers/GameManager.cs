@@ -7,12 +7,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public GameSettings Settings => settings;
+
     [SerializeField] private GameSettings settings;
 
     [SerializeField] private GameObject winScreen;
@@ -26,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float _sequenceDuration;
     [SerializeField] Transform _artifact;
     [SerializeField] List<GameObject> _objectToDisable;
+    CameraAnimator _cameraAnimator;
 
     public static GameManager Instance => instance;
     private static GameManager instance;
@@ -35,17 +38,24 @@ public class GameManager : MonoBehaviour
     public bool IsRubiksCubeEnabled => _isRubiksCubeEnabled;
     [SerializeField, ReadOnly] private bool _isRubiksCubeEnabled;
 
-    [SerializeField] GameObject _previewRubiksCube; 
+    [field: SerializeField] public PreviewRubiksCube PreviewRubiksCube { get; private set; }
+
 
     private void Awake()
     {
         if (instance) Destroy(this);
         else instance = this;
+
+        if(PreviewRubiksCube == null)
+        {
+            PreviewRubiksCube = FindAnyObjectByType<PreviewRubiksCube>();
+        }
     }
 
     public enum EScreenshakeMode
     {
-        RUBIKS_CUBE_ROTATION
+        START_RUBIKS_CUBE_ROTATION,
+        END_RUBIKS_CUBE_ROTATION
     }
 
     public void Screenshake(EScreenshakeMode mode)
@@ -54,49 +64,61 @@ public class GameManager : MonoBehaviour
         {
             default:
                 break;
-            case EScreenshakeMode.RUBIKS_CUBE_ROTATION:
-                Camera.main.DOShakePosition(settings.RubiksCubeRotationScreenshakeSettings.x,
-                                            settings.RubiksCubeRotationScreenshakeSettings.y,
-                                            (int)settings.RubiksCubeRotationScreenshakeSettings.z,
-                                            settings.RubiksCubeRotationScreenshakeSettings.w);
+            case EScreenshakeMode.END_RUBIKS_CUBE_ROTATION:
+                Camera.main.DOShakePosition(settings.RubiksEndCubeRotationScreenshakeSettings.x,
+                                            settings.RubiksEndCubeRotationScreenshakeSettings.y,
+                                            (int)settings.RubiksEndCubeRotationScreenshakeSettings.z,
+                                            settings.RubiksEndCubeRotationScreenshakeSettings.w,
+                                            false,
+                                            ShakeRandomnessMode.Full);
+                break;
+            case EScreenshakeMode.START_RUBIKS_CUBE_ROTATION:
+                Camera.main.DOShakePosition(settings.RubikscCubeAxisRotationDuration,
+                                            settings.RubiksStartCubeRotationScreenshakeSettings.y,
+                                            (int)settings.RubiksStartCubeRotationScreenshakeSettings.z,
+                                            settings.RubiksStartCubeRotationScreenshakeSettings.w,
+                                            false,
+                                            ShakeRandomnessMode.Full);
                 break;
         }
     }
-    void ScreenshakeCubeRotation() => Screenshake(EScreenshakeMode.RUBIKS_CUBE_ROTATION);
+
+    void ScreenshakeCubeRotationStart() => Screenshake(EScreenshakeMode.START_RUBIKS_CUBE_ROTATION);
+    void ScreenshakeCubeRotationEnd() => Screenshake(EScreenshakeMode.END_RUBIKS_CUBE_ROTATION);
+
 
     private void OnEnable()
     {
         EventManager.OnSceneChange += ChangeScene;
 
-        EventManager.OnStartCubeRotation += ScreenshakeCubeRotation;
+        EventManager.OnStartCubeRotation += ScreenshakeCubeRotationStart;
+        EventManager.OnEndCubeRotation += ScreenshakeCubeRotationEnd;
 
         EventManager.OnGamePause += StopDeltaTime;
         EventManager.OnGameUnpause += ResetDeltaTime;
 
         EventManager.OnGamePause += UnlockMouse;
         EventManager.OnGameUnpause += LockMouse;
-
-        EventManager.OnPreviewChange += PreviewSetActive;
     }
 
     private void OnDisable()
     {
         EventManager.OnSceneChange -= ChangeScene;
 
-        EventManager.OnStartCubeRotation -= ScreenshakeCubeRotation;
+        EventManager.OnStartCubeRotation -= ScreenshakeCubeRotationStart;
+        EventManager.OnEndCubeRotation -= ScreenshakeCubeRotationEnd;
 
         EventManager.OnGamePause -= StopDeltaTime;
         EventManager.OnGameUnpause -= ResetDeltaTime;
         EventManager.OnGameUnpause -= LockMouse;
         EventManager.OnGamePause -= UnlockMouse;
-
-        EventManager.OnPreviewChange -= PreviewSetActive;
     }
 
     private void Start()
     {
         EventManager.TriggerSceneStart();
     }
+
 
     void ShowWinScreen()
     {
@@ -169,17 +191,18 @@ public class GameManager : MonoBehaviour
 
         EventManager.TriggerNarrativeSequenceEnd();
         _fade.color = new Color(0, 0, 0, 1.0f);
-        Camera.main.transform.parent.parent.rotation = Quaternion.Euler(0, cameraAngle.eulerAngles.y - 180, 0);
-        Camera.main.transform.parent.parent.position = new Vector3(0, Camera.main.transform.parent.parent.position.y, 0);
+
+        _cameraAnimator = Camera.main.transform.parent.parent.GetComponent<CameraAnimator>(); 
+        _cameraAnimator.transform.rotation = Quaternion.Euler(0, cameraAngle.eulerAngles.y - 180, 0);
+        _cameraAnimator.transform.position = new Vector3(0, _cameraAnimator.transform.position.y, 0);
         Camera.main.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
 
-        //Mouse.current.WarpCursorPosition(new Vector2(0,0));
-
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;
-        yield return Camera.main.transform.parent.parent.DORotate(new Vector3(Camera.main.transform.parent.parent.eulerAngles.x, 359, Camera.main.transform.parent.parent.eulerAngles.z), 10, RotateMode.WorldAxisAdd).WaitForCompletion();
+
+        yield return StartCoroutine(_cameraAnimator.TurnAround());
     }
 
     private void EndNarrativeSequence() => InputHandler.Instance.CanMove = true;
@@ -194,19 +217,5 @@ public class GameManager : MonoBehaviour
     {
         _isRubiksCubeEnabled = isEnabled;
         _rubiksCubeUI.SetActive(isEnabled);
-    }
-
-    private void PreviewSetActive(bool isEnabled = true)
-    {
-        // PreviewRubiksCube functionality cannot yet be toggled during playmode. 
-
-        /*
-        if (_previewRubiksCube == null)
-        {
-            Debug.Log("No 'Preview Rubic's Cube' is present in this scene.");
-            return;
-        }
-        _previewRubiksCube.SetActive(isEnabled);
-        */
     }
 }
