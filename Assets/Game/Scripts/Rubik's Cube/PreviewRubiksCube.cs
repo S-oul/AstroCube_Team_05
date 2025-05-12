@@ -45,4 +45,5 @@ public class PreviewRubiksCube : MonoBehaviour
         RubiksMovement script = GetComponentsInChildren<RubiksMovement>()[0];
         script.IsPreview = true;
     }
+
 }
