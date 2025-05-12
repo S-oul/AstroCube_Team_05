@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
-using AmplifyShaderEditor;
 using System;
 
 public class PlaythroughDataTxtWrite : MonoBehaviour
@@ -10,6 +9,7 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
 
     float _completionTime;
     int _numOfMoves;
+    string _fileName;
 
 
     /// <summary>
@@ -20,8 +20,11 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
     {
         Debug.LogWarning("Playtrhough Data only works on Windows");
         string exeDirectory = Directory.GetParent(Application.dataPath).FullName;
-        //path = Path.Combine(exeDirectory, "PlaythroughData.txt");
-        path = Path.Combine(Application.persistentDataPath, "PlaythroughData_"+ DateTime.Now.ToString() +".txt");
+        _fileName = "PlaythroughData_" + DateTime.Now.ToString() + ".txt";
+        _fileName = _fileName.Replace(" ", "_");
+        _fileName = _fileName.Replace("/", ".");
+        _fileName = _fileName.Replace(":", ".");
+        path = Path.Combine(Application.persistentDataPath, _fileName);
     }
     void Start()
     {
