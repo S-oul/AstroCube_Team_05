@@ -1,3 +1,4 @@
+using RubiksStatic;
 using System;
 using UnityEngine;
 
@@ -49,6 +50,7 @@ public class EventManager : MonoBehaviour
     //Player Events
     public static event Action<float> OnPlayerReset;
     public static event Action<float> OnPlayerResetOnce;
+    public static event Action<RubiksMove> OnMoveReset;
 
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
@@ -124,6 +126,10 @@ public class EventManager : MonoBehaviour
     public void TriggerResetOnce()
     {
         OnPlayerResetOnce?.Invoke(_gameSettings.ResetDuration / 4);
+    }
+    public static void TriggerMoveResetOnce(RubiksMove move)
+    {
+        OnMoveReset?.Invoke(move);
     }
 
     public static void TriggerSceneStart()

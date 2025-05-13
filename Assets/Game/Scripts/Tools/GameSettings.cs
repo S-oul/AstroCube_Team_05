@@ -6,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameSettings", menuName = "ScriptableObjects/GameSettings", order = 1)]
 public class GameSettings : ScriptableObject
 {
+    public string playthoughDataFileName { get; set; }
+
     // Player Properties
     public float PlayerMoveSpeed => _playerMoveSpeed;
     public float Gravity => _gravity;
