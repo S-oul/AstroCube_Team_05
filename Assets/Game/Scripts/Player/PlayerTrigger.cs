@@ -73,16 +73,16 @@ public class PlayerTrigger : MonoBehaviour
 
             float t2 = Mathf.Lerp(.1f, 10, curveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
-            vol.profile.TryGet<ChromaticAberration>(out var ca);
-
-            ca.intensity.Override(t2);
+            if (vol)
+            {
+                vol.profile.TryGet<ChromaticAberration>(out var ca);
+                ca.intensity.Override(t2);
+            }
 
 
             Camera.allCameras[0].fieldOfView = cameraFOV;
             Camera.allCameras[1].fieldOfView = cameraOverlayFOV;
-            
 
-            print(t2);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -110,8 +110,11 @@ public class PlayerTrigger : MonoBehaviour
             Camera.main.fieldOfView = GameManager.Instance.CustomSettings.customFov;
             Camera.allCameras[1].fieldOfView = 43;
 
-            vol.profile.TryGet<ChromaticAberration>(out var ca);
-            ca.intensity.Override(.1f);
+            if (vol)
+            {
+                vol.profile.TryGet<ChromaticAberration>(out var ca);
+                ca.intensity.Override(.1f);
+            }
         }
     }
 }
