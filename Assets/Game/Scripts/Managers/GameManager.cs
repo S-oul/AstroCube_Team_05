@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameSettings settings;
 
-    [SerializeField] private GameObject winScreen;
-    [SerializeField] private GameObject loseScreen;
-
+    public CustomisedSettings CustomSettings => CutomizeSettings;
+    [SerializeField] private CustomisedSettings CutomizeSettings;
+        
     [SerializeField][Scene] string nextScene;
 
     [Header("Entity Sequence")]
@@ -118,20 +118,6 @@ public class GameManager : MonoBehaviour
     {
         EventManager.TriggerSceneStart();
     }
-
-
-    void ShowWinScreen()
-    {
-        winScreen.SetActive(true);
-        Debug.Log("Victoire !");
-    }
-
-    void ShowLoseScreen()
-    {
-        loseScreen.SetActive(true);
-        Debug.Log("D�faite !");
-    }
-
     void ChangeScene()
     {
         SceneManager.LoadScene(nextScene);
