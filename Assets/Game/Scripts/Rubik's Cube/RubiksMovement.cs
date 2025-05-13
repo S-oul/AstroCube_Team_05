@@ -162,33 +162,29 @@ public class RubiksMovement : MonoBehaviour
         _isReversing = false;
     }
 
-    public void ResetMovesHistory()
-    {
-        _moves.Clear();
-    }
-
     public void UndoMove(float time)
     {
-        if (IsReversing) return;
-        StartCoroutine(ReverseOneMoves(time));
+        StartCoroutine(ReverseOneMove(time));
     }
-    IEnumerator ReverseOneMoves(float time)
-    {
-        while (_isRotating)
-            yield return null;
 
+    IEnumerator ReverseOneMove(float time)
+    {
+        while (_isRotating || _isReversing)
+            yield return null;
 
         if (Moves.Count == 0) yield break;
 
         _isReversing = true;
-        RubiksMove m = Moves[Moves.Count - 1];
+        RubiksMove m = Moves[^1];
 
         StartCoroutine(RotateAxisCoroutine(m.Axis, m.cube, !m.clockWise, time, m.orientation));
+
         Moves.RemoveAt(Moves.Count - 1);
 
         yield return new WaitForSeconds(time + .05f);
         _isReversing = false;
     }
+
     void RotateAxis(RubiksMove move, float duration = 0.5f)
     {
         StartCoroutine(RotateAxisCoroutine(move.Axis, move.cube, move.clockWise, duration, move.orientation));
@@ -233,7 +229,7 @@ public class RubiksMovement : MonoBehaviour
         }
         _isRotating = true;
 
-        if (!_isPreview || !_isArtCube)
+        if (!(_isPreview && _isArtCube))
         {
             if (!_DoAutoMoves) EventManager.TriggerStartCubeRotation();
             else EventManager.TriggerStartCubeSequenceRotation();
@@ -326,9 +322,7 @@ public class RubiksMovement : MonoBehaviour
             yield return null;
         }
         
-        
         axis.localRotation = targetRotation;
-
 
         foreach (int i in blockIndexs)
         {
@@ -359,12 +353,11 @@ public class RubiksMovement : MonoBehaviour
             };
             _moves.Add(move);
         }
-        if (!_isPreview || !_isArtCube)
+        if (!(_isPreview && _isArtCube))
         {
             if(!_DoAutoMoves) EventManager.TriggerEndCubeRotation();
             else EventManager.TriggerEndCubeSequenceRotation();
         }
-
     }
 
     RubiksMove CreateRandomMove()
@@ -470,7 +463,7 @@ public class RubiksMovement : MonoBehaviour
 namespace RubiksStatic
 {
     [Serializable]
-    class RubiksMove
+    public class RubiksMove
     {
         public Transform axis;
         public Transform cube;

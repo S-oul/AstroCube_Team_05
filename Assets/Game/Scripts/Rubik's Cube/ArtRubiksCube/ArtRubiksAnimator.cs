@@ -33,6 +33,7 @@ public class ArtRubiksAnimator : MonoBehaviour
     public void StartAnimRota()
     {
         animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
+        animatorFx.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
         animatorCube.SetTrigger("DoRotation");
 
         switch (_type)

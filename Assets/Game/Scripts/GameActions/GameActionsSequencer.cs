@@ -39,18 +39,22 @@ public class GameActionsSequencer : MonoBehaviour
         bool allActionsFinished = false;
         AGameAction currentAction = _gameActionsList[_currentGameActionIndex];
         currentAction.ActionUpdate(dt);
-        while (!allActionsFinished && currentAction.IsFinished()) {
+        while (!allActionsFinished && currentAction.IsFinished()) 
+        {
             currentAction.End();
             _currentGameActionIndex++;
-            if (_currentGameActionIndex >= _gameActionsList.Count) {
-                allActionsFinished = true;
-            } else {
+            if (_currentGameActionIndex >= _gameActionsList.Count) allActionsFinished = true;
+            else 
+            {
+                print("Executing action " + currentAction.name + " at index " + _currentGameActionIndex + " of sequencer " + name);
                 currentAction = _gameActionsList[_currentGameActionIndex];
                 currentAction.Execute();
             }
         }
 
-        if (allActionsFinished) {
+        if (allActionsFinished)
+        {
+            print("Finished sequencer : " + name);
             Stop(true);
         }
     }
@@ -59,6 +63,7 @@ public class GameActionsSequencer : MonoBehaviour
     {
         if (_isRunning) return;
         if (_gameActionsList.Count == 0) return;
+        print("Playing sequencer : " + name);
         _currentGameActionIndex = 0;
         _isRunning = true;
         _gameActionsList[_currentGameActionIndex].Execute();
@@ -70,10 +75,10 @@ public class GameActionsSequencer : MonoBehaviour
         if (!_isRunning) return;
         _currentGameActionIndex = 0;
         _isRunning = false;
-
         if (withAutoReplay && replayOnStop) {
             Play();
         }
+        else print("Stopped sequencer : " + name);
     }
 
     public bool IsRunning()
