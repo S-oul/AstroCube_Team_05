@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class TextAnimation : MonoBehaviour
 {
@@ -49,9 +50,9 @@ public class TextAnimation : MonoBehaviour
             SpawnText();
     }
 
-    public Vector2 GetCharPosFromIndex(int index)
+    public Vector3 GetCharPosFromIndex(int index)
     {
-        return (Vector2.Lerp(spawnedText[index].squarePosition, spawnedText[index].linePosition, _textLerp));
+        return (Vector3.Lerp(spawnedText[index].squarePosition, spawnedText[index].linePosition, _textLerp));
     }
 
     [Button("Spawn Text")]
@@ -63,9 +64,10 @@ public class TextAnimation : MonoBehaviour
         for (int i = 0; i < tempNoSpace.Length; i++)
         {
             char c = tempNoSpace[i];
-            GameObject spawnedLetter = Instantiate(letterPrefab, GetCharPosFromIndex(i), Quaternion.identity, transform);
+            RectTransform spawnedLetter = Instantiate(letterPrefab, new Vector3(GetCharPosFromIndex(i).x, GetCharPosFromIndex(i).y, 0), Quaternion.identity, transform).GetComponent<RectTransform>();
+            spawnedLetter.localPosition = new Vector3(spawnedLetter.localPosition.x,spawnedLetter.localPosition.y, 0.0f);
             spawnedText[i].index = i;
-            spawnedText[i].text = spawnedLetter.GetComponent<Text>();
+            spawnedText[i].text = spawnedLetter.transform.GetComponent<Text>();
             spawnedText[i].text.material = Instantiate(spawnedText[i].text.material);
             spawnedText[i].text.text = c.ToString();
         }
@@ -77,7 +79,10 @@ public class TextAnimation : MonoBehaviour
         string tempNoSpace = text.Replace(" ", string.Empty);
         for (int i = 0; i < tempNoSpace.Length; i++)
         {
-            spawnedText[i].text.transform.position = GetCharPosFromIndex(i);    
+            spawnedText[i].text.transform.position = GetCharPosFromIndex(i);
+            var r = spawnedText[i].text.GetComponent<RectTransform>();
+            r.localPosition = new Vector3(r.localPosition.x, r.localPosition.y, 0.0f); 
+
         }
     }
 
@@ -91,15 +96,15 @@ public class TextAnimation : MonoBehaviour
         float squareSize = Mathf.Floor(Mathf.Sqrt(tempNoSpace.Length));
         for (int i = 0; i < tempNoSpace.Length; i++)
         {
-            Vector2 newPos = new Vector2(startPointSquare.position.x + ((i % squareSize) * _intervalSquare),
-                                        startPointSquare.position.y - (Mathf.Floor(i / squareSize) * _intervalSquare));
+            Vector3 newPos = new Vector3(startPointSquare.position.x + ((i % squareSize) * _intervalSquare),
+                                        startPointSquare.position.y - (Mathf.Floor(i / squareSize) * _intervalSquare), 0.0f);
             spawnedText[i].squarePosition = newPos;
         }
         int noSpaceIndex = 0;
         for (int i = 0; i < text.Length; i++)
         {
-            Vector2 newPos = new Vector2(startPointDetangled.position.x + (i * _intervalDetangled),
-                                        startPointDetangled.position.y);
+            Vector3 newPos = new Vector3(startPointDetangled.position.x + (i * _intervalDetangled),
+                                        startPointDetangled.position.y, 0.0f);
             if (text[i] != ' ')
             {
                 spawnedText[noSpaceIndex++].linePosition = newPos;
@@ -132,7 +137,7 @@ public class TextAnimation : MonoBehaviour
         foreach (LetterInfo letter in randomLetters)
         {
             DOTween.To(() => letter.text.material.GetFloat("_Distort"), x => letter.text.material.SetFloat("_Distort", x), 0f, _durationDescrambleForEachLetter).SetEase(Ease.OutCirc);
-            letter.text.transform.DOMove(letter.linePosition, _durationMoveToLineForEachLetter).SetEase(Ease.InOutSine);
+            StartCoroutine(DescrambleLetter(letter));
             yield return new WaitForSeconds(_intervalBetweenEachLetterMove);
         }
 
@@ -168,19 +173,32 @@ public class TextAnimation : MonoBehaviour
         }
     }
 
+    IEnumerator DescrambleLetter(LetterInfo letter)
+    {
+        var r = letter.text.GetComponent<RectTransform>();
+        DOTween.To(() => r.transform.position, x => r.transform.position = x, new Vector3(letter.linePosition.x, letter.linePosition.y, 0.0f), _durationMoveToLineForEachLetter).SetEase(Ease.InOutSine);
+
+        for (float t = 0.0f; t < _durationMoveToLineForEachLetter; t += Time.deltaTime)
+        {
+            r.localPosition = new Vector3(r.localPosition.x, r.localPosition.y, 0.0f); 
+            yield return null;
+        }
+        r.localPosition = new Vector3(r.localPosition.x, r.localPosition.y, 0.0f);
+
+    }
     class LetterInfo
     {
         public float index;
         public Text text;
-        public Vector2 squarePosition;
-        public Vector2 linePosition;
+        public Vector3 squarePosition;
+        public Vector3 linePosition;
 
         public LetterInfo()
         {
             index = 0;
             text = null;
-            squarePosition = new Vector2();
-            linePosition = new Vector2();
+            squarePosition = new Vector3();
+            linePosition = new Vector3();
         }
     }
 }
