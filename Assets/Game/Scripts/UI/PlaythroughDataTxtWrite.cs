@@ -12,28 +12,37 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
     string _fileName;
 
 
+
     /// <summary>
     /// WARN SACHA WINDOWS ONLY
     /// </summary>
-    string path;
+    string _folderPath;
+    string _filePath;
     void Awake()
     {
         Debug.LogWarning("Playtrhough Data only works on Windows");
         string exeDirectory = Directory.GetParent(Application.dataPath).FullName;
+        _folderPath = Path.Combine(exeDirectory, "Playthrough_Data");
+
+        if (Directory.Exists(_folderPath) == false)
+        {
+            Directory.CreateDirectory(_folderPath);
+            Debug.Log("Created folder: " + _folderPath);
+        }
+
         if (GameManager.Instance.Settings.playthoughDataFileName == null)
         {
             Debug.Log("MAKING NEW FILE");
-            _fileName = "PlaythroughData_" + DateTime.Now.ToString() + ".txt";
-            _fileName = _fileName.Replace(" ", "_");
-            _fileName = _fileName.Replace("/", ".");
-            _fileName = _fileName.Replace(":", ".");
+            _fileName = "Playthrough_Data\\PlaythroughData_" + DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss") + ".txt";
             GameManager.Instance.Settings.playthoughDataFileName = _fileName;
         }
         else
         {
             _fileName = GameManager.Instance.Settings.playthoughDataFileName;
         }
-        path = Path.Combine(Application.persistentDataPath, _fileName);
+        //path = Path.Combine(Application.persistentDataPath, _fileName);
+        _filePath = Path.Combine(exeDirectory, _fileName);
+        Debug.Log(_filePath);
     }
     void Start()
     {
@@ -43,9 +52,9 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
 
     void CreateTextFile()
     {
-        if (!File.Exists(path))
+        if (!File.Exists(_filePath))
         {
-            File.WriteAllText(path, "PlaythoughDataLog\n\n");
+            File.WriteAllText(_filePath, "PlaythoughDataLog\n\n");
         }
     }
 
@@ -71,9 +80,7 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
             _completionTime, 
             _numOfMoves
             );
-        File.AppendAllText(path, content);
-
-        Debug.Log("DataEntry in scene " + SceneManager.GetActiveScene().name);
+        File.AppendAllText(_filePath, content);
     }
 }
 

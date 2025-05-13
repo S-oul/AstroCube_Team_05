@@ -36,7 +36,6 @@ public class ChangeUiController : MonoBehaviour
             lastDevice = receivedInputAction.activeControl.device;
 
             string name = lastDevice.name;
-            print(name);
 
 
             if (name.Contains("XInputControllerWindows")) _sprite.sprite = _Xbox;
