@@ -17,7 +17,7 @@ public class MouseCamControl : MonoBehaviour
 
     [Header("Cameras")]
     [SerializeField] Camera _mainCamera;
-    [SerializeField] Camera _kaleidoCam;
+    //[SerializeField] Camera _kaleidoCam;
 
     //To Fix
     //[SerializeField] bool _MoveOverlayCubeWithCamRota = true;
@@ -91,7 +91,7 @@ public class MouseCamControl : MonoBehaviour
     void UpdateCameraFOV(float newFOV)
     {
         _mainCamera.fieldOfView = newFOV;
-        _kaleidoCam.fieldOfView = newFOV * (4f/7f);
+        //_kaleidoCam.fieldOfView = newFOV * (4f/7f);
     }    
     void UpdateCameraMouseSensitivity(float newCamMouseSen)
     {
