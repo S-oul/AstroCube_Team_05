@@ -20,7 +20,7 @@ public class PlayerTrigger : MonoBehaviour
     FloatingZone _flotingZone;
     private void Start()
     {
-        if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol").GetComponent<Volume>();
+        if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol")?.GetComponent<Volume>();
         _playerMovement = GetComponent<PlayerMovement>();
         _characterController = GetComponent<CharacterController>();
     }
