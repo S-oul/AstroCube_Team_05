@@ -16,6 +16,7 @@ namespace AK
         static const AkUniqueID AMB_PAD_GLOBAL_LP = 2515429708U;
         static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
         static const AkUniqueID AMB_SP_RC_PULSESHARD = 3134303699U;
+        static const AkUniqueID AMB_SP_SHARD_FLOAT_LP = 102969944U;
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID MC_FT = 2275400278U;
         static const AkUniqueID SFX_BUTTON = 125802325U;
