@@ -62,7 +62,7 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
     void AddDataEntry()
     {
         _completionTime = _ttd.timeTracker;
-        _numOfMoves = _ttd.rotationTracker;
+        _numOfMoves = _ttd.rotationTracker / 2; // THIS IS TO FIX ANOTHER BUG (rotationTracker is always double the # of moves.)
 
         string contentOutline = "Date: {0}\nScene Name: {1}\nTime Completed: {2}\nNumber Of Moves: {3}\n\n";
         string content = string.Format(contentOutline, 
