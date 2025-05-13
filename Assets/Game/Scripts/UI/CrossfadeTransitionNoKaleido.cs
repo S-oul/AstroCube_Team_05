@@ -11,6 +11,8 @@ public class CrossfadeTransitionNoKaleido : MonoBehaviour
 
     bool _isActive = true;
 
+    [SerializeField] bool boolExecute = false;
+
     private void OnEnable()
     {
         EventManager.OnPlayerWin += StartFade;
@@ -33,7 +35,8 @@ public class CrossfadeTransitionNoKaleido : MonoBehaviour
 
     public void EndAnim()
     {
-        InputHandler.Instance.CanMove = true;
+        if(boolExecute)
+            InputHandler.Instance.CanMove = true;
     }
 
     private void Start()
