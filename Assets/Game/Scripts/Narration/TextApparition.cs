@@ -24,11 +24,13 @@ public class TextApparition : MonoBehaviour
     [field: SerializeField] public float CharFadeOutDuration { get; private set; }
 
     [field: Header("Effects")]
+    [field: SerializeField] public bool AutoTrigger { get; private set; }
     [BoxGroup("Shaking"), SerializeField] private bool ShakeText;
     [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public float CharShakeStrength { get; private set; }
     [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public int CharShakeFrequency { get; private set; }
     [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public float CharShakeDuration { get; private set; }
     [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public float CharShakeRandomness { get; private set; }
+    [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public bool CharShakeFadeOut { get; private set; }
 
     private DOTweenTMPAnimator animator;
     private Coroutine displayCo;
@@ -38,6 +40,8 @@ public class TextApparition : MonoBehaviour
         if (TryGetComponent<TMP_Text>(out _textMesh)) _textMesh.color = new Color(_textMesh.color.r, _textMesh.color.g, _textMesh.color.b, 0);
         else Debug.LogWarning("TextApparition sans texte associé sur : " + name);
         animator = new DOTweenTMPAnimator(_textMesh);
+
+        if (AutoTrigger) Display();
     }
 
     
@@ -53,7 +57,7 @@ public class TextApparition : MonoBehaviour
         for (int i = 0; i < animator.textInfo.characterCount; i++)
         {
             animator.DOFadeChar(i, 1, CharFadeInDuration);
-            if(ShakeText) animator.DOShakeCharOffset(i, CharShakeDuration, CharShakeStrength, CharShakeFrequency, CharShakeRandomness, true);
+            if(ShakeText) animator.DOShakeCharOffset(i, CharShakeDuration, CharShakeStrength, CharShakeFrequency, CharShakeRandomness, CharShakeFadeOut);
             yield return new WaitForSeconds(CharFadeInDelay);
         }
 
