@@ -9,7 +9,9 @@ public class PlayerTrigger : MonoBehaviour
     [SerializeField] float newSpeedMultiplyer = 0.5f;
 
     [Header("Portal")]
-    [SerializeField] AnimationCurve curve;
+    [SerializeField] AnimationCurve curveFOV;
+    [SerializeField] AnimationCurve curveAberration;
+
     [SerializeField] Volume vol;
 
     PlayerMovement _playerMovement;
@@ -65,11 +67,13 @@ public class PlayerTrigger : MonoBehaviour
 
         if (other.CompareTag("Portal"))
         {
-            float t = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curve.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
+            float t = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
+            float t2 = Mathf.Lerp(.1f, 20, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
             vol.profile.TryGet<ChromaticAberration>(out var ca);
 
-            ca.intensity = new ClampedFloatParameter(Mathf.Lerp(.1f, 1, t), 0, 1, true);
+            ca.intensity.Override(t2);
+
 
             foreach (Camera c in Camera.allCameras)
             {
