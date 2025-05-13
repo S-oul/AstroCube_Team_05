@@ -56,7 +56,7 @@ public class PlayerTrigger : MonoBehaviour
         if (_flotingZone && other.CompareTag("GravityZone"))
         {
             _characterController.Move(Vector3.up * _flotingZone.GravityForce * Time.deltaTime);
-            
+
         }
 
         if (other.gameObject.tag == "ConveyerBelt")
@@ -68,7 +68,9 @@ public class PlayerTrigger : MonoBehaviour
 
         if (other.CompareTag("Portal"))
         {
-            float t = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
+            float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float cameraOverlayFOV = Mathf.Lerp(15, 43, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+
             float t2 = Mathf.Lerp(.1f, 10, curveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
             vol.profile.TryGet<ChromaticAberration>(out var ca);
@@ -76,10 +78,10 @@ public class PlayerTrigger : MonoBehaviour
             ca.intensity.Override(t2);
 
 
-            foreach (Camera c in Camera.allCameras)
-            {
-                c.fieldOfView = t;
-            }
+            Camera.allCameras[0].fieldOfView = cameraFOV;
+            Camera.allCameras[1].fieldOfView = cameraOverlayFOV;
+            
+
             print(t2);
         }
     }
@@ -106,6 +108,8 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             Camera.main.fieldOfView = GameManager.Instance.CustomSettings.customFov;
+            Camera.allCameras[1].fieldOfView = 43;
+
             vol.profile.TryGet<ChromaticAberration>(out var ca);
             ca.intensity.Override(.1f);
         }
