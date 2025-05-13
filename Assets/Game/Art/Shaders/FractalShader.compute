@@ -1,0 +1,448 @@
+/*
+#pragma kernel CSMain
+
+RWTexture2D<float4> Destination;
+
+float4x4 _CameraToWorld;
+float4x4 _CameraInverseProjection;
+float3 _LightDirection;
+
+float power;
+float darkness;
+float blackAndWhite;
+float3 colourAMix;
+float3 colourBMix;
+float maxDst;
+
+int maxStepCount;
+
+int maxIterations;
+
+static const float epsilon = 0.001f;
+//static const int maxStepCount = 250;
+
+
+struct Ray
+{
+    float3 origin;
+    float3 direction;
+};
+
+Ray CreateRay(float3 origin, float3 direction)
+{
+    Ray ray;
+    ray.origin = origin;
+    ray.direction = direction;
+    return ray;
+}
+
+Ray CreateCameraRay(float2 uv)
+{
+    float3 origin = mul(_CameraToWorld, float4(0,0,0,1)).xyz;
+    float3 direction = mul(_CameraInverseProjection, float4(uv,0,1)).xyz;
+    direction = mul(_CameraToWorld, float4(direction,0)).xyz;
+    direction = normalize(direction);
+    return CreateRay(origin,direction);
+}
+
+// Mandelbulb distance estimation:
+// http://blog.hvidtfeldts.net/index.php/2011/09/distance-estimated-3d-fractals-v-the-mandelbulb-different-de-approximations/
+float2 SceneInfo(float3 position)
+{
+    float3 z = position;
+	float dr = 1.0;
+	float r = 0.0;
+    int iterations = 0;
+
+	for (int i = 0; i < maxIterations; i++) 
+	{
+        iterations = i;
+		r = length(z);
+
+		if (r>2)
+		{
+            break;
+        }
+        
+		// convert to polar coordinates
+		float theta = acos(z.z/r);
+		float phi = atan2(z.y,z.x);
+		dr =  pow( r, power-1.0)*power*dr + 1.0;
+
+		// scale and rotate the point
+		float zr = pow( r,power);
+		theta = theta*power;
+		phi = phi*power;
+		
+		// convert back to cartesian coordinates
+		z = zr*float3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+		z+=position;
+	}
+
+    float dst = 0.5*log(r)*r/dr;
+	return float2(iterations, dst*0.99);
+}
+
+float3 EstimateNormal(float3 p)
+{
+    float x = SceneInfo(float3(p.x+epsilon,p.y,p.z)).y - SceneInfo(float3(p.x-epsilon,p.y,p.z)).y;
+    float y = SceneInfo(float3(p.x,p.y+epsilon,p.z)).y - SceneInfo(float3(p.x,p.y-epsilon,p.z)).y;
+    float z = SceneInfo(float3(p.x,p.y,p.z+epsilon)).y - SceneInfo(float3(p.x,p.y,p.z-epsilon)).y;
+    return normalize(float3(x,y,z));
+}
+
+struct minStruct
+{
+	uint xMin; // column of minimum
+	uint yMin; // row of minimum
+	float dMin; // minimum distance
+};
+
+
+
+RWStructuredBuffer<minStruct> GroupMinBuffer;
+groupshared minStruct rowMinData[64];
+
+
+[numthreads(64, 1, 1)]
+void CSMain(uint3 groupID : SV_GroupID,
+	// 3D ID of thread group; range depends on Dispatch call
+	uint3 groupThreadID : SV_GroupThreadID,
+	// 3D ID of thread in a thread group; range depends on numthreads
+	uint groupIndex : SV_GroupIndex,
+	// flattened/linearized SV_GroupThreadID. 
+	// groupIndex specifies the index within the group (0 to 63)
+	uint3 id : SV_DispatchThreadID)
+	// = SV_GroupID * numthreads + SV_GroupThreadID
+	// id.x specifies the row in the input texture image
+{
+	//if (groupID.x == 8) {
+	//	Destination[id.xy] = float4(1,1,1,1);
+	//}
+
+	uint width, height;
+	Destination.GetDimensions(width, height);
+
+	float2 uv = id.xy / float2(width, height);
+
+	// Background gradient
+	float4 result = lerp(float4(51, 3, 20, 1), float4(16, 6, 28, 1), uv.y) / 255.0;
+
+	// Raymarching:
+	Ray ray = CreateCameraRay(uv * 2 - 1);
+	float rayDst = 0;
+	int marchSteps = 0;
+
+	while (rayDst < maxDst && marchSteps < maxStepCount)
+	{
+		marchSteps++;
+		float2 sceneInfo = SceneInfo(ray.origin);
+		float dst = sceneInfo.y;
+
+		// Ray has hit a surface
+		if (dst <= epsilon) {
+			float escapeIterations = sceneInfo.x;
+			float3 normal = EstimateNormal(ray.origin - ray.direction*epsilon * 2);
+
+			float colourA = saturate(dot(normal*.5 + .5, -_LightDirection));
+			float colourB = saturate(escapeIterations / 16.0);
+			float3 colourMix = saturate(colourA * colourAMix + colourB * colourBMix);
+
+			result = float4(colourMix.xyz, 1);
+			break;
+		}
+
+		ray.origin += ray.direction * dst;
+		rayDst += dst;
+	}
+
+	float rim = marchSteps / darkness;
+	Destination[id.xy] = lerp(result, 1, blackAndWhite) * rim;
+
+
+	// find the minimum of this row 
+	// and store its data in rowMinData[groupIndex]
+	rowMinData[groupIndex].xMin = 0;
+	rowMinData[groupIndex].yMin = id.x;
+	rowMinData[groupIndex].dMin = maxDst;
+	if (rayDst < rowMinData[groupIndex].dMin)
+	{
+		rowMinData[groupIndex].xMin = id.y;
+		rowMinData[groupIndex].dMin = rayDst;
+	}
+
+	// find the minimum of this group
+	// and store its data in GroupMinBuffer[groupID.x]
+	GroupMemoryBarrierWithGroupSync();
+	// we have to wait for all writes to rowMinData by the group's threads
+	if (0 == (groupIndex & 1)) { // is groupIndex even?
+		if (rowMinData[groupIndex + 1].dMin < rowMinData[groupIndex].dMin) {
+			rowMinData[groupIndex] = rowMinData[groupIndex + 1];
+		}
+	}
+	GroupMemoryBarrierWithGroupSync();
+	if (0 == (groupIndex & 3)) { // is groupIndex divisible by 4?
+
+		if (rowMinData[groupIndex + 2].dMin < rowMinData[groupIndex].dMin) {
+			rowMinData[groupIndex] = rowMinData[groupIndex + 2];
+		}
+	}
+	GroupMemoryBarrierWithGroupSync();
+	if (0 == (groupIndex & 7)) { // is groupIndex divisible by 8?
+		if (rowMinData[groupIndex + 4].dMin < rowMinData[groupIndex].dMin) {
+			rowMinData[groupIndex] = rowMinData[groupIndex + 4];
+		}
+	}
+	GroupMemoryBarrierWithGroupSync();
+	if (0 == (groupIndex & 15)) { // is groupIndex divisible by 16?
+		if (rowMinData[groupIndex + 8].dMin < rowMinData[groupIndex].dMin) {
+			rowMinData[groupIndex] = rowMinData[groupIndex + 8];
+		}
+	}
+	GroupMemoryBarrierWithGroupSync();
+	if (0 == (groupIndex & 31)) { // is groupIndex divisible by 32?
+		if (rowMinData[groupIndex + 16].dMin < rowMinData[groupIndex].dMin) {
+			rowMinData[groupIndex] = rowMinData[groupIndex + 16];
+		}
+	}
+	GroupMemoryBarrierWithGroupSync();
+	if (0 == (groupIndex & 63)) { // is groupIndex divisible by 64?
+		if (rowMinData[groupIndex + 32].dMin < rowMinData[groupIndex].dMin) {
+			rowMinData[groupIndex] = rowMinData[groupIndex + 32];
+		}
+
+
+		GroupMinBuffer[groupID.x] = rowMinData[groupIndex];
+		// copy minimum of group to buffer
+	}
+}
+
+
+*/
+#pragma kernel CSMain
+
+RWTexture2D<float4> Source;
+RWTexture2D<float4> Destination;
+
+float4x4 _CameraToWorld;
+float4x4 _CameraInverseProjection;
+float3 _LightDirection;
+
+float power;
+float darkness;
+float blackAndWhite;
+float3 colourAMix;
+float3 colourBMix;
+float maxDst;
+float alpha;
+
+int maxStepCount;
+int maxIterations;
+float angle; // New angle variable
+float3 positionOffset; // New position variable
+
+static const float epsilon = 0.001f;
+
+struct Ray
+{
+    float3 origin;
+    float3 direction;
+};
+
+Ray CreateRay(float3 origin, float3 direction)
+{
+    Ray ray;
+    ray.origin = origin;
+    ray.direction = direction;
+    return ray;
+}
+/*
+
+Ray CreateCameraRay(float2 uv)
+{
+    float3 origin = float3(0, 0, 10);
+    //float3 origin = mul(_CameraToWorld, float4(0, 0, 0, 1)).xyz;
+    float3 direction = mul(_CameraInverseProjection, float4(uv, 0, 1)).xyz;
+    direction = mul(_CameraToWorld, float4(direction, 0)).xyz;
+    direction = normalize(direction);
+    return CreateRay(origin, direction);
+}
+*/
+Ray CreateCameraRay(float2 uv)
+{
+    float3 origin = mul(_CameraToWorld, float4(0, 0, 0, 1)).xyz;
+    float3 destination = mul(_CameraInverseProjection, float4(uv, 0, 1)).xyz;
+    destination = mul(_CameraToWorld, float4(destination, 1)).xyz;
+    float3 direction = destination - origin;
+    direction = normalize(direction);
+    return CreateRay(origin, direction);
+}
+
+float2 SceneInfo(float3 position)
+{
+    float3 z = position;
+    float dr = 1.0;
+    float r = 0.0;
+    int iterations = 0;
+
+    for (int i = 0; i < maxIterations; i++)
+    {
+        iterations = i;
+        r = length(z);
+
+        if (r > 2)
+        {
+            break;
+        }
+
+        float theta = acos(z.z / r);
+        float phi = atan2(z.y, z.x);
+        dr = pow(r, power - 1.0) * power * dr + 1.0;
+
+        float zr = pow(r, power);
+        theta = theta * power;
+        phi = phi * power;
+
+        z = zr * float3(sin(theta) * cos(phi), sin(phi) * sin(theta), cos(theta));
+        z += position;
+    }
+
+    float dst = 0.5 * log(r) * r / dr;
+    return float2(iterations, dst * 0.99);
+}
+
+float3 EstimateNormal(float3 p)
+{
+    float x = SceneInfo(float3(p.x + epsilon, p.y, p.z)).y - SceneInfo(float3(p.x - epsilon, p.y, p.z)).y;
+    float y = SceneInfo(float3(p.x, p.y + epsilon, p.z)).y - SceneInfo(float3(p.x, p.y - epsilon, p.z)).y;
+    float z = SceneInfo(float3(p.x, p.y, p.z + epsilon)).y - SceneInfo(float3(p.x, p.y, p.z - epsilon)).y;
+    return normalize(float3(x, y, z));
+}
+
+struct minStruct
+{
+    uint xMin;
+    uint yMin;
+    float dMin;
+};
+
+RWStructuredBuffer<minStruct> GroupMinBuffer;
+groupshared minStruct rowMinData[64];
+
+[numthreads(64, 1, 1)]
+void CSMain(uint3 groupID : SV_GroupID, uint3 groupThreadID : SV_GroupThreadID, uint groupIndex : SV_GroupIndex, uint3 id : SV_DispatchThreadID)
+{
+
+    uint width, height;
+    Destination.GetDimensions(width, height);
+
+    float2 uv = id.xy / float2(width, height);
+
+    // Initialize the background as transparent
+    float4 result = float4(1, 1, 1, alpha);
+    	// Background gradient
+    //float4 result = lerp(float4(51, 3, 20, 1), float4(16, 6, 28, 1), uv.y) / 255.0;
+    
+    //float4 result = Source[id.xy];
+    
+    // Raymarching:
+    Ray ray = CreateCameraRay(uv * 2 - 1);
+    float rayDst = 0;
+    int marchSteps = 0;
+
+    while (rayDst < maxDst && marchSteps < maxStepCount)
+    {
+        marchSteps++;
+        float2 sceneInfo = SceneInfo(ray.origin);
+        float dst = sceneInfo.y;
+
+        if (dst <= epsilon)
+        {
+            float escapeIterations = sceneInfo.x;
+            float3 normal = EstimateNormal(ray.origin - ray.direction * epsilon * 2);
+
+            float colourA = saturate(dot(normal * 0.5 + 0.5, -_LightDirection));
+            float colourB = saturate(escapeIterations / 16.0);
+            float3 colourMix = saturate(colourA * colourAMix + colourB * colourBMix);
+
+            result = float4(lerp(result.xyz, colourMix.xyz, 1), 1);
+            
+            //result = float4(colourMix.xyz, 1); // Set alpha to 1 for opaque fractal
+            break;
+        }
+
+        ray.origin += ray.direction * dst;
+        rayDst += dst;
+    }
+
+    float rim = marchSteps / darkness;
+    //Destination[id.xy] = lerp(result, float4(result.rgb, 1), blackAndWhite) * rim;
+    Destination[id.xy] = lerp(float4(0, 0, 0, 0), result, blackAndWhite * rim);
+    //Destination[id.xy] = result;
+    
+    //Destination[id.xy] = lerp(result, float4(result.rgb, 1), blackAndWhite);
+    //Destination[id.xy] = result;
+
+    // Find the minimum of this row 
+    rowMinData[groupIndex].xMin = 0;
+    rowMinData[groupIndex].yMin = id.x;
+    rowMinData[groupIndex].dMin = maxDst;
+    if (rayDst < rowMinData[groupIndex].dMin)
+    {
+        rowMinData[groupIndex].xMin = id.y;
+        rowMinData[groupIndex].dMin = rayDst;
+    }
+
+    // Find the minimum of this group
+    GroupMemoryBarrierWithGroupSync();
+    if (0 == (groupIndex & 1))
+    {
+        if (rowMinData[groupIndex + 1].dMin < rowMinData[groupIndex].dMin)
+        {
+            rowMinData[groupIndex] = rowMinData[groupIndex + 1];
+        }
+    }
+    GroupMemoryBarrierWithGroupSync();
+    if (0 == (groupIndex & 3))
+    {
+        if (rowMinData[groupIndex + 2].dMin < rowMinData[groupIndex].dMin)
+        {
+            rowMinData[groupIndex] = rowMinData[groupIndex + 2];
+        }
+    }
+    GroupMemoryBarrierWithGroupSync();
+    if (0 == (groupIndex & 7))
+    {
+        if (rowMinData[groupIndex + 4].dMin < rowMinData[groupIndex].dMin)
+        {
+            rowMinData[groupIndex] = rowMinData[groupIndex + 4];
+        }
+    }
+    GroupMemoryBarrierWithGroupSync();
+    if (0 == (groupIndex & 15))
+    {
+        if (rowMinData[groupIndex + 8].dMin < rowMinData[groupIndex].dMin)
+        {
+            rowMinData[groupIndex] = rowMinData[groupIndex + 8];
+        }
+    }
+    GroupMemoryBarrierWithGroupSync();
+    if (0 == (groupIndex & 31))
+    {
+        if (rowMinData[groupIndex + 16].dMin < rowMinData[groupIndex].dMin)
+        {
+            rowMinData[groupIndex] = rowMinData[groupIndex + 16];
+        }
+    }
+    GroupMemoryBarrierWithGroupSync();
+    if (0 == (groupIndex & 63))
+    {
+        if (rowMinData[groupIndex + 32].dMin < rowMinData[groupIndex].dMin)
+        {
+            rowMinData[groupIndex] = rowMinData[groupIndex + 32];
+        }
+
+        GroupMinBuffer[groupID.x] = rowMinData[groupIndex];
+    }
+    
+}

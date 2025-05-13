@@ -56,15 +56,15 @@ public class RubiksCubeController : MonoBehaviour
         _gameSettings = GameManager.Instance.Settings;
         if (GameManager.Instance.IsRubiksCubeEnabled)
             ActionSwitchLineCols(true);
+    }
+    private void Start()
+    {
         if (_previewControlledScript == null)
         {
             var previewScript = GameObject.FindAnyObjectByType<PreviewRubiksCube>();
             if (previewScript)
                 _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
         }
-    }
-    private void Start()
-    {
         if (_previewControlledScript)
             HidePreview();
     }
@@ -132,12 +132,11 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionSwitchLineCols(bool isLeft)
     {
-
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
         switch (_selectedSlice)
         {
             case SliceAxis.X:
-                _detectParentForGroundRotation.DoGroundRotation = false;
+                _detectParentForGroundRotation.ToggleParentChanger(false);
                 if (_controlledScript.IsLockXAxis)
                 {
                     _player.SetParent(null);
@@ -146,7 +145,7 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
             case SliceAxis.Y:
-                _detectParentForGroundRotation.DoGroundRotation = true;
+                _detectParentForGroundRotation.ToggleParentChanger(true);
                 if (_controlledScript.IsLockYAxis)
                 {
                     ActionSwitchLineCols(true);
@@ -154,7 +153,7 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
             case SliceAxis.Z:
-                _detectParentForGroundRotation.DoGroundRotation = false;
+                _detectParentForGroundRotation.ToggleParentChanger(false);
                 if (_controlledScript.IsLockZAxis)
                 {
                     _player.SetParent(null);
@@ -196,6 +195,10 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (_lastInput != null)
                 {
+                    if(_lastInput.cube == null)
+                    {
+                        Debug.LogError("This error happens once in a while then disappears, please report to Ema");
+                    }
                     bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
                     completeAction = isSameFace && _lastInput == input;
                 }

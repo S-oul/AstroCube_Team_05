@@ -7,12 +7,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public GameSettings Settings => settings;
+
     [SerializeField] private GameSettings settings;
 
     [SerializeField] private GameObject winScreen;
@@ -36,12 +38,18 @@ public class GameManager : MonoBehaviour
     public bool IsRubiksCubeEnabled => _isRubiksCubeEnabled;
     [SerializeField, ReadOnly] private bool _isRubiksCubeEnabled;
 
-    [SerializeField] GameObject _previewRubiksCube; 
+    [field: SerializeField] public PreviewRubiksCube PreviewRubiksCube { get; private set; }
+
 
     private void Awake()
     {
         if (instance) Destroy(this);
         else instance = this;
+
+        if(PreviewRubiksCube == null)
+        {
+            PreviewRubiksCube = FindAnyObjectByType<PreviewRubiksCube>();
+        }
     }
 
     public enum EScreenshakeMode
@@ -91,8 +99,6 @@ public class GameManager : MonoBehaviour
 
         EventManager.OnGamePause += UnlockMouse;
         EventManager.OnGameUnpause += LockMouse;
-
-        EventManager.OnPreviewChange += PreviewSetActive;
     }
 
     private void OnDisable()
@@ -106,14 +112,13 @@ public class GameManager : MonoBehaviour
         EventManager.OnGameUnpause -= ResetDeltaTime;
         EventManager.OnGameUnpause -= LockMouse;
         EventManager.OnGamePause -= UnlockMouse;
-
-        EventManager.OnPreviewChange -= PreviewSetActive;
     }
 
     private void Start()
     {
         EventManager.TriggerSceneStart();
     }
+
 
     void ShowWinScreen()
     {
@@ -194,7 +199,6 @@ public class GameManager : MonoBehaviour
 
         yield return DOTween.To(() => new Color(0, 0, 0, 1.0f), x => _fade.color = x, new Color(0, 0, 0, 0.0f), 1.0f).WaitForCompletion();
 
-
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;
 
@@ -213,19 +217,5 @@ public class GameManager : MonoBehaviour
     {
         _isRubiksCubeEnabled = isEnabled;
         _rubiksCubeUI.SetActive(isEnabled);
-    }
-
-    private void PreviewSetActive(bool isEnabled = true)
-    {
-        // PreviewRubiksCube functionality cannot yet be toggled during playmode. 
-
-        /*
-        if (_previewRubiksCube == null)
-        {
-            Debug.Log("No 'Preview Rubic's Cube' is present in this scene.");
-            return;
-        }
-        _previewRubiksCube.SetActive(isEnabled);
-        */
     }
 }
