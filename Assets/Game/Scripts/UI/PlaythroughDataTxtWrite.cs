@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PlaythroughDataTxtWrite : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
 
     float _completionTime;
     int _numOfMoves;
+    string _fileName;
 
 
     /// <summary>
@@ -18,7 +20,20 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
     {
         Debug.LogWarning("Playtrhough Data only works on Windows");
         string exeDirectory = Directory.GetParent(Application.dataPath).FullName;
-        path = Path.Combine(exeDirectory, "PlaythroughData.txt");
+        if (GameManager.Instance.Settings.playthoughDataFileName == null)
+        {
+            Debug.Log("MAKING NEW FILE");
+            _fileName = "PlaythroughData_" + DateTime.Now.ToString() + ".txt";
+            _fileName = _fileName.Replace(" ", "_");
+            _fileName = _fileName.Replace("/", ".");
+            _fileName = _fileName.Replace(":", ".");
+            GameManager.Instance.Settings.playthoughDataFileName = _fileName;
+        }
+        else
+        {
+            _fileName = GameManager.Instance.Settings.playthoughDataFileName;
+        }
+        path = Path.Combine(Application.persistentDataPath, _fileName);
     }
     void Start()
     {
@@ -36,18 +51,18 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnSceneEnd += AddDataEntry;
+        EventManager.OnPlayerWin += AddDataEntry;
     }
 
     private void OnDisable()
     {
-        EventManager.OnSceneEnd -= AddDataEntry;
+        EventManager.OnPlayerWin -= AddDataEntry;
     }
 
     void AddDataEntry()
     {
         _completionTime = _ttd.timeTracker;
-        _numOfMoves = _ttd.rotationTracker;
+        _numOfMoves = _ttd.rotationTracker / 2; // THIS IS TO FIX ANOTHER BUG (rotationTracker is always double the # of moves.)
 
         string contentOutline = "Date: {0}\nScene Name: {1}\nTime Completed: {2}\nNumber Of Moves: {3}\n\n";
         string content = string.Format(contentOutline, 
