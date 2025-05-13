@@ -87,6 +87,7 @@ public class PlayerTrigger : MonoBehaviour
 
 
             Camera.allCameras[0].fieldOfView = cameraFOV;
+            if(Camera.allCameras.Length > 1)
             Camera.allCameras[1].fieldOfView = cameraOverlayFOV;
 
         }
