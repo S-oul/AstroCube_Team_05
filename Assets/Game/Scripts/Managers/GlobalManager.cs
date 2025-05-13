@@ -26,7 +26,7 @@ public class GlobalManager : MonoBehaviour
     }
     private void Start()
     {
-        _gm.PreviewRubiksCube.gameObject.SetActive(CustomSettings.customPreview);
+        _gm.PreviewRubiksCube?.gameObject.SetActive(CustomSettings.customPreview);
     }
 
     private void OnEnable()
