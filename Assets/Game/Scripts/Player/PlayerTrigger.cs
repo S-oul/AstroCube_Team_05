@@ -1,9 +1,18 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UIElements;
 
 public class PlayerTrigger : MonoBehaviour
 {
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
+
+    [Header("Portal")]
+    [SerializeField] AnimationCurve curveFOV;
+    [SerializeField] AnimationCurve curveAberration;
+
+    [SerializeField] Volume vol;
 
     PlayerMovement _playerMovement;
     CharacterController _characterController;
@@ -55,6 +64,23 @@ public class PlayerTrigger : MonoBehaviour
             float speed = other.GetComponent<ConveyerBeltManager>().speed;
             GetComponent<PlayerMovement>().SetExternallyAppliedMovement(dir, speed);
         }
+
+        if (other.CompareTag("Portal"))
+        {
+            float t = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
+            float t2 = Mathf.Lerp(.1f, 20, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+
+            vol.profile.TryGet<ChromaticAberration>(out var ca);
+
+            ca.intensity.Override(t2);
+
+
+            foreach (Camera c in Camera.allCameras)
+            {
+                c.fieldOfView = t;
+            }
+            print(t);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -75,6 +101,10 @@ public class PlayerTrigger : MonoBehaviour
         if (other.gameObject.tag == "ConveyerBelt")
         {
             GetComponent<PlayerMovement>().SetExternallyAppliedMovement(Vector3.zero);
+        }
+        if (other.CompareTag("Portal"))
+        {
+            Camera.main.fieldOfView = GameManager.Instance.CustomSettings.customFov;
         }
     }
 }
