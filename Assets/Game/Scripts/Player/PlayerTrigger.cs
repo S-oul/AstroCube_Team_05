@@ -20,6 +20,7 @@ public class PlayerTrigger : MonoBehaviour
     FloatingZone _flotingZone;
     private void Start()
     {
+        if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol").GetComponent<Volume>();
         _playerMovement = GetComponent<PlayerMovement>();
         _characterController = GetComponent<CharacterController>();
     }
@@ -68,7 +69,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             float t = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position)/4f));
-            float t2 = Mathf.Lerp(.1f, 20, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float t2 = Mathf.Lerp(.1f, 10, curveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
             vol.profile.TryGet<ChromaticAberration>(out var ca);
 
@@ -79,7 +80,7 @@ public class PlayerTrigger : MonoBehaviour
             {
                 c.fieldOfView = t;
             }
-            print(t);
+            print(t2);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -105,6 +106,8 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             Camera.main.fieldOfView = GameManager.Instance.CustomSettings.customFov;
+            vol.profile.TryGet<ChromaticAberration>(out var ca);
+            ca.intensity.Override(.1f);
         }
     }
 }
