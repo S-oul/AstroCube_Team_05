@@ -12,7 +12,8 @@ public class PlayerTrigger : MonoBehaviour
     [SerializeField] AnimationCurve curveFOV;
     [SerializeField] AnimationCurve curveAberration;
 
-    [SerializeField] Volume vol;
+    [SerializeField] VolumeProfile vol;
+
 
     PlayerMovement _playerMovement;
     CharacterController _characterController;
@@ -20,7 +21,12 @@ public class PlayerTrigger : MonoBehaviour
     FloatingZone _flotingZone;
     private void Start()
     {
-        if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol")?.GetComponent<Volume>();
+        if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol")?.GetComponent<VolumeProfile>();
+        if (vol)
+        {
+            if (vol.TryGet<ChromaticAberration>(out var ca))
+                ca.intensity.Override(.1f);
+        }
         _playerMovement = GetComponent<PlayerMovement>();
         _characterController = GetComponent<CharacterController>();
     }
@@ -71,16 +77,17 @@ public class PlayerTrigger : MonoBehaviour
             float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
             float cameraOverlayFOV = Mathf.Lerp(15, 43, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
-            float t2 = Mathf.Lerp(.1f, 10, curveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float chromaticAbberation = Mathf.Lerp(.1f, 50, curveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
             if (vol)
             {
-                vol.profile.TryGet<ChromaticAberration>(out var ca);
-                ca.intensity.Override(t2);
+                if(vol.TryGet<ChromaticAberration>(out var ca))
+                ca.intensity.Override(chromaticAbberation);
             }
 
 
             Camera.allCameras[0].fieldOfView = cameraFOV;
+            if(Camera.allCameras.Length > 1)
             Camera.allCameras[1].fieldOfView = cameraOverlayFOV;
 
         }
@@ -112,8 +119,8 @@ public class PlayerTrigger : MonoBehaviour
 
             if (vol)
             {
-                vol.profile.TryGet<ChromaticAberration>(out var ca);
-                ca.intensity.Override(.1f);
+                if (vol.TryGet<ChromaticAberration>(out var ca))
+                    ca.intensity.Override(.1f);
             }
         }
     }

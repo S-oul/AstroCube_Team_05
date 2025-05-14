@@ -52,6 +52,7 @@ public class RubiksCubeController : MonoBehaviour
         if (_controlledCube != null) _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
         foreach (GameObject go in ReplicatedCube)
         {
+            if (go)
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
