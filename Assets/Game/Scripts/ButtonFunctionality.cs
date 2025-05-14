@@ -26,6 +26,6 @@ public class ButtonFunctionality : MonoBehaviour
     {
         //Application.Quit();
         Time.timeScale = 1;
-        SceneManager.LoadScene("StartMenu");
+        SceneManager.LoadScene(0);
     }
 }
