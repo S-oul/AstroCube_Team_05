@@ -13,7 +13,7 @@ public class ChangeScene : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             EventManager.TriggerSceneEnd();
-            SceneManager.LoadScene("StartMenu");
+            SceneManager.LoadScene(0);
         }
     }
 }
