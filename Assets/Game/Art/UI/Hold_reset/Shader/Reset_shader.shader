@@ -2278,7 +2278,7 @@ Node;AmplifyShaderEditor.SamplerNode;41;-2928,144;Inherit;True;Property;_Texture
 Node;AmplifyShaderEditor.GradientNode;20;-2736,-624;Inherit;False;0;2;2;0.5503581,0.2152153,0.6830188,0.2717632;0.7809727,0,0.8943396,1;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.GradientSampleNode;19;-2432,-464;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TextureCoordinatesNode;56;-2048,624;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;57;-2320,0;Inherit;False;Property;_Slider1;Slider;12;0;Create;True;0;0;0;False;0;False;0;1;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;57;-2320,0;Inherit;False;Property;_Slider1;Slider;12;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.StaticSwitch;74;-2368,336;Inherit;False;Property;_Bouton;Bouton;13;0;Create;True;0;0;0;False;0;False;0;0;0;True;X;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;46;-1952,-704;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SaturateNode;38;-2032,-448;Inherit;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
@@ -2379,4 +2379,4 @@ WireConnection;73;2;72;0
 WireConnection;1;2;72;0
 WireConnection;1;3;73;6
 ASEEND*/
-//CHKSM=368A6826CB518A510B19219FD56CC282F3686BB3
+//CHKSM=1C85FE82E741AC1032354637F338AECA8E5C0F0E
