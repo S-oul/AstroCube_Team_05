@@ -7,7 +7,7 @@ using static UnityEngine.GridBrushBase;
 public class CameraAnimator : MonoBehaviour
 {
     [SerializeField] Animator _mainCameraAnimator;
-    GameObject _parentCubePart;
+    SelectionCube _parentCubePart;
     float _lastYRotation;
     float _currentYRotation;
 
@@ -18,13 +18,13 @@ public class CameraAnimator : MonoBehaviour
 
     void Start()
     {   
-        _parentCubePart = GetComponent<DetectNewParent>().currentParent;
+        _parentCubePart = GetComponent<DetectNewParent>().CurrentParent;
         if (_parentCubePart != null) _lastYRotation = _parentCubePart.transform.eulerAngles.y;
     }
 
     void Update()
     {
-        _parentCubePart = GetComponent<DetectNewParent>().currentParent;
+        _parentCubePart = GetComponent<DetectNewParent>().CurrentParent;
         if (_parentCubePart == null) { return; }
 
         // determine if the parent is rotating and in what direction

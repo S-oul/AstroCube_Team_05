@@ -319,7 +319,7 @@ public class RubiksCubeController : MonoBehaviour
                 SelectionCube selection = go.GetComponent<SelectionCube>();
                 if (selection == null) continue;
 
-                if (_detectParentForGroundRotation.OldTilePlayerPos == selection && sliceAxis != SliceAxis.Y)
+                if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y)
                 {
                     return true;
                 }
@@ -363,7 +363,7 @@ public class RubiksCubeController : MonoBehaviour
 
                 selectionCubes.Add(selection);
                 if (selection.IsTileLocked ) isOneTileLocked = true;
-                if (_detectParentForGroundRotation.OldTilePlayerPos == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
+                if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
         }
 

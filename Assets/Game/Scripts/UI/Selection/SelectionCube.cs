@@ -71,30 +71,7 @@ public class SelectionCube : MonoBehaviour
 
         CurrentSelectionMode = SelectionMode.NOT_SELECTED;
 
-        if (_isTileLocked) SetTileMatToLock();
-    }
-
-    public void SetIsTileLock(bool locking)
-    {
-        IsTileLocked = locking;
-        if (locking) SetTileMatToLock();
-        else Unselect();
-    }
-
-    public void SetTileMatToLock()
-    {
-        _isTileLocked = true;
-        allOldMat = new Material[_renderers.Length];
-
-        int i = 0;
-        foreach (Renderer r in _renderers)
-        {
-            allOldMat[i++] = r.material;
-            if (r.transform.CompareTag("Floor"))
-                r.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
-            else
-                r.renderingLayerMask = (uint)Mathf.Pow(2, _objectLockRenderingLayerMask);
-        }
+        if (_isTileLocked) Select(SelectionMode.LOCKED);
     }
 
     public void Select(SelectionMode mode)
@@ -150,7 +127,6 @@ public class SelectionCube : MonoBehaviour
                     break;
             }
         }
-
         CurrentSelectionMode = mode;
     }
 

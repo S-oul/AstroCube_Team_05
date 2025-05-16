@@ -43,6 +43,7 @@ public class MouseCamControl : MonoBehaviour
         UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
         _cameraSensibilityMouse = _customSettings.customMouse;
+        ForceResetSelection();
     }
     public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
@@ -59,8 +60,6 @@ public class MouseCamControl : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * mousePos.x);
-
-        //Raycast
 
         if (!GameManager.Instance.IsRubiksCubeEnabled)
             return;
@@ -79,17 +78,44 @@ public class MouseCamControl : MonoBehaviour
         }
     }
 
+    private void ForceResetSelection()
+    {
+        if (_inputHandler == null || !_inputHandler.CanMove)
+            return;
+
+        _yRotation -= mousePos.y;
+        _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
+
+        transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
+        _playerTransform.Rotate(Vector3.up * mousePos.x);
+
+        if (!GameManager.Instance.IsRubiksCubeEnabled)
+            return;
+
+        RaycastHit _raycastInfo;
+
+        if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
+        {
+            GameObject collider = _raycastInfo.collider.gameObject;
+            _oldTile = collider.transform;
+
+            rubiksCubeController.SetActualCube(_oldTile.parent);            
+        }
+    }
+
     private void OnEnable()
     {
         EventManager.OnFOVChange += UpdateCameraFOV;
         EventManager.OnMouseChange += UpdateCameraMouseSensitivity;
         EventManager.OnEndNarrativeSequence += ResetMousePosition;
+        EventManager.OnPlayerChangeParent += ForceResetSelection;
     }
     private void OnDisable()
     {
         EventManager.OnFOVChange -= UpdateCameraFOV;
         EventManager.OnMouseChange -= UpdateCameraMouseSensitivity;
         EventManager.OnEndNarrativeSequence -= ResetMousePosition;
+        EventManager.OnPlayerChangeParent -= ForceResetSelection;
     }
 
     void UpdateCameraFOV(float newFOV)
