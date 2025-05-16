@@ -6,10 +6,14 @@
 //  Copyright © 2018 Chris Nolet. All rights reserved.
 //
 
+using DG.Tweening;
+using DG.Tweening.Core;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -23,6 +27,21 @@ public class SelectionCube : MonoBehaviour
     private Renderer[] _renderers;
     private Material[] allOldMat = new Material[0];
 
+    public SelectionMode CurrentSelectionMode { get; private set; }
+
+    class SelectionTweens
+    {
+        public TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> EnableSelectionTween;
+        public TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> DisableSelectionTween;
+
+        public SelectionTweens()
+        {
+            this.EnableSelectionTween = null;
+            this.DisableSelectionTween = null;
+        }
+    }
+
+    Dictionary<Renderer, SelectionTweens> _selectionCurrentValues = new();
     public bool IsTileLocked { get => _isTileLocked; set => _isTileLocked = value; }
 
     public enum SelectionMode
@@ -32,13 +51,25 @@ public class SelectionCube : MonoBehaviour
         LOCKED,
         PLAYERONTILE,
         ENABLE,
-        DISABLE
+        DISABLE,
+        NOT_SELECTED
     }
-
+    
     void Awake()
     {
-        // Cache renderers
         _renderers = GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer renderer in _renderers) 
+        {
+            if (renderer.transform.CompareTag("Floor") || renderer.transform.CompareTag("SelectionShine"))
+            {
+                renderer.material = Instantiate(renderer.material);
+                _selectionCurrentValues.Add(renderer, new SelectionTweens());
+                _selectionCurrentValues[renderer] = new SelectionTweens();
+            }
+        }
+
+        CurrentSelectionMode = SelectionMode.NOT_SELECTED;
 
         if (_isTileLocked) SetTileMatToLock();
     }
@@ -70,15 +101,28 @@ public class SelectionCube : MonoBehaviour
     {
         if (_renderers == null)
             return;
+        if(mode == CurrentSelectionMode)
+            return;
         foreach (var renderer in _renderers)
         {
             switch (mode)
             {
                 case SelectionMode.AXIS:
-                    if (renderer.transform.CompareTag("Floor"))
-                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisSelectionRenderingLayerMask);
+                    if (renderer.transform.CompareTag("Floor") || renderer.transform.CompareTag("SelectionShine"))
+                    {
+                        if (_selectionCurrentValues.ContainsKey(renderer))
+                        {
+                            if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
+                                return;
+                        
+                            if(_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
+                                _selectionCurrentValues[renderer].DisableSelectionTween.Kill();
+
+                            _selectionCurrentValues[renderer].EnableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_EffectAlpha"), x => renderer.material.SetFloat("_EffectAlpha", x), 1.0f, GameManager.Instance.Settings.AxisSelectionFadeInDuration).SetEase(Ease.InOutSine);
+                        }
+                    }
                     else
-                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisObjectSelectionRenderingLayerMask);                    
+                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisObjectSelectionRenderingLayerMask);    
                     break;
                 case SelectionMode.CUBE:
                     if (renderer.transform.CompareTag("Floor"))
@@ -106,13 +150,36 @@ public class SelectionCube : MonoBehaviour
                     break;
             }
         }
+
+        CurrentSelectionMode = mode;
     }
 
     public void Unselect()
     {
+        if(CurrentSelectionMode == SelectionMode.NOT_SELECTED)
+            return;
         foreach (var renderer in _renderers)
         {
-            renderer.renderingLayerMask = (uint)Mathf.Pow(2, _defaultRenderingLayerMask);
+            if (renderer.transform.CompareTag("Floor"))
+                renderer.renderingLayerMask = (uint)Mathf.Pow(2, _defaultRenderingLayerMask);
+
+            if (renderer.transform.CompareTag("Floor") || renderer.transform.CompareTag("SelectionShine"))
+            {
+                if (_selectionCurrentValues.ContainsKey(renderer))
+                {
+                    if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
+                        return;
+                    if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
+                        _selectionCurrentValues[renderer].EnableSelectionTween.Kill();
+
+                    _selectionCurrentValues[renderer].DisableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_EffectAlpha"), x => renderer.material.SetFloat("_EffectAlpha", x), 0.0f, GameManager.Instance.Settings.AxisSelectionFadeOutDuration).SetEase(Ease.InOutSine);
+                }
+            }
+            else
+            {
+                renderer.renderingLayerMask = (uint)Mathf.Pow(2, _defaultRenderingLayerMask);
+            }
         }
+        CurrentSelectionMode = SelectionMode.NOT_SELECTED;
     }
 }

@@ -71,7 +71,11 @@ public class MouseCamControl : MonoBehaviour
         {
             GameObject collider = _raycastInfo.collider.gameObject;
             _oldTile = collider.transform;
-            if (rubiksCubeController != null && _oldTile.parent != null) rubiksCubeController.SetActualCube(_oldTile.parent);
+            if (rubiksCubeController != null && _oldTile.parent != null)
+            {
+                if(rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+                    rubiksCubeController.SetActualCube(_oldTile.parent);
+            }
         }
     }
 
