@@ -54,7 +54,6 @@ namespace AK
     {
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID AMB_SBK = 3702631076U;
-        static const AkUniqueID ENV_SBK = 4250581681U;
         static const AkUniqueID FOL_SBK = 2606446995U;
         static const AkUniqueID MC_SBK = 4067787562U;
         static const AkUniqueID SFX_SBK = 4254072057U;
