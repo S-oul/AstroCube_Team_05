@@ -31,6 +31,7 @@
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="1"/>
 										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
@@ -190,6 +191,7 @@
 												<Value>2</Value>
 											</ValueList>
 										</Property>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideEffect" Type="bool" Value="True"/>
 										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="OverrideVirtualVoice" Type="bool" Value="True"/>
@@ -370,6 +372,7 @@
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="SFX_RC_CubeRotation" ID="{F8D8919D-6202-4C3E-A13E-64434FA29F26}" ShortID="224128307">
 									<PropertyList>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ModifierList>
@@ -411,7 +414,7 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<Sound Name="SFX_Cube_Rotation_01" ID="{08380EE3-8793-499B-BA49-70960D55B0FA}" ShortID="182066045">
+										<Sound Name="SFX_Cube_Rotation_01" ID="{FCCA9437-95C6-4102-B18B-3D4F83F7B5EC}" ShortID="897386890">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -421,7 +424,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_01" ID="{DE607454-3FC4-4FFD-B05E-3FCFBE980C1A}">
+												<AudioFileSource Name="SFX_Cube_Rotation_01" ID="{C38BC845-C5F4-4A13-B2B0-BA41F0E7AAB1}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_01.wav</AudioFile>
 													<MediaIDList>
@@ -430,10 +433,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_01" ID="{DE607454-3FC4-4FFD-B05E-3FCFBE980C1A}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_01" ID="{C38BC845-C5F4-4A13-B2B0-BA41F0E7AAB1}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="SFX_Cube_Rotation_02" ID="{CB93D164-42A6-40A6-9528-B72720DBD77B}" ShortID="427598922">
+										<Sound Name="SFX_Cube_Rotation_02" ID="{5E25BA71-B455-4677-862B-9C210114132D}" ShortID="492995016">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -443,7 +446,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_02" ID="{94C0DA17-59F7-481C-A151-82F051395E0D}">
+												<AudioFileSource Name="SFX_Cube_Rotation_02" ID="{C394C77D-B6AF-4FAD-B298-80DD5E8B0ED6}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_02.wav</AudioFile>
 													<MediaIDList>
@@ -452,10 +455,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_02" ID="{94C0DA17-59F7-481C-A151-82F051395E0D}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_02" ID="{C394C77D-B6AF-4FAD-B298-80DD5E8B0ED6}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="SFX_Cube_Rotation_03" ID="{4FB3172D-4038-4222-A1F5-FCD0639CF910}" ShortID="855168763">
+										<Sound Name="SFX_Cube_Rotation_03" ID="{14033466-5F92-42CE-9A9D-AF5E13CB647E}" ShortID="596611906">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -465,7 +468,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_03" ID="{03C7E675-49F5-4088-BF63-A35CEDCFF387}">
+												<AudioFileSource Name="SFX_Cube_Rotation_03" ID="{690D4C1C-013D-44F1-A912-0E122FCC5376}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_03.wav</AudioFile>
 													<MediaIDList>
@@ -474,10 +477,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_03" ID="{03C7E675-49F5-4088-BF63-A35CEDCFF387}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_03" ID="{690D4C1C-013D-44F1-A912-0E122FCC5376}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="SFX_Cube_Rotation_04" ID="{514A349A-3D0E-4EDC-AA05-0866EBA044AF}" ShortID="466209213">
+										<Sound Name="SFX_Cube_Rotation_04" ID="{30E76ECF-ED94-4590-B65E-B3C09810AEB1}" ShortID="116792605">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -487,7 +490,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_04" ID="{5942E731-EB19-48B3-BF23-5439B1F0E20A}">
+												<AudioFileSource Name="SFX_Cube_Rotation_04" ID="{620DE96A-F904-4902-B1DD-1A671A0BCE41}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_04.wav</AudioFile>
 													<MediaIDList>
@@ -496,7 +499,7 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_04" ID="{5942E731-EB19-48B3-BF23-5439B1F0E20A}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_04" ID="{620DE96A-F904-4902-B1DD-1A671A0BCE41}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
@@ -517,6 +520,7 @@
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="1"/>
 										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideEffect" Type="bool" Value="True"/>
 										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="OverridePositioning" Type="bool" Value="True"/>
@@ -537,6 +541,7 @@
 										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="4"/>
 										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="2"/>
 										<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
@@ -690,6 +695,7 @@
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="1"/>
 										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
@@ -705,6 +711,7 @@
 												</ModifierInfo>
 											</ModifierList>
 										</Property>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="2"/>
 										<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
@@ -818,6 +825,7 @@
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="1"/>
 										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
@@ -833,6 +841,7 @@
 												</ModifierInfo>
 											</ModifierList>
 										</Property>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="2"/>
 										<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
