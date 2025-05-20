@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject _UIHolder;
     [SerializeField] GameObject _firstSelected;
-    KaleidoscopeManager _kaleidoscopeManager;
+    PostProcessManager _kaleidoscopeManager;
+    [SerializeReference] GameObject SettingsUIHolder;
+    [SerializeField] TextMeshProUGUI _sceneName;
 
     private void Start()
     {
-        _kaleidoscopeManager = GetComponentInChildren<KaleidoscopeManager>();
+        _kaleidoscopeManager = GetComponentInChildren<PostProcessManager>();
     }
 
     private void OnEnable()
@@ -29,14 +34,22 @@ public class PauseMenu : MonoBehaviour
 
     void OpenMenu()
     {
-        _kaleidoscopeManager.SetEnabled(true);
+        if(_kaleidoscopeManager) _kaleidoscopeManager.SetEnabled(true);
         _UIHolder.SetActive(true);
         EventSystem.current.SetSelectedGameObject(_firstSelected);
+        _sceneName.text = SceneManager.GetActiveScene().name;
     }
 
     void CloseMenu()
     {
-        _kaleidoscopeManager.SetEnabled(false);
+        if (_kaleidoscopeManager) _kaleidoscopeManager.SetEnabled(false);
         _UIHolder.SetActive(false);
+        SettingsUIHolder.SetActive(false);
+    }
+
+    public void SetActiveSettingsMenu(bool isActive = true)
+    {
+        _UIHolder.SetActive(!isActive);
+        SettingsUIHolder.SetActive(isActive);
     }
 }

@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 using static PositionSaveFile;
-using static UnityEngine.GraphicsBuffer;
 
 [CustomEditor(typeof(PlayModePositionSaver))]
 public class PlayModePositionSaverEditor : Editor
@@ -69,6 +66,7 @@ public class PlayModePositionSaverEditor : Editor
         foreach (RightActionObject o in allImportantObjects)
         {
             RightActionInfo info = new(o.gameObject, o.GetActualPose());
+            o.RightPose = o.GetActualPose();
             PlayModePositionSaver.PositionsSave.RightActionInfos.Add(info);
         }
 

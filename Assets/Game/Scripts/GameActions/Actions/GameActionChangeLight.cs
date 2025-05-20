@@ -48,7 +48,20 @@ public class GameActionChangeLight : AGameAction
 
     protected override bool IsFinishedSpecific()
     {
-        return _fadeIntensity.active || _fadeColor.active || _fadeRange.active || _fadeShadowStrength.active;
+        bool result = false;
+        if (_changeIntensity)
+            result |= _fadeIntensity.active;
+
+        if (_changeColor)
+            result |= _fadeColor.active;
+
+        if (_changeRange)
+            result |= _fadeRange.active;
+
+        if (_changeShadowStrength && _light.shadows != LightShadows.None)
+            result |= _fadeShadowStrength.active;
+
+        return result;
     }
 
     public override string BuildGameObjectName()

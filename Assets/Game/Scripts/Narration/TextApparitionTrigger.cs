@@ -6,18 +6,21 @@ using UnityEngine;
 
 public class TextApparitionTrigger : MonoBehaviour
 {
+    [SerializeField] private bool _hide;
     [SerializeField] private List<TextApparition> _texts;
+    
+    private bool _triggered;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-        if (_texts == null) return;
+        if (!other.CompareTag("Player") || _triggered || _texts == null) return;
 
         foreach (TextApparition text in _texts)
         {
-            text.Display();
+            if (_hide) text.Hide();
+            else text.Display();
         }
 
-        GetComponent<Collider>().enabled = false;
+        _triggered = true;
     }
 }

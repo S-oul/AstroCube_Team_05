@@ -1,10 +1,9 @@
+using RubiksStatic;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using RubiksStatic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
-using Unity.VisualScripting;
 
 public class RubiksCubeController : MonoBehaviour
 {
@@ -38,7 +37,6 @@ public class RubiksCubeController : MonoBehaviour
     bool _canPlayerMoveAxis = true;
 
 
-
     #region Accesseur
 
     public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
@@ -54,24 +52,35 @@ public class RubiksCubeController : MonoBehaviour
         if (_controlledCube != null) _controlledScript = _controlledCube.GetComponentInChildren<RubiksMovement>();
         foreach (GameObject go in ReplicatedCube)
         {
+            if (go)
             _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
         if (GameManager.Instance.IsRubiksCubeEnabled)
             ActionSwitchLineCols(true);
+    }
+    private void Start()
+    {
         if (_previewControlledScript == null)
         {
             var previewScript = GameObject.FindAnyObjectByType<PreviewRubiksCube>();
             if (previewScript)
                 _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
         }
-    }
-    private void Start()
-    {
         if (_previewControlledScript)
             HidePreview();
     }
 
+    private void OnEnable()
+    {
+        EventManager.OnPlayerReset += ResetPreview;
+        EventManager.OnPlayerResetOnce += ResetPreview;
+    }
+    private void OnDisable()
+    {
+        EventManager.OnPlayerReset -= ResetPreview;
+        EventManager.OnPlayerResetOnce -= ResetPreview;
+    }
 
     /* OLD
     public void SetActualCube(Transform newFace)
@@ -135,20 +144,20 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionSwitchLineCols(bool isLeft)
     {
-
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
         switch (_selectedSlice)
         {
             case SliceAxis.X:
-                _detectParentForGroundRotation.DoGroundRotation = false;
+                _detectParentForGroundRotation.ToggleParentChanger(false);
                 if (_controlledScript.IsLockXAxis)
                 {
+                    _player.SetParent(null);
                     ActionSwitchLineCols(true);
                     return;
                 }
                 break;
             case SliceAxis.Y:
-                _detectParentForGroundRotation.DoGroundRotation = true;
+                _detectParentForGroundRotation.ToggleParentChanger(true);
                 if (_controlledScript.IsLockYAxis)
                 {
                     ActionSwitchLineCols(true);
@@ -156,9 +165,10 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
             case SliceAxis.Z:
-                _detectParentForGroundRotation.DoGroundRotation = false;
+                _detectParentForGroundRotation.ToggleParentChanger(false);
                 if (_controlledScript.IsLockZAxis)
                 {
+                    _player.SetParent(null);
                     ActionSwitchLineCols(true);
                     return;
                 }
@@ -181,19 +191,7 @@ public class RubiksCubeController : MonoBehaviour
             ShutDownFace();
 
             if (_controlledScript == null) return;
-
-            foreach (RubiksMovement cube in _replicatedScript)
-            {
-                if (!cube) continue;
-
-                Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
-                // Get The index of the children 
-                // Find the Other child at the index in other cube
-                // Move it
-
-                cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-
-            }
+            if (ActualFace == null) return;
 
             RubiksMove input = new()
             {
@@ -209,15 +207,25 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (_lastInput != null)
                 {
-                    bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
-                    completeAction = isSameFace && _lastInput == input;
+                    if(_lastInput.cube == null)
+                    {
+                        // Should this happen ?
+                    }
+                    else
+                    {
+                        bool isSameFace = _controlledScript.GetCubesFromFace(_lastInput.cube, _lastInput.orientation).Contains(input.cube);
+                        completeAction = isSameFace && _lastInput == input;
+                    }
                 }
 
                 if (_previewControlledScript && !completeAction)
                 {
-                    _previewControlledScript.UndoMove(0.0f);
+                    if (_isPreviewDisplayed) {
+                        _previewControlledScript.UndoMove(0.0f);                    
+                    }
                     HidePreview();
                     ShowPreview(_selectedSlice, SelectionCube.SelectionMode.AXIS);
+
                     Transform equivalence = _previewControlledScript.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
                     _previewControlledScript.RotateAxis(_previewControlledScript.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.PreviewRubikscCubeAxisRotationDuration, _selectedSlice);
                     _lastInput = input;
@@ -226,22 +234,54 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (completeAction)
                 {
+                    foreach (RubiksMovement cube in _replicatedScript)
+                    {
+                        if (!cube) continue;
+
+                        Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
+                        // Get The index of the children 
+                        // Find the Other child at the index in other cube
+                        // Move it
+
+                        cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+                    }
+
                     HidePreview();
                     _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-                    _previewControlledScript.ResetMovesHistory();
                     _lastInput = null;
                     _isPreviewDisplayed = false;
                 }
             }
             else
             {
+                foreach (RubiksMovement cube in _replicatedScript)
+                {
+                    if (!cube) continue;
+
+                    Transform equivalence = cube.transform.GetChild(ActualFace.transform.GetComponentIndex());
+                    // Get The index of the children 
+                    // Find the Other child at the index in other cube
+                    // Move it
+
+                    cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+                }
+
                 _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
-
             }
-
-
         }
     }
+
+    private void ResetPreview(float duration)
+    {
+        if (_isPreviewDisplayed && _previewControlledScript)
+        {
+            _previewControlledScript.UndoMove(0.0f);
+            HidePreview();
+            _lastInput = null;
+            _isPreviewDisplayed = false;
+        }
+    }
+
     public void ActionRotateCubeUI(Vector2 direction)
     {
         StartCoroutine(RotateCubeUI(direction));
@@ -268,6 +308,24 @@ public class RubiksCubeController : MonoBehaviour
 
             _isCameraRotating = false;
         }
+    }
+
+    public bool IsPlayerOnTile(SliceAxis sliceAxis, Transform cube)
+    {
+        if (_controlledScript != null)
+        {
+            foreach (Transform go in _controlledScript.GetCubesFromFace(cube, sliceAxis))
+            {
+                SelectionCube selection = go.GetComponent<SelectionCube>();
+                if (selection == null) continue;
+
+                if (_detectParentForGroundRotation.OldTilePlayerPos == selection && sliceAxis != SliceAxis.Y)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /* OLD
@@ -353,14 +411,12 @@ public class RubiksCubeController : MonoBehaviour
 
     void HidePreview()
     {
-        foreach (Transform go in _previewControlledScript.transform.parent)
+        SelectionCube[] selectionCubes = _previewControlledScript.transform.parent.GetComponentsInChildren<SelectionCube>();
+        foreach (SelectionCube selection in selectionCubes)
         {
-            SelectionCube selection = go.GetComponent<SelectionCube>();
-            if (selection == null) continue;
             selection.Select(SelectionCube.SelectionMode.DISABLE);
         }
     }
-
 }
 
 

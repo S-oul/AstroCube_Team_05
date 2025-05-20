@@ -1,6 +1,4 @@
-using AK.Wwise;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -34,6 +32,9 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 _gravityDirection;
 
+    private GroundTypePlayerIsWalkingOn _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
+
+
     float _floorDistance = 0.1f;
 
     float _currentMoveSpeed;
@@ -66,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 _externallyAppliedMovement = Vector3.zero;
 
+    public bool isOnDefaultGround;
+
     public float defaultSpeed { get; private set; }
     public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
 
@@ -76,17 +79,22 @@ public class PlayerMovement : MonoBehaviour
     {
         EventManager.OnStartCubeRotation += DisableMovement;
         EventManager.OnEndCubeRotation += EnableMovement;
+        EventManager.OnEndCubeRotation += UnParentPlayer;
+
     }
 
     private void OnDisable()
     {
-        EventManager.OnStartCubeRotation += DisableMovement;
-        EventManager.OnEndCubeRotation += EnableMovement;
+        EventManager.OnStartCubeRotation -= DisableMovement;
+        EventManager.OnEndCubeRotation -= EnableMovement;
+        EventManager.OnEndCubeRotation -= UnParentPlayer;
+
     }
 
     public void EnableMovement() => _canMove = true;
     public void DisableMovement() => _canMove = false;
 
+    public void UnParentPlayer() => transform.SetParent(null);
     void Start()
     {
         _gameSettings = GameManager.Instance.Settings;
@@ -189,14 +197,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isWalking) {
             _timerBeforeNextStep += Time.deltaTime;
-        } else {
+            EventManager.TriggerPlayerFootSteps(_currentGroundType);
+
+        }
+        else {
             _timerBeforeNextStep = 0;
         }
 
         float stepDuration = _timerTNextStep / _currentMoveSpeedFactor;
         if (_timerBeforeNextStep >= stepDuration) {
             _timerBeforeNextStep = 0;
-            EventManager.TriggerPlayerFootSteps();
+            UpdateGroundType();
+            EventManager.TriggerPlayerFootSteps(_currentGroundType);
+
         }
     }
 
@@ -300,4 +313,31 @@ public class PlayerMovement : MonoBehaviour
     {
         _externallyAppliedMovement = directon * speed;
     }
+
+    private void UpdateGroundType()
+    {
+        Ray ray = new Ray(_floorCheck.position, -transform.up);
+        if (Physics.Raycast(ray, out RaycastHit hit, _floorDistance + 0.2f, _floorLayer))
+        {
+            string groundTag = hit.collider.tag;
+            //Debug.Log("Ground tag detected: " + groundTag);
+            switch (groundTag)
+            {
+                case "Floor_Default":
+                default:
+                    _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
+                    break;
+                case "Floor_Grass":
+                    _currentGroundType = GroundTypePlayerIsWalkingOn.Grass;
+                    break;
+            }
+            //Debug.Log("Ground type detected: " + groundTag);
+        }
+        else
+        {
+            //Debug.Log("No ground or tag detected , setting to default.");
+            _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
+        }
+    }
+
 }

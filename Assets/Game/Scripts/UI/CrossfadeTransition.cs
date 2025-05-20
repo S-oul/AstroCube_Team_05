@@ -9,21 +9,24 @@ public class CrossfadeTransition : MonoBehaviour
     public float segmentCount;
     public float kaleidoscopeCamZRotation;
     public float shaderAdjustmentAmount;
+    public float blackScreenOpacity;
 
     [SerializeField] GameObject _kaleidoscopeCam;
+    [SerializeField] Image _blackScreen;
     Image _screen;
     Animator _transitionAnimator;
+    Color _blackScreenColor;
 
     //IF YOU CHANGE THESE, I WILL FORKING KILL YOU
-    float VIP_Var1 = -0.133f; // Base 0
-    float VIP_Var2 = 1.9f;    // Base 1 
+    float VIP_Var1 = -0.1371f; // Base 0
+    float VIP_Var2 = 1.93f;    // Base 1 
 
     bool _isActive = true;
 
     private void OnEnable()
     {
         EventManager.OnPlayerWin += StartFade;
-    }   
+    }
     private void OnDisable()
     {
         EventManager.OnPlayerWin -= StartFade;
@@ -50,6 +53,7 @@ public class CrossfadeTransition : MonoBehaviour
         _screen = GetComponent<Image>();
         _transitionAnimator = GetComponent<Animator>();
         InputHandler.Instance.CanMove = false;
+        _blackScreenColor = _blackScreen.color;
     }
 
     private void Update()
@@ -61,8 +65,12 @@ public class CrossfadeTransition : MonoBehaviour
             if (_isActive)
             {
                 _screen.enabled = false;
-                _kaleidoscopeCam.GetComponent<Animator>().enabled = true;
-                _kaleidoscopeCam.SetActive(false);
+                if (_kaleidoscopeCam)
+                {
+
+                    _kaleidoscopeCam.GetComponent<Animator>().enabled = true;
+                    _kaleidoscopeCam.SetActive(false);
+                }
                 _isActive = false;
             }
             return;
@@ -87,5 +95,7 @@ public class CrossfadeTransition : MonoBehaviour
 
         _screen.material.SetFloat("_TEST_VAR1", Mathf.Lerp(0, VIP_Var1, shaderAdjustmentAmount));
         _screen.material.SetFloat("_TEST_VAR2", Mathf.Lerp(1, VIP_Var2, shaderAdjustmentAmount));
+        _blackScreenColor.a = blackScreenOpacity;
+        _blackScreen.color = _blackScreenColor;
     }
 }

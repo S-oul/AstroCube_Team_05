@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5012748885508976684}
   - component: {fileID: 1984326907067746037}
+  - component: {fileID: 4765695453206104461}
   m_Layer: 0
   m_Name: --GameManager--
   m_TagString: Untagged
@@ -45,5 +46,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: c98d89f79d0ac1845b4252a1011d8658, type: 2}
-  winScreen: {fileID: 0}
-  loseScreen: {fileID: 0}
+  CutomizeSettings: {fileID: 11400000, guid: d3f72fb16dd4e334bae13fde4221e290, type: 2}
+  nextScene: StartMenu
+  _entitySequenceManager: {fileID: 0}
+  _fade: {fileID: 0}
+  _sequenceDuration: 0
+  _artifact: {fileID: 0}
+  _objectToDisable: []
+  _rubiksCubeUI: {fileID: 0}
+  _isRubiksCubeEnabled: 0
+  _previewRubiksCube: {fileID: 0}
+--- !u!114 &4765695453206104461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372454358547415752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb60ead939747949bd71b574701d952, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sourceCamera: {fileID: 0}
+  _fadeSpeed: 0.1
+  _distortMat: {fileID: 2100000, guid: 2cdc44759058bfc41beae3ac3a6717e3, type: 2}
+  _data: {fileID: 11400000, guid: c40be3174f62c4acf8c1216858c64956, type: 2}
+  _minMaxDistortionValue: {x: 1, y: 5}
