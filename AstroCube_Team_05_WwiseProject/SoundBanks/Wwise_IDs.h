@@ -24,6 +24,7 @@ namespace AK
         static const AkUniqueID SFX_LASEREMETTING_LP = 2922909946U;
         static const AkUniqueID SFX_LASERRECEIVED = 4087256891U;
         static const AkUniqueID SFX_LASERREFLECTED = 4113391946U;
+        static const AkUniqueID SFX_RC_CUBEROTATION_FACE = 3346727162U;
     } // namespace EVENTS
 
     namespace SWITCHES

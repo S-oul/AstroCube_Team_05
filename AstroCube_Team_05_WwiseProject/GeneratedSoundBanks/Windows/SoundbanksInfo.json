@@ -1112,7 +1112,7 @@
     "GUID": "{653AB8BF-84AF-4F6C-B01A-9079A6DBFE3E}",
     "Color": "25",
     "Language": "SFX",
-    "Hash": "{640D6342-B159-FA5B-B43A-670790A0CF1B}",
+    "Hash": "{09A1094A-6EDB-6270-8540-81C50BC99973}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_SFX_SBK\\SFX_SBK",
     "ShortName": "SFX_SBK",
     "Path": "SFX_SBK.bnk",
@@ -1148,6 +1148,14 @@
       "Location": "Memory",
       "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_01.wav",
       "CachePath": "CE/{CE00241C-9059-E3AA-CB33-E748375A439A}.wem"
+     },
+     {
+      "Id": "92388314",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_Face_04.wav",
+      "CachePath": "48/{48243C52-D297-12D0-4853-24E7FAD524D9}.wem"
      },
      {
       "Id": "129079898",
@@ -1238,6 +1246,22 @@
       "CachePath": "9E/{9E92EF2C-E47C-A9BE-F8E4-6BDB11C40065}.wem"
      },
      {
+      "Id": "853968937",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_Face_03.wav",
+      "CachePath": "4A/{4A06F4C0-76AA-2512-1A60-8D437D8586F1}.wem"
+     },
+     {
+      "Id": "882678925",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_Face_01.wav",
+      "CachePath": "78/{787B1193-3941-2F4E-183A-CB62E99AD6EE}.wem"
+     },
+     {
       "Id": "925561773",
       "Language": "SFX",
       "Streaming": "false",
@@ -1252,6 +1276,22 @@
       "Location": "Memory",
       "ShortName": "SFX\\Laser\\SFX_Laser_Reflected_04.wav",
       "CachePath": "73/{739FBAAC-61A3-F70D-CC8E-1D715D12F6D6}.wem"
+     },
+     {
+      "Id": "968754663",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_Face_05.wav",
+      "CachePath": "94/{943C94FC-44C2-B0D2-BA8F-1F5C7A3A6A4C}.wem"
+     },
+     {
+      "Id": "969456879",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_Face_02.wav",
+      "CachePath": "C4/{C41A2219-4AFA-D95A-CBC5-93D618636FDE}.wem"
      },
      {
       "Id": "1039241937",
@@ -1277,6 +1317,14 @@
        "Name": "EF_Meter_Distance",
        "ObjectPath": "\\Effects\\Default Work Unit\\EF_Meter_Distance",
        "GUID": "{49C9553A-6891-4D20-BD76-65E6740EB71D}",
+       "LibName": "Wwise Meter",
+       "LibId": "8454147"
+      },
+      {
+       "Id": "2766983158",
+       "Name": "EF_Meter",
+       "ObjectPath": "\\Effects\\Default Work Unit\\EF_Meter",
+       "GUID": "{7A541130-2C27-4899-9F21-85FB05597353}",
        "LibName": "Wwise Meter",
        "LibId": "8454147"
       }
@@ -1408,6 +1456,41 @@
         "Id": "963422868"
        }
       ]
+     },
+     {
+      "Id": "3346727162",
+      "Name": "SFX_RC_CubeRotation_Face",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_SFX_Event\\SFX_RC_CubeRotation_Face",
+      "GUID": "{E8CF792C-2D52-4F13-BB81-CA5126A23C71}",
+      "Color": "25",
+      "MaxAttenuation": "50",
+      "DurationType": "OneShot",
+      "DurationMin": "2.6554482",
+      "DurationMax": "3.5445979",
+      "MediaRefs": [
+       {
+        "Id": "92388314"
+       },
+       {
+        "Id": "853968937"
+       },
+       {
+        "Id": "882678925"
+       },
+       {
+        "Id": "968754663"
+       },
+       {
+        "Id": "969456879"
+       }
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "2766983158"
+        }
+       ]
+      }
      }
     ],
     "Busses": [
@@ -1450,6 +1533,6 @@
     ]
    }
   ],
-  "FileHash": "{7581FF0F-4414-B43C-6A69-C708598B529C}"
+  "FileHash": "{56FE7C81-018E-3F71-BA4E-CC7AF72CBE24}"
  }
 }
