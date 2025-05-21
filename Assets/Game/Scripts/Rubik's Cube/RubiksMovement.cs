@@ -5,6 +5,7 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
+using AK.Wwise;
 
 public class RubiksMovement : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class RubiksMovement : MonoBehaviour
     //PRIVATE THINGS
     private bool _isRotating = false;
     private bool _isReversing = false;
+    private bool _isScrambling = false;
+    private bool _isInitializing = true;
     List<RubiksMove> _moves = new List<RubiksMove>();
 
     [Header("LOCKINGS")]
@@ -45,7 +48,9 @@ public class RubiksMovement : MonoBehaviour
     [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenSequence = 1f;
     [ShowIf("_DoAutoMoves"), SerializeField] List<RubiksMove> AutoMovesSequence = new List<RubiksMove>();
 
-
+    [Header("SOUND")]
+    [SerializeField] AK.Wwise.Event _startRotationSound;
+    [SerializeField] AK.Wwise.Event _endRotationSound;
 
     #region Accessor
     public bool IsPreview { get => _isPreview; set => _isPreview = value; }
@@ -60,6 +65,7 @@ public class RubiksMovement : MonoBehaviour
 
     private void Awake()
     {
+        _isInitializing = true;
         EventManager.OnPlayerReset += ReverseMoves;
         EventManager.OnPlayerResetOnce += UndoMove;
 
@@ -73,8 +79,16 @@ public class RubiksMovement : MonoBehaviour
         {
             StartSequenceCoroutine();
         }
-
+        
+        StartCoroutine(DelayedInitializationComplete());
     }
+
+    private IEnumerator DelayedInitializationComplete()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _isInitializing = false;
+    }
+
     private void OnEnable()
     {
         if (_PlayOnEvent && AutoMovesSequence.Count > 0)
@@ -125,6 +139,7 @@ public class RubiksMovement : MonoBehaviour
 
     IEnumerator Scramble()
     {
+        _isScrambling = true;
         while (_doScramble)
         {
             if (!_isRotating)
@@ -134,6 +149,7 @@ public class RubiksMovement : MonoBehaviour
             }
             yield return null;
         }
+        _isScrambling = false;
     }
     void ReverseMoves(float timeToReset)
     {
@@ -229,10 +245,18 @@ public class RubiksMovement : MonoBehaviour
         }
         _isRotating = true;
 
-        if (!(_isPreview && _isArtCube))
+        if (!(_isPreview && _isArtCube) && !_isScrambling && !_isInitializing)
         {
-            if (!_DoAutoMoves) EventManager.TriggerStartCubeRotation();
-            else EventManager.TriggerStartCubeSequenceRotation();
+            if(!_DoAutoMoves)
+            {
+                EventManager.TriggerStartCubeRotation();
+                if (_startRotationSound != null) _startRotationSound.Post(gameObject);
+            }
+            else
+            {
+                EventManager.TriggerStartCubeSequenceRotation();
+                if (_startRotationSound != null) _startRotationSound.Post(gameObject);
+            }
         }
 
         Vector3 rotationAxis = Vector3.zero;
@@ -353,10 +377,18 @@ public class RubiksMovement : MonoBehaviour
             };
             _moves.Add(move);
         }
-        if (!(_isPreview && _isArtCube))
+        if (!(_isPreview && _isArtCube) && !_isScrambling && !_isInitializing)
         {
-            if(!_DoAutoMoves) EventManager.TriggerEndCubeRotation();
-            else EventManager.TriggerEndCubeSequenceRotation();
+            if(!_DoAutoMoves)
+            {
+                EventManager.TriggerEndCubeRotation();
+                if (_endRotationSound != null) _endRotationSound.Post(gameObject);
+            }
+            else
+            {
+                EventManager.TriggerEndCubeSequenceRotation();
+                if (_endRotationSound != null) _endRotationSound.Post(gameObject);
+            }
         }
     }
 

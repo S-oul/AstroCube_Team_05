@@ -183,9 +183,10 @@
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="2"/>
 										<Property Name="BelowThresholdBehavior" Type="int16" Value="2"/>
-										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
 										<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+										<Property Name="ListenerRelativeRouting" Type="bool" Value="False"/>
 										<Property Name="MaxSoundPerInstance" Type="int16">
 											<ValueList>
 												<Value>2</Value>
@@ -193,7 +194,6 @@
 										</Property>
 										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideEffect" Type="bool" Value="True"/>
-										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="OverrideVirtualVoice" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ModifierList>
@@ -217,13 +217,12 @@
 										<Property Name="VirtualVoiceQueueBehavior" Type="int16" Value="2"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
-												<Value>-9</Value>
+												<Value>3</Value>
 											</ValueList>
 											<ModifierList>
 												<ModifierInfo>
 													<Modifier Name="" ID="{BA07849B-4D4F-41A7-A400-22CD4786FAC7}">
 														<PropertyList>
-															<Property Name="Enabled" Type="bool" Value="True"/>
 															<Property Name="Min" Type="Real64" Value="-3"/>
 														</PropertyList>
 													</Modifier>
@@ -243,7 +242,7 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<Sound Name="SFX_Cube_Rotation_Face_01" ID="{05EB8FA3-14DA-4C4A-BE0B-1BFB5DB7E3E8}" ShortID="453855082">
+										<Sound Name="SFX_Cube_Rotation_Face_01" ID="{F341BB63-73F2-454D-A07F-98C16D67314A}" ShortID="1071537607">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -253,7 +252,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_Face_01" ID="{307C74AF-6536-4DED-A74D-0ECB1DFB1F14}">
+												<AudioFileSource Name="SFX_Cube_Rotation_Face_01" ID="{6C5B425F-5DA6-47EC-812D-63817449CF56}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_Face_01.wav</AudioFile>
 													<MediaIDList>
@@ -262,10 +261,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_Face_01" ID="{307C74AF-6536-4DED-A74D-0ECB1DFB1F14}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_Face_01" ID="{6C5B425F-5DA6-47EC-812D-63817449CF56}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="SFX_Cube_Rotation_Face_02" ID="{EE12E238-E2CF-486C-A6BA-E291D7FF24F0}" ShortID="880315289">
+										<Sound Name="SFX_Cube_Rotation_Face_02" ID="{038260B3-3A2B-418C-8DBC-F8BCDC8E6A4A}" ShortID="633887173">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -275,7 +274,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_Face_02" ID="{F2B651AC-E98E-4898-B78F-FA9FCC72C8D2}">
+												<AudioFileSource Name="SFX_Cube_Rotation_Face_02" ID="{EA2BC2B2-1344-4784-B16F-A7AEA9DAF5D9}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_Face_02.wav</AudioFile>
 													<MediaIDList>
@@ -284,10 +283,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_Face_02" ID="{F2B651AC-E98E-4898-B78F-FA9FCC72C8D2}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_Face_02" ID="{EA2BC2B2-1344-4784-B16F-A7AEA9DAF5D9}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="SFX_Cube_Rotation_Face_03" ID="{2E95CCDE-F5EB-4AB7-9C16-EC77EBFAF1B7}" ShortID="71658040">
+										<Sound Name="SFX_Cube_Rotation_Face_03" ID="{3A6A2E63-5306-4064-808F-331AF5B4A606}" ShortID="340496513">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -297,7 +296,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_Face_03" ID="{66D092DF-4889-4616-83E1-452E306B9C5D}">
+												<AudioFileSource Name="SFX_Cube_Rotation_Face_03" ID="{E61D69AB-6BC3-4306-9EB4-A416DB6160F6}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_Face_03.wav</AudioFile>
 													<MediaIDList>
@@ -306,10 +305,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_Face_03" ID="{66D092DF-4889-4616-83E1-452E306B9C5D}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_Face_03" ID="{E61D69AB-6BC3-4306-9EB4-A416DB6160F6}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="SFX_Cube_Rotation_Face_04" ID="{10EFB3B7-0B91-4AA8-9963-A162EDA16D5C}" ShortID="1067056654">
+										<Sound Name="SFX_Cube_Rotation_Face_04" ID="{8E13A1B5-6A2E-44D1-AF43-7BCDF562F54E}" ShortID="956884967">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -319,7 +318,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_Face_04" ID="{C72DB516-EE49-452F-8C00-AD5ABBEDC472}">
+												<AudioFileSource Name="SFX_Cube_Rotation_Face_04" ID="{AC8981C4-3629-4D4B-B342-250222498BBE}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_Face_04.wav</AudioFile>
 													<MediaIDList>
@@ -328,10 +327,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_Face_04" ID="{C72DB516-EE49-452F-8C00-AD5ABBEDC472}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_Face_04" ID="{AC8981C4-3629-4D4B-B342-250222498BBE}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="SFX_Cube_Rotation_Face_05" ID="{A757F893-DF2E-4343-8BBA-546D83842001}" ShortID="170161654">
+										<Sound Name="SFX_Cube_Rotation_Face_05" ID="{81B11AF4-7EA4-4F79-8B71-6BA967CA011A}" ShortID="896582949">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -341,7 +340,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="SFX_Cube_Rotation_Face_05" ID="{B87EDB17-D87C-4B26-AC5B-515AAE10FE36}">
+												<AudioFileSource Name="SFX_Cube_Rotation_Face_05" ID="{B5DB447A-7353-4AAF-98FB-FC73C1197E30}">
 													<Language>SFX</Language>
 													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_Face_05.wav</AudioFile>
 													<MediaIDList>
@@ -350,7 +349,7 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="SFX_Cube_Rotation_Face_05" ID="{B87EDB17-D87C-4B26-AC5B-515AAE10FE36}" Platform="Linked"/>
+												<ActiveSource Name="SFX_Cube_Rotation_Face_05" ID="{B5DB447A-7353-4AAF-98FB-FC73C1197E30}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
@@ -504,6 +503,49 @@
 										</Sound>
 									</ChildrenList>
 								</RandomSequenceContainer>
+								<Sound Name="SFX_Cube_Rotation_Face_LP" ID="{9FDA6B46-2ACF-4FAC-ABAE-8C99BA6491C8}" ShortID="846045886">
+									<PropertyList>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{D7EEF060-DD04-4C17-92BA-6D8B40F5C8A0}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="150"/>
+															<Property Name="Min" Type="Real64" Value="-150"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-9</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="SFX_Cube_Rotation_Face_LP" ID="{BBF1FA84-C45D-4694-9430-B10003EB7FCC}">
+											<Language>SFX</Language>
+											<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_Face_LP.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="522280742"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="SFX_Cube_Rotation_Face_LP" ID="{BBF1FA84-C45D-4694-9430-B10003EB7FCC}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</ActorMixer>
 						<ActorMixer Name="AM_Laser" ID="{197ED416-3D26-409D-B0FD-163ABB48649E}" ShortID="343854570">

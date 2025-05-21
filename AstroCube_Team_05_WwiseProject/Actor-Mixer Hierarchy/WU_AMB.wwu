@@ -356,7 +356,7 @@
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Attenuation">
-											<ObjectRef Name="ATT_15m" ID="{0D4D7827-3A5C-46EB-A46F-62F7611ADC5A}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+											<ObjectRef Name="ATT_20m" ID="{8CF9A3C9-0616-4D18-AB37-6F832EC4F252}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
 										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -416,7 +416,7 @@
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Attenuation">
-											<ObjectRef Name="ATT_40m" ID="{45E06BFC-E8E7-42B6-8AC8-F3873EEEEF14}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+											<ObjectRef Name="ATT_50m" ID="{B1265286-FCE8-4EB4-8791-559038B99D02}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
 										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -574,16 +574,12 @@
 											</Reference>
 											<Reference>
 												<Local>
-													<EffectSlot Name="" ID="{B4281F91-4A1B-4EEF-A646-D49E9C791B21}" ShortID="648558260">
-														<ReferenceList/>
-													</EffectSlot>
+													<EffectSlot Name="" ID="{B4281F91-4A1B-4EEF-A646-D49E9C791B21}" ShortID="648558260"/>
 												</Local>
 											</Reference>
 											<Reference>
 												<Local>
-													<EffectSlot Name="" ID="{25428961-AF38-4F76-AE63-D088AC2B519A}" ShortID="601358341">
-														<ReferenceList/>
-													</EffectSlot>
+													<EffectSlot Name="" ID="{25428961-AF38-4F76-AE63-D088AC2B519A}" ShortID="601358341"/>
 												</Local>
 											</Reference>
 										</ObjectList>
@@ -623,6 +619,53 @@
 									</ChildrenList>
 									<ActiveSourceList>
 										<ActiveSource Name="AMB_SP_Shard_Float__LP" ID="{46E399EE-3AEA-4921-A147-EAF66F447B6F}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="AMB_SP_Portal_Open" ID="{1A7532A8-0710-4D0B-A0F8-9CBC5EEDE2CB}" ShortID="292709559">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="2"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{0BFE1967-B5C0-4E96-A4D4-6F4CDC2B75F8}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="150"/>
+															<Property Name="Min" Type="Real64" Value="-150"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-3</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="ATT_30m" ID="{A6DAB947-CEC4-4C2B-92F4-124FA7835B6D}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+										</Reference>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="AMB_SP_Portal_Open" ID="{03DD54B3-B8DF-43C4-A069-09FE93A2F414}">
+											<Language>SFX</Language>
+											<AudioFile>3.Export\AMB\AMB_SP_Portal_Open.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="328270931"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="AMB_SP_Portal_Open" ID="{03DD54B3-B8DF-43C4-A069-09FE93A2F414}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
