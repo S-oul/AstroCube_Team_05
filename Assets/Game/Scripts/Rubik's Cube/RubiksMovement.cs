@@ -51,6 +51,7 @@ public class RubiksMovement : MonoBehaviour
     [Header("SOUND")]
     [SerializeField] AK.Wwise.Event _startRotationSound;
     [SerializeField] AK.Wwise.Event _endRotationSound;
+    [SerializeField] AK.Wwise.Event _duringRotationSound;
 
     #region Accessor
     public bool IsPreview { get => _isPreview; set => _isPreview = value; }
@@ -251,11 +252,13 @@ public class RubiksMovement : MonoBehaviour
             {
                 EventManager.TriggerStartCubeRotation();
                 if (_startRotationSound != null) _startRotationSound.Post(gameObject);
+                if (_duringRotationSound != null) _duringRotationSound.Post(gameObject);
             }
             else
             {
                 EventManager.TriggerStartCubeSequenceRotation();
                 if (_startRotationSound != null) _startRotationSound.Post(gameObject);
+                if (_duringRotationSound != null) _duringRotationSound.Post(gameObject);
             }
         }
 
@@ -382,11 +385,13 @@ public class RubiksMovement : MonoBehaviour
             if(!_DoAutoMoves)
             {
                 EventManager.TriggerEndCubeRotation();
+                if (_duringRotationSound != null) _duringRotationSound.Stop(gameObject);
                 if (_endRotationSound != null) _endRotationSound.Post(gameObject);
             }
             else
             {
                 EventManager.TriggerEndCubeSequenceRotation();
+                if (_duringRotationSound != null) _duringRotationSound.Stop(gameObject);
                 if (_endRotationSound != null) _endRotationSound.Post(gameObject);
             }
         }
