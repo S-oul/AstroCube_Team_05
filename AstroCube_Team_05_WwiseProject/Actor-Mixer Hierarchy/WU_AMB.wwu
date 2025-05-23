@@ -685,7 +685,7 @@
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<RandomSequenceContainer Name="RFX_Portal_Whispers" ID="{4CD3BEE8-9A35-4FA7-B37C-CF6ACED21501}" ShortID="547633573">
+								<RandomSequenceContainer Name="AMB_RFX_Portal_Whispers" ID="{4CD3BEE8-9A35-4FA7-B37C-CF6ACED21501}" ShortID="547633573">
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="2"/>
 										<Property Name="BelowThresholdBehavior" Type="int16" Value="2"/>
@@ -973,6 +973,765 @@
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
+								</RandomSequenceContainer>
+								<RandomSequenceContainer Name="AMB_RFX_Global" ID="{9F9D5373-50A8-4B70-9025-461451C43A98}" ShortID="615143291">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="2"/>
+										<Property Name="HoldEmitterPositionOrientation" Type="bool" Value="True"/>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{3835242E-DD27-4269-987A-156BCC1B11EE}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="200"/>
+															<Property Name="Min" Type="Real64" Value="-200"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="1"/>
+										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="8">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{247CF49A-BD9F-4424-A2E2-268D5D41FCD5}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="15"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="5"/>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+										<Property Name="Volume" Type="Real64">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{4ECC8455-62A4-4D9D-8C1E-EDFB7C890EB1}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Min" Type="Real64" Value="-6"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="ATT_30m" ID="{A6DAB947-CEC4-4C2B-92F4-124FA7835B6D}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+										</Reference>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="AMB_RFX_Drone_01" ID="{B192E3F8-E025-47D9-A9C7-C1A54F09DDD9}" ShortID="279450824">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_01" ID="{63F7FD9C-7124-4E8E-9BA8-860C49AF3FAB}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="537414148"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_01" ID="{63F7FD9C-7124-4E8E-9BA8-860C49AF3FAB}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_02" ID="{B7157E40-27EF-4F98-B50A-4B972181ADFA}" ShortID="222733754">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_02" ID="{CEDF656D-F9D4-49F9-9713-9155BBDA7BE3}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_02.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="616873907"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_02" ID="{CEDF656D-F9D4-49F9-9713-9155BBDA7BE3}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_03" ID="{DB0ABF0A-08A3-40E2-97AA-D776DA173458}" ShortID="414345790">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_03" ID="{6B28E56F-FE0D-4B72-8EA6-5D3639D6774D}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_03.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="963197360"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_03" ID="{6B28E56F-FE0D-4B72-8EA6-5D3639D6774D}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_04" ID="{7D4490B3-F8C5-491F-B21B-FB4B93C5A064}" ShortID="704701878">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_04" ID="{13C4243F-38A3-4A83-BA27-4F39DA4068F6}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_04.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="685650104"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_04" ID="{13C4243F-38A3-4A83-BA27-4F39DA4068F6}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_05" ID="{E5B134E5-D49E-49B7-8DEC-40DCD139882D}" ShortID="747661119">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_05" ID="{B49C9935-3C74-4E15-BFB9-A72CBBCCFFC4}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_05.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="974787396"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_05" ID="{B49C9935-3C74-4E15-BFB9-A72CBBCCFFC4}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_06" ID="{B6C48CDC-DDF9-4434-BD92-606BA4499493}" ShortID="905488051">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_06" ID="{C76F19D4-9EF8-4B23-B104-50BED41D7B55}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_06.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="378999696"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_06" ID="{C76F19D4-9EF8-4B23-B104-50BED41D7B55}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_07" ID="{6DFEFEDD-7A5B-4512-A3B9-176FD9030BD1}" ShortID="174414039">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_07" ID="{420F5339-BF1F-426F-B974-D7E97CCDDA74}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_07.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="602246425"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_07" ID="{420F5339-BF1F-426F-B974-D7E97CCDDA74}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_08" ID="{B1A47BDD-C24C-4BBF-93B3-B9F9A5CCFD90}" ShortID="731681628">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_08" ID="{542AED64-944A-43FD-8A3E-AFD28626503F}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_08.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="501164240"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_08" ID="{542AED64-944A-43FD-8A3E-AFD28626503F}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_09" ID="{FA3C05C2-256C-4FF9-BDC9-EFC175DFF0E5}" ShortID="743186889">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_09" ID="{42F4B12E-4FB9-480F-AA61-5359AA30FB9E}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_09.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="917876202"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_09" ID="{42F4B12E-4FB9-480F-AA61-5359AA30FB9E}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_10" ID="{FFEDBF8A-C0AC-4ADF-89E8-B62E7C1D9EAD}" ShortID="418111759">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_10" ID="{71FAA62D-FD9B-4479-80A9-1CA0088A5B08}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_10.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="881909731"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_10" ID="{71FAA62D-FD9B-4479-80A9-1CA0088A5B08}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_11" ID="{26025061-707C-40CC-AA8A-46195161BD24}" ShortID="874217466">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_11" ID="{5598DF97-ED8C-4B45-B168-B2FDBDA877FE}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_11.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="842937059"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_11" ID="{5598DF97-ED8C-4B45-B168-B2FDBDA877FE}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_12" ID="{2DC41166-FA6E-4BAC-8746-418484A1346F}" ShortID="115263265">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_12" ID="{00ACB557-FA20-412D-A9C4-B38132D8D053}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_12.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="355514815"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_12" ID="{00ACB557-FA20-412D-A9C4-B38132D8D053}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_13" ID="{B6D708D8-C47C-45EA-89D6-2ECE5BD36E44}" ShortID="300006966">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_13" ID="{6D218091-360D-4B20-A571-A5209D2A21F7}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_13.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="491135504"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_13" ID="{6D218091-360D-4B20-A571-A5209D2A21F7}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_14" ID="{1F2FB170-34E3-47E9-A11D-5F1A027B620B}" ShortID="690153310">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_14" ID="{B5E01D36-04E4-4103-94E3-17BB2361BFC2}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_14.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="726238794"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_14" ID="{B5E01D36-04E4-4103-94E3-17BB2361BFC2}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_15" ID="{48DEFEAB-A1C9-4C11-9AF3-D003027E663C}" ShortID="396183206">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_15" ID="{373895C2-0BAD-4913-BD0E-106B826ED779}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_15.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="793918431"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_15" ID="{373895C2-0BAD-4913-BD0E-106B826ED779}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_16" ID="{446984D2-D43F-4337-A28C-AC0B2DCD5443}" ShortID="556884824">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_16" ID="{7C5FA80F-6979-4246-AC47-AB0E2FAC5FD8}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_16.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="400108802"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_16" ID="{7C5FA80F-6979-4246-AC47-AB0E2FAC5FD8}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_17" ID="{949413C4-327F-4B89-8723-C984BE790600}" ShortID="503580947">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_17" ID="{CC1E9AD0-0E2F-47C9-BC52-09CB2BD35330}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_17.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="654705924"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_17" ID="{CC1E9AD0-0E2F-47C9-BC52-09CB2BD35330}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_18" ID="{79D8CB80-2003-4C1B-99B8-04FF7896E68B}" ShortID="259724145">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_18" ID="{5B2ED765-67CF-4FE6-BE8D-15C5C9E8AA81}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_18.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="167247141"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_18" ID="{5B2ED765-67CF-4FE6-BE8D-15C5C9E8AA81}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_19" ID="{A10D7192-29A8-4253-8B11-DEB5044DA4C7}" ShortID="687551087">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_19" ID="{113014BF-4333-446A-84FD-96481BD42376}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_19.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="549616867"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_19" ID="{113014BF-4333-446A-84FD-96481BD42376}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_20" ID="{BA4B7A3A-5CA8-4AB1-B72B-817A71804463}" ShortID="810404148">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_20" ID="{EA2CD056-85EE-4529-B1BA-36063A717887}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_20.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="293368921"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_20" ID="{EA2CD056-85EE-4529-B1BA-36063A717887}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_21" ID="{69C73EB6-D112-4DE3-9D52-8717BAA553E4}" ShortID="819201323">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_21" ID="{48513E1F-11F0-45CA-A0B9-E4EDACCA8FEF}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_21.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="1004109277"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_21" ID="{48513E1F-11F0-45CA-A0B9-E4EDACCA8FEF}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_22" ID="{1504AC3A-1677-49A2-92AA-A2F22ADD912B}" ShortID="614049064">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_22" ID="{E4F203C1-7FE4-41BF-B41C-90295ED742CE}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_22.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="374725609"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_22" ID="{E4F203C1-7FE4-41BF-B41C-90295ED742CE}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_23" ID="{AD7A6B1C-E814-4C10-A9CF-6B2D5E10AA76}" ShortID="1020241839">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_23" ID="{F69D9494-4571-4D0D-9043-7664042C587F}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_23.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="877767661"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_23" ID="{F69D9494-4571-4D0D-9043-7664042C587F}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Drone_24" ID="{91A14C34-A174-469F-ACDF-55E68ABDADBF}" ShortID="582410496">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Drone_24" ID="{8E6262B9-5C16-42F0-8B31-0515048E7A95}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Drone_24.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="992600631"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Drone_24" ID="{8E6262B9-5C16-42F0-8B31-0515048E7A95}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Rockfall_01" ID="{3C55E7ED-7194-4F74-A2DB-F8931D973B79}" ShortID="908337004">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Rockfall_01" ID="{90B96BB1-39F0-4A45-A4C0-BD207077C662}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Rockfall_01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="416530666"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Rockfall_01" ID="{90B96BB1-39F0-4A45-A4C0-BD207077C662}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Rockfall_02" ID="{1852FF6D-8429-491F-B14B-F1080F919DE9}" ShortID="1019661479">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Rockfall_02" ID="{CD057D43-31A5-48C5-86B8-055BC6BD8D13}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Rockfall_02.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="997015404"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Rockfall_02" ID="{CD057D43-31A5-48C5-86B8-055BC6BD8D13}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Rockfall_03" ID="{AF9C2836-5FD7-4076-858B-39039A24CD9A}" ShortID="749796085">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Rockfall_03" ID="{0E5BAE21-B29E-4627-A21C-B7F3243193A8}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Rockfall_03.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="353693332"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Rockfall_03" ID="{0E5BAE21-B29E-4627-A21C-B7F3243193A8}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="AMB_RFX_Rockfall_04" ID="{39F0546A-05A8-43B1-9ECF-7A04BDF70185}" ShortID="307407225">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AMB_RFX_Rockfall_04" ID="{CF66BA31-710C-48AD-8A78-0BE05F016EAF}">
+													<Language>SFX</Language>
+													<AudioFile>AMB\RFX\AMB_RFX_Rockfall_04.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="599122815"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="AMB_RFX_Rockfall_04" ID="{CF66BA31-710C-48AD-8A78-0BE05F016EAF}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{BFDEBB14-EA85-4AF7-B452-34E1C6C49E8D}">
+											<PropertyList>
+												<Property Name="PanX" Type="Real64" Value="1.92623694772465E-14"/>
+												<Property Name="PanY" Type="Real64" Value="58.5895117540687"/>
+											</PropertyList>
+										</Panner>
+										<Position Name="" ID="{E68E1906-BA7D-4630-9F90-BFB361864824}">
+											<PropertyList>
+												<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+											</PropertyList>
+											<ChildrenList>
+												<Path2D Name="AMB_RFX_Global_Path" ID="{38E1E7D7-0996-4D60-8681-1744CE41FB64}">
+													<PropertyList>
+														<Property Name="Duration" Type="Uint32" Value="20000"/>
+														<Property Name="RandomX" Type="Real64" Value="5"/>
+														<Property Name="RandomY" Type="Real64" Value="5"/>
+														<Property Name="RandomZ" Type="Real64" Value="5"/>
+													</PropertyList>
+													<PointList>
+														<Point>
+															<XPos>-79.18782</XPos>
+															<YPos>20.0565</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
+														</Point>
+														<Point>
+															<XPos>-36.04061</XPos>
+															<YPos>81.9209</YPos>
+															<Flags>0</Flags>
+															<Time>2500</Time>
+														</Point>
+														<Point>
+															<XPos>52.79188</XPos>
+															<YPos>81.35593</YPos>
+															<Flags>0</Flags>
+															<Time>5000</Time>
+														</Point>
+														<Point>
+															<XPos>82.74112</XPos>
+															<YPos>23.16384</YPos>
+															<Flags>0</Flags>
+															<Time>7500</Time>
+														</Point>
+														<Point>
+															<XPos>86.29442</XPos>
+															<YPos>-58.75706</YPos>
+															<Flags>0</Flags>
+															<Time>10000</Time>
+														</Point>
+														<Point>
+															<XPos>51.26904</XPos>
+															<YPos>-92.0904</YPos>
+															<Flags>0</Flags>
+															<Time>12500</Time>
+														</Point>
+														<Point>
+															<XPos>-36.04061</XPos>
+															<YPos>-90.96045</YPos>
+															<Flags>0</Flags>
+															<Time>15000</Time>
+														</Point>
+														<Point>
+															<XPos>-77.66497</XPos>
+															<YPos>-67.79661</YPos>
+															<Flags>0</Flags>
+															<Time>17500</Time>
+														</Point>
+														<Point>
+															<XPos>-79.1878172588833</XPos>
+															<YPos>20.3389830508475</YPos>
+															<Flags>0</Flags>
+															<Time>20000</Time>
+														</Point>
+													</PointList>
+												</Path2D>
+											</ChildrenList>
+										</Position>
+									</PositioningInfo>
 								</RandomSequenceContainer>
 							</ChildrenList>
 						</ActorMixer>
