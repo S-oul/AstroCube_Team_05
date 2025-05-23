@@ -60,7 +60,7 @@
 				<AuxBus Id="3217397620" Name="AUX_REVLarge" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\WU_BUS_Rev\BUS_Rev\AUX_REVLarge" GUID="{16E79169-583D-4729-952A-D97524F8612C}" Color="26"/>
 			</AuxBusses>
 		</SoundBank>
-		<SoundBank Id="3702631076" Type="User" GUID="{D8A3959E-27EB-4F77-8F83-21C2E065E718}" Color="17" Language="SFX" Hash="{D56AA8D2-253A-68B4-04FB-A64215865BF0}">
+		<SoundBank Id="3702631076" Type="User" GUID="{D8A3959E-27EB-4F77-8F83-21C2E065E718}" Color="17" Language="SFX" Hash="{D0857FB4-311D-ADC1-317C-B89220BED4F2}">
 			<ObjectPath>\SoundBanks\Default Work Unit\WU_AMB_SBK\AMB_SBK</ObjectPath>
 			<ShortName>AMB_SBK</ShortName>
 			<Path>AMB_SBK.bnk</Path>
@@ -269,6 +269,7 @@
 			<Plugins>
 				<ShareSets>
 					<Plugin Id="212906528" Name="EF_Meter_Distance" ObjectPath="\Effects\Default Work Unit\EF_Meter_Distance" GUID="{49C9553A-6891-4D20-BD76-65E6740EB71D}" LibName="Wwise Meter" LibId="8454147"/>
+					<Plugin Id="2766983158" Name="EF_Meter" ObjectPath="\Effects\Default Work Unit\EF_Meter" GUID="{7A541130-2C27-4899-9F21-85FB05597353}" LibName="Wwise Meter" LibId="8454147"/>
 				</ShareSets>
 			</Plugins>
 			<Events>
@@ -355,6 +356,11 @@
 					<MediaRefs>
 						<MediaRef Id="610828645"/>
 					</MediaRefs>
+					<PluginRefs>
+						<ShareSets>
+							<PluginRef Id="2766983158"/>
+						</ShareSets>
+					</PluginRefs>
 				</Event>
 			</Events>
 			<Busses>
@@ -775,5 +781,5 @@
 			</AuxBusses>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{17D17FAA-654C-93F8-86CC-8348AA1B84D7}</FileHash>
+	<FileHash>{D9159781-B2B7-0F36-2B26-E9B84D0A60FD}</FileHash>
 </SoundBanksInfo>

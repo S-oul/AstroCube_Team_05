@@ -150,7 +150,7 @@
 										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
-												<Value>-2400</Value>
+												<Value>-1600</Value>
 											</ValueList>
 											<ModifierList>
 												<ModifierInfo>
@@ -275,6 +275,7 @@
 								</Sound>
 								<Sound Name="AMB_Transition_Atmosphere" ID="{C2027C77-7B30-42FD-AB77-72C9E6EF29A1}" ShortID="748833644">
 									<PropertyList>
+										<Property Name="OverrideEffect" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ModifierList>
 												<ModifierInfo>
@@ -311,6 +312,21 @@
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="Effects">
+											<Reference>
+												<Local>
+													<EffectSlot Name="" ID="{2F340106-1546-47F0-9A51-B71785CD96F3}" ShortID="214722392">
+														<ReferenceList>
+															<Reference Name="Effect" PluginName="Wwise Meter" CompanyID="0" PluginID="129" PluginType="3">
+																<ObjectRef Name="EF_Meter" ID="{7A541130-2C27-4899-9F21-85FB05597353}" WorkUnitID="{B3393AFF-EB5C-4809-A2D5-90DB1B3E876C}"/>
+															</Reference>
+														</ReferenceList>
+													</EffectSlot>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
 									<ActiveSourceList>
 										<ActiveSource Name="AMB_Transition_Atmosphere" ID="{6F9140AE-AEDC-4A43-B12F-3369FBE40A8D}" Platform="Linked"/>
 									</ActiveSourceList>
@@ -976,6 +992,7 @@
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="AMB_RFX_Global" ID="{9F9D5373-50A8-4B70-9025-461451C43A98}" ShortID="615143291">
 									<PropertyList>
+										<Property Name="3DPosition" Type="int16" Value="1"/>
 										<Property Name="3DSpatialization" Type="int16" Value="2"/>
 										<Property Name="HoldEmitterPositionOrientation" Type="bool" Value="True"/>
 										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
@@ -996,13 +1013,13 @@
 										<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="1"/>
-										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="8">
+										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="3">
 											<ModifierList>
 												<ModifierInfo>
 													<Modifier Name="" ID="{247CF49A-BD9F-4424-A2E2-268D5D41FCD5}">
 														<PropertyList>
 															<Property Name="Enabled" Type="bool" Value="True"/>
-															<Property Name="Max" Type="Real64" Value="15"/>
+															<Property Name="Max" Type="Real64" Value="8"/>
 														</PropertyList>
 													</Modifier>
 												</ModifierInfo>
@@ -1010,8 +1027,10 @@
 										</Property>
 										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
 										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="5"/>
-										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
 										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-3</Value>
+											</ValueList>
 											<ModifierList>
 												<ModifierInfo>
 													<Modifier Name="" ID="{4ECC8455-62A4-4D9D-8C1E-EDFB7C890EB1}">
@@ -1662,76 +1681,231 @@
 										</Panner>
 										<Position Name="" ID="{E68E1906-BA7D-4630-9F90-BFB361864824}">
 											<PropertyList>
-												<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+												<Property Name="NewPathForEachSound" Type="bool" Value="True"/>
 											</PropertyList>
 											<ChildrenList>
-												<Path2D Name="AMB_RFX_Global_Path" ID="{38E1E7D7-0996-4D60-8681-1744CE41FB64}">
-													<PropertyList>
-														<Property Name="Duration" Type="Uint32" Value="20000"/>
-														<Property Name="RandomX" Type="Real64" Value="5"/>
-														<Property Name="RandomY" Type="Real64" Value="5"/>
-														<Property Name="RandomZ" Type="Real64" Value="5"/>
-													</PropertyList>
+												<Path2D Name="AMB_RFX_Global_Path" ID="{5CE024AA-7429-42E4-AF41-394647855A11}">
 													<PointList>
 														<Point>
-															<XPos>-79.18782</XPos>
-															<YPos>20.0565</YPos>
+															<XPos>-54.82234</XPos>
+															<YPos>42.0904</YPos>
 															<Flags>12</Flags>
 															<Time>0</Time>
 														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_01" ID="{9CCF56C5-2857-4DB0-942D-E48BFE19B23C}">
+													<PointList>
 														<Point>
-															<XPos>-36.04061</XPos>
-															<YPos>81.9209</YPos>
-															<Flags>0</Flags>
-															<Time>2500</Time>
+															<XPos>75.1269</XPos>
+															<YPos>48.30508</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
 														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_02" ID="{A6247B2A-B4A5-497C-BBC6-312E27A5AA18}">
+													<PointList>
 														<Point>
 															<XPos>52.79188</XPos>
-															<YPos>81.35593</YPos>
-															<Flags>0</Flags>
-															<Time>5000</Time>
+															<YPos>-66.38418</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
 														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_03" ID="{EC3D19D8-C7A6-4361-A1BC-FD9A5AFFFB12}">
+													<PointList>
 														<Point>
-															<XPos>82.74112</XPos>
-															<YPos>23.16384</YPos>
-															<Flags>0</Flags>
-															<Time>7500</Time>
+															<XPos>28.93401</XPos>
+															<YPos>85.59322</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
 														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_04" ID="{E727A1DA-8BAE-4474-B299-76D1A92900F4}">
+													<PointList>
+														<Point>
+															<XPos>-47.71574</XPos>
+															<YPos>-78.81356</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
+														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_05" ID="{DAC721B7-2C77-4793-A757-978982E9C1DF}">
+													<PointList>
+														<Point>
+															<XPos>-67.51269</XPos>
+															<YPos>-4.80226</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
+														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_06" ID="{049ECC3F-06F5-447C-8916-593497CC98D4}">
+													<PointList>
 														<Point>
 															<XPos>86.29442</XPos>
-															<YPos>-58.75706</YPos>
-															<Flags>0</Flags>
-															<Time>10000</Time>
+															<YPos>35.87571</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
 														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_07" ID="{274D3036-80FE-43E5-B4AC-7E74FDDD3E2D}">
+													<PointList>
 														<Point>
-															<XPos>51.26904</XPos>
-															<YPos>-92.0904</YPos>
-															<Flags>0</Flags>
-															<Time>12500</Time>
+															<XPos>73.60406</XPos>
+															<YPos>-46.0452</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
 														</Point>
+													</PointList>
+												</Path2D>
+												<Path2D Name="AMB_RFX_Global_Path_08" ID="{33D37B87-568F-47F4-908F-EF7E22D4AF57}">
+													<PropertyList>
+														<Property Name="RandomX" Type="Real64" Value="10"/>
+														<Property Name="RandomY" Type="Real64" Value="10"/>
+														<Property Name="RandomZ" Type="Real64" Value="10"/>
+													</PropertyList>
+													<PointList>
 														<Point>
-															<XPos>-36.04061</XPos>
-															<YPos>-90.96045</YPos>
-															<Flags>0</Flags>
-															<Time>15000</Time>
-														</Point>
-														<Point>
-															<XPos>-77.66497</XPos>
-															<YPos>-67.79661</YPos>
-															<Flags>0</Flags>
-															<Time>17500</Time>
-														</Point>
-														<Point>
-															<XPos>-79.1878172588833</XPos>
-															<YPos>20.3389830508475</YPos>
-															<Flags>0</Flags>
-															<Time>20000</Time>
+															<XPos>-70.05076</XPos>
+															<YPos>63.55932</YPos>
+															<Flags>12</Flags>
+															<Time>0</Time>
 														</Point>
 													</PointList>
 												</Path2D>
 											</ChildrenList>
 										</Position>
 									</PositioningInfo>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{F2C402E7-9D17-4E06-B96C-DB9281B73A70}" ShortID="472273546">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Volume"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="RTPC_Meter_Distance" ID="{3B920A5A-34C9-461D-A5DB-AEACE93A0237}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{37878969-991E-4E3D-93B4-FAA911117860}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="3"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-48</XPos>
+																				<YPos>-6</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>-35</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{1146E2DB-F71C-4F79-858F-D8C1E91060D0}" ShortID="590322403">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Lowpass"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="RTPC_Meter_Distance" ID="{3B920A5A-34C9-461D-A5DB-AEACE93A0237}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{BA9BC830-409C-4989-A62E-AC0EF2AF2C96}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="65537"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-48</XPos>
+																				<YPos>60</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>-35</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{8F2EB248-3C07-4862-908B-9791349D70EA}" ShortID="628579019">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Volume"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="RTPC_Meter_Glb" ID="{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{552CFE22-1FD9-4B6B-8500-B9DDDF452C89}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="3"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-48</XPos>
+																				<YPos>-200</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
 								</RandomSequenceContainer>
 							</ChildrenList>
 						</ActorMixer>
