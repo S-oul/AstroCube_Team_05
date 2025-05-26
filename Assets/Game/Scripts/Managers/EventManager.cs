@@ -37,11 +37,8 @@ public class EventManager : MonoBehaviour
     public static event Action OnStartCubeRotation;
     public static event Action OnStartCubeSequenceRotation;
 
-
     public static event Action OnEndCubeRotation;
     public static event Action OnEndCubeSequenceRotation;
-
-
 
     //Object Events
     public static event Action OnButtonPressed;
@@ -55,6 +52,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
 
+    public static event Action OnPlayerChangeParent;
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
 
     //Narrative Events
@@ -114,6 +112,11 @@ public class EventManager : MonoBehaviour
         OnButtonReleased?.Invoke();
     }
 
+    public static void TriggerPlayerChangeParent()
+    {
+        OnPlayerChangeParent?.Invoke();
+    }    
+    
     public static void TriggerPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
     {
         OnPlayerFootSteps?.Invoke(_groundTypePlayerIsWalkingOn);
