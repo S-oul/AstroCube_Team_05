@@ -27,6 +27,11 @@ namespace AK
         static const AkUniqueID SFX_LASERRECEIVED = 4087256891U;
         static const AkUniqueID SFX_LASERREFLECTED = 4113391946U;
         static const AkUniqueID SFX_RC_CUBEROTATION_FACE = 3346727162U;
+        static const AkUniqueID UI_BUTTON_CANCEL = 3086891671U;
+        static const AkUniqueID UI_BUTTON_HOVER = 610582865U;
+        static const AkUniqueID UI_BUTTON_PRESS = 12010446U;
+        static const AkUniqueID UI_MENU_PAUSE = 3237189652U;
+        static const AkUniqueID UI_MENU_UNPAUSE = 1201970403U;
     } // namespace EVENTS
 
     namespace SWITCHES
