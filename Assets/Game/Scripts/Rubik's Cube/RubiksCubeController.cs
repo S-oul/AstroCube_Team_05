@@ -68,7 +68,7 @@ public class RubiksCubeController : MonoBehaviour
                 _previewControlledScript = previewScript.GetComponentInChildren<RubiksMovement>();
         }
         if (_previewControlledScript)
-            HidePreview();
+            _HidePreview();
     }
 
     private void OnEnable()
@@ -117,7 +117,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void SetActualCube(Transform newFace)
     {
-        ShutDownFace();
+        _ShutDownFace();
         if (newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) _controlledCube = newFace.parent.parent.gameObject;
         else if (newFace.parent.CompareTag("Rubiks")) _controlledCube = newFace.parent.gameObject;
 
@@ -129,7 +129,7 @@ public class RubiksCubeController : MonoBehaviour
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 
-        if (_ShowStripLayerToPlayer && TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
+        if (_ShowStripLayerToPlayer && _TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
         {
             ActualFace.Select(SelectionCube.SelectionMode.CUBE);
             _canPlayerMoveAxis = true;
@@ -188,7 +188,8 @@ public class RubiksCubeController : MonoBehaviour
                 clockwise = !clockwise;
             }
 
-            ShutDownFace();
+            //ShutDownFace();
+            _ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS);
 
             if (_controlledScript == null) return;
             if (ActualFace == null) return;
@@ -223,8 +224,8 @@ public class RubiksCubeController : MonoBehaviour
                     if (_isPreviewDisplayed) {
                         _previewControlledScript.UndoMove(0.0f);                    
                     }
-                    HidePreview();
-                    ShowPreview(_selectedSlice, SelectionCube.SelectionMode.AXIS);
+                    _HidePreview();
+                    _ShowPreview(_selectedSlice, SelectionCube.SelectionMode.AXIS);
 
                     Transform equivalence = _previewControlledScript.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == ActualFace.transform.GetComponentIndex());
                     _previewControlledScript.RotateAxis(_previewControlledScript.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.PreviewRubikscCubeAxisRotationDuration, _selectedSlice);
@@ -246,7 +247,7 @@ public class RubiksCubeController : MonoBehaviour
                         cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
                     }
 
-                    HidePreview();
+                    _HidePreview();
                     _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
                     _lastInput = null;
                     _isPreviewDisplayed = false;
@@ -276,7 +277,7 @@ public class RubiksCubeController : MonoBehaviour
         if (_isPreviewDisplayed && _previewControlledScript)
         {
             _previewControlledScript.UndoMove(0.0f);
-            HidePreview();
+            _HidePreview();
             _lastInput = null;
             _isPreviewDisplayed = false;
         }
@@ -348,7 +349,7 @@ public class RubiksCubeController : MonoBehaviour
     /// <param name="sliceAxis"></param>
     /// <param name="mode">Should normally never be set to Locked</param>
     /// <returns></returns>
-    bool TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
         List<SelectionCube> selectionCubes = new List<SelectionCube>();
         bool isOneTileLocked = false;
@@ -366,7 +367,6 @@ public class RubiksCubeController : MonoBehaviour
                 if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
         }
-
         foreach (SelectionCube selection in selectionCubes) 
         {
             if (isOneTileLocked)
@@ -386,7 +386,7 @@ public class RubiksCubeController : MonoBehaviour
         return !(isPlayerOnATile || isOneTileLocked);
     }
 
-    void ShutDownFace()
+    void _ShutDownFace()
     {
         foreach (Transform go in _controlledCube.transform)
         {
@@ -396,7 +396,20 @@ public class RubiksCubeController : MonoBehaviour
         }
     }
 
-    void ShowPreview(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    void _ShineSelection(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
+    {
+        if (_controlledScript != null && ActualFace)
+        {
+            foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
+            {
+                SelectionCube selection = go.GetComponent<SelectionCube>();
+                if (selection == null) continue;
+                selection.StartShineAnim();
+            }
+        }
+    }
+
+    void _ShowPreview(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
         if (_previewControlledScript != null)
         {
@@ -409,7 +422,7 @@ public class RubiksCubeController : MonoBehaviour
         }
     }
 
-    void HidePreview()
+    void _HidePreview()
     {
         SelectionCube[] selectionCubes = _previewControlledScript.transform.parent.GetComponentsInChildren<SelectionCube>();
         foreach (SelectionCube selection in selectionCubes)
