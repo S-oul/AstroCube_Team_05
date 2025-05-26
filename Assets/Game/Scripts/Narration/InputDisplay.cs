@@ -38,8 +38,8 @@ public class InputDisplay : MonoBehaviour
 
     Animator _animator;
     [HideInInspector] public float _animationProgress = 0;
-    Vector3 _startPos = new Vector3(0, -50, 0);
-    Vector3 _endPos = new Vector3(-800, -400, 0);
+    Vector3 _startPos = new Vector3(-50, -50, 0);
+    Vector3 _endPos = new Vector3(-800, -450, 0);
 
     void Start()
     {
