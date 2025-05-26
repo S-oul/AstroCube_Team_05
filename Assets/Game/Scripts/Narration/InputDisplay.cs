@@ -2,6 +2,7 @@ using DG.Tweening;
 using NaughtyAttributes;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -36,7 +37,9 @@ public class InputDisplay : MonoBehaviour
     public Action OnResolve;
 
     Animator _animator;
-    [HideInInspector] public float _animationProgress;
+    [HideInInspector] public float _animationProgress = 0;
+    Vector3 _startPos = new Vector3(0, -50, 0);
+    Vector3 _endPos = new Vector3(-800, -400, 0);
 
     void Start()
     {
@@ -44,8 +47,12 @@ public class InputDisplay : MonoBehaviour
 
         _canvasGroup.gameObject.SetActive(true);
         _canvasGroup.alpha = 0f;
-        if(_displayType == EDisplayType.PLAY_AT_START)
-            _FadeDisplay(1, _fadeInDuration);
+        if (_displayType == EDisplayType.PLAY_AT_START)
+        {
+            StartDisplay();
+        }
+
+        _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -98,7 +105,7 @@ public class InputDisplay : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         if(_resolveOnLeaveTrigger)
-            EndDisplay();
+            _EndDisplay();
         else
         {
             _FadeDisplay(0, _fadeOutDuration);
@@ -109,10 +116,10 @@ public class InputDisplay : MonoBehaviour
 
     private void _End()
     {
-        if (_isDisplayed) return;
+        if (!_isDisplayed) return;
         if (!_canvasGroup) return;
         
-        StartCoroutine(_EndDisplay());
+        _EndDisplay();
     }
 
     public void StartDisplay()
@@ -122,20 +129,28 @@ public class InputDisplay : MonoBehaviour
         _FadeDisplay(1, _fadeOutDuration);
     }
 
-    public void EndDisplay() => StartCoroutine(_EndDisplay()); 
-
-    private IEnumerator _EndDisplay()
+    private void _EndDisplay()
     {
-        
+        _animator.SetTrigger("EndDisplay"); 
+    }
+
+    private void _EndDisplayAnimEnd()
+    {
+        _canvasGroup.gameObject.GetComponent<RectTransform>().localPosition = _endPos;
         _isDisplayed = false;
-        _FadeDisplay(0, _fadeOutDuration);
-        yield return new WaitForSeconds(_fadeOutDuration);
         _onEndShowText?.Invoke();
-        gameObject.SetActive(false);
     }
 
     private void _FadeDisplay(float newAlpha, float duration)
     {
         DOTween.To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, newAlpha, duration).SetEase(_fadeEase);
+    }
+
+    private void Update()
+    {
+        Debug.Log("checking _isDisplayed");
+        if (_isDisplayed == false) return;
+        _canvasGroup.gameObject.GetComponent<RectTransform>().localPosition = Vector3.Lerp(_startPos, _endPos, _animationProgress);
+        Debug.Log("ui pos updated to " + Vector3.Lerp(_startPos, _endPos, _animationProgress));
     }
 }
