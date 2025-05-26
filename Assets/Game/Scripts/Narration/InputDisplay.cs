@@ -35,6 +35,9 @@ public class InputDisplay : MonoBehaviour
 
     public Action OnResolve;
 
+    Animator _animator;
+    [HideInInspector] public float _animationProgress;
+
     void Start()
     {
         if(!_canvasGroup) return;
@@ -52,7 +55,7 @@ public class InputDisplay : MonoBehaviour
         if (_resolveAutomaticallyOnInput)
         {
             if (InputSystemManager.Instance == null)
-                print("aaaah");
+                print("No Input System Found.");
             InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed += _End;
         }
         else
@@ -71,7 +74,7 @@ public class InputDisplay : MonoBehaviour
 
     private void OnValidate()
     {
-        if(_colider == null) 
+        if (_colider == null) 
             _colider = GetComponent<Collider>();
         if (_colider != null)
             _colider.enabled = _displayType == EDisplayType.PLAY_ON_TRIGGER;
@@ -106,7 +109,7 @@ public class InputDisplay : MonoBehaviour
 
     private void _End()
     {
-        if (!_isDisplayed) return;
+        if (_isDisplayed) return;
         if (!_canvasGroup) return;
         
         StartCoroutine(_EndDisplay());
@@ -123,6 +126,7 @@ public class InputDisplay : MonoBehaviour
 
     private IEnumerator _EndDisplay()
     {
+        
         _isDisplayed = false;
         _FadeDisplay(0, _fadeOutDuration);
         yield return new WaitForSeconds(_fadeOutDuration);
