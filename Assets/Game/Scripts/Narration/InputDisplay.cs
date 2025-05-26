@@ -38,8 +38,10 @@ public class InputDisplay : MonoBehaviour
 
     Animator _animator;
     [HideInInspector] public float _animationProgress = 0;
-    Vector3 _startPos = new Vector3(-50, -50, 0);
-    Vector3 _endPos = new Vector3(-800, -450, 0);
+    [SerializeField] Vector3 _startPos = new Vector3(-50, -50, 0);
+    [SerializeField] Vector3 _endPos = new Vector3(-800, -450, 0);
+    [SerializeField] float _maxSize = 1.5f;
+    [SerializeField] float _minSize = 1;
 
     void Start()
     {
@@ -94,24 +96,24 @@ public class InputDisplay : MonoBehaviour
 
         if (!other.CompareTag("Player")) return;
 
+        if (_isDisplayed) return;
         StartDisplay();
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
-        if (!_canvasGroup) return;
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
+    //    if (!_canvasGroup) return;
 
-        if (!other.CompareTag("Player")) return;
+    //    if (!other.CompareTag("Player")) return;
 
-        if(_resolveOnLeaveTrigger)
-            _EndDisplay();
-        else
-        {
-            _FadeDisplay(0, _fadeOutDuration);
-            _isDisplayed = false;
-        }
-    }
+    //    if (_resolveOnLeaveTrigger)
+    //        _EndDisplay();
+    //    else
+    //    {
+    //        _isDisplayed = false;
+    //    }
+    //}
     private void _End(InputAction.CallbackContext callbackContext) => _End();
 
     private void _End()
@@ -151,6 +153,7 @@ public class InputDisplay : MonoBehaviour
         Debug.Log("checking _isDisplayed");
         if (_isDisplayed == false) return;
         _canvasGroup.gameObject.GetComponent<RectTransform>().localPosition = Vector3.Lerp(_startPos, _endPos, _animationProgress);
+        _canvasGroup.gameObject.GetComponent<RectTransform>().localScale = Vector3.Lerp(Vector3.one * _maxSize, Vector3.one * _minSize, _animationProgress);
         Debug.Log("ui pos updated to " + Vector3.Lerp(_startPos, _endPos, _animationProgress));
     }
 }
