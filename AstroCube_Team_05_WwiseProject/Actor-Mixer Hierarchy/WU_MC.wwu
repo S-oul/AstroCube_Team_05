@@ -13,7 +13,7 @@
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
 						</Reference>
 						<Reference Name="OutputBus">
-							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+							<ObjectRef Name="BUS_FOL" ID="{1D3DDB4C-C8DE-443A-B5F3-943D15027172}" WorkUnitID="{67B12A22-DABE-4873-BA4C-896F78872C71}"/>
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
@@ -45,9 +45,6 @@
 									</ValueList>
 								</Property>
 								<Property Name="Volume" Type="Real64">
-									<ValueList>
-										<Value>-21</Value>
-									</ValueList>
 									<ModifierList>
 										<ModifierInfo>
 											<Modifier Name="" ID="{C4D909BD-95D8-41CC-9FE9-EEDBF69D81CC}">
@@ -82,6 +79,8 @@
 												<Value>1</Value>
 											</ValueList>
 										</Property>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="3"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
@@ -271,6 +270,10 @@
 									</ChildrenList>
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="MC_RC_Dirt" ID="{8EC4ED55-6719-45F8-8844-23A3F9149B41}" ShortID="519821649">
+									<PropertyList>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="3"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -459,6 +462,25 @@
 									</ChildrenList>
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="MC_RC_Tiles" ID="{B7FC441B-3391-46A0-85B1-992F4EFA2DC1}" ShortID="301655659">
+									<PropertyList>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="3"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-21</Value>
+											</ValueList>
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{5FEC1BA3-E4DC-4ECB-83DE-AF822FD2D500}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Min" Type="Real64" Value="-3"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -468,7 +490,7 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<Sound Name="FOL_FT_Tile_01" ID="{F380089C-E0A0-45A0-BBF5-623DC2546566}" ShortID="804353286">
+										<Sound Name="FOL_FT_Tile_01" ID="{5713CBD8-46C1-4DEB-AEEF-74626B159752}" ShortID="132079243">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -478,7 +500,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_01" ID="{D38D1DFD-8E87-4E46-83DF-FED2F5C14211}">
+												<AudioFileSource Name="FOL_FT_Tile_01" ID="{2CBE1415-E976-45D1-90E8-F3BAEFB21465}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_01.wav</AudioFile>
 													<MediaIDList>
@@ -487,10 +509,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_01" ID="{D38D1DFD-8E87-4E46-83DF-FED2F5C14211}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_01" ID="{2CBE1415-E976-45D1-90E8-F3BAEFB21465}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="FOL_FT_Tile_02" ID="{DA98A242-AED1-4EB5-B35E-634405D23100}" ShortID="475797723">
+										<Sound Name="FOL_FT_Tile_02" ID="{B27A57F2-0842-40FC-9A4B-5683D3282407}" ShortID="61146481">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -500,7 +522,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_02" ID="{0C31959D-3B2C-45F9-B035-CB8A9B22FBF3}">
+												<AudioFileSource Name="FOL_FT_Tile_02" ID="{3B816035-3EB0-482C-A3F6-ED53D9E6C577}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_02.wav</AudioFile>
 													<MediaIDList>
@@ -509,10 +531,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_02" ID="{0C31959D-3B2C-45F9-B035-CB8A9B22FBF3}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_02" ID="{3B816035-3EB0-482C-A3F6-ED53D9E6C577}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="FOL_FT_Tile_03" ID="{E42286EC-5E1A-4CEF-A57A-B759BCAF9657}" ShortID="908919097">
+										<Sound Name="FOL_FT_Tile_03" ID="{F941C2BC-4FA7-4CE6-9724-F7C54F7CF9FE}" ShortID="113372961">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -522,7 +544,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_03" ID="{00FF0E96-9089-4B97-B88B-C28948D968CA}">
+												<AudioFileSource Name="FOL_FT_Tile_03" ID="{37E83465-05FE-4548-BB55-FB0D383CA1CA}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_03.wav</AudioFile>
 													<MediaIDList>
@@ -531,10 +553,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_03" ID="{00FF0E96-9089-4B97-B88B-C28948D968CA}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_03" ID="{37E83465-05FE-4548-BB55-FB0D383CA1CA}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="FOL_FT_Tile_04" ID="{9C3BAC7C-32A1-430C-B5E5-22E2942316EE}" ShortID="1057815713">
+										<Sound Name="FOL_FT_Tile_04" ID="{B454F92F-0B50-4A00-9B31-2CEA929E2C4D}" ShortID="23539413">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -544,7 +566,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_04" ID="{021E6ED4-A850-4F62-BC4E-CCEE4E1BA675}">
+												<AudioFileSource Name="FOL_FT_Tile_04" ID="{39FA2CB9-1DFB-41A7-B739-7D0D13A07467}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_04.wav</AudioFile>
 													<MediaIDList>
@@ -553,10 +575,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_04" ID="{021E6ED4-A850-4F62-BC4E-CCEE4E1BA675}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_04" ID="{39FA2CB9-1DFB-41A7-B739-7D0D13A07467}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="FOL_FT_Tile_05" ID="{68045C89-4732-4891-96AF-FE712CAEFC52}" ShortID="359852020">
+										<Sound Name="FOL_FT_Tile_05" ID="{CDA436A9-D577-4564-BA0B-2D6782AD2DC6}" ShortID="1038842645">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -566,7 +588,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_05" ID="{8CA73530-31B8-4F58-AD86-6D6515A08F59}">
+												<AudioFileSource Name="FOL_FT_Tile_05" ID="{52B033C2-5F46-4C10-9C56-76BC772C3379}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_05.wav</AudioFile>
 													<MediaIDList>
@@ -575,10 +597,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_05" ID="{8CA73530-31B8-4F58-AD86-6D6515A08F59}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_05" ID="{52B033C2-5F46-4C10-9C56-76BC772C3379}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="FOL_FT_Tile_06" ID="{CB20A0EB-91B9-43E8-AA56-A98E5DBB9371}" ShortID="731489500">
+										<Sound Name="FOL_FT_Tile_06" ID="{4D2FE9CC-833B-4631-8809-63EA4F499762}" ShortID="992805807">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -588,7 +610,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_06" ID="{6A47E622-8362-47D7-8D5F-805931274BF0}">
+												<AudioFileSource Name="FOL_FT_Tile_06" ID="{56522627-64E7-49AA-85FB-C1CC15630C03}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_06.wav</AudioFile>
 													<MediaIDList>
@@ -597,10 +619,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_06" ID="{6A47E622-8362-47D7-8D5F-805931274BF0}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_06" ID="{56522627-64E7-49AA-85FB-C1CC15630C03}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="FOL_FT_Tile_07" ID="{BFDA3CD6-90E0-48F1-A91F-5232D987771E}" ShortID="189785988">
+										<Sound Name="FOL_FT_Tile_07" ID="{9965C621-3E76-476F-8403-C9D7D15EF303}" ShortID="402142011">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -610,7 +632,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_07" ID="{87EFA40D-B00D-4310-AC8B-8AF617205139}">
+												<AudioFileSource Name="FOL_FT_Tile_07" ID="{5F950ADF-7727-4EB8-8481-35C455F3F7E8}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_07.wav</AudioFile>
 													<MediaIDList>
@@ -619,10 +641,10 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_07" ID="{87EFA40D-B00D-4310-AC8B-8AF617205139}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_07" ID="{5F950ADF-7727-4EB8-8481-35C455F3F7E8}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="FOL_FT_Tile_08" ID="{36C0AC2D-4C8B-49F6-9D68-795F71CE9413}" ShortID="719867922">
+										<Sound Name="FOL_FT_Tile_08" ID="{008404A6-1A48-4EDC-B791-D46733719E38}" ShortID="44385298">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -632,7 +654,7 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="FOL_FT_Tile_08" ID="{3472B020-9A86-4807-98EA-37EBF83C2DAC}">
+												<AudioFileSource Name="FOL_FT_Tile_08" ID="{4A7E78BA-4CAF-49E4-A080-01D4B995BA22}">
 													<Language>SFX</Language>
 													<AudioFile>FOL\FT\Tile\FOL_FT_Tile_08.wav</AudioFile>
 													<MediaIDList>
@@ -641,12 +663,16 @@
 												</AudioFileSource>
 											</ChildrenList>
 											<ActiveSourceList>
-												<ActiveSource Name="FOL_FT_Tile_08" ID="{3472B020-9A86-4807-98EA-37EBF83C2DAC}" Platform="Linked"/>
+												<ActiveSource Name="FOL_FT_Tile_08" ID="{4A7E78BA-4CAF-49E4-A080-01D4B995BA22}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="MC_RC_Carpet" ID="{5681ACEF-3308-4B3C-ABE2-CD5D58B5D5F4}" ShortID="871651120">
+									<PropertyList>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="3"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -835,6 +861,10 @@
 									</ChildrenList>
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="MC_RC_Debug" ID="{AB703B7D-063F-4100-9485-19E96073FACD}" ShortID="584684956">
+									<PropertyList>
+										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
+										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="3"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -845,6 +875,93 @@
 									</ReferenceList>
 								</RandomSequenceContainer>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<Reference>
+										<Local>
+											<RTPC Name="" ID="{C280AABA-FD1A-4E79-A225-ACC13A732E28}" ShortID="596252086">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="Lowpass"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="RTPC_Meter_Distance" ID="{3B920A5A-34C9-461D-A5DB-AEACE93A0237}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{73453343-1BCA-480D-8413-E7B27EC26DA5}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>-48</XPos>
+																		<YPos>60</YPos>
+																		<Flags>5</Flags>
+																		<SegmentShape>SCurve</SegmentShape>
+																	</Point>
+																	<Point>
+																		<XPos>-35</XPos>
+																		<YPos>0</YPos>
+																		<Flags>0</Flags>
+																		<SegmentShape>SCurve</SegmentShape>
+																	</Point>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</Local>
+									</Reference>
+									<Reference>
+										<Local>
+											<RTPC Name="" ID="{EBE87077-0E9E-48CF-94ED-A57B717B1B38}" ShortID="380115402">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="Volume"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="RTPC_Meter_Distance" ID="{3B920A5A-34C9-461D-A5DB-AEACE93A0237}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{29C2787A-1793-454C-86D3-A5A3E908DA4C}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="3"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>-48</XPos>
+																		<YPos>-6</YPos>
+																		<Flags>5</Flags>
+																		<SegmentShape>SCurve</SegmentShape>
+																	</Point>
+																	<Point>
+																		<XPos>-35.0740157480315</XPos>
+																		<YPos>0</YPos>
+																		<Flags>0</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
