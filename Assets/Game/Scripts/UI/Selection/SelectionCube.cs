@@ -107,14 +107,14 @@ public class SelectionCube : MonoBehaviour
                 */
                 case SelectionMode.LOCKED:
                 case SelectionMode.PLAYERONTILE:
+                    /*
                     if (renderer.transform.CompareTag("Floor"))
                     {
-
                         renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
-
                     }
                     else
                         renderer.renderingLayerMask = (uint)Mathf.Pow(2, _objectLockRenderingLayerMask);
+                    */
                     break;    
                 case SelectionMode.ENABLE:
                     renderer.enabled = true;
