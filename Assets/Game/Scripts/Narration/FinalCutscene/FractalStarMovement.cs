@@ -16,7 +16,6 @@ public class FractalStarMovement : StarMovement
         transform.position += (v.normalized) * _moveAmount;
         _startRota = 360.0f * ((float)transform.GetSiblingIndex() / (float)transform.parent.childCount);
         transform.rotation = Quaternion.Euler(0, 0, _startRota);
-
     }
 
     protected override void UpdateMovement()
