@@ -3,29 +3,18 @@ using UnityEngine;
 
 public class DetectNewParent : MonoBehaviour
 {
-    [SerializeField] LayerMask _detectableLayer;
-    Vector3 currentRotationDir;
-
-    [SerializeField] SelectionCube _oldTilePlayerPos;
-    Transform OldTilePlayerPosTransform;
-
-
+    [SerializeField] private LayerMask _detectableLayer;
     [SerializeField] private bool _doGroundRotation;
 
     private bool _doGravityRotation;
 
-    public GameObject currentParent { get; private set; }
-
     public bool DoGravityRotation { get => _doGravityRotation; set => _doGravityRotation = value; }
-
-    public SelectionCube OldTilePlayerPos { get => _oldTilePlayerPos; private set => _oldTilePlayerPos = value; }
+    public SelectionCube CurrentParent { get; private set; }
 
     private void Awake()
     {
         EventManager.OnPlayerReset += DisableParentChangerfor;
         EventManager.OnPlayerResetOnce += DisableParentChangerfor;
-
-        currentRotationDir = transform.up;
     }
     private void OnDisable()
     {
@@ -35,20 +24,22 @@ public class DetectNewParent : MonoBehaviour
 
     private void Update()
     {
-        RaycastHit _raycastInfo;
-        if (Physics.Raycast(transform.position, -transform.up, out _raycastInfo, 10, _detectableLayer))
+        RaycastHit raycastInfo;
+        SelectionCube hitSelection = null;
+
+        if (Physics.Raycast(transform.position, -transform.up, out raycastInfo, 10, _detectableLayer))
         {
-            if (OldTilePlayerPosTransform != _raycastInfo.collider.transform)
+            hitSelection = raycastInfo.transform.GetComponentInParent<SelectionCube>();
+            if (CurrentParent == null || CurrentParent.transform != hitSelection.transform)
             {
-                OldTilePlayerPosTransform = _raycastInfo.collider.transform;
-                _oldTilePlayerPos = _raycastInfo.transform.GetComponentInParent<SelectionCube>();
-            }
+                CurrentParent = hitSelection;
+                EventManager.TriggerPlayerChangeParent();   
+            }            
         }
 
-        if (_doGroundRotation && _oldTilePlayerPos)
+        if (_doGroundRotation && hitSelection)
         {
-            transform.SetParent(_oldTilePlayerPos.transform, true);
-            currentParent = _oldTilePlayerPos.gameObject;
+            transform.SetParent(CurrentParent.transform, true);
         }
     }
 
