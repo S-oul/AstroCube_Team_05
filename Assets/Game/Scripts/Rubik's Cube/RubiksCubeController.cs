@@ -189,7 +189,7 @@ public class RubiksCubeController : MonoBehaviour
             }
 
             //ShutDownFace();
-            _ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS);
+            //_ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS);
 
             if (_controlledScript == null) return;
             if (ActualFace == null) return;
@@ -246,7 +246,7 @@ public class RubiksCubeController : MonoBehaviour
 
                         cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
                     }
-
+                    _ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS);
                     _HidePreview();
                     _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
                     _lastInput = null;

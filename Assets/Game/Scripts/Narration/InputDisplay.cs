@@ -42,7 +42,7 @@ public class InputDisplay : MonoBehaviour
         _canvasGroup.gameObject.SetActive(true);
         _canvasGroup.alpha = 0f;
         if(_displayType == EDisplayType.PLAY_AT_START)
-            _FadeDisplay(1, _fadeInDuration);
+            StartDisplay();
     }
 
     private void OnEnable()
@@ -52,7 +52,7 @@ public class InputDisplay : MonoBehaviour
         if (_resolveAutomaticallyOnInput)
         {
             if (InputSystemManager.Instance == null)
-                print("aaaah");
+                return;
             InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed += _End;
         }
         else
