@@ -13,7 +13,7 @@ Shader "Tile_Shine"
 		_Color0("Color 0", Color) = (0.9583122,0.4433962,1,1)
 		_Max("Max", Float) = 0
 		_Min("Min", Float) = 0
-		_Monantre("Monantre", Range( 0.22 , 1)) = 0
+		_EffectAlpha("EffectAlpha", Range( 0 , 1)) = 0
 
 
 		//_TessPhongStrength( "Tess Phong Strength", Range( 0, 1 ) ) = 0.5
@@ -285,7 +285,7 @@ Shader "Tile_Shine"
 			float _Lengh;
 			float _Power;
 			float _Alpha;
-			float _Monantre;
+			float _EffectAlpha;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -476,7 +476,7 @@ Shader "Tile_Shine"
 				float temp_output_18_0 = ( smoothstepResult30 + ( ( ( ( 1.0 - texCoord13.x ) * _Lengh ) * _Power ) * _Alpha ) );
 				
 				float2 texCoord55 = input.ase_texcoord6.xy * float2( 1,1 ) + float2( 0,0 );
-				float clampResult62 = clamp( _Monantre , 0.0 , 1.0 );
+				float clampResult62 = clamp( ( 1.0 - _EffectAlpha ) , 0.0 , 1.0 );
 				
 				float3 BakedAlbedo = 0;
 				float3 BakedEmission = 0;
@@ -617,7 +617,7 @@ Shader "Tile_Shine"
 			float _Lengh;
 			float _Power;
 			float _Alpha;
-			float _Monantre;
+			float _EffectAlpha;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -807,7 +807,7 @@ Shader "Tile_Shine"
 				float2 texCoord13 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float temp_output_18_0 = ( smoothstepResult30 + ( ( ( ( 1.0 - texCoord13.x ) * _Lengh ) * _Power ) * _Alpha ) );
 				float2 texCoord55 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float clampResult62 = clamp( _Monantre , 0.0 , 1.0 );
+				float clampResult62 = clamp( ( 1.0 - _EffectAlpha ) , 0.0 , 1.0 );
 				
 
 				float Alpha = saturate( ( temp_output_18_0 * ( ( 1.0 - texCoord55.x ) - clampResult62 ) ) );
@@ -919,7 +919,7 @@ Shader "Tile_Shine"
 			float _Lengh;
 			float _Power;
 			float _Alpha;
-			float _Monantre;
+			float _EffectAlpha;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -1088,7 +1088,7 @@ Shader "Tile_Shine"
 				float2 texCoord13 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float temp_output_18_0 = ( smoothstepResult30 + ( ( ( ( 1.0 - texCoord13.x ) * _Lengh ) * _Power ) * _Alpha ) );
 				float2 texCoord55 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float clampResult62 = clamp( _Monantre , 0.0 , 1.0 );
+				float clampResult62 = clamp( ( 1.0 - _EffectAlpha ) , 0.0 , 1.0 );
 				
 
 				float Alpha = saturate( ( temp_output_18_0 * ( ( 1.0 - texCoord55.x ) - clampResult62 ) ) );
@@ -1189,7 +1189,7 @@ Shader "Tile_Shine"
 			float _Lengh;
 			float _Power;
 			float _Alpha;
-			float _Monantre;
+			float _EffectAlpha;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -1340,7 +1340,7 @@ Shader "Tile_Shine"
 				float2 texCoord13 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float temp_output_18_0 = ( smoothstepResult30 + ( ( ( ( 1.0 - texCoord13.x ) * _Lengh ) * _Power ) * _Alpha ) );
 				float2 texCoord55 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
-				float clampResult62 = clamp( _Monantre , 0.0 , 1.0 );
+				float clampResult62 = clamp( ( 1.0 - _EffectAlpha ) , 0.0 , 1.0 );
 				
 
 				surfaceDescription.Alpha = saturate( ( temp_output_18_0 * ( ( 1.0 - texCoord55.x ) - clampResult62 ) ) );
@@ -1438,7 +1438,7 @@ Shader "Tile_Shine"
 			float _Lengh;
 			float _Power;
 			float _Alpha;
-			float _Monantre;
+			float _EffectAlpha;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -1586,7 +1586,7 @@ Shader "Tile_Shine"
 				float2 texCoord13 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float temp_output_18_0 = ( smoothstepResult30 + ( ( ( ( 1.0 - texCoord13.x ) * _Lengh ) * _Power ) * _Alpha ) );
 				float2 texCoord55 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
-				float clampResult62 = clamp( _Monantre , 0.0 , 1.0 );
+				float clampResult62 = clamp( ( 1.0 - _EffectAlpha ) , 0.0 , 1.0 );
 				
 
 				surfaceDescription.Alpha = saturate( ( temp_output_18_0 * ( ( 1.0 - texCoord55.x ) - clampResult62 ) ) );
@@ -1708,7 +1708,7 @@ Shader "Tile_Shine"
 			float _Lengh;
 			float _Power;
 			float _Alpha;
-			float _Monantre;
+			float _EffectAlpha;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -1870,7 +1870,7 @@ Shader "Tile_Shine"
 				float2 texCoord13 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float temp_output_18_0 = ( smoothstepResult30 + ( ( ( ( 1.0 - texCoord13.x ) * _Lengh ) * _Power ) * _Alpha ) );
 				float2 texCoord55 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float clampResult62 = clamp( _Monantre , 0.0 , 1.0 );
+				float clampResult62 = clamp( ( 1.0 - _EffectAlpha ) , 0.0 , 1.0 );
 				
 
 				float Alpha = saturate( ( temp_output_18_0 * ( ( 1.0 - texCoord55.x ) - clampResult62 ) ) );
@@ -1924,25 +1924,26 @@ Version=19801
 Node;AmplifyShaderEditor.TextureCoordinatesNode;13;-1968,32;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.OneMinusNode;26;-1712,64;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;10;-2224,-560;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;0.17,6.9;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;14;-1712,288;Inherit;False;Property;_Lengh;Lengh;1;0;Create;True;0;0;0;False;0;False;0;4.17;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;14;-1648,288;Inherit;False;Property;_Lengh;Lengh;1;0;Create;True;0;0;0;False;0;False;0;3.33;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;15;-1440,96;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.PannerNode;11;-1904,-560;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-0.03,0;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.RangedFloatNode;17;-1456,384;Inherit;False;Property;_Power;Power;2;0;Create;True;0;0;0;False;0;False;1;0.66;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;60;-1248,656;Inherit;False;Property;_EffectAlpha;EffectAlpha;7;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;17;-1456,384;Inherit;False;Property;_Power;Power;2;0;Create;True;0;0;0;False;0;False;1;0.78;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;31;-1429.67,-253.8351;Inherit;False;Property;_Min;Min;6;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;12;-1632,-512;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;None;e5b234c8823b14d469d368b1938e96ac;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;16;-1152,-32;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;55;-1184,464;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;32;-1371.13,-142.0765;Inherit;False;Property;_Max;Max;5;0;Create;True;0;0;0;False;0;False;0;0.32;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;22;-1200,320;Inherit;False;Property;_Alpha;Alpha;3;0;Create;True;0;0;0;False;0;False;1;0.3762971;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;60;-1152,656;Inherit;False;Property;_Monantre;Monantre;7;0;Create;True;0;0;0;False;0;False;0;0.22;0.22;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;22;-1200,320;Inherit;False;Property;_Alpha;Alpha;3;0;Create;True;0;0;0;False;0;False;1;0.4488762;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.OneMinusNode;63;-976,592;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SmoothstepOpNode;30;-1168,-416;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.OneMinusNode;59;-896,416;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;28;-896,64;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.ClampOpNode;62;-816,576;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.OneMinusNode;59;-896,416;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;18;-480,-144;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleSubtractOpNode;58;-640,320;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;61;-288,64;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;24;-848,-540;Inherit;False;Property;_Color0;Color 0;4;0;Create;True;0;0;0;False;0;False;0.9583122,0.4433962,1,1;0.9583122,0.4433962,1,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.ColorNode;24;-848,-540;Inherit;False;Property;_Color0;Color 0;4;0;Create;True;0;0;0;False;0;False;0.9583122,0.4433962,1,1;0.9583122,0.4433961,1,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SaturateNode;54;-144,-208;Inherit;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;23;-448,-496;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SaturateNode;33;-160,-32;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
@@ -1963,13 +1964,14 @@ WireConnection;11;0;10;0
 WireConnection;12;1;11;0
 WireConnection;16;0;15;0
 WireConnection;16;1;17;0
+WireConnection;63;0;60;0
 WireConnection;30;0;12;1
 WireConnection;30;1;31;0
 WireConnection;30;2;32;0
-WireConnection;59;0;55;1
 WireConnection;28;0;16;0
 WireConnection;28;1;22;0
-WireConnection;62;0;60;0
+WireConnection;62;0;63;0
+WireConnection;59;0;55;1
 WireConnection;18;0;30;0
 WireConnection;18;1;28;0
 WireConnection;58;0;59;0
@@ -1983,4 +1985,4 @@ WireConnection;33;0;61;0
 WireConnection;45;2;54;0
 WireConnection;45;3;33;0
 ASEEND*/
-//CHKSM=DBD55B8E712E6CCD6EBB9E14EBE6A2476294DF93
+//CHKSM=073592C0487FD0BC34D7FBA5615277E172E10F9C
