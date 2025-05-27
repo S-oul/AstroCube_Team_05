@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4863781109001127900}
   - component: {fileID: 3887003182910812047}
   m_Layer: 0
-  m_Name: FractalStarFX
+  m_Name: RoseStarFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,42 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartPos: {x: 0, y: 0, z: 0}
-  _fractalCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: -1
-      inSlope: 4
-      outSlope: 4
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: -1
-      inSlope: -4
-      outSlope: -4
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _speedRotation: 40
-  _speedMovement: 3
-  _moveAmount: 1
+  _speedRotation: 300
+  _speedMovement: 2
+  _moveAmount: 2
 --- !u!96 &3887003182910812047
 TrailRenderer:
   serializedVersion: 3
@@ -103,7 +70,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 45879806bd2a76047b072398d833c109, type: 2}
+  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,7 +91,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 3
+  m_Time: 2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -134,7 +101,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.45322672
+        value: 0.13013917
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -155,19 +122,19 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.6156863, b: 0.86178297, a: 1}
-      key1: {r: 0.80970824, g: 0.26981127, b: 1, a: 1}
-      key2: {r: 0.18679237, g: 0.47931302, b: 1, a: 0}
-      key3: {r: 0.3754716, g: 1, b: 0.9808818, a: 0}
-      key4: {r: 1, g: 0.9225417, b: 0.6396227, a: 0}
+      key0: {r: 0.15056181, g: 0.20118125, b: 0.4, a: 1}
+      key1: {r: 0.15056181, g: 0.4, b: 0.3932584, a: 1}
+      key2: {r: 0.4, g: 0.4, b: 0.29213485, a: 0}
+      key3: {r: 0.4, g: 0.24719101, b: 0.34606743, a: 0}
+      key4: {r: 0.3235955, g: 0.10786517, b: 0.4, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 12722
-      ctime2: 31071
-      ctime3: 53893
-      ctime4: 65304
+      ctime1: 27987
+      ctime2: 37856
+      ctime3: 54664
+      ctime4: 65535
       ctime5: 0
       ctime6: 0
       ctime7: 0
@@ -190,7 +157,7 @@ TrailRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.01
   m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1

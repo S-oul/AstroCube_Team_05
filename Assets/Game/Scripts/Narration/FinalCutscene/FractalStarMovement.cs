@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FractalStarMovement : StarMovement
 {
-    [SerializeField] private AnimationCurve _fractalCurve;
+    //[SerializeField] private AnimationCurve _fractalCurve;
     [SerializeField] private float _speedRotation = 20;
     [SerializeField] private float _speedMovement = 20;
     [SerializeField] private float _moveAmount = 7;
@@ -21,19 +21,16 @@ public class FractalStarMovement : StarMovement
 
     protected override void UpdateMovement()
     {
-        /*
-        var v = (transform.parent.position - transform.position).normalized;
-        //transform.position += _fractalCurve.Evaluate(Mathf.PingPong(Time.time * _speedMovement , 1)) * _moveAmount * v;
-        transform.RotateAround(transform.parent.position, Vector3.forward, _speedRotation * Time.deltaTime);
-        Debug.Log(v.magnitude);
-        transform.position += _speedMovement * v * Mathf.Sin(Time.time);
-        //transform.position += _fractalCurve.Evaluate((Mathf.Sin(Time.time * _speedMovement) + 1) / 2) * _moveAmount * v;
-        */
-
         float f = (Mathf.Sin(Time.time * _speedMovement) + 1f) / 2f * _moveAmount;
 
         transform.position = transform.parent.position + transform.up * f;
-        transform.rotation = Quaternion.Euler(0, 0, (Time.time * _speedRotation) + _startRota);
+        transform.rotation = transform.parent.rotation * Quaternion.Euler(0, 0, (Time.time * _speedRotation) + _startRota);
+
+        /*
+        float move = (Time.time * _speedMovement) * 2 * Mathf.PI;
+        var angle = Mathf.Deg2Rad * _startRota + move;
+        transform.position = new Vector3(Mathf.Sin(angle), Mathf.Cos(angle), Mathf.Sin(angle));
+        */
     }
 
 
@@ -43,7 +40,7 @@ public class FractalStarMovement : StarMovement
         Gizmos.DrawSphere(StartPos, 0.3f);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(transform.parent.position, 0.3f);
+        Gizmos.DrawSphere(transform.parent.position, 0.3f); 
 
     }
 }

@@ -15,7 +15,7 @@ public class FractalMaster : MonoBehaviour
     public float drawDistance = 2f;
 
     [Header("Colour mixing")]
-    [Range(0, 1)] public float alpha;
+    [Range(-50, 1)] public float alpha;
     [Range(0, 1)] public float blackAndWhite;
     [Range(0, 1)] public float redA;
     [Range(0, 1)] public float greenA;

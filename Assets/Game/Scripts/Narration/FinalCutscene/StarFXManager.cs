@@ -9,10 +9,12 @@ public class StarFXManager : MonoBehaviour
     [SerializeField] private GameObject _starPrefab;
     [SerializeField] private int _num;
     [SerializeField] private float _radius;
+    [SerializeField] private bool _lookAtCamera = true;
 
     private void Start()
     {
-        transform.LookAt(Camera.main.transform);
+        if(_lookAtCamera)
+            transform.LookAt(Camera.main.transform);
         SpawnStarsInCircle();
     }
 
