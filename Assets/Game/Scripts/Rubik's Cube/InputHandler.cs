@@ -141,6 +141,7 @@ public class InputHandler : MonoBehaviour
 
     public void OnMoveOverlayCube(InputAction.CallbackContext ctx)
     {
+        return; // don't do it anymore
         if (!IsInputEnabled(EInputType.MOVE_OVERLAY_CUBE)) return;
         if (ctx.performed)
             _controller.ActionRotateCubeUI(ctx.ReadValue<Vector2>());
