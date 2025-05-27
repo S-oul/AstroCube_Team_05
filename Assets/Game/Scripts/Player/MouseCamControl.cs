@@ -43,6 +43,7 @@ public class MouseCamControl : MonoBehaviour
         UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
         _cameraSensibilityMouse = _customSettings.customMouse;
+        ForceResetSelection();
     }
     public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
     {
@@ -50,6 +51,16 @@ public class MouseCamControl : MonoBehaviour
     }
 
     void Update()
+    {
+        UpdateSelection(false);
+    }
+
+    private void ForceResetSelection()
+    {
+        UpdateSelection(true);
+    }
+
+    private void UpdateSelection(bool forceNewSelection = false)
     {
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
@@ -60,8 +71,6 @@ public class MouseCamControl : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * mousePos.x);
 
-        //Raycast
-
         if (!GameManager.Instance.IsRubiksCubeEnabled)
             return;
 
@@ -71,21 +80,34 @@ public class MouseCamControl : MonoBehaviour
         {
             GameObject collider = _raycastInfo.collider.gameObject;
             _oldTile = collider.transform;
-            if (rubiksCubeController != null && _oldTile.parent != null) rubiksCubeController.SetActualCube(_oldTile.parent);
-        }
-    }
 
+            if (rubiksCubeController == null || _oldTile.parent == null)
+                return;
+
+            if(forceNewSelection)
+                rubiksCubeController.SetActualCube(_oldTile.parent);
+            else
+            {
+                if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+                    rubiksCubeController.SetActualCube(_oldTile.parent);
+            }
+        }
+    }    
+    
     private void OnEnable()
     {
         EventManager.OnFOVChange += UpdateCameraFOV;
         EventManager.OnMouseChange += UpdateCameraMouseSensitivity;
         EventManager.OnEndNarrativeSequence += ResetMousePosition;
+        EventManager.OnPlayerChangeParent += ForceResetSelection;
     }
+
     private void OnDisable()
     {
         EventManager.OnFOVChange -= UpdateCameraFOV;
         EventManager.OnMouseChange -= UpdateCameraMouseSensitivity;
         EventManager.OnEndNarrativeSequence -= ResetMousePosition;
+        EventManager.OnPlayerChangeParent -= ForceResetSelection;
     }
 
     void UpdateCameraFOV(float newFOV)
