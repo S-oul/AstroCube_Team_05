@@ -43,6 +43,8 @@ public class InputDisplay : MonoBehaviour
     [SerializeField] float _maxSize = 1.5f;
     [SerializeField] float _minSize = 1;
 
+    bool _hasBeenCompleted = false;
+
     void Start()
     {
         if(!_canvasGroup) return;
@@ -91,6 +93,7 @@ public class InputDisplay : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_hasBeenCompleted) return;
         if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
         if (!_canvasGroup) return;
 
@@ -100,20 +103,20 @@ public class InputDisplay : MonoBehaviour
         StartDisplay();
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
-    //    if (!_canvasGroup) return;
+    private void OnTriggerExit(Collider other)
+    {
+        if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
+        if (!_canvasGroup) return;
 
-    //    if (!other.CompareTag("Player")) return;
+        if (!other.CompareTag("Player")) return;
 
-    //    if (_resolveOnLeaveTrigger)
-    //        _EndDisplay();
-    //    else
-    //    {
-    //        _isDisplayed = false;
-    //    }
-    //}
+        if (_resolveOnLeaveTrigger)
+            _EndDisplay();
+        else
+        {
+            _isDisplayed = false;
+        }
+    }
     private void _End(InputAction.CallbackContext callbackContext) => _End();
 
     private void _End()
@@ -133,7 +136,9 @@ public class InputDisplay : MonoBehaviour
 
     private void _EndDisplay()
     {
-        _animator.SetTrigger("EndDisplay"); 
+        if (_hasBeenCompleted) return;
+        _hasBeenCompleted = true;
+        if (_animator) _animator.SetTrigger("EndDisplay"); 
     }
 
     private void _EndDisplayAnimEnd()
@@ -150,10 +155,8 @@ public class InputDisplay : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("checking _isDisplayed");
         if (_isDisplayed == false) return;
         _canvasGroup.gameObject.GetComponent<RectTransform>().localPosition = Vector3.Lerp(_startPos, _endPos, _animationProgress);
         _canvasGroup.gameObject.GetComponent<RectTransform>().localScale = Vector3.Lerp(Vector3.one * _maxSize, Vector3.one * _minSize, _animationProgress);
-        Debug.Log("ui pos updated to " + Vector3.Lerp(_startPos, _endPos, _animationProgress));
     }
 }
