@@ -66,7 +66,7 @@ public class InputDisplay : MonoBehaviour
         if (_resolveAutomaticallyOnInput)
         {
             if (InputSystemManager.Instance == null)
-                print("No Input System Found.");
+                return;
             InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed += _End;
         }
         else
