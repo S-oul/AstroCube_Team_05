@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Scene Requirments")]
+    [Header("Scene Requirements")]
     [SerializeField] CharacterController _controller;
     [SerializeField] Transform _camera;
     [SerializeField] Transform _floorCheck;

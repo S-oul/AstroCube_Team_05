@@ -7,58 +7,177 @@
 				<Property Name="OverrideColor" Type="bool" Value="True"/>
 			</PropertyList>
 			<ChildrenList>
-				<Event Name="AMB_Cube_Atmosphere_LP" ID="{420E1F9F-776F-4761-B136-8791B21D4E96}">
+				<Folder Name="AMB_PAD" ID="{6AA0C572-4320-4DED-87BF-8C564580DF9D}" ShortID="40829430">
 					<ChildrenList>
-						<Action Name="" ID="{997AD2BB-A53C-40A1-8964-A43F1EBE2F30}" ShortID="1073668119">
-							<PropertyList>
-								<Property Name="FadeInCurve" Type="int16" Value="5"/>
-								<Property Name="FadeTime" Type="Real64" Value="1"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="AMB_Cube_Atmosphere_LP_01" ID="{570C6C41-670B-4749-A414-376D7709C6A3}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
-						<Action Name="" ID="{B6CF66FF-19BE-4C96-9E22-0343416511AD}" ShortID="316131172">
-							<PropertyList>
-								<Property Name="ActionType" Type="int16" Value="36"/>
-								<Property Name="SeekPercent" Type="Real64">
-									<ModifierList>
-										<ModifierInfo>
-											<Modifier Name="" ID="{69F52516-AF90-44FA-97E2-686569E5FBEA}">
-												<PropertyList>
-													<Property Name="Enabled" Type="bool" Value="True"/>
-													<Property Name="Max" Type="Real64" Value="100"/>
-												</PropertyList>
-											</Modifier>
-										</ModifierInfo>
-									</ModifierList>
-								</Property>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="AMB_Cube_Atmosphere_LP_01" ID="{570C6C41-670B-4749-A414-376D7709C6A3}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
+						<Event Name="AMB_PAD_Global_LP" ID="{420E1F9F-776F-4761-B136-8791B21D4E96}">
+							<ChildrenList>
+								<Action Name="" ID="{997AD2BB-A53C-40A1-8964-A43F1EBE2F30}" ShortID="1073668119">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="5"/>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_PAD_Cube_Atmosphere_LP" ID="{570C6C41-670B-4749-A414-376D7709C6A3}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{AE9ECCD4-A29C-487B-B0DB-207095EED98E}" ShortID="5228804">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="5"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.75">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{95292536-D4EB-416B-8770-31A289013492}"/>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_PAD_Global_LP" ID="{C4DBE038-0122-42ED-B8F6-739EE9DBE592}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{B6CF66FF-19BE-4C96-9E22-0343416511AD}" ShortID="316131172">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="37"/>
+										<Property Name="SeekPercent" Type="Real64">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{69F52516-AF90-44FA-97E2-686569E5FBEA}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="100"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList/>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_Transition" ID="{9D5532FE-E886-45E8-BFBD-395CB568309F}">
+							<ChildrenList>
+								<Action Name="" ID="{BBC0A534-5E3F-4A88-84B1-8716FDC23084}" ShortID="930807505">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="5"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_Transition_Atmosphere" ID="{C2027C77-7B30-42FD-AB77-72C9E6EF29A1}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
-				</Event>
-				<Event Name="AMB_Transition" ID="{9D5532FE-E886-45E8-BFBD-395CB568309F}">
+				</Folder>
+				<Folder Name="AMB_SP" ID="{1460686D-0B2F-4048-AE65-CE3359427F60}" ShortID="435602428">
 					<ChildrenList>
-						<Action Name="" ID="{BBC0A534-5E3F-4A88-84B1-8716FDC23084}" ShortID="930807505">
-							<PropertyList>
-								<Property Name="FadeInCurve" Type="int16" Value="5"/>
-								<Property Name="FadeTime" Type="Real64" Value="0.25"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="AMB_RC_Transition" ID="{F988CED3-420C-4505-AF5D-DE9BA02FCBBE}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
+						<Event Name="AMB_SP_Portal_LP" ID="{57DB938F-A8EB-4029-A9B7-E60BF391288B}">
+							<ChildrenList>
+								<Action Name="" ID="{C9C10247-AA55-42C3-8A2C-DB6BCDA7C522}" ShortID="286313269">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="5"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.75"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_SP_Portal_LP" ID="{A53FDBD4-E256-4255-8B36-1DBDFF493589}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{61702908-7CCD-450D-A2C3-48B37FDF70B3}" ShortID="244161839">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="36"/>
+										<Property Name="SeekPercent" Type="Real64">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{01817A98-9A8C-46F4-B5DC-13F7A6AD5F35}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="100"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_SP_Portal_LP" ID="{A53FDBD4-E256-4255-8B36-1DBDFF493589}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{9B81DEC0-7C25-4FD9-8F72-1D267832DA87}" ShortID="980077785">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="RFX_Portal_Whispers" ID="{4CD3BEE8-9A35-4FA7-B37C-CF6ACED21501}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_SP_RC_PulseShard" ID="{317AF618-FB64-44B5-B051-0C97087E6073}">
+							<ChildrenList>
+								<Action Name="" ID="{6AA75B2B-DC06-4D1F-BB43-71B8F6DC186E}" ShortID="889969735">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_SP_RC_PulseShard" ID="{DE419D19-9CE0-4A17-985B-313B9C5D2ACE}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_SP_Shard_Float_LP" ID="{97FBD4DD-9962-4585-8008-8CF8C56F4B78}">
+							<ChildrenList>
+								<Action Name="" ID="{0F19674F-B6FB-41D6-8398-0B6FBCC3CF79}" ShortID="65870097">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="5"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.75">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{CCA8072C-F3CD-4450-AADB-05AEEDB4BA00}">
+														<PropertyList>
+															<Property Name="Max" Type="Real64" Value="60"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_SP_Shard_Float_LP" ID="{1662E59C-69D9-4F51-B32A-BC4F28154EC2}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{0F251CCC-BD3B-4379-B89C-C821E49F1A77}" ShortID="628088642">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="37"/>
+										<Property Name="SeekPercent" Type="Real64">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{A79FDA01-ABCD-422D-BF0F-04D8BCC26581}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="100"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList/>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
-				</Event>
+				</Folder>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

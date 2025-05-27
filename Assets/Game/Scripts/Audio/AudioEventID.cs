@@ -10,6 +10,10 @@ public enum AudioEventID
     SFX_Button,
     MC_FT,
     SFX_CubeRotation,
+    SFX_CubeRotation_Face,
+    SFX_LaserEmetting,
+    SFX_LaserReceived,
+    SFX_LaserReflected,
 
     // UI Sounds
     MenuPause,

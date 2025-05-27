@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{B3393AFF-EB5C-4809-A2D5-90DB1B3E876C}" SchemaVersion="123">
 	<Effects>
-		<WorkUnit Name="Default Work Unit" ID="{B3393AFF-EB5C-4809-A2D5-90DB1B3E876C}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{B3393AFF-EB5C-4809-A2D5-90DB1B3E876C}" PersistMode="Standalone">
+			<ChildrenList>
+				<Effect Name="EF_Meter" ID="{7A541130-2C27-4899-9F21-85FB05597353}" PluginName="Wwise Meter" CompanyID="0" PluginID="129" PluginType="3">
+					<PropertyList>
+						<Property Name="MeterScope" Type="int32" Value="1"/>
+						<Property Name="ReleaseTime" Type="Real32" Value="0"/>
+					</PropertyList>
+					<PluginData>
+	<GameParameter Name="RTPC_Meter_Glb" ID="{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}"/>
+</PluginData>
+				</Effect>
+				<Effect Name="EF_Meter_Distance" ID="{49C9553A-6891-4D20-BD76-65E6740EB71D}" PluginName="Wwise Meter" CompanyID="0" PluginID="129" PluginType="3">
+					<PropertyList>
+						<Property Name="ReleaseTime" Type="Real32" Value="0.25"/>
+					</PropertyList>
+					<PluginData>
+	<GameParameter Name="RTPC_Meter_Distance" ID="{3B920A5A-34C9-461D-A5DB-AEACE93A0237}"/>
+</PluginData>
+				</Effect>
+			</ChildrenList>
+		</WorkUnit>
 	</Effects>
 </WwiseDocument>

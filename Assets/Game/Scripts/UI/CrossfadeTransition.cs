@@ -26,7 +26,7 @@ public class CrossfadeTransition : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPlayerWin += StartFade;
-    }   
+    }
     private void OnDisable()
     {
         EventManager.OnPlayerWin -= StartFade;
@@ -65,8 +65,12 @@ public class CrossfadeTransition : MonoBehaviour
             if (_isActive)
             {
                 _screen.enabled = false;
-                _kaleidoscopeCam.GetComponent<Animator>().enabled = true;
-                _kaleidoscopeCam.SetActive(false);
+                if (_kaleidoscopeCam)
+                {
+
+                    _kaleidoscopeCam.GetComponent<Animator>().enabled = true;
+                    _kaleidoscopeCam.SetActive(false);
+                }
                 _isActive = false;
             }
             return;

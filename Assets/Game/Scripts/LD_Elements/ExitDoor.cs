@@ -17,6 +17,10 @@ public class ExitDoor : MonoBehaviour
     private GameSettings _gameSettings;
     private bool _isShowing = false;
 
+    [Header("FOV")]
+    [SerializeField] private float _MaxFOV_END = 150.0f;
+
+
     private void Awake()
     {
         if (_instance) Destroy(this);
