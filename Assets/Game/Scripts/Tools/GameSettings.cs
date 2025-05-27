@@ -29,8 +29,12 @@ public class GameSettings : ScriptableObject
     public float UiRubikscCubeRotationDuration => _uiRubikscCubeRotationDuration;
     public AnimationCurve AnimationSpeedCurve => _AnimationSpeedCurve;
     public Vector4 RubiksEndCubeRotationScreenshakeSettings => _rubiksEndCubeRotationscreenshakeSettings;
-
     public Vector4 RubiksStartCubeRotationScreenshakeSettings => _rubiksStartCubeRotationscreenshakeSettings;
+
+    // Visual Cues Properties
+    public float AxisSelectionFadeInDuration => _axisSelectionFadeInDuration;
+    public float AxisSelectionFadeOutDuration => _axisSelectionFadeOutDuration;
+
     // Global Properties
     public float ResetDuration => _resetDuration;
     public float StencilFadeInDuration => _stencilFadeInDuration;
@@ -82,6 +86,11 @@ public class GameSettings : ScriptableObject
     [SerializeField][InfoBox("Duration, Strength, Vibrato, Randomness", EInfoBoxType.Normal)] 
     private Vector4 _rubiksEndCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
     [SerializeField] private Vector4 _rubiksStartCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
+
+    [Header("-- VISUAL CUES--")]
+    [SerializeField] private float _axisSelectionFadeInDuration = 0.6f;
+    [SerializeField] private float _axisSelectionFadeOutDuration = 0.6f;
+
     [Header("-- GLOBAL --")]
     [SerializeField] private float _resetDuration = 2.0f;
 
