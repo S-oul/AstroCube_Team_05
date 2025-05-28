@@ -1,29 +1,51 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using System;
+using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering;
 
 [ExecuteInEditMode, ImageEffectAllowedInSceneView]
 public class FractalMaster : MonoBehaviour
 {
+    [Serializable]
+    public class MandelbulbParameters
+    {
+        public MandelbulbParameters()
+        {
+            _blackAndWhite = 0.7f;
+            _alpha = 1f;
+            _colorA = new Color(0.5f, 0F, 0.5f);
+            _colorB = new Color(1f, 0.5f, 0f);
+            _fractalPower = 7;
+            _darkness = 26f;
+        }
 
-    public ComputeShader fractalShader;
-    public RenderTexture rt;
+        public float FractalPower { get => _fractalPower; set => _fractalPower = value; }
+        public float Alpha { get => _alpha; set => _alpha = value; }
+        public Color ColorB { get => _colorA; set => _colorA = value; }
+        public Color ColorA { get => _colorB; set => _colorB = value; }
+        public float BlackAndWhite { get => _blackAndWhite; set => _blackAndWhite = value; }
+        public float Darkness { get => _darkness; set => _darkness = value; }
 
-    [Range(1, 20)]
-    public float fractalPower = 10f;
-    public float darkness = 70f;
-    public float drawDistance = 2f;
+        [SerializeField, Range(1, 20)] private float _fractalPower;
+        [SerializeField, Range(0f, 1f)] private float _alpha;
+        [SerializeField] private Color _colorA;
+        [SerializeField] private Color _colorB;
+        [SerializeField, Range(0f, 1f)] private float _blackAndWhite;
+        [SerializeField] private float _darkness;
+    }
 
-    [Header("Colour mixing")]
-    [Range(-50, 1)] public float alpha;
-    [Range(0, 1)] public float blackAndWhite;
-    [Range(0, 1)] public float redA;
-    [Range(0, 1)] public float greenA;
-    [Range(0, 1)] public float blueA = 1;
-    [Range(0, 1)] public float redB = 1;
-    [Range(0, 1)] public float greenB;
-    [Range(0, 1)] public float blueB;
-    [Range(-1, 1)] public float angle;
+    public MandelbulbParameters CurrentMandelbulbParameters {  get => _currentMandelbulbParameters; set => _currentMandelbulbParameters = value; }
+    [SerializeField] private MandelbulbParameters _currentMandelbulbParameters = new();
+
+    [HorizontalLine(color: EColor.Blue)]
+    [SerializeField] private ComputeShader fractalShader;
+    [SerializeField] private RenderTexture rt;
+
+    [SerializeField] private float drawDistance = 2f;
+
+    [Range(-50, 1)] public float _extAlpha;
+
     public Vector3 positionOffset;
 
     RenderTexture target;
@@ -56,6 +78,7 @@ public class FractalMaster : MonoBehaviour
 
     Matrix4x4 cameraToWorldMatrix;
     Matrix4x4 projectionMatrixInverse;
+    private Material _mat;
 
 
     void Start()
@@ -67,6 +90,7 @@ public class FractalMaster : MonoBehaviour
             Debug.Log("Shader missing.");
             return;
         }
+        _mat = GetComponent<Renderer>().sharedMaterial;
     }
 
     void Init()
@@ -91,6 +115,7 @@ public class FractalMaster : MonoBehaviour
     // Animate properties
     void Update()
     {
+        /*
         if (Application.isPlaying)
         {
             if (powerIncreaseRate != 0)
@@ -113,10 +138,9 @@ public class FractalMaster : MonoBehaviour
             redB = Mathf.Cos((Time.time + .8f) * 0.3f) /2 + .5f;
             greenB = Mathf.Cos((Time.time - 0f) * 0.3f) /2 + .5f;
             blueB = Mathf.Sin((Time.time+ .0f) * 0.3f) /2 + .5f;
-            */
         }
+        */        
         UpdateTexture();
-
     }
 
     void UpdateTexture()
@@ -165,16 +189,18 @@ public class FractalMaster : MonoBehaviour
         //Graphics.Blit(source, src);
         //Graphics.CopyTexture(source, src);
 
+        if(_mat)
+            _mat.SetColor("_BaseColor", new Color(1, 1, 1, _currentMandelbulbParameters.Alpha));
+
         fractalShader.SetTexture(0, "Destination", target);
         //fractalShader.SetTexture(0, "Source", src);
-        fractalShader.SetFloat("alpha", alpha);
-        fractalShader.SetFloat("power", Mathf.Max(fractalPower, 1.01f));
-        fractalShader.SetFloat("darkness", darkness);
-        fractalShader.SetFloat("blackAndWhite", blackAndWhite);
+        fractalShader.SetFloat("alpha", _extAlpha);
+        fractalShader.SetFloat("power", Mathf.Max(_currentMandelbulbParameters.FractalPower, 1.01f));
+        fractalShader.SetFloat("darkness", _currentMandelbulbParameters.Darkness);
+        fractalShader.SetFloat("blackAndWhite", _currentMandelbulbParameters.BlackAndWhite);
         fractalShader.SetFloat("maxDst", drawDistance);
-        fractalShader.SetVector("colourAMix", new Vector3(redA, greenA, blueA));
-        fractalShader.SetVector("colourBMix", new Vector3(redB, greenB, blueB));
-        fractalShader.SetFloat("angle", angle);
+        fractalShader.SetVector("colourAMix", _currentMandelbulbParameters.ColorA);
+        fractalShader.SetVector("colourBMix", _currentMandelbulbParameters.ColorB);
         fractalShader.SetVector("positionOffset", positionOffset);
 
         fractalShader.SetInt("maxStepCount", maxStepCount);

@@ -34,10 +34,10 @@ public class GameActionTransformChange : AGameAction
     {
         bool result = false;
         if (_moveObject)
-            result |= _moveTweener.active;
+            result |= !_moveTweener.active;
 
         if (_rotateObject)
-            result |= _rotationTweener.active;
+            result |= !_rotationTweener.active;
 
         return result;
     }

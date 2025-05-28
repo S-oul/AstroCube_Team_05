@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +14,11 @@ public class FractalStarMovement : StarMovement
     private void Start()
     {
         var v = (transform.parent.position - transform.position);
-        transform.position += (v.normalized) * _moveAmount;
+        //transform.position += (v.normalized) * _moveAmount;
         _startRota = 360.0f * ((float)transform.GetSiblingIndex() / (float)transform.parent.childCount);
         transform.rotation = Quaternion.Euler(0, 0, _startRota);
+        DOTween.To(() => 0, x => _moveAmount = x, _moveAmount, 1);
+
     }
 
     protected override void UpdateMovement()
