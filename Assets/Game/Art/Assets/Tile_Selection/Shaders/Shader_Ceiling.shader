@@ -195,40 +195,39 @@ Shader "Shader_Ceiling"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile_fragment _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma shader_feature_local _RECEIVE_SHADOWS_OFF
-			#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
-			#pragma multi_compile_instancing
-			#pragma instancing_options renderinglayer
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#pragma multi_compile_fog
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile_fragment _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #pragma multi_compile_fog
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define _NORMALMAP 1
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
 			#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
 
 			
-            #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
-		
 
 			#pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
 
 			
+			#pragma multi_compile_fragment _ _SHADOWS_SOFT
+           
 
 			
-			#pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
-           
 
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
 			#pragma multi_compile _ _LIGHT_LAYERS
@@ -236,6 +235,8 @@ Shader "Shader_Ceiling"
 			#pragma multi_compile _ _FORWARD_PLUS
 
 			
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+		
 
 			#pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
 			#pragma multi_compile _ SHADOWS_SHADOWMASK
@@ -253,16 +254,8 @@ Shader "Shader_Ceiling"
 			#define SHADERPASS SHADERPASS_FORWARD
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			
-			#if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -645,7 +638,7 @@ Shader "Shader_Ceiling"
 
 				float2 uv_TILE_Tile_AlbedoTransparency = input.ase_texcoord8.xy * _TILE_Tile_AlbedoTransparency_ST.xy + _TILE_Tile_AlbedoTransparency_ST.zw;
 				float4 tex2DNode111 = tex2D( _TILE_Tile_AlbedoTransparency, uv_TILE_Tile_AlbedoTransparency );
-				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1517662 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1094072 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 temp_cast_2 = (_Min2).xxxx;
 				float4 temp_cast_3 = (_Max2).xxxx;
 				float2 texCoord16 = input.ase_texcoord8.xy * float2( 0.42,1 ) + float2( 0,0 );
@@ -937,19 +930,20 @@ Shader "Shader_Ceiling"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma multi_compile_instancing
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define _NORMALMAP 1
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
@@ -963,10 +957,6 @@ Shader "Shader_Ceiling"
 			#define SHADERPASS SHADERPASS_SHADOWCASTER
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1270,19 +1260,20 @@ Shader "Shader_Ceiling"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma multi_compile_instancing
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define _NORMALMAP 1
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -1294,10 +1285,6 @@ Shader "Shader_Ceiling"
 			#define SHADERPASS SHADERPASS_DEPTHONLY
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1908,7 +1895,7 @@ Shader "Shader_Ceiling"
 
 				float2 uv_TILE_Tile_AlbedoTransparency = input.ase_texcoord4.xy * _TILE_Tile_AlbedoTransparency_ST.xy + _TILE_Tile_AlbedoTransparency_ST.zw;
 				float4 tex2DNode111 = tex2D( _TILE_Tile_AlbedoTransparency, uv_TILE_Tile_AlbedoTransparency );
-				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1517662 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1094072 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 temp_cast_2 = (_Min2).xxxx;
 				float4 temp_cast_3 = (_Max2).xxxx;
 				float2 texCoord16 = input.ase_texcoord4.xy * float2( 0.42,1 ) + float2( 0,0 );
@@ -2277,7 +2264,7 @@ Shader "Shader_Ceiling"
 
 				float2 uv_TILE_Tile_AlbedoTransparency = input.ase_texcoord2.xy * _TILE_Tile_AlbedoTransparency_ST.xy + _TILE_Tile_AlbedoTransparency_ST.zw;
 				float4 tex2DNode111 = tex2D( _TILE_Tile_AlbedoTransparency, uv_TILE_Tile_AlbedoTransparency );
-				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1517662 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1094072 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 temp_cast_2 = (_Min2).xxxx;
 				float4 temp_cast_3 = (_Max2).xxxx;
 				float2 texCoord16 = input.ase_texcoord2.xy * float2( 0.42,1 ) + float2( 0,0 );
@@ -2332,23 +2319,24 @@ Shader "Shader_Ceiling"
 			HLSLPROGRAM
 
 			
-
-			
-
-			#pragma multi_compile _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma multi_compile_instancing
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define _NORMALMAP 1
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -2361,16 +2349,8 @@ Shader "Shader_Ceiling"
 			//#define SHADERPASS SHADERPASS_DEPTHNORMALS
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			
-			#if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -2706,38 +2686,41 @@ Shader "Shader_Ceiling"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile_fragment _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma shader_feature_local _RECEIVE_SHADOWS_OFF
-			#pragma multi_compile_instancing
-			#pragma instancing_options renderinglayer
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#pragma multi_compile_fog
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile_fragment _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #pragma multi_compile_fog
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define _NORMALMAP 1
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
 
 			
+			#pragma multi_compile_fragment _ _SHADOWS_SOFT
+           
 
 			
-			#pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
-           
 
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
 			#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
 			#pragma multi_compile_fragment _ _RENDER_PASS_ENABLED
 
 			
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+		
 
 			#pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
 			#pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
@@ -2756,16 +2739,8 @@ Shader "Shader_Ceiling"
 			#define SHADERPASS SHADERPASS_GBUFFER
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			
-			#if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -3152,7 +3127,7 @@ Shader "Shader_Ceiling"
 
 				float2 uv_TILE_Tile_AlbedoTransparency = input.ase_texcoord8.xy * _TILE_Tile_AlbedoTransparency_ST.xy + _TILE_Tile_AlbedoTransparency_ST.zw;
 				float4 tex2DNode111 = tex2D( _TILE_Tile_AlbedoTransparency, uv_TILE_Tile_AlbedoTransparency );
-				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1517662 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1094072 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5211719 ), float4( 1, 1, 1, 0.8552987 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 temp_cast_2 = (_Min2).xxxx;
 				float4 temp_cast_3 = (_Max2).xxxx;
 				float2 texCoord16 = input.ase_texcoord8.xy * float2( 0.42,1 ) + float2( 0,0 );
@@ -3312,16 +3287,17 @@ Shader "Shader_Ceiling"
 			HLSLPROGRAM
 
 			
-
-			#define _NORMAL_DROPOFF_TS 1
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #define _NORMAL_DROPOFF_TS 1
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define _NORMALMAP 1
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -3356,10 +3332,6 @@ Shader "Shader_Ceiling"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -3587,16 +3559,17 @@ Shader "Shader_Ceiling"
 			HLSLPROGRAM
 
 			
-
-			#define _NORMAL_DROPOFF_TS 1
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #define _NORMAL_DROPOFF_TS 1
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define _NORMALMAP 1
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -3631,10 +3604,6 @@ Shader "Shader_Ceiling"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -3858,32 +3827,24 @@ Shader "Shader_Ceiling"
 }
 /*ASEBEGIN
 Version=19801
-Node;AmplifyShaderEditor.TextureCoordinatesNode;19;-3072,-656;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;0.37,1.18;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;13;-2544,-608;Inherit;True;Property;_TextureSample3;Texture Sample 3;2;0;Create;True;0;0;0;False;0;False;-1;None;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleAddOpNode;21;-2176,-816;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;45;-2048,416;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;38;-1600,288;Inherit;False;Property;_Max;Max;7;0;Create;True;0;0;0;False;0;False;0;0.34;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;38;-1600,288;Inherit;False;Property;_Max;Max;6;0;Create;True;0;0;0;False;0;False;0;0.34;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;12;-1888,-736;Inherit;True;Property;_TextureSample2;Texture Sample 2;1;0;Create;True;0;0;0;False;0;False;-1;None;e5b234c8823b14d469d368b1938e96ac;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.RangedFloatNode;41;-1584,-432;Inherit;False;Property;_Max2;Max2;9;0;Create;True;0;0;0;False;0;False;0;0.2;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;40;-1616,-544;Inherit;False;Property;_Min2;Min2;8;0;Create;True;0;0;0;False;0;False;0;0.01;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SmoothstepOpNode;39;-1376,-672;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;1,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;25;-896,-480;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode;22;-1184,-1056;Inherit;True;Property;_TextureSample4;Texture Sample 4;3;0;Create;True;0;0;0;False;0;False;-1;None;e5b234c8823b14d469d368b1938e96ac;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleAddOpNode;31;-1120,-256;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SmoothstepOpNode;36;-1440,-176;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;1,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode;24;-1808,-240;Inherit;True;Property;_TextureSample5;Texture Sample 5;4;0;Create;True;0;0;0;False;0;False;-1;None;a1df82c5c992a5143bbbb2ba6030c4e7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.RangedFloatNode;37;-1728,128;Inherit;False;Property;_Min;Min;6;0;Create;True;0;0;0;False;0;False;0;0.07;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode;24;-1808,-240;Inherit;True;Property;_TextureSample5;Texture Sample 5;3;0;Create;True;0;0;0;False;0;False;-1;None;a1df82c5c992a5143bbbb2ba6030c4e7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode;37;-1728,128;Inherit;False;Property;_Min;Min;5;0;Create;True;0;0;0;False;0;False;0;0.07;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;26;-2384,-208;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;44;-256,-32;Inherit;False;Property;_HDR;HDR;10;0;Create;True;0;0;0;False;0;False;0;2;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;44;-256,-32;Inherit;False;Property;_HDR;HDR;9;0;Create;True;0;0;0;False;0;False;0;2;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;69;-624,-64;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;16;-3024,-960;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;0.42,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.GradientSampleNode;48;-640,-528;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.NoiseGeneratorNode;35;-2512,-944;Inherit;False;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.PannerNode;17;-2768,-944;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0.025,0.029;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PannerNode;20;-2784,-624;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-0.017,-0.013;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.GradientNode;49;-1024,-736;Inherit;False;0;4;2;0.3762475,0,0.5169811,0;0.6824901,0.2734567,0.7283019,0.1517662;0.9245283,0.1796724,0.6323621,0.5211719;1,1,1,0.8552987;1,0;1,1;0;1;OBJECT;0
-Node;AmplifyShaderEditor.RangedFloatNode;90;-368,48;Inherit;False;Property;_Alpha;Alpha;12;0;Create;True;0;0;0;False;0;False;0;0.79;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;47;-1488,384;Inherit;True;Property;_TextureSample6;Texture Sample 5;5;0;Create;True;0;0;0;False;0;False;-1;None;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode;90;-368,48;Inherit;False;Property;_Alpha;Alpha;11;0;Create;True;0;0;0;False;0;False;0;0.79;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode;47;-1488,384;Inherit;True;Property;_TextureSample6;Texture Sample 5;4;0;Create;True;0;0;0;False;0;False;-1;None;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.PannerNode;27;-2096,-176;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-0.03,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PannerNode;46;-1760,448;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0.05,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.WireNode;92;272,240;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
@@ -3897,13 +3858,20 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;43;48,-144;Inherit;True;3;3;0;COLO
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;75;-400,-336;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SamplerNode;10;-896,80;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;None;87251aa1ca7216948b371ca795bcce83;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.TextureCoordinatesNode;103;-960,336;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;70;-688,480;Inherit;False;Property;_EffectAlpha;EffectAlpha;11;0;Create;True;0;0;0;False;0;False;0;1;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;70;-688,480;Inherit;False;Property;_EffectAlpha;EffectAlpha;10;0;Create;True;0;0;0;False;0;False;0;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.Vector2Node;107;-1120,512;Inherit;False;Constant;_Vector0;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.LerpOp;74;512,-96;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode;106;-1152,400;Inherit;False;Constant;_Float0;Float 0;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;111;-110.6415,217.3761;Inherit;True;Property;_TILE_Tile_AlbedoTransparency;TILE_Tile_AlbedoTransparency;13;0;Create;True;0;0;0;False;0;False;-1;bca4b767bd21fee45999134b2e994b47;bca4b767bd21fee45999134b2e994b47;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SamplerNode;112;-48,704;Inherit;True;Property;_TILE_Tile_MetallicSmoothness;TILE_Tile_MetallicSmoothness;14;0;Create;True;0;0;0;False;0;False;-1;d238832f63ccca148a11f2d4602503cb;d238832f63ccca148a11f2d4602503cb;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SamplerNode;113;-48,432;Inherit;True;Property;_TILE_Tile_Normal;TILE_Tile_Normal;15;0;Create;True;0;0;0;False;0;False;-1;837cddccdf217b848b9de5749e4c3160;837cddccdf217b848b9de5749e4c3160;True;0;True;bump;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode;111;-110.6415,217.3761;Inherit;True;Property;_TILE_Tile_AlbedoTransparency;TILE_Tile_AlbedoTransparency;12;0;Create;True;0;0;0;False;0;False;-1;bca4b767bd21fee45999134b2e994b47;bca4b767bd21fee45999134b2e994b47;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode;112;-48,704;Inherit;True;Property;_TILE_Tile_MetallicSmoothness;TILE_Tile_MetallicSmoothness;13;0;Create;True;0;0;0;False;0;False;-1;d238832f63ccca148a11f2d4602503cb;d238832f63ccca148a11f2d4602503cb;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode;113;-48,432;Inherit;True;Property;_TILE_Tile_Normal;TILE_Tile_Normal;14;0;Create;True;0;0;0;False;0;False;-1;837cddccdf217b848b9de5749e4c3160;837cddccdf217b848b9de5749e4c3160;True;0;True;bump;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SmoothstepOpNode;39;-1376,-704;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;1,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;25;-912,-560;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;19;-3072,-656;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;0.37,1.18;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;41;-1584,-432;Inherit;False;Property;_Max2;Max2;8;0;Create;True;0;0;0;False;0;False;0;0.13;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;40;-1616,-544;Inherit;False;Property;_Min2;Min2;7;0;Create;True;0;0;0;False;0;False;0;-0.05;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.GradientSampleNode;48;-704,-688;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.GradientNode;49;-928,-736;Inherit;False;0;4;2;0.3762475,0,0.5169811,0;0.6824901,0.2734567,0.7283019,0.1094072;0.9245283,0.1796724,0.6323621,0.5211719;1,1,1,0.8552987;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;78;816,32;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;80;816,32;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;81;816,32;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -3918,19 +3886,12 @@ WireConnection;13;1;20;0
 WireConnection;21;0;35;0
 WireConnection;21;1;13;0
 WireConnection;12;1;21;0
-WireConnection;39;0;12;0
-WireConnection;39;1;40;0
-WireConnection;39;2;41;0
-WireConnection;25;0;39;0
-WireConnection;25;1;31;0
 WireConnection;31;0;36;0
 WireConnection;31;1;47;0
 WireConnection;36;0;24;0
 WireConnection;36;1;37;0
 WireConnection;36;2;38;0
 WireConnection;24;1;27;0
-WireConnection;48;0;49;0
-WireConnection;48;1;25;0
 WireConnection;35;0;17;0
 WireConnection;17;0;16;0
 WireConnection;20;0;19;0
@@ -3960,10 +3921,17 @@ WireConnection;103;1;107;0
 WireConnection;74;0;111;5
 WireConnection;74;1;77;0
 WireConnection;74;2;92;0
+WireConnection;39;0;12;0
+WireConnection;39;1;40;0
+WireConnection;39;2;41;0
+WireConnection;25;0;39;0
+WireConnection;25;1;31;0
+WireConnection;48;0;49;0
+WireConnection;48;1;25;0
 WireConnection;79;0;74;0
 WireConnection;79;1;91;0
 WireConnection;79;2;89;0
 WireConnection;79;3;99;2
 WireConnection;79;4;99;1
 ASEEND*/
-//CHKSM=840F5C5A680DD3DCEC80BD465D2D1A7017AD1BAB
+//CHKSM=743843FB030253DE7A62E91B5B201D3F80B4647A
