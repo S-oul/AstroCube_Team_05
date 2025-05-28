@@ -267,6 +267,7 @@ public class RubiksCubeController : MonoBehaviour
                     cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
                 }
 
+                _ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS);
                 _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
             }
         }
