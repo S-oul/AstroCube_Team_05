@@ -22,7 +22,7 @@ public class PreviewRubiksCube : MonoBehaviour
         MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
         foreach (var m in meshes)
         {
-            if(m.CompareTag("Floor"))
+            if(m.CompareTag("Floor") || m.CompareTag("SelectionShine"))
                 m.gameObject.SetActive(false);
             else
             {
