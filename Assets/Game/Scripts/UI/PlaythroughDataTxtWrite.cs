@@ -2,6 +2,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
 using System;
+using System.Runtime.InteropServices;
 
 public class PlaythroughDataTxtWrite : MonoBehaviour
 {
@@ -13,11 +14,10 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
 
 
 
-    /// <summary>
-    /// WARN SACHA WINDOWS ONLY
-    /// </summary>
     string _folderPath;
     string _filePath;
+
+#if !UNITY_EDITOR
     void Awake()
     {
         Debug.LogWarning("Playtrhough Data only works on Windows");
@@ -42,7 +42,7 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
         }
         //path = Path.Combine(Application.persistentDataPath, _fileName);
         _filePath = Path.Combine(exeDirectory, _fileName);
-        Debug.Log(_filePath);
+        //Debug.Log(_filePath);
     }
     void Start()
     {
@@ -60,12 +60,14 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
 
     private void OnEnable()
     {
+        if (SystemInfo.operatingSystem.Contains("Windows "))
         EventManager.OnPlayerWin += AddDataEntry;
     }
 
     private void OnDisable()
     {
-        EventManager.OnPlayerWin -= AddDataEntry;
+        if (SystemInfo.operatingSystem.Contains("Windows "))
+            EventManager.OnPlayerWin -= AddDataEntry;
     }
 
     void AddDataEntry()
@@ -82,8 +84,8 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
             );
         File.AppendAllText(_filePath, content);
     }
+#endif
 }
-
 /* Date: XXX
  * Scene Name: XXX
  * Time Completed: XXX 
