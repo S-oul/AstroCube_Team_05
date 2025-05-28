@@ -2,7 +2,6 @@ using DG.Tweening;
 using NaughtyAttributes;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -36,27 +35,14 @@ public class InputDisplay : MonoBehaviour
 
     public Action OnResolve;
 
-    Animator _animator;
-    [HideInInspector] public float _animationProgress = 0;
-    [SerializeField] Vector3 _startPos = new Vector3(-50, -50, 0);
-    [SerializeField] Vector3 _endPos = new Vector3(-800, -450, 0);
-    [SerializeField] float _maxSize = 1.5f;
-    [SerializeField] float _minSize = 1;
-
-    bool _hasBeenCompleted = false;
-
     void Start()
     {
         if(!_canvasGroup) return;
 
         _canvasGroup.gameObject.SetActive(true);
         _canvasGroup.alpha = 0f;
-        if (_displayType == EDisplayType.PLAY_AT_START)
-        {
+        if(_displayType == EDisplayType.PLAY_AT_START)
             StartDisplay();
-        }
-
-        _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -85,7 +71,7 @@ public class InputDisplay : MonoBehaviour
 
     private void OnValidate()
     {
-        if (_colider == null) 
+        if(_colider == null) 
             _colider = GetComponent<Collider>();
         if (_colider != null)
             _colider.enabled = _displayType == EDisplayType.PLAY_ON_TRIGGER;
@@ -93,13 +79,11 @@ public class InputDisplay : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_hasBeenCompleted) return;
         if (_displayType != EDisplayType.PLAY_ON_TRIGGER) return;
         if (!_canvasGroup) return;
 
         if (!other.CompareTag("Player")) return;
 
-        if (_isDisplayed) return;
         StartDisplay();
     }
 
@@ -110,10 +94,11 @@ public class InputDisplay : MonoBehaviour
 
         if (!other.CompareTag("Player")) return;
 
-        if (_resolveOnLeaveTrigger)
-            _EndDisplay();
+        if(_resolveOnLeaveTrigger)
+            EndDisplay();
         else
         {
+            _FadeDisplay(0, _fadeOutDuration);
             _isDisplayed = false;
         }
     }
@@ -124,7 +109,7 @@ public class InputDisplay : MonoBehaviour
         if (!_isDisplayed) return;
         if (!_canvasGroup) return;
         
-        _EndDisplay();
+        StartCoroutine(_EndDisplay());
     }
 
     public void StartDisplay()
@@ -134,29 +119,19 @@ public class InputDisplay : MonoBehaviour
         _FadeDisplay(1, _fadeOutDuration);
     }
 
-    private void _EndDisplay()
-    {
-        if (_hasBeenCompleted) return;
-        _hasBeenCompleted = true;
-        if (_animator) _animator.SetTrigger("EndDisplay"); 
-    }
+    public void EndDisplay() => StartCoroutine(_EndDisplay()); 
 
-    private void _EndDisplayAnimEnd()
+    private IEnumerator _EndDisplay()
     {
-        _canvasGroup.gameObject.GetComponent<RectTransform>().localPosition = _endPos;
         _isDisplayed = false;
+        _FadeDisplay(0, _fadeOutDuration);
+        yield return new WaitForSeconds(_fadeOutDuration);
         _onEndShowText?.Invoke();
+        gameObject.SetActive(false);
     }
 
     private void _FadeDisplay(float newAlpha, float duration)
     {
         DOTween.To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, newAlpha, duration).SetEase(_fadeEase);
-    }
-
-    private void Update()
-    {
-        if (_isDisplayed == false) return;
-        _canvasGroup.gameObject.GetComponent<RectTransform>().localPosition = Vector3.Lerp(_startPos, _endPos, _animationProgress);
-        _canvasGroup.gameObject.GetComponent<RectTransform>().localScale = Vector3.Lerp(Vector3.one * _maxSize, Vector3.one * _minSize, _animationProgress);
     }
 }
