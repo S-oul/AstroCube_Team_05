@@ -4,8 +4,8 @@ Shader "Shader_Tile"
 {
 	Properties
 	{
-		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
+		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		_TextureSample0("Texture Sample 0", 2D) = "white" {}
 		_TextureSample2("Texture Sample 2", 2D) = "white" {}
 		_TextureSample3("Texture Sample 3", 2D) = "white" {}
@@ -19,8 +19,6 @@ Shader "Shader_Tile"
 		_EffectAlpha("EffectAlpha", Range( 0 , 1)) = 0
 		_Texture("Texture", 2D) = "white" {}
 		_Alpha("Alpha", Range( 0 , 1)) = 0
-		_Normal("Normal", 2D) = "white" {}
-		_MetallicRoughness("Metallic Roughness", 2D) = "white" {}
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 
@@ -195,40 +193,38 @@ Shader "Shader_Tile"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile_fragment _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma shader_feature_local _RECEIVE_SHADOWS_OFF
-			#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
-			#pragma multi_compile_instancing
-			#pragma instancing_options renderinglayer
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#pragma multi_compile_fog
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile_fragment _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #pragma multi_compile_fog
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
 			#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
 
 			
-            #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
-		
 
 			#pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
 
 			
+			#pragma multi_compile_fragment _ _SHADOWS_SOFT
+           
 
 			
-			#pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
-           
 
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
 			#pragma multi_compile _ _LIGHT_LAYERS
@@ -236,6 +232,8 @@ Shader "Shader_Tile"
 			#pragma multi_compile _ _FORWARD_PLUS
 
 			
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+		
 
 			#pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
 			#pragma multi_compile _ SHADOWS_SHADOWMASK
@@ -253,16 +251,8 @@ Shader "Shader_Tile"
 			#define SHADERPASS SHADERPASS_FORWARD
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			
-			#if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -341,8 +331,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -386,8 +374,6 @@ Shader "Shader_Tile"
 			sampler2D _TextureSample5;
 			sampler2D _TextureSample6;
 			sampler2D _TextureSample0;
-			sampler2D _Normal;
-			sampler2D _MetallicRoughness;
 
 
 			
@@ -669,20 +655,13 @@ Shader "Shader_Tile"
 				float4 lerpResult77 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , _EffectAlpha);
 				float4 lerpResult74 = lerp( float4( tex2DNode76.rgb , 0.0 ) , lerpResult77 , tex2DNode10.a);
 				
-				float2 uv_Normal = input.ase_texcoord8.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 lerpResult91 = lerp( tex2D( _Normal, uv_Normal ).rgb , float3( 0,0,0 ) , tex2DNode10.a);
-				
-				float2 uv_MetallicRoughness = input.ase_texcoord8.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
-				float3 lerpResult94 = lerp( tex2D( _MetallicRoughness, uv_MetallicRoughness ).rgb , float3( 0,0,0 ) , tex2DNode10.a);
-				float3 break99 = lerpResult94;
-				
 
 				float3 BaseColor = lerpResult74.rgb;
-				float3 Normal = lerpResult91;
+				float3 Normal = float3(0, 0, 1);
 				float3 Emission = ( temp_output_43_0 * _EffectAlpha ).rgb;
 				float3 Specular = 0.5;
-				float Metallic = break99.z;
-				float Smoothness = break99.y;
+				float Metallic = 0;
+				float Smoothness = 0.5;
 				float Occlusion = 1;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
@@ -937,19 +916,19 @@ Shader "Shader_Tile"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma multi_compile_instancing
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
@@ -963,10 +942,6 @@ Shader "Shader_Tile"
 			#define SHADERPASS SHADERPASS_SHADOWCASTER
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1025,8 +1000,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -1270,19 +1243,19 @@ Shader "Shader_Tile"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma multi_compile_instancing
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -1294,10 +1267,6 @@ Shader "Shader_Tile"
 			#define SHADERPASS SHADERPASS_DEPTHONLY
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1356,8 +1325,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -1576,7 +1543,6 @@ Shader "Shader_Tile"
 			#define _NORMAL_DROPOFF_TS 1
 			#define ASE_FOG 1
 			#define _EMISSION
-			#define _NORMALMAP 1
 			#define ASE_VERSION 19801
 			#define ASE_SRP_VERSION 140011
 
@@ -1646,8 +1612,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -1974,7 +1938,6 @@ Shader "Shader_Tile"
 			#define _NORMAL_DROPOFF_TS 1
 			#define ASE_FOG 1
 			#define _EMISSION
-			#define _NORMALMAP 1
 			#define ASE_VERSION 19801
 			#define ASE_SRP_VERSION 140011
 
@@ -2035,8 +1998,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -2332,23 +2293,23 @@ Shader "Shader_Tile"
 			HLSLPROGRAM
 
 			
-
-			
-
-			#pragma multi_compile _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma multi_compile_instancing
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -2361,16 +2322,8 @@ Shader "Shader_Tile"
 			//#define SHADERPASS SHADERPASS_DEPTHNORMALS
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			
-			#if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -2411,7 +2364,7 @@ Shader "Shader_Tile"
 				float4 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 tangentOS : TANGENT;
-				float4 ase_texcoord : TEXCOORD0;
+				
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -2425,15 +2378,13 @@ Shader "Shader_Tile"
 				#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR) && defined(ASE_NEEDS_FRAG_SHADOWCOORDS)
 					float4 shadowCoord : TEXCOORD4;
 				#endif
-				float4 ase_texcoord5 : TEXCOORD5;
+				
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -2471,9 +2422,7 @@ Shader "Shader_Tile"
 				int _PassValue;
 			#endif
 
-			sampler2D _Normal;
-			sampler2D _TextureSample0;
-
+			
 
 			
 			PackedVaryings VertexFunction( Attributes input  )
@@ -2483,10 +2432,7 @@ Shader "Shader_Tile"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-				output.ase_texcoord5.xy = input.ase_texcoord.xy;
 				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord5.zw = 0;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
 				#else
@@ -2527,8 +2473,7 @@ Shader "Shader_Tile"
 				float4 positionOS : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
 				float4 tangentOS : TANGENT;
-				float4 ase_texcoord : TEXCOORD0;
-
+				
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -2546,7 +2491,7 @@ Shader "Shader_Tile"
 				output.positionOS = input.positionOS;
 				output.normalOS = input.normalOS;
 				output.tangentOS = input.tangentOS;
-				output.ase_texcoord = input.ase_texcoord;
+				
 				return output;
 			}
 
@@ -2586,7 +2531,7 @@ Shader "Shader_Tile"
 				output.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
 				output.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				output.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
-				output.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -2632,14 +2577,9 @@ Shader "Shader_Tile"
 					#endif
 				#endif
 
-				float2 uv_Normal = input.ase_texcoord5.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float2 temp_cast_0 = (2.0).xx;
-				float2 texCoord103 = input.ase_texcoord5.xy * temp_cast_0 + float2( -1,0 );
-				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
-				float3 lerpResult91 = lerp( tex2D( _Normal, uv_Normal ).rgb , float3( 0,0,0 ) , tex2DNode10.a);
 				
 
-				float3 Normal = lerpResult91;
+				float3 Normal = float3(0, 0, 1);
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 
@@ -2706,38 +2646,40 @@ Shader "Shader_Tile"
 			HLSLPROGRAM
 
 			
-
-			#pragma multi_compile_fragment _ALPHATEST_ON
-			#define _NORMAL_DROPOFF_TS 1
-			#pragma shader_feature_local _RECEIVE_SHADOWS_OFF
-			#pragma multi_compile_instancing
-			#pragma instancing_options renderinglayer
-			#pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-			#pragma multi_compile_fog
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #pragma multi_compile_fragment _ALPHATEST_ON
+            #define _NORMAL_DROPOFF_TS 1
+            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #pragma multi_compile_fog
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
 
 			
+			#pragma multi_compile_fragment _ _SHADOWS_SOFT
+           
 
 			
-			#pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
-           
 
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
 			#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
 			#pragma multi_compile_fragment _ _RENDER_PASS_ENABLED
 
 			
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+		
 
 			#pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
 			#pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
@@ -2756,16 +2698,8 @@ Shader "Shader_Tile"
 			#define SHADERPASS SHADERPASS_GBUFFER
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			
-			#if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -2844,8 +2778,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -2889,8 +2821,6 @@ Shader "Shader_Tile"
 			sampler2D _TextureSample5;
 			sampler2D _TextureSample6;
 			sampler2D _TextureSample0;
-			sampler2D _Normal;
-			sampler2D _MetallicRoughness;
 
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityGBuffer.hlsl"
@@ -3176,20 +3106,13 @@ Shader "Shader_Tile"
 				float4 lerpResult77 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , _EffectAlpha);
 				float4 lerpResult74 = lerp( float4( tex2DNode76.rgb , 0.0 ) , lerpResult77 , tex2DNode10.a);
 				
-				float2 uv_Normal = input.ase_texcoord8.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 lerpResult91 = lerp( tex2D( _Normal, uv_Normal ).rgb , float3( 0,0,0 ) , tex2DNode10.a);
-				
-				float2 uv_MetallicRoughness = input.ase_texcoord8.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
-				float3 lerpResult94 = lerp( tex2D( _MetallicRoughness, uv_MetallicRoughness ).rgb , float3( 0,0,0 ) , tex2DNode10.a);
-				float3 break99 = lerpResult94;
-				
 
 				float3 BaseColor = lerpResult74.rgb;
-				float3 Normal = lerpResult91;
+				float3 Normal = float3(0, 0, 1);
 				float3 Emission = ( temp_output_43_0 * _EffectAlpha ).rgb;
 				float3 Specular = 0.5;
-				float Metallic = break99.z;
-				float Smoothness = break99.y;
+				float Metallic = 0;
+				float Smoothness = 0.5;
 				float Occlusion = 1;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
@@ -3312,16 +3235,16 @@ Shader "Shader_Tile"
 			HLSLPROGRAM
 
 			
-
-			#define _NORMAL_DROPOFF_TS 1
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #define _NORMAL_DROPOFF_TS 1
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -3356,10 +3279,6 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -3383,8 +3302,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -3587,16 +3504,16 @@ Shader "Shader_Tile"
 			HLSLPROGRAM
 
 			
-
-			#define _NORMAL_DROPOFF_TS 1
-			#define ASE_FOG 1
-			#define _EMISSION
-			#define _NORMALMAP 1
-			#define ASE_VERSION 19801
-			#define ASE_SRP_VERSION 140011
+            #define _NORMAL_DROPOFF_TS 1
+            #define ASE_FOG 1
+            #define _EMISSION
+            #define ASE_VERSION 19801
+            #define ASE_SRP_VERSION 140011
 
 
 			
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -3631,10 +3548,6 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			
-            #if ASE_SRP_VERSION >=140007
-			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-		
 
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -3658,8 +3571,6 @@ Shader "Shader_Tile"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _Texture_ST;
-			float4 _Normal_ST;
-			float4 _MetallicRoughness_ST;
 			float _Min2;
 			float _Max2;
 			float _Min;
@@ -3961,9 +3872,6 @@ WireConnection;74;0;76;5
 WireConnection;74;1;77;0
 WireConnection;74;2;92;0
 WireConnection;79;0;74;0
-WireConnection;79;1;91;0
 WireConnection;79;2;89;0
-WireConnection;79;3;99;2
-WireConnection;79;4;99;1
 ASEEND*/
-//CHKSM=38032DF05B2F77793B675D910F4CCFB1427D4248
+//CHKSM=EC565485388F1953C6DF28F9C6FD6DFDB4FDB544
