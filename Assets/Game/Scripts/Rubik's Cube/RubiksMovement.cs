@@ -468,10 +468,10 @@ public class RubiksMovement : MonoBehaviour
     public Material matEtage2;
     public Material matEtage1;
     public Material matSol;
-
+    [InfoBox("DO NOT TOUCH UNLESS SACHA TELLS YOU")]
     public List<FinderScriptTool> sortedTiles = new List<FinderScriptTool>();
 
-    [Button("please do not touch")]
+    [Button("Fix Rubiks Cube Assets")]
     void FixMaterial()
     {
         sortedTiles.Clear();
@@ -496,6 +496,13 @@ public class RubiksMovement : MonoBehaviour
         sortedTiles.RemoveRange(0, 12);
         foreach (var tile in sortedTiles.Take(12))
         {
+            var v3 = transform.position - tile.transform.position;
+            tile.transform.rotation = Quaternion.LookRotation(v3, Vector3.up);
+
+            float angle = Mathf.Atan2(v3.x, v3.z) * Mathf.Rad2Deg;
+            float snappedAngle = Mathf.Round(angle / 90f) * 90f;
+            tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
+
             tile.GetComponent<MeshRenderer>().material = matEtage1;
         }
         sortedTiles.RemoveRange(0, 12);
