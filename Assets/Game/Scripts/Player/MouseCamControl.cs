@@ -48,9 +48,9 @@ public class MouseCamControl : MonoBehaviour
         _cameraSensibilityMouse = _customSettings.customMouse;
         ForceResetSelection();
     }
-    public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
+    public void OnCamera(Vector2 vector2) //also used for NoClip
     {
-        mousePos = callbackContext.ReadValue<Vector2>() * _cameraSensibilityMouse * Time.deltaTime;
+        mousePos = vector2 * _cameraSensibilityMouse * Time.deltaTime;
     }
 
     void Update()
