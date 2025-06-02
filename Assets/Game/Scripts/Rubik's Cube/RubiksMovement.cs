@@ -229,7 +229,7 @@ public class RubiksMovement : MonoBehaviour
         }
         _isRotating = true;
 
-        if (!(_isPreview && _isArtCube))
+        if (!_isPreview && !_isArtCube)
         {
             if (!_DoAutoMoves) EventManager.TriggerStartCubeRotation();
             else EventManager.TriggerStartCubeSequenceRotation();
@@ -353,7 +353,7 @@ public class RubiksMovement : MonoBehaviour
             };
             _moves.Add(move);
         }
-        if (!(_isPreview && _isArtCube))
+        if (!_isPreview && !_isArtCube)
         {
             if(!_DoAutoMoves) EventManager.TriggerEndCubeRotation();
             else EventManager.TriggerEndCubeSequenceRotation();
