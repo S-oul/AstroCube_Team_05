@@ -5,7 +5,9 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
+using UnityEditor;
 
+[ExecuteAlways]
 public class RubiksMovement : MonoBehaviour
 {
 
@@ -143,7 +145,7 @@ public class RubiksMovement : MonoBehaviour
     IEnumerator ReverseAllMoves(float time)
     {
         while (_isRotating) yield return null;
-        if(_moves.Count() != 0)
+        if (_moves.Count() != 0)
             time /= _moves.Count();
         else
             time = 0.0f;
@@ -229,7 +231,7 @@ public class RubiksMovement : MonoBehaviour
         }
         _isRotating = true;
 
-        if (!(_isPreview && _isArtCube))
+        if (!_isPreview && !_isArtCube)
         {
             if (!_DoAutoMoves) EventManager.TriggerStartCubeRotation();
             else EventManager.TriggerStartCubeSequenceRotation();
@@ -317,11 +319,11 @@ public class RubiksMovement : MonoBehaviour
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            float percent = GameManager.Instance.Settings.AnimationSpeedCurve.Evaluate(elapsedTime/ duration);
+            float percent = GameManager.Instance.Settings.AnimationSpeedCurve.Evaluate(elapsedTime / duration);
             axis.localRotation = Quaternion.LerpUnclamped(startRotation, targetRotation, percent);
             yield return null;
         }
-        
+
         axis.localRotation = targetRotation;
 
         foreach (int i in blockIndexs)
@@ -353,9 +355,9 @@ public class RubiksMovement : MonoBehaviour
             };
             _moves.Add(move);
         }
-        if (!(_isPreview && _isArtCube))
+        if (!_isPreview && !_isArtCube)
         {
-            if(!_DoAutoMoves) EventManager.TriggerEndCubeRotation();
+            if (!_DoAutoMoves) EventManager.TriggerEndCubeRotation();
             else EventManager.TriggerEndCubeSequenceRotation();
         }
     }
@@ -458,6 +460,95 @@ public class RubiksMovement : MonoBehaviour
     {
         if (_PlayAtStart && _PlayOnEvent) _PlayAtStart = false;
     }
+
+
+    [Space(50)]
+    [SerializeField] Material matPlafond;
+
+    [Space(5)]
+    [SerializeField] Material matEtage3;
+    [SerializeField] Material matEtage3Alt;
+
+    [Space(5)]
+    [SerializeField] Material matEtage2;
+
+    [Space(5)]
+    [SerializeField] Material matEtage1;
+    [SerializeField] Material matEtage1Alt;
+
+    [Space(5)]
+    [SerializeField] Material matSol;
+    [InfoBox("DO NOT TOUCH UNLESS SACHA TELLS YOU")]
+    List<FinderScriptTool> sortedTiles = new List<FinderScriptTool>();
+
+    [Button("Fix Rubiks Cube Assets")]
+    void FixMaterial()
+    {
+        sortedTiles.Clear();
+
+        var allTiles = transform.parent.GetComponentsInChildren<FinderScriptTool>(true);
+        sortedTiles = allTiles.OrderByDescending(obj => obj.transform.position.y).ToList();
+
+        foreach (var tile in sortedTiles.Take(9))
+        {
+            tile.GetComponent<MeshRenderer>().material = matPlafond;
+        }
+        sortedTiles.RemoveRange(0, 9);
+        var byDistanceFloor3 = sortedTiles.Take(12).OrderByDescending(obj => Vector3.Distance(obj.transform.position, transform.position));
+        int i = 0;
+        foreach (var tile in byDistanceFloor3)
+        {
+            var v3 = transform.position - tile.transform.position;
+            tile.transform.rotation = Quaternion.LookRotation(v3, Vector3.up);
+
+            float angle = Mathf.Atan2(v3.x, v3.z) * Mathf.Rad2Deg;
+            float snappedAngle = Mathf.Round(angle / 90f) * 90f;
+            tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
+
+            tile.GetComponent<MeshRenderer>().material = i <= 7 ? matEtage3 : matEtage3Alt;
+            i++;
+        }
+        i = 0;
+        sortedTiles.RemoveRange(0, 12);
+        
+        //Middle
+        foreach (var tile in sortedTiles.Take(12))
+        {
+            var v3 = transform.position - tile.transform.position;
+            tile.transform.rotation = Quaternion.LookRotation(v3, Vector3.up);
+
+            float angle = Mathf.Atan2(v3.x, v3.z) * Mathf.Rad2Deg;
+            float snappedAngle = Mathf.Round(angle / 90f) * 90f;
+            tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
+
+            tile.GetComponent<MeshRenderer>().material = matEtage2;
+        }
+        sortedTiles.RemoveRange(0, 12);
+
+        //First Floor
+        var byDistanceFloor1 = sortedTiles.Take(12).OrderByDescending(obj => Vector3.Distance(obj.transform.position, transform.position));
+        foreach (var tile in byDistanceFloor1)
+        {
+            var v3 = transform.position - tile.transform.position;
+            tile.transform.rotation = Quaternion.LookRotation(v3, Vector3.up);
+
+            float angle = Mathf.Atan2(v3.x, v3.z) * Mathf.Rad2Deg;
+            float snappedAngle = Mathf.Round(angle / 90f) * 90f;
+            tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
+
+            tile.GetComponent<MeshRenderer>().material = i <= 7?  matEtage1 : matEtage1Alt;
+            i++;
+        }
+
+        sortedTiles.RemoveRange(0, 12);
+        foreach (var tile in sortedTiles)
+        {
+            tile.GetComponent<MeshRenderer>().material = matSol;
+        }
+
+
+
+    }
 }
 
 namespace RubiksStatic
@@ -480,8 +571,8 @@ namespace RubiksStatic
         public override bool Equals(object o)
         {
             return this == o as RubiksMove;
-        }        
-        
+        }
+
         public override int GetHashCode() => (axis, cube, orientation, clockWise).GetHashCode();
 
         public static bool operator ==(RubiksMove x, RubiksMove y)
