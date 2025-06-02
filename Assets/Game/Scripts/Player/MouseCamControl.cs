@@ -25,7 +25,7 @@ public class MouseCamControl : MonoBehaviour
     //To Fix
     //[SerializeField] bool _MoveOverlayCubeWithCamRota = true;
 
-    [SerializeField] bool _doReversedCam = true;
+    [SerializeField] bool _doReversedCam = true; 
 
     Transform _oldTile;
 
@@ -70,6 +70,18 @@ public class MouseCamControl : MonoBehaviour
 
         _yRotation -= mousePos.y;
         _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
+
+        if (_doReversedCam)
+        {
+            Vector3 forward = _playerTransform.forward;
+            forward.y = 0; // Ignore vertical tilt if needed
+            
+            float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
+            float normalizeAngle = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
+            bool isReversed = normalizeAngle >= 315 || normalizeAngle < 135;
+            
+            rubiksCubeController.CameraPlayerReversed = isReversed;
+        }
 
         transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         _playerTransform.Rotate(Vector3.up * mousePos.x);
