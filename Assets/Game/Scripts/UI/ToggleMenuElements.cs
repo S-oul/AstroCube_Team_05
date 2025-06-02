@@ -16,37 +16,16 @@ public class ToggleMenuElements : MonoBehaviour
         _titleScreen.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public async void DeactivateTitleScreen()
     {
-        await fadeAlpha(_titleScreen.GetComponentInChildren<Image>(), 0, 1);
-        _titleScreen.SetActive(false);
+        await fadeAlpha(_titleScreen.GetComponent<CanvasGroup>(), 0, 1);
+        _titleScreen.SetActive(false); 
     }    
     public void ActivateMainMenuScreen()
     {
         _mainMenu.SetActive(true);
         _mainMenu.GetComponent<CanvasGroup>().alpha = 0;
         fadeAlpha(_mainMenu.GetComponent<CanvasGroup>(), 1, 1); 
-    }
-
-    async Task fadeAlpha(Image uiImage, float targetAlpha, float duration)
-    {
-        float elapsedTime = 0;
-        Color startColor = uiImage.color;
-        float newAlpha;
-
-        while (elapsedTime < duration)
-        {
-            newAlpha = Mathf.Lerp(startColor.a, targetAlpha, elapsedTime / duration);
-            uiImage.color = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
-            elapsedTime += Time.deltaTime;
-            await Task.Yield();
-        }
     }
 
     async Task fadeAlpha(CanvasGroup uiGroup, float targetAlpha, float duration)
