@@ -148,6 +148,7 @@ public class RubiksCubeController : MonoBehaviour
     public void ActionSwitchLineCols(bool isLeft)
     {
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
+        GameManager.Instance.ActualSliceAxis = _selectedSlice;
         switch (_selectedSlice)
         {
             case SliceAxis.X:

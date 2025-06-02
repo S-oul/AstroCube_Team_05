@@ -3,6 +3,7 @@ using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RubiksStatic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -40,7 +41,8 @@ public class GameManager : MonoBehaviour
 
     [field: SerializeField] public PreviewRubiksCube PreviewRubiksCube { get; private set; }
 
-
+    public SliceAxis ActualSliceAxis { get => _actualSliceAxis; set => _actualSliceAxis = value; }
+    [SerializeField] private SliceAxis _actualSliceAxis;
     private void Awake()
     {
         if (instance) Destroy(this);
