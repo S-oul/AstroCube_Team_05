@@ -48,6 +48,7 @@ public class EventManager : MonoBehaviour
     public static event Action<float> OnPlayerReset;
     public static event Action<float> OnPlayerResetOnce;
     public static event Action<RubiksMove> OnMoveReset;
+    public static event Action OnPreviewCancel;
 
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
@@ -133,6 +134,10 @@ public class EventManager : MonoBehaviour
     public static void TriggerMoveResetOnce(RubiksMove move)
     {
         OnMoveReset?.Invoke(move);
+    }    
+    public static void TriggerPreviewCancel()
+    {
+        OnPreviewCancel?.Invoke();
     }
 
     public static void TriggerSceneStart()

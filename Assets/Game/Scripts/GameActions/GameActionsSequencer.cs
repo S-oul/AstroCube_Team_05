@@ -46,7 +46,7 @@ public class GameActionsSequencer : MonoBehaviour
             if (_currentGameActionIndex >= _gameActionsList.Count) allActionsFinished = true;
             else 
             {
-                //print("Executing action " + currentAction.name + " at index " + _currentGameActionIndex + " of sequencer " + name);
+                print("Executing action " + currentAction.name + " at index " + _currentGameActionIndex + " of sequencer " + name);
                 currentAction = _gameActionsList[_currentGameActionIndex];
                 currentAction.Execute();
             }
@@ -54,7 +54,7 @@ public class GameActionsSequencer : MonoBehaviour
 
         if (allActionsFinished)
         {
-            //print("Finished sequencer : " + name);
+            print("Finished sequencer : " + name);
             Stop(true);
         }
     }
@@ -63,7 +63,7 @@ public class GameActionsSequencer : MonoBehaviour
     {
         if (_isRunning) return;
         if (_gameActionsList.Count == 0) return;
-        //print("Playing sequencer : " + name);
+        print("Playing sequencer : " + name);
         _currentGameActionIndex = 0;
         _isRunning = true;
         _gameActionsList[_currentGameActionIndex].Execute();
