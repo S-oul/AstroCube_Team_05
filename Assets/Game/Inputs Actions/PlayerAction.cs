@@ -89,6 +89,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviewCancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""e70ceb0f-1624-45fd-a69c-39ad296e4e5a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -249,11 +258,33 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4187aa92-c756-413c-94bb-bbae7f6dafed"",
-                    ""path"": ""<Keyboard>/t"",
+                    ""path"": ""<Keyboard>/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ShowStrips"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d80658fb-8263-4706-bf0d-9265ec338053"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PreviewCancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""202833ff-cd10-44ee-9e31-a853816a68db"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PreviewCancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -775,6 +806,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_RubiksCube_ResetRoom = m_RubiksCube.FindAction("ResetRoom", throwIfNotFound: true);
         m_RubiksCube_MoveOverlayCube = m_RubiksCube.FindAction("MoveOverlayCube", throwIfNotFound: true);
         m_RubiksCube_ShowStrips = m_RubiksCube.FindAction("ShowStrips", throwIfNotFound: true);
+        m_RubiksCube_PreviewCancel = m_RubiksCube.FindAction("PreviewCancel", throwIfNotFound: true);
         // OtherActions
         m_OtherActions = asset.FindActionMap("OtherActions", throwIfNotFound: true);
         m_OtherActions_Interact = m_OtherActions.FindAction("Interact", throwIfNotFound: true);
@@ -868,6 +900,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_RubiksCube_ResetRoom;
     private readonly InputAction m_RubiksCube_MoveOverlayCube;
     private readonly InputAction m_RubiksCube_ShowStrips;
+    private readonly InputAction m_RubiksCube_PreviewCancel;
     public struct RubiksCubeActions
     {
         private @PlayerAction m_Wrapper;
@@ -879,6 +912,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @ResetRoom => m_Wrapper.m_RubiksCube_ResetRoom;
         public InputAction @MoveOverlayCube => m_Wrapper.m_RubiksCube_MoveOverlayCube;
         public InputAction @ShowStrips => m_Wrapper.m_RubiksCube_ShowStrips;
+        public InputAction @PreviewCancel => m_Wrapper.m_RubiksCube_PreviewCancel;
         public InputActionMap Get() { return m_Wrapper.m_RubiksCube; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -909,6 +943,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ShowStrips.started += instance.OnShowStrips;
             @ShowStrips.performed += instance.OnShowStrips;
             @ShowStrips.canceled += instance.OnShowStrips;
+            @PreviewCancel.started += instance.OnPreviewCancel;
+            @PreviewCancel.performed += instance.OnPreviewCancel;
+            @PreviewCancel.canceled += instance.OnPreviewCancel;
         }
 
         private void UnregisterCallbacks(IRubiksCubeActions instance)
@@ -934,6 +971,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @ShowStrips.started -= instance.OnShowStrips;
             @ShowStrips.performed -= instance.OnShowStrips;
             @ShowStrips.canceled -= instance.OnShowStrips;
+            @PreviewCancel.started -= instance.OnPreviewCancel;
+            @PreviewCancel.performed -= instance.OnPreviewCancel;
+            @PreviewCancel.canceled -= instance.OnPreviewCancel;
         }
 
         public void RemoveCallbacks(IRubiksCubeActions instance)
@@ -1221,6 +1261,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnResetRoom(InputAction.CallbackContext context);
         void OnMoveOverlayCube(InputAction.CallbackContext context);
         void OnShowStrips(InputAction.CallbackContext context);
+        void OnPreviewCancel(InputAction.CallbackContext context);
     }
     public interface IOtherActionsActions
     {
