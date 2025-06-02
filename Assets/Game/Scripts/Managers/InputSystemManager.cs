@@ -35,7 +35,8 @@ public class InputSystemManager : MonoBehaviour
         PAUSE_GAME,
         MOVEMENT,
         CAMERA,
-        SEE_EXIT
+        SEE_EXIT,
+        PREVIEW_CANCEL
     }
 
     private void Awake()
@@ -88,7 +89,9 @@ public class InputSystemManager : MonoBehaviour
             case EInputType.CAMERA:
                 return("Camera");
             case EInputType.SEE_EXIT:
-                return("SeeExit");
+                return("SeeExit");          
+            case EInputType.PREVIEW_CANCEL:
+                return("PreviewCancel");
         }
     }
 

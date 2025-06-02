@@ -148,8 +148,8 @@ public class SelectionCube : MonoBehaviour
 
     public void StartShineAnim()
     {
-        if (CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE)
-            StartCoroutine(ShineAnim());
+        //if (CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE)
+        StartCoroutine(ShineAnim());
     }
     private IEnumerator ShineAnim()
     {

@@ -137,7 +137,7 @@ public class InputHandler : MonoBehaviour
         if (!IsInputEnabled(EInputType.COUNTER_CLOCKWISE)) return;
         if (ctx.performed)
             _controller.ActionMakeTurn(true);
-    }
+    }    
 
     public void OnMoveOverlayCube(InputAction.CallbackContext ctx)
     {
@@ -161,6 +161,12 @@ public class InputHandler : MonoBehaviour
             if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0)
                 EventManager.Instance.TriggerResetOnce();
         }
+    }
+    public void OnPreviewCancel(InputAction.CallbackContext ctx)
+    {
+        if (!IsInputEnabled(EInputType.PREVIEW_CANCEL)) return;
+        if (ctx.performed)
+            EventManager.TriggerPreviewCancel();
     }
     #endregion
 
