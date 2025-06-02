@@ -464,9 +464,19 @@ public class RubiksMovement : MonoBehaviour
 
     [Space(50)]
     public Material matPlafond;
+
+    [Space(5)]
     public Material matEtage3;
+    public Material matEtage3Alt;
+
+
     public Material matEtage2;
+
+    [Space(5)]
     public Material matEtage1;
+    public Material matEtage1Alt;
+
+    [Space(5)]
     public Material matSol;
     [InfoBox("DO NOT TOUCH UNLESS SACHA TELLS YOU")]
     public List<FinderScriptTool> sortedTiles = new List<FinderScriptTool>();
@@ -493,8 +503,12 @@ public class RubiksMovement : MonoBehaviour
         {
             tile.GetComponent<MeshRenderer>().material = matEtage2;
         }
+
+        //First Floor
         sortedTiles.RemoveRange(0, 12);
-        foreach (var tile in sortedTiles.Take(12))
+        var byDistance = sortedTiles.Take(12).OrderByDescending(obj => Vector3.Distance(obj.transform.position, transform.position));
+        int i = 0;
+        foreach (var tile in byDistance)
         {
             var v3 = transform.position - tile.transform.position;
             tile.transform.rotation = Quaternion.LookRotation(v3, Vector3.up);
@@ -503,11 +517,11 @@ public class RubiksMovement : MonoBehaviour
             float snappedAngle = Mathf.Round(angle / 90f) * 90f;
             tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
 
-            tile.GetComponent<MeshRenderer>().material = matEtage1;
+            tile.GetComponent<MeshRenderer>().material = i <= 7?  matEtage1 : matEtage1Alt;
+            i++;
         }
-        sortedTiles.RemoveRange(0, 12);
 
-        print(sortedTiles.Count);
+        sortedTiles.RemoveRange(0, 12);
         foreach (var tile in sortedTiles)
         {
             tile.GetComponent<MeshRenderer>().material = matSol;
