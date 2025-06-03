@@ -8,8 +8,8 @@ public class InputHandler : MonoBehaviour
 {
     [SerializeField] PlayerHold _playerHold;
     [SerializeField] PlayerMovement _playerMovement;
-    [SerializeField] DetectNewParent _parentChanger;
-
+    [SerializeField] MouseCamControl _mouseCam;
+    
     RubiksCubeController _controller;
     PlayerInput _playerInput;
 
@@ -19,6 +19,8 @@ public class InputHandler : MonoBehaviour
     public Vector2 CameraMovement => _cameraMovement;
     private Vector2 _cameraMovement;
 
+    private bool _oneHandActAsNormal = true;
+    
     public bool CanMove
     {
         get => _canMove;
@@ -81,7 +83,6 @@ public class InputHandler : MonoBehaviour
             if (_playerMovement != null)
             {
                 _actionMap.Enable();
-                _parentChanger = _playerMovement.GetComponent<DetectNewParent>();
             }
             else Debug.LogWarning("playerMovement script is missing from InputHandler Inspector");
         }
@@ -168,6 +169,12 @@ public class InputHandler : MonoBehaviour
         if (ctx.performed)
             EventManager.TriggerPreviewCancel();
     }
+
+    public void OnSwitchLookMove(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        _oneHandActAsNormal = !_oneHandActAsNormal;
+    }
     #endregion
 
     #region Other Actions
@@ -199,11 +206,43 @@ public class InputHandler : MonoBehaviour
     #region Player Movement & NoClip Movement
     public void OnMovement(InputAction.CallbackContext ctx)
     {
+        if (!_oneHandActAsNormal)
+        {
+            OnFakeCamera(ctx);
+            return;
+        }
         if (!IsInputEnabled(EInputType.MOVEMENT)) return;
         if (!_controller.ControlledScript.IsReversing)
             _playerMovement.ActionMovement(ctx.ReadValue<Vector2>());
     }
 
+    void onFakeMovement(InputAction.CallbackContext ctx)
+    {
+        if (!IsInputEnabled(EInputType.MOVEMENT)) return;
+        if (!_controller.ControlledScript.IsReversing)
+            _playerMovement.ActionMovement(ctx.ReadValue<Vector2>());
+    }
+    public void OnCamera(InputAction.CallbackContext ctx)
+    {
+        if (!_oneHandActAsNormal)
+        {
+            onFakeMovement(ctx);
+            return;
+        }
+        if (!IsInputEnabled(EInputType.CAMERA)) return;
+        if (!_controller.ControlledScript.IsReversing)
+        _mouseCam.OnCamera(ctx.ReadValue<Vector2>());
+    }
+
+    void OnFakeCamera(InputAction.CallbackContext ctx)
+    {
+        if (!IsInputEnabled(EInputType.CAMERA)) return;
+        if (!_controller.ControlledScript.IsReversing)
+            _mouseCam.OnCamera(ctx.ReadValue<Vector2>());
+    }
+    
+    
+    //Unused
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.MOVEMENT)) return;
@@ -217,6 +256,7 @@ public class InputHandler : MonoBehaviour
         if (!ctx.performed && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionCrouch();
     }
+
     #endregion
 
     #region Noclip
