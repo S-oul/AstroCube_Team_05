@@ -463,13 +463,23 @@ public class RubiksMovement : MonoBehaviour
 
 
     [Space(50)]
-    public Material matPlafond;
-    public Material matEtage3;
-    public Material matEtage2;
-    public Material matEtage1;
-    public Material matSol;
+    [SerializeField] Material matPlafond;
+
+    [Space(5)]
+    [SerializeField] Material matEtage3;
+    [SerializeField] Material matEtage3Alt;
+
+    [Space(5)]
+    [SerializeField] Material matEtage2;
+
+    [Space(5)]
+    [SerializeField] Material matEtage1;
+    [SerializeField] Material matEtage1Alt;
+
+    [Space(5)]
+    [SerializeField] Material matSol;
     [InfoBox("DO NOT TOUCH UNLESS SACHA TELLS YOU")]
-    public List<FinderScriptTool> sortedTiles = new List<FinderScriptTool>();
+    List<FinderScriptTool> sortedTiles = new List<FinderScriptTool>();
 
     [Button("Fix Rubiks Cube Assets")]
     void FixMaterial()
@@ -484,16 +494,24 @@ public class RubiksMovement : MonoBehaviour
             tile.GetComponent<MeshRenderer>().material = matPlafond;
         }
         sortedTiles.RemoveRange(0, 9);
-        foreach (var tile in sortedTiles.Take(12))
+        var byDistanceFloor3 = sortedTiles.Take(12).OrderByDescending(obj => Vector3.Distance(obj.transform.position, transform.position));
+        int i = 0;
+        foreach (var tile in byDistanceFloor3)
         {
-            tile.GetComponent<MeshRenderer>().material = matEtage3;
+            var v3 = transform.position - tile.transform.position;
+            tile.transform.rotation = Quaternion.LookRotation(v3, Vector3.up);
+
+            float angle = Mathf.Atan2(v3.x, v3.z) * Mathf.Rad2Deg;
+            float snappedAngle = Mathf.Round(angle / 90f) * 90f;
+            tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
+
+            tile.GetComponent<MeshRenderer>().material = i <= 7 ? matEtage3 : matEtage3Alt;
+            i++;
         }
+        i = 0;
         sortedTiles.RemoveRange(0, 12);
-        foreach (var tile in sortedTiles.Take(12))
-        {
-            tile.GetComponent<MeshRenderer>().material = matEtage2;
-        }
-        sortedTiles.RemoveRange(0, 12);
+        
+        //Middle
         foreach (var tile in sortedTiles.Take(12))
         {
             var v3 = transform.position - tile.transform.position;
@@ -503,11 +521,26 @@ public class RubiksMovement : MonoBehaviour
             float snappedAngle = Mathf.Round(angle / 90f) * 90f;
             tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
 
-            tile.GetComponent<MeshRenderer>().material = matEtage1;
+            tile.GetComponent<MeshRenderer>().material = matEtage2;
         }
         sortedTiles.RemoveRange(0, 12);
 
-        print(sortedTiles.Count);
+        //First Floor
+        var byDistanceFloor1 = sortedTiles.Take(12).OrderByDescending(obj => Vector3.Distance(obj.transform.position, transform.position));
+        foreach (var tile in byDistanceFloor1)
+        {
+            var v3 = transform.position - tile.transform.position;
+            tile.transform.rotation = Quaternion.LookRotation(v3, Vector3.up);
+
+            float angle = Mathf.Atan2(v3.x, v3.z) * Mathf.Rad2Deg;
+            float snappedAngle = Mathf.Round(angle / 90f) * 90f;
+            tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
+
+            tile.GetComponent<MeshRenderer>().material = i <= 7?  matEtage1 : matEtage1Alt;
+            i++;
+        }
+
+        sortedTiles.RemoveRange(0, 12);
         foreach (var tile in sortedTiles)
         {
             tile.GetComponent<MeshRenderer>().material = matSol;

@@ -159,6 +159,9 @@ public class GameManager : MonoBehaviour
 
         foreach (var obj in _objectToDisable)
         {
+            if(obj)
+                obj.gameObject.SetActive(false);
+            if (obj == null) continue;
             obj.gameObject.SetActive(false);
         }
         _artifact.gameObject.SetActive(false);
@@ -172,6 +175,9 @@ public class GameManager : MonoBehaviour
 
         foreach (var obj in _objectToDisable)
         {
+            if (obj)
+                obj.gameObject.SetActive(true);
+            if (obj == null) continue;
             obj.gameObject.SetActive(true);
         }
 
