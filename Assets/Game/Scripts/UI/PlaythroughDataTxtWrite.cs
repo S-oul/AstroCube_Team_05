@@ -42,7 +42,7 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
         }
         //path = Path.Combine(Application.persistentDataPath, _fileName);
         _filePath = Path.Combine(exeDirectory, _fileName);
-        Debug.Log(_filePath);
+        //Debug.Log(_filePath);
     }
     void Start()
     {
