@@ -159,8 +159,13 @@ public class GameManager : MonoBehaviour
 
         foreach (var obj in _objectToDisable)
         {
+<<<<<<< HEAD
             if(obj)
                 obj.gameObject.SetActive(false);
+=======
+            if (obj == null) continue;
+            obj.gameObject.SetActive(false);
+>>>>>>> GP-TryingToRevertTheRevert
         }
         _artifact.gameObject.SetActive(false);
         _entitySequenceManager.gameObject.SetActive(true);
@@ -173,8 +178,13 @@ public class GameManager : MonoBehaviour
 
         foreach (var obj in _objectToDisable)
         {
+<<<<<<< HEAD
             if (obj)
                 obj.gameObject.SetActive(true);
+=======
+            if (obj == null) continue;
+            obj.gameObject.SetActive(true);
+>>>>>>> GP-TryingToRevertTheRevert
         }
 
         EventManager.TriggerNarrativeSequenceEnd();
