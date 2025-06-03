@@ -159,7 +159,8 @@ public class GameManager : MonoBehaviour
 
         foreach (var obj in _objectToDisable)
         {
-            obj.gameObject.SetActive(false);
+            if(obj)
+                obj.gameObject.SetActive(false);
         }
         _artifact.gameObject.SetActive(false);
         _entitySequenceManager.gameObject.SetActive(true);
@@ -172,7 +173,8 @@ public class GameManager : MonoBehaviour
 
         foreach (var obj in _objectToDisable)
         {
-            obj.gameObject.SetActive(true);
+            if (obj)
+                obj.gameObject.SetActive(true);
         }
 
         EventManager.TriggerNarrativeSequenceEnd();
