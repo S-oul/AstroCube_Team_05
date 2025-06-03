@@ -98,6 +98,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchMoveLook"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7962162-59ac-4f06-a944-d6b896556ea8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -285,6 +294,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""PreviewCancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd6bace4-4273-49ca-aff9-f70d205ebcce"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SwitchMoveLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd5b5875-9af2-4f48-b7ab-d310c8fb121d"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SwitchMoveLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -807,6 +838,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_RubiksCube_MoveOverlayCube = m_RubiksCube.FindAction("MoveOverlayCube", throwIfNotFound: true);
         m_RubiksCube_ShowStrips = m_RubiksCube.FindAction("ShowStrips", throwIfNotFound: true);
         m_RubiksCube_PreviewCancel = m_RubiksCube.FindAction("PreviewCancel", throwIfNotFound: true);
+        m_RubiksCube_SwitchMoveLook = m_RubiksCube.FindAction("SwitchMoveLook", throwIfNotFound: true);
         // OtherActions
         m_OtherActions = asset.FindActionMap("OtherActions", throwIfNotFound: true);
         m_OtherActions_Interact = m_OtherActions.FindAction("Interact", throwIfNotFound: true);
@@ -901,6 +933,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_RubiksCube_MoveOverlayCube;
     private readonly InputAction m_RubiksCube_ShowStrips;
     private readonly InputAction m_RubiksCube_PreviewCancel;
+    private readonly InputAction m_RubiksCube_SwitchMoveLook;
     public struct RubiksCubeActions
     {
         private @PlayerAction m_Wrapper;
@@ -913,6 +946,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @MoveOverlayCube => m_Wrapper.m_RubiksCube_MoveOverlayCube;
         public InputAction @ShowStrips => m_Wrapper.m_RubiksCube_ShowStrips;
         public InputAction @PreviewCancel => m_Wrapper.m_RubiksCube_PreviewCancel;
+        public InputAction @SwitchMoveLook => m_Wrapper.m_RubiksCube_SwitchMoveLook;
         public InputActionMap Get() { return m_Wrapper.m_RubiksCube; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -946,6 +980,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @PreviewCancel.started += instance.OnPreviewCancel;
             @PreviewCancel.performed += instance.OnPreviewCancel;
             @PreviewCancel.canceled += instance.OnPreviewCancel;
+            @SwitchMoveLook.started += instance.OnSwitchMoveLook;
+            @SwitchMoveLook.performed += instance.OnSwitchMoveLook;
+            @SwitchMoveLook.canceled += instance.OnSwitchMoveLook;
         }
 
         private void UnregisterCallbacks(IRubiksCubeActions instance)
@@ -974,6 +1011,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @PreviewCancel.started -= instance.OnPreviewCancel;
             @PreviewCancel.performed -= instance.OnPreviewCancel;
             @PreviewCancel.canceled -= instance.OnPreviewCancel;
+            @SwitchMoveLook.started -= instance.OnSwitchMoveLook;
+            @SwitchMoveLook.performed -= instance.OnSwitchMoveLook;
+            @SwitchMoveLook.canceled -= instance.OnSwitchMoveLook;
         }
 
         public void RemoveCallbacks(IRubiksCubeActions instance)
@@ -1262,6 +1302,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnMoveOverlayCube(InputAction.CallbackContext context);
         void OnShowStrips(InputAction.CallbackContext context);
         void OnPreviewCancel(InputAction.CallbackContext context);
+        void OnSwitchMoveLook(InputAction.CallbackContext context);
     }
     public interface IOtherActionsActions
     {
