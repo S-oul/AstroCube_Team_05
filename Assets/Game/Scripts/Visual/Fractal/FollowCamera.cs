@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Vector3 _addedRotation = new();
 
-    // Update is called once per frame
     void Update()
     {
         transform.LookAt(Camera.main.transform);
 
-        transform.rotation *= Quaternion.Euler(90, 0, 0);
+        transform.rotation *= Quaternion.Euler(_addedRotation);
     }
 }

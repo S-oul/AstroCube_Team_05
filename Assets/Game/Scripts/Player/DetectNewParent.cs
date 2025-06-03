@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DetectNewParent : MonoBehaviour
@@ -32,6 +33,8 @@ public class DetectNewParent : MonoBehaviour
         if (colliders.Length != 0)
         {
             hitSelection = colliders[0].transform.GetComponentInParent<SelectionCube>();
+            if (hitSelection == null)
+                return;
             if (CurrentParent == null || CurrentParent.transform != hitSelection.transform)
             {
                 CurrentParent = hitSelection;
