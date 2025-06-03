@@ -511,6 +511,11 @@ MonoBehaviour:
   _onEndShowText:
     m_PersistentCalls:
       m_Calls: []
+  _animationProgress: 0
+  _startPos: {x: -50, y: -50, z: 0}
+  _endPos: {x: -800, y: -450, z: 0}
+  _maxSize: 1.5
+  _minSize: 1
 --- !u!4 &8006232
 Transform:
   m_ObjectHideFlags: 0
@@ -9265,7 +9270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d19723fc1c4d4982b5db75eba6e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Xbox: {fileID: 21300000, guid: a96207abf85d2c244a396693135235d0, type: 3}
+  _Xbox: {fileID: 21300000, guid: daeaa987da120e046b2a92d5461b8a0f, type: 3}
   _PS: {fileID: 21300000, guid: 414a52e90ae262a4d9a09b82716a0277, type: 3}
   _Keyboard: {fileID: 0}
 --- !u!114 &916687278
@@ -9288,7 +9293,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4af6803458a183c439f6a961b5329326, type: 3}
+  m_Sprite: {fileID: 21300000, guid: daeaa987da120e046b2a92d5461b8a0f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13054,7 +13059,7 @@ PrefabInstance:
       addedObject: {fileID: 863238962}
     - targetCorrespondingSourceObject: {fileID: 9067813692967913725, guid: 84abab8cf84190243b77da89d494331b,
         type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 1290352767}
     - targetCorrespondingSourceObject: {fileID: 9067813692967913725, guid: 84abab8cf84190243b77da89d494331b,
         type: 3}
@@ -16039,6 +16044,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _animationProgress: 0
+  _startPos: {x: -50, y: -50, z: 0}
+  _endPos: {x: -800, y: -450, z: 0}
+  _maxSize: 1.5
+  _minSize: 1
 --- !u!135 &1466320346
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -17227,6 +17237,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 621052173}
     m_Modifications:
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: _isLockYAxis
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: _isLockZAxis
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: Axis.Array.data[6]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198420830113304313, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4288724399408633807, guid: c82e7d49d42c10546a5b4c163d7eb160,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 387326014157950899, guid: 8e1348a47aca4af47853c416fe7a43c2,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -17362,66 +17432,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e12a7a20f7507ac46843c77caec66869, type: 2}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: _isLockYAxis
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: _isLockZAxis
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.data[4]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.data[5]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4183467083072178398, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: Axis.Array.data[6]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4198420830113304313, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4288724399408633807, guid: c82e7d49d42c10546a5b4c163d7eb160,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1974121715710071806, guid: 8e1348a47aca4af47853c416fe7a43c2, type: 3}
     m_RemovedGameObjects: []
