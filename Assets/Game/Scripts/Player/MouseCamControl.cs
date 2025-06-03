@@ -49,7 +49,7 @@ public class MouseCamControl : MonoBehaviour
         _inputHandler = InputHandler.Instance;
         ForceResetSelection();
     }
-    public void OnCamera(Vector2 vector2) //also used for NoClip
+    public void OnCamera(Vector2 rawInput) //also used for NoClip
     {
         mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
                                rawInput.y * pitchSensitivity * Time.deltaTime);
