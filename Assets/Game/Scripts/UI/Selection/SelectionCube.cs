@@ -186,7 +186,7 @@ public class SelectionCube : MonoBehaviour
                 if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
                     _selectionCurrentValues[renderer].DisableSelectionTween.Kill();
 
-                _selectionCurrentValues[renderer].EnableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_EffectAlpha"), x => renderer.material.SetFloat("_EffectAlpha", x), 1.0f, duration).SetEase(Ease.InOutSine);
+                _selectionCurrentValues[renderer].EnableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 1.0f, duration).SetEase(Ease.InOutSine);
             }
         }
         else{
@@ -197,7 +197,7 @@ public class SelectionCube : MonoBehaviour
                 if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
                     _selectionCurrentValues[renderer].EnableSelectionTween.Kill();
 
-                _selectionCurrentValues[renderer].DisableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_EffectAlpha"), x => renderer.material.SetFloat("_EffectAlpha", x), 0.0f, duration).SetEase(Ease.InOutSine);
+                _selectionCurrentValues[renderer].DisableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 0.0f, duration).SetEase(Ease.InOutSine);
             }
         }
     }
