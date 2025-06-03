@@ -30,7 +30,7 @@ public class DetectNewParent : MonoBehaviour
         if (Physics.Raycast(transform.position, -transform.up, out raycastInfo, 10, _detectableLayer))
         {
             hitSelection = raycastInfo.transform.GetComponentInParent<SelectionCube>();
-            if (CurrentParent == null || CurrentParent.transform != hitSelection.transform)
+            if (hitSelection != null && (CurrentParent == null || CurrentParent.transform != hitSelection.transform))
             {
                 CurrentParent = hitSelection;
                 EventManager.TriggerPlayerChangeParent();   
