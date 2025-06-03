@@ -122,7 +122,8 @@ public class TextAnimation : MonoBehaviour
         spawnedText.Clear();
     }
 
-    public IEnumerator StartDisplayText()
+    public void DisplayText() => StartCoroutine(_StartDisplayText());
+    private IEnumerator _StartDisplayText()
     {
         List<LetterInfo> randomLetters = spawnedText.ToList();
         Shuffle(randomLetters);
