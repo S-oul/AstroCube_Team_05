@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,7 +41,7 @@ public class ToggleMenuElements : MonoBehaviour
     }
 
     // Activates given menu element (and deactivates current active menu).
-    public void Activate(MenuElement newMenu)
+    public async void Activate(MenuElement newMenu)
     {
         if (newMenu == _currentActivatedMenu) return; // asked to open a menu that is already open
         
@@ -53,7 +54,13 @@ public class ToggleMenuElements : MonoBehaviour
         }
 
         // deactivate current menu
-        if (_currentActivatedMenu != MenuElement.NULL) Deactivate(_currentActivatedMenu);
+        if (_currentActivatedMenu != MenuElement.NULL)
+        {
+            Deactivate(_currentActivatedMenu);
+            Debug.Log("Started wait");
+            await Wait(1000);
+            Debug.Log("finish");
+        }
 
         // activate new menu 
         menuElementGameObject.SetActive(true);
@@ -61,6 +68,11 @@ public class ToggleMenuElements : MonoBehaviour
         fadeAlpha(menuElementGameObject.GetComponent<CanvasGroup>(), 1, 1);
 
         _currentActivatedMenu = newMenu;
+    }
+
+    async Task Wait(int millisecond)
+    {
+        await Task.Delay(millisecond);
     }
 
     public async void Deactivate(MenuElement oldMenu)
