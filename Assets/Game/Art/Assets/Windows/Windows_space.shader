@@ -228,7 +228,6 @@ Shader "Windows_space"
             #endif
 
 			#include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
-			#define ASE_NEEDS_FRAG_SCREEN_POSITION
 
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
@@ -267,7 +266,7 @@ Shader "Windows_space"
 				#if defined(DYNAMICLIGHTMAP_ON)
 					float2 dynamicLightmapUV : TEXCOORD5;
 				#endif
-				
+				float4 ase_texcoord6 : TEXCOORD6;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
@@ -318,7 +317,10 @@ Shader "Windows_space"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
+				output.ase_texcoord6.xy = input.texcoord.xy;
 				
+				//setting value to unused interpolator channels and avoid initialization warnings
+				output.ase_texcoord6.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -478,10 +480,8 @@ Shader "Windows_space"
 				#endif
 
 				Gradient gradient14 = NewGradient( 0, 3, 2, float4( 0.3663153, 0.09803919, 0.6392157, 0 ), float4( 0.7035236, 0.3032609, 0.7207546, 0.1541161 ), float4( 0.9490196, 0.8, 1, 1 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
-				float4 ase_positionSSNorm = ScreenPos / ScreenPos.w;
-				ase_positionSSNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_positionSSNorm.z : ase_positionSSNorm.z * 0.5 + 0.5;
-				float2 appendResult18 = (float2(ase_positionSSNorm.x , ase_positionSSNorm.y));
-				float2 panner17 = ( 1.0 * _Time.y * float2( -0.035,-0.01 ) + appendResult18);
+				float2 texCoord16 = input.ase_texcoord6.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 panner17 = ( 1.0 * _Time.y * float2( -0.035,-0.01 ) + texCoord16);
 				float3 desaturateInitialColor13 = tex2D( _TextureSample0, panner17 ).rgb;
 				float desaturateDot13 = dot( desaturateInitialColor13, float3( 0.299, 0.587, 0.114 ));
 				float3 desaturateVar13 = lerp( desaturateInitialColor13, desaturateDot13.xxx, 1.0 );
@@ -1570,11 +1570,11 @@ WireConnection;10;1;17;0
 WireConnection;13;0;10;0
 WireConnection;15;0;14;0
 WireConnection;15;1;13;0
-WireConnection;17;0;18;0
+WireConnection;17;0;16;0
 WireConnection;18;0;19;1
 WireConnection;18;1;19;2
 WireConnection;11;0;15;0
 WireConnection;11;1;12;0
 WireConnection;1;2;11;0
 ASEEND*/
-//CHKSM=6F2E1EE5E32B263B84A9753B8204A649EAC16FBA
+//CHKSM=8E37A6A7D963004B6ED17791CA267C9A774DE0A8
