@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RubiksStatic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GridBrushBase;
 
@@ -16,49 +19,52 @@ public class CameraAnimator : MonoBehaviour
 
     int _oldRotationDir = 0;
 
-    void Start()
+    void OnEnable()
     {   
+        EventManager.OnStartCubeRotation += DriftAnimatorCheck;
+
         _parentCubePart = GetComponent<DetectNewParent>().CurrentParent;
         if (_parentCubePart != null) _lastYRotation = _parentCubePart.transform.eulerAngles.y;
     }
 
-    void Update()
+    private void OnDisable()
+    {
+        EventManager.OnStartCubeRotation -= DriftAnimatorCheck;
+    }
+
+    void DriftAnimatorCheck()
+    {
+        if(GameManager.Instance.ActualSliceAxis == SliceAxis.Y)
+        StartCoroutine(DriftCoroutine());
+    }
+    IEnumerator DriftCoroutine()
     {
         _parentCubePart = GetComponent<DetectNewParent>().CurrentParent;
-        if (_parentCubePart == null) { return; }
+        _lastYRotation = _parentCubePart.transform.eulerAngles.y;
+        if (!_parentCubePart) {print("hey"); yield return null; }
 
-        // determine if the parent is rotating and in what direction
+        yield return new WaitForEndOfFrame();
+        
         _currentYRotation = _parentCubePart.transform.eulerAngles.y;
+        // determine if the parent is rotating and in what direction
         float delta = Mathf.DeltaAngle(_lastYRotation, _currentYRotation);
-
         _lastYRotation = _currentYRotation;
 
+        print(delta);
         _isRotating = Mathf.Abs(delta) > 0;
-        if (Mathf.Abs(delta) > 10) return;
-        _rotationDir = _isRotating ? (delta > 0 ? 1 : -1) : 0;
+        _rotationDir = delta > 0 ? 1 : -1;
 
         // decide wether to apply visual feedback. 
 
-        if (_rotationDir > 0 && _oldRotationDir <= 0)
+        if (_rotationDir > 0)
         {
             _mainCameraAnimator.SetTrigger("DriftLeft");
         }
-        else if (_rotationDir < 0 && _oldRotationDir >= 0)
+        else if (_rotationDir < 0)
         {
             _mainCameraAnimator.SetTrigger("DriftRight");
         } 
-        else if (_rotationDir == 0 && _oldRotationDir > 0)
-        {
-            _mainCameraAnimator.SetTrigger("DriftRight");
-        } 
-        else if (_rotationDir == 0 && _oldRotationDir < 0)
-        {
-            _mainCameraAnimator.SetTrigger("DriftLeft");
-        }
-
-        _oldRotationDir = _rotationDir;
     }
-
     public IEnumerator TurnAround()
     {
         if(_mainCameraAnimator)

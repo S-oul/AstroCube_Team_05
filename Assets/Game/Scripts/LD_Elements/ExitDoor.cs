@@ -14,6 +14,12 @@ public class ExitDoor : MonoBehaviour
     [SerializeField] private GameObject _stencil;
     [SerializeField] private float _endScaleStencil = 5.0f;
 
+    [Header("Camera Focus to end")]
+    [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
+    [SerializeField] private float focusStrength = 0.7f;
+    [SerializeField] private float transitionDuration = 1.0f;
+    [SerializeField] private float focusDuration = 2.0f;
+
     private GameSettings _gameSettings;
     private bool _isShowing = false;
 
@@ -42,11 +48,13 @@ public class ExitDoor : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnSeeExit += SeeExitThroughWalls;
+        EventManager.OnSeeExit += FocusCameraToExit;
     }
 
     private void OnDisable()
     {
         EventManager.OnSeeExit -= SeeExitThroughWalls;
+        EventManager.OnSeeExit -= FocusCameraToExit;
     }
 
     public void OpenDoor()
@@ -63,6 +71,19 @@ public class ExitDoor : MonoBehaviour
     {
         if (_isShowing) return;
         StartCoroutine(ShowExit());
+    }
+
+    public void FocusCameraToExit()
+    {
+        if (_cameraFocusAttractor == null)
+        {
+            Debug.LogError("GameActionFocusCamera: Missing references!");
+            return;
+        }
+
+        _cameraFocusAttractor.SetPointOfInterest(transform);
+        _cameraFocusAttractor.SetFocusParameters(transitionDuration, focusDuration, focusStrength);
+        _cameraFocusAttractor.StartFocus();
     }
 
     private IEnumerator ShowExit()
