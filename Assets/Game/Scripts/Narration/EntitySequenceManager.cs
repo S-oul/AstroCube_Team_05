@@ -13,7 +13,7 @@ public class EntitySequenceManager : MonoBehaviour
 
     public void DisplayText()
     {
-        StartCoroutine(_textAnimation.StartDisplayText());
+        _textAnimation.DisplayText();
     }
 
     public void DistortScreen(float duration)

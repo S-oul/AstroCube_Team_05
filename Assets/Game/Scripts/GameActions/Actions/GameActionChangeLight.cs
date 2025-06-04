@@ -50,16 +50,16 @@ public class GameActionChangeLight : AGameAction
     {
         bool result = false;
         if (_changeIntensity)
-            result |= _fadeIntensity.active;
+            result |= !_fadeIntensity.active;
 
         if (_changeColor)
-            result |= _fadeColor.active;
+            result |= !_fadeColor.active;
 
         if (_changeRange)
-            result |= _fadeRange.active;
+            result |= !_fadeRange.active;
 
         if (_changeShadowStrength && _light.shadows != LightShadows.None)
-            result |= _fadeShadowStrength.active;
+            result |= !_fadeShadowStrength.active;
 
         return result;
     }

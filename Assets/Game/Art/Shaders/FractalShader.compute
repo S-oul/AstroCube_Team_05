@@ -365,9 +365,11 @@ void CSMain(uint3 groupID : SV_GroupID, uint3 groupThreadID : SV_GroupThreadID, 
             float colourB = saturate(escapeIterations / 16.0);
             float3 colourMix = saturate(colourA * colourAMix + colourB * colourBMix);
 
-            result = float4(lerp(result.xyz, colourMix.xyz, 1), 1);
+            //result = float4(lerp(result.xyz, colourMix.xyz, 1), 1);
+            //result = float4(lerp(result.xyz, colourMix.xyz, 1), 1);
+            //result = float4(result.xyz * colourMix.xyz, 1);
             
-            //result = float4(colourMix.xyz, 1); // Set alpha to 1 for opaque fractal
+            result = float4(colourMix.xyz, 1); // Set alpha to 1 for opaque fractal
             break;
         }
 
@@ -377,7 +379,7 @@ void CSMain(uint3 groupID : SV_GroupID, uint3 groupThreadID : SV_GroupThreadID, 
 
     float rim = marchSteps / darkness;
     //Destination[id.xy] = lerp(result, float4(result.rgb, 1), blackAndWhite) * rim;
-    Destination[id.xy] = lerp(float4(0, 0, 0, 0), result, blackAndWhite * rim);
+    Destination[id.xy] = lerp(float4(result.xyz, 0), result, blackAndWhite * rim);
     //Destination[id.xy] = result;
     
     //Destination[id.xy] = lerp(result, float4(result.rgb, 1), blackAndWhite);
