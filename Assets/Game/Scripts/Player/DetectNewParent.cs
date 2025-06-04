@@ -1,9 +1,12 @@
 using System.Collections;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DetectNewParent : MonoBehaviour
 {
     [SerializeField] private LayerMask _detectableLayer;
+    [SerializeField] private float _detectionRadius = .3f;
     [SerializeField] private bool _doGroundRotation;
 
     private bool _doGravityRotation;
@@ -24,12 +27,14 @@ public class DetectNewParent : MonoBehaviour
 
     private void Update()
     {
-        RaycastHit raycastInfo;
         SelectionCube hitSelection = null;
 
-        if (Physics.Raycast(transform.position, -transform.up, out raycastInfo, 10, _detectableLayer))
+        Collider[] colliders = Physics.OverlapSphere(transform.position - transform.up, _detectionRadius, _detectableLayer);
+        if (colliders.Length != 0)
         {
-            hitSelection = raycastInfo.transform.GetComponentInParent<SelectionCube>();
+            hitSelection = colliders[0].transform.GetComponentInParent<SelectionCube>();
+            if (hitSelection == null)
+                return;
             if (CurrentParent == null || CurrentParent.transform != hitSelection.transform)
             {
                 CurrentParent = hitSelection;

@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class MouseCamControl : MonoBehaviour
 {
     [Header("Customised Settings")]
-    [SerializeField] CustomisedSettings _customSettings; 
-    
+    [SerializeField] CustomisedSettings _customSettings;
+
     [Header("Camera Movement")]
     [SerializeField] Transform _playerTransform;
 
@@ -17,12 +17,13 @@ public class MouseCamControl : MonoBehaviour
 
     [Header("Cameras")]
     [SerializeField] Camera _mainCamera;
-    //[SerializeField] Camera _kaleidoCam;
 
-    //To Fix
-    //[SerializeField] bool _MoveOverlayCubeWithCamRota = true;
-
+    [Header("Options")]
     [SerializeField] bool _doReversedCam = true;
+
+    [Header("Sensitivity")]
+    [SerializeField] private float yawSensitivity = 1.0f;
+    [SerializeField] private float pitchSensitivity = 1.0f;
 
     Transform _oldTile;
 
@@ -30,11 +31,17 @@ public class MouseCamControl : MonoBehaviour
     GameSettings _settings;
     InputHandler _inputHandler;
 
-
-    // Camera movement
     Vector2 mousePos = new();
 
-    float _cameraSensibilityMouse;
+    private Quaternion _externalRotationInfluence = Quaternion.identity;
+    private float _rotationInfluenceAmount = 0f;
+
+    private float _externalYawInfluence = 0f;
+    private float _yawInfluenceAmount = 0f;
+
+    private bool _isExternalPitchForced = false;
+
+    public Transform PlayerTransform => _playerTransform;
 
     void Start()
     {
@@ -42,12 +49,14 @@ public class MouseCamControl : MonoBehaviour
         _settings = GameManager.Instance.Settings;
         UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
-        _cameraSensibilityMouse = _customSettings.customMouse;
         ForceResetSelection();
     }
-    public void OnCamera(InputAction.CallbackContext callbackContext) //also used for NoClip
+
+    public void OnCamera(InputAction.CallbackContext callbackContext)
     {
-        mousePos = callbackContext.ReadValue<Vector2>() * _cameraSensibilityMouse * Time.deltaTime;
+        Vector2 rawInput = callbackContext.ReadValue<Vector2>();
+        mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
+                               rawInput.y * pitchSensitivity * Time.deltaTime);
     }
 
     void Update()
@@ -65,11 +74,21 @@ public class MouseCamControl : MonoBehaviour
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
 
-        _yRotation -= mousePos.y;
-        _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
+        if (!_isExternalPitchForced)
+        {
+            _yRotation -= mousePos.y;
+            _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
+        }
 
-        transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
-        _playerTransform.Rotate(Vector3.up * mousePos.x);
+        Quaternion baseRotation = Quaternion.Euler(_yRotation, 0f, 0f);
+        transform.localRotation = Quaternion.Slerp(baseRotation, _externalRotationInfluence, _rotationInfluenceAmount);
+
+        float yawInput = mousePos.x;
+
+        float targetYaw = _playerTransform.eulerAngles.y + yawInput;
+        float newYaw = Mathf.LerpAngle(targetYaw, _externalYawInfluence, _yawInfluenceAmount);
+
+        _playerTransform.rotation = Quaternion.Euler(0f, newYaw, 0f);
 
         if (!GameManager.Instance.IsRubiksCubeEnabled)
             return;
@@ -84,16 +103,61 @@ public class MouseCamControl : MonoBehaviour
             if (rubiksCubeController == null || _oldTile.parent == null)
                 return;
 
-            if(forceNewSelection)
+            if (forceNewSelection)
                 rubiksCubeController.SetActualCube(_oldTile.parent);
             else
             {
                 if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+                {
+                    EventManager.TriggerCubeSwitchFace();
                     rubiksCubeController.SetActualCube(_oldTile.parent);
+                }
             }
         }
-    }    
-    
+    }
+
+    public float GetVerticalAngle()
+    {
+        return _yRotation;
+    }
+
+    public float PlayerTransformEulerY()
+    {
+        return _playerTransform.eulerAngles.y;
+    }
+
+    public void SetExternalPitch(float pitch, float influence)
+    {
+        _externalRotationInfluence = Quaternion.Euler(pitch, 0f, 0f);
+        _rotationInfluenceAmount = influence;
+        _yRotation = pitch;
+        _isExternalPitchForced = true;
+    }
+
+    public void SetExternalYaw(float yaw, float influence)
+    {
+        _externalYawInfluence = yaw;
+        _yawInfluenceAmount = influence;
+    }
+
+    public void ClearExternalInfluence()
+    {
+        _rotationInfluenceAmount = 0f;
+        _yawInfluenceAmount = 0f;
+        _isExternalPitchForced = false;
+
+        // Correction finale pour éviter le "regarde le sol" :
+        _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
+    }
+
+    private float NormalizePitchAngle(float angle)
+    {
+        if (angle > 180f)
+            angle -= 360f;
+
+        return Mathf.Clamp(angle, -90f, 90f);
+    }
+
     private void OnEnable()
     {
         EventManager.OnFOVChange += UpdateCameraFOV;
@@ -113,11 +177,12 @@ public class MouseCamControl : MonoBehaviour
     void UpdateCameraFOV(float newFOV)
     {
         _mainCamera.fieldOfView = newFOV;
-        //_kaleidoCam.fieldOfView = newFOV * (4f/7f);
-    }    
+    }
+
     void UpdateCameraMouseSensitivity(float newCamMouseSen)
     {
-        _cameraSensibilityMouse = newCamMouseSen;
+        yawSensitivity = newCamMouseSen;
+        pitchSensitivity = newCamMouseSen;
     }
 
     void ResetMousePosition()

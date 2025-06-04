@@ -27,6 +27,8 @@ public class GameSettings : ScriptableObject
     public float RubikscCubeAxisRotationDuration => _rubikscCubeAxisRotationDuration;
     public float PreviewRubikscCubeAxisRotationDuration => _previewRubikscCubeAxisRotationDuration;
     public float UiRubikscCubeRotationDuration => _uiRubikscCubeRotationDuration;
+    public bool AimAtObject => _aimAtObject;
+
     public AnimationCurve AnimationSpeedCurve => _AnimationSpeedCurve;
     public Vector4 RubiksEndCubeRotationScreenshakeSettings => _rubiksEndCubeRotationscreenshakeSettings;
     public Vector4 RubiksStartCubeRotationScreenshakeSettings => _rubiksStartCubeRotationscreenshakeSettings;
@@ -80,6 +82,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _rubikscCubeAxisRotationDuration = 0.2f;
     [SerializeField] private float _previewRubikscCubeAxisRotationDuration = 0.2f;
     [SerializeField] private float _uiRubikscCubeRotationDuration = 0.2f;
+    [SerializeField] private bool _aimAtObject = false;
 
     [SerializeField] AnimationCurve _AnimationSpeedCurve = new AnimationCurve();
 
