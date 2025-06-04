@@ -108,7 +108,10 @@ public class MouseCamControl : MonoBehaviour
             else
             {
                 if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+                {
+                    EventManager.TriggerCubeSwitchFace();
                     rubiksCubeController.SetActualCube(_oldTile.parent);
+                }
             }
         }
     }
