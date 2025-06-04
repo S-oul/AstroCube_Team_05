@@ -101,6 +101,7 @@ public class EventManager : MonoBehaviour
     public static void TriggerSeeExit()
     {
         OnSeeExit?.Invoke();
+
     }
 
     public static void TriggerButtonPressed()

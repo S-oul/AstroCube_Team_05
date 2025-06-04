@@ -6,16 +6,13 @@ public class CameraFocusAttractor : MonoBehaviour
     [Header("Références")]
     [SerializeField] private MouseCamControl cameraControl;
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private Transform pointOfInterest;
+    private Transform pointOfInterest;
 
-    [Header("Durées")]
-    [SerializeField] private float transitionDuration = 1.0f;
-    [SerializeField] private float focusDuration = 2.0f;
-    [SerializeField] private float returnDuration = 0.5f;
+    private float transitionDuration = 1.0f;
+    private float focusDuration = 2.0f;
+    private float returnDuration = 0.5f;
 
-    [Header("Influence")]
-    [Range(0f, 1f)]
-    [SerializeField] private float strength = 0.5f;
+    private float strength = 0.5f;
 
     [Header("Axes affectés")]
     [SerializeField] private bool affectYaw = true;
@@ -41,6 +38,7 @@ public class CameraFocusAttractor : MonoBehaviour
     {
         float timer = 0f;
 
+        // --- TRANSITION ---
         while (timer < transitionDuration)
         {
             if (pointOfInterest == null)
@@ -50,25 +48,31 @@ public class CameraFocusAttractor : MonoBehaviour
             Quaternion targetRot = Quaternion.LookRotation(toTarget);
             Vector3 targetEuler = targetRot.eulerAngles;
 
-            float targetPitch = targetEuler.x;
             float targetYaw = targetEuler.y;
-
-            float currentPitch = cameraTransform.localEulerAngles.x;
-            float newPitch = Mathf.LerpAngle(currentPitch, targetPitch, strength * Time.deltaTime * 10f);
+            float targetPitch = targetEuler.x;
 
             float currentYaw = cameraControl.PlayerTransformEulerY();
             float newYaw = Mathf.LerpAngle(currentYaw, targetYaw, strength * Time.deltaTime * 10f);
 
-            if (affectPitch)
-                cameraControl.SetExternalPitch(newPitch, strength);
             if (affectYaw)
                 cameraControl.SetExternalYaw(newYaw, strength);
+
+            toTarget = (pointOfInterest.position - cameraTransform.position).normalized;
+            targetRot = Quaternion.LookRotation(toTarget);
+            targetEuler = targetRot.eulerAngles;
+            targetPitch = targetEuler.x;
+
+            float currentPitch = cameraTransform.localEulerAngles.x;
+            float newPitch = Mathf.LerpAngle(currentPitch, targetPitch, strength * Time.deltaTime * 10f);
+
+            if (affectPitch)
+                cameraControl.SetExternalPitch(newPitch, strength);
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        // 2. Maintien
+        // --- MAINTIEN ---
         float hold = 0f;
         while (hold < focusDuration)
         {
@@ -79,40 +83,50 @@ public class CameraFocusAttractor : MonoBehaviour
             Quaternion targetRot = Quaternion.LookRotation(toTarget);
             Vector3 targetEuler = targetRot.eulerAngles;
 
-            float targetPitch = targetEuler.x;
             float targetYaw = targetEuler.y;
-
-            float currentPitch = cameraTransform.localEulerAngles.x;
-            float newPitch = Mathf.LerpAngle(currentPitch, targetPitch, strength * Time.deltaTime * 10f);
+            float targetPitch = targetEuler.x;
 
             float currentYaw = cameraControl.PlayerTransformEulerY();
             float newYaw = Mathf.LerpAngle(currentYaw, targetYaw, strength * Time.deltaTime * 10f);
 
-            if (affectPitch)
-                cameraControl.SetExternalPitch(newPitch, strength);
             if (affectYaw)
                 cameraControl.SetExternalYaw(newYaw, strength);
+
+            toTarget = (pointOfInterest.position - cameraTransform.position).normalized;
+            targetRot = Quaternion.LookRotation(toTarget);
+            targetEuler = targetRot.eulerAngles;
+            targetPitch = targetEuler.x;
+
+            float currentPitch = cameraTransform.localEulerAngles.x;
+            float newPitch = Mathf.LerpAngle(currentPitch, targetPitch, strength * Time.deltaTime * 10f);
+
+            if (affectPitch)
+                cameraControl.SetExternalPitch(newPitch, strength);
 
             hold += Time.deltaTime;
             yield return null;
         }
 
+        // --- RETOUR ---
         float rt = 0f;
         float initialPitch = cameraTransform.localEulerAngles.x;
-        float targetResetPitch = cameraControl.GetVerticalAngle();
+        float targetPitchAtEnd = initialPitch;
+
+        float initialYaw = cameraControl.PlayerTransformEulerY();
+        float targetYawAtEnd = initialYaw;
 
         while (rt < returnDuration)
         {
             float p = Mathf.SmoothStep(0f, 1f, rt / returnDuration);
 
-            float newPitch = Mathf.LerpAngle(initialPitch, targetResetPitch, p);
+            float newPitch = Mathf.LerpAngle(initialPitch, targetPitchAtEnd, p);
 
             if (affectPitch)
                 cameraControl.SetExternalPitch(newPitch, Mathf.Lerp(strength, 0f, p));
 
             if (affectYaw)
             {
-                cameraControl.SetExternalYaw(cameraControl.PlayerTransformEulerY(), Mathf.Lerp(strength, 0f, p));
+                cameraControl.SetExternalYaw(targetYawAtEnd, Mathf.Lerp(strength, 0f, p));
             }
 
             rt += Time.deltaTime;
@@ -128,7 +142,6 @@ public class CameraFocusAttractor : MonoBehaviour
         return _focusCoroutine != null;
     }
 
-
     public void SetPointOfInterest(Transform newTarget)
     {
         pointOfInterest = newTarget;
@@ -140,5 +153,4 @@ public class CameraFocusAttractor : MonoBehaviour
         focusDuration = focus;
         strength = strengthValue;
     }
-
 }
