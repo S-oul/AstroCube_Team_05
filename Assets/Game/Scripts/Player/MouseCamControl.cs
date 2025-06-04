@@ -22,8 +22,8 @@ public class MouseCamControl : MonoBehaviour
     [SerializeField] bool _doReversedCam = true;
 
     [Header("Sensitivity")]
-    [SerializeField] private float yawSensitivity = 100f;
-    [SerializeField] private float pitchSensitivity = 100f;
+    [SerializeField] private float yawSensitivity = 1.0f;
+    [SerializeField] private float pitchSensitivity = 1.0f;
 
     Transform _oldTile;
 
@@ -39,6 +39,8 @@ public class MouseCamControl : MonoBehaviour
     private float _externalYawInfluence = 0f;
     private float _yawInfluenceAmount = 0f;
 
+    private bool _isExternalPitchForced = false;
+
     public Transform PlayerTransform => _playerTransform;
 
     void Start()
@@ -49,8 +51,10 @@ public class MouseCamControl : MonoBehaviour
         _inputHandler = InputHandler.Instance;
         ForceResetSelection();
     }
-    public void OnCamera(Vector2 rawInput) //also used for NoClip
+
+    public void OnCamera(InputAction.CallbackContext callbackContext)
     {
+        Vector2 rawInput = callbackContext.ReadValue<Vector2>();
         mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
                                rawInput.y * pitchSensitivity * Time.deltaTime);
     }
@@ -70,25 +74,16 @@ public class MouseCamControl : MonoBehaviour
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
 
-        _yRotation -= mousePos.y;
-        _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
-
-        if (_doReversedCam)
+        if (!_isExternalPitchForced)
         {
-            Vector3 forward = _playerTransform.forward;
-            forward.y = 0; // Ignore vertical tilt if needed
-
-            float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
-            float normalizeAngle = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
-            bool isReversed = normalizeAngle >= 315 || normalizeAngle < 135;
-
-            rubiksCubeController.CameraPlayerReversed = isReversed;
+            _yRotation -= mousePos.y;
+            _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
         }
 
         Quaternion baseRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         transform.localRotation = Quaternion.Slerp(baseRotation, _externalRotationInfluence, _rotationInfluenceAmount);
 
-        float yawInput = mousePos.x; 
+        float yawInput = mousePos.x;
 
         float targetYaw = _playerTransform.eulerAngles.y + yawInput;
         float newYaw = Mathf.LerpAngle(targetYaw, _externalYawInfluence, _yawInfluenceAmount);
@@ -132,6 +127,8 @@ public class MouseCamControl : MonoBehaviour
     {
         _externalRotationInfluence = Quaternion.Euler(pitch, 0f, 0f);
         _rotationInfluenceAmount = influence;
+        _yRotation = pitch;
+        _isExternalPitchForced = true;
     }
 
     public void SetExternalYaw(float yaw, float influence)
@@ -144,6 +141,18 @@ public class MouseCamControl : MonoBehaviour
     {
         _rotationInfluenceAmount = 0f;
         _yawInfluenceAmount = 0f;
+        _isExternalPitchForced = false;
+
+        // Correction finale pour éviter le "regarde le sol" :
+        _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
+    }
+
+    private float NormalizePitchAngle(float angle)
+    {
+        if (angle > 180f)
+            angle -= 360f;
+
+        return Mathf.Clamp(angle, -90f, 90f);
     }
 
     private void OnEnable()
