@@ -34,6 +34,7 @@ public class ToggleMenuElements : MonoBehaviour
     {
         _currentActivatedMenu = MenuElement.TITLE_SCREEN;
         if (_titleScreen) _titleScreen.SetActive(true);
+        _titleScreen.GetComponent<CanvasGroup>().alpha = 1.0f;
         if (_mainMenu) _mainMenu.SetActive(false);
         if (_levelsMenu) _levelsMenu.SetActive(false);
         if (_settingsMenu) _settingsMenu.SetActive(false);
