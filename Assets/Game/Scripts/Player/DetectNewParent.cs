@@ -17,12 +17,12 @@ public class DetectNewParent : MonoBehaviour
     private void Awake()
     {
         EventManager.OnPlayerReset += DisableParentChangerfor;
-        EventManager.OnPlayerResetOnce += DisableParentChangerfor;
+        EventManager.OnPlayerUndo += DisableParentChangerfor;
     }
     private void OnDisable()
     {
         EventManager.OnPlayerReset -= DisableParentChangerfor;
-        EventManager.OnPlayerResetOnce -= DisableParentChangerfor;
+        EventManager.OnPlayerUndo -= DisableParentChangerfor;
     }
 
     private void Update()
