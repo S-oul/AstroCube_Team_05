@@ -29,11 +29,14 @@ public class ToggleMenuElements : MonoBehaviour
 
     MenuElement _currentActivatedMenu;
 
+    public Action<MenuElement> OnCurrentActivatedMenuChanged;
+
     // Deactivated everything other than the title screen
     private void Start()
     {
         _currentActivatedMenu = MenuElement.TITLE_SCREEN;
         if (_titleScreen) _titleScreen.SetActive(true);
+        _titleScreen.GetComponent<CanvasGroup>().alpha = 1.0f;
         if (_mainMenu) _mainMenu.SetActive(false);
         if (_levelsMenu) _levelsMenu.SetActive(false);
         if (_settingsMenu) _settingsMenu.SetActive(false);
@@ -57,9 +60,7 @@ public class ToggleMenuElements : MonoBehaviour
         if (_currentActivatedMenu != MenuElement.NULL)
         {
             Deactivate(_currentActivatedMenu);
-            Debug.Log("Started wait");
             await Wait(1000);
-            Debug.Log("finish");
         }
 
         // activate new menu 
@@ -68,6 +69,8 @@ public class ToggleMenuElements : MonoBehaviour
         fadeAlpha(menuElementGameObject.GetComponent<CanvasGroup>(), 1, 1);
 
         _currentActivatedMenu = newMenu;
+
+        OnCurrentActivatedMenuChanged.Invoke(newMenu);
     }
 
     async Task Wait(int millisecond)

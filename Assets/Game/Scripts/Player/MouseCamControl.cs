@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +14,8 @@ public class MouseCamControl : MonoBehaviour
 
     [Header("Raycast")]
     [SerializeField] RubiksCubeController rubiksCubeController;
-    [SerializeField] LayerMask _detectableLayer;
+    [SerializeField] LayerMask _detectableTileLayer;
+    [SerializeField] LayerMask _detectableObjectLayer;
     [SerializeField] float _maxDistance;
 
     [Header("Cameras")]
@@ -94,25 +97,62 @@ public class MouseCamControl : MonoBehaviour
 
         RaycastHit _raycastInfo;
 
-        if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
+        if (GameManager.Instance.Settings.AimAtObject)
         {
-            GameObject collider = _raycastInfo.collider.gameObject;
-            _oldTile = collider.transform;
-
-            if (rubiksCubeController == null || _oldTile.parent == null)
-                return;
-
-            if (forceNewSelection)
-                rubiksCubeController.SetActualCube(_oldTile.parent);
-            else
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableObjectLayer))
             {
-                if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+                GameObject o = _raycastInfo.collider.gameObject;
+
+                var cube = o.GetComponentInParent<SelectionCube>();
+                if (cube)
                 {
-                    EventManager.TriggerCubeSwitchFace();
-                    rubiksCubeController.SetActualCube(_oldTile.parent);
+                    if (cube.name == "MiddleZone")
+                    {
+                        List<Transform> cubes = rubiksCubeController.ControlledScript.GetCubesFromFace(cube.transform, rubiksCubeController.SelectedSlice);
+
+                        Transform middleCube = cubes.First(x => x.name.Contains("Middle"));
+                        Tile tile = middleCube.GetComponentInChildren<Tile>();
+
+                        if (tile)
+                        {
+                            _oldTile = tile.transform;
+                        }
+                    }
+                    else
+                    {
+                        var tile = cube.GetComponentInChildren<Tile>();
+
+                        if (tile)
+                        {
+                            _oldTile = tile.transform;
+                        }
+                    }
                 }
             }
         }
+        else
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableTileLayer))
+            {
+                GameObject collider = _raycastInfo.collider.gameObject;
+                _oldTile = collider.transform;
+            }
+        }
+
+        if (_oldTile == null || rubiksCubeController == null || _oldTile.parent == null)
+            return;
+
+        if (forceNewSelection)
+            rubiksCubeController.SetActualCube(_oldTile.parent);
+        else
+        {
+            if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+            {
+                EventManager.TriggerCubeSwitchFace();
+                rubiksCubeController.SetActualCube(_oldTile.parent);
+            }
+        }
+
     }
 
     public float GetVerticalAngle()
@@ -146,7 +186,7 @@ public class MouseCamControl : MonoBehaviour
         _isExternalPitchForced = false;
         _mousePos = Vector2.zero;
 
-        // Correction finale pour éviter le "regarde le sol" :
+        // Correction finale pour ï¿½viter le "regarde le sol" :
         _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
     }
 
