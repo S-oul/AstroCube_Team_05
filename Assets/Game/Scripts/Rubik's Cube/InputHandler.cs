@@ -233,7 +233,7 @@ public class InputHandler : MonoBehaviour
 
         if (!IsInputEnabled(EInputType.CAMERA)) return;
 
-        if (!_controller.ControlledScript.IsReversing)
+        if (_controller.ControlledScript == null || !_controller.ControlledScript.IsReversing)
             _mouseCam.OnCamera(ctx);
     }
 
