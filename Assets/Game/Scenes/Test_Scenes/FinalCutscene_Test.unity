@@ -7348,52 +7348,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1073346284
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1073346285}
-  - component: {fileID: 1073346286}
-  m_Layer: 0
-  m_Name: '- wait 1s'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1073346285
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1073346284}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4683438879077807859}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1073346286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1073346284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8aa7046ad0ba7d4e97642524189469b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  durationMode: 1
-  waitTime: 1
 --- !u!1 &1087386346
 GameObject:
   m_ObjectHideFlags: 0
@@ -9730,21 +9684,21 @@ MonoBehaviour:
   - 0
   - 9.87e-43
   - 60
+  - 0
+  - 1.076e-42
+  - 60
   - 9.57e-43
-  - 1.15e-42
-  - 4.5321326
-  - 9.44e-43
-  - 1.254e-42
-  - 3.787277
-  - 9.43e-43
-  - 1.281e-42
-  - 3.7324333
-  - 9.6e-43
-  - 1.348e-42
-  - 3.7440977
-  - 9.47e-43
-  - 1.462e-42
-  - 4.4517303
+  - 1.208e-42
+  - 4.478256
+  - 9.64e-43
+  - 1.316e-42
+  - 3.717022
+  - 9.8e-43
+  - 1.345e-42
+  - 3.714701
+  - 9.23e-43
+  - 1.435e-42
+  - 3.7264724
   - 0
   - 1.525e-42
   - 60
@@ -9784,8 +9738,8 @@ MonoBehaviour:
   - 0
   - 2.601e-42
   - 60
-  groupMin: 14
-  minDist: 3.7324333
+  groupMin: 15
+  minDist: 3.714701
   maxIterations: 15
   LODChangeWithDist: 0
 --- !u!23 &2549714608755985778
@@ -9897,20 +9851,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Camera Focus on : CameraFocus'
       objectReference: {fileID: 0}
-    - target: {fileID: 550310739817075101, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: waitTime
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 1305672146660429472, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
       propertyPath: m_Name
       value: MOVE PivotPoint_FractalCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 1305672146660429472, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1572213344467643212, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
@@ -9927,36 +9871,11 @@ PrefabInstance:
       propertyPath: _events.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 911908318}
-    - target: {fileID: 2441378261930548112, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
       propertyPath: _controller
       value: 
       objectReference: {fileID: 1780115220}
-    - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: _parameters._doOut
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: _parameters._doStay
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: _parameters._strength
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: _parameters._focusDuration
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
       propertyPath: _parameters._pointOfInterest
@@ -10067,16 +9986,6 @@ PrefabInstance:
       propertyPath: _targetObject
       value: 
       objectReference: {fileID: 552150090}
-    - target: {fileID: 7351742484742619933, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: _targetRotation.y
-      value: 359.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7438181638255876218, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: _targetInputs
-      value: 2048
-      objectReference: {fileID: 0}
     - target: {fileID: 7696884640225843869, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
       propertyPath: _targetFractal
@@ -10086,11 +9995,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ROTATE PivotPoint_FractalCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 7815422441416844702, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8107340941719336206, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
@@ -10107,19 +10011,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: ACTIVATE LetterApparition
       objectReference: {fileID: 0}
-    - target: {fileID: 8912114613595750084, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      propertyPath: m_Name
-      value: '- wait 0,1s'
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1847213114678157543, guid: f1239200adfa6514699c51bfb884b97f, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3937781094839229899, guid: f1239200adfa6514699c51bfb884b97f,
-        type: 3}
-      insertIndex: 10
-      addedObject: {fileID: 1073346285}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1239200adfa6514699c51bfb884b97f, type: 3}
 --- !u!1001 &4331318256184084587
@@ -10200,12 +10094,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc05193ce6c27b4458f3e75340ff0c9c, type: 3}
---- !u!4 &4683438879077807859 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3937781094839229899, guid: f1239200adfa6514699c51bfb884b97f,
-    type: 3}
-  m_PrefabInstance: {fileID: 3646937226346117783}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5862024510018936838
 GameObject:
   m_ObjectHideFlags: 0
