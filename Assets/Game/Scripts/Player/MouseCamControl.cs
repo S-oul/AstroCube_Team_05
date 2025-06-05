@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +14,8 @@ public class MouseCamControl : MonoBehaviour
 
     [Header("Raycast")]
     [SerializeField] RubiksCubeController rubiksCubeController;
-    [SerializeField] LayerMask _detectableLayer;
+    [SerializeField] LayerMask _detectableTileLayer;
+    [SerializeField] LayerMask _detectableObjectLayer;
     [SerializeField] float _maxDistance;
 
     [Header("Cameras")]
@@ -22,8 +25,8 @@ public class MouseCamControl : MonoBehaviour
     [SerializeField] bool _doReversedCam = true;
 
     [Header("Sensitivity")]
-    [SerializeField] private float yawSensitivity = 100f;
-    [SerializeField] private float pitchSensitivity = 100f;
+    [SerializeField] private float yawSensitivity = 1.0f;
+    [SerializeField] private float pitchSensitivity = 1.0f;
 
     Transform _oldTile;
 
@@ -39,6 +42,8 @@ public class MouseCamControl : MonoBehaviour
     private float _externalYawInfluence = 0f;
     private float _yawInfluenceAmount = 0f;
 
+    private bool _isExternalPitchForced = false;
+
     public Transform PlayerTransform => _playerTransform;
 
     void Start()
@@ -49,8 +54,10 @@ public class MouseCamControl : MonoBehaviour
         _inputHandler = InputHandler.Instance;
         ForceResetSelection();
     }
-    public void OnCamera(Vector2 rawInput) //also used for NoClip
+
+    public void OnCamera(InputAction.CallbackContext callbackContext)
     {
+        Vector2 rawInput = callbackContext.ReadValue<Vector2>();
         mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
                                rawInput.y * pitchSensitivity * Time.deltaTime);
     }
@@ -70,25 +77,16 @@ public class MouseCamControl : MonoBehaviour
         if (_inputHandler == null || !_inputHandler.CanMove)
             return;
 
+        if (!_isExternalPitchForced)
+        {
         _yRotation -= mousePos.y;
         _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
-
-        if (_doReversedCam)
-        {
-            Vector3 forward = _playerTransform.forward;
-            forward.y = 0; // Ignore vertical tilt if needed
-
-            float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
-            float normalizeAngle = (angle < 0) ? angle + 360 : angle; // Normalize to 0-360
-            bool isReversed = normalizeAngle >= 315 || normalizeAngle < 135;
-
-            rubiksCubeController.CameraPlayerReversed = isReversed;
         }
 
         Quaternion baseRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         transform.localRotation = Quaternion.Slerp(baseRotation, _externalRotationInfluence, _rotationInfluenceAmount);
 
-        float yawInput = mousePos.x; 
+        float yawInput = mousePos.x;
 
         float targetYaw = _playerTransform.eulerAngles.y + yawInput;
         float newYaw = Mathf.LerpAngle(targetYaw, _externalYawInfluence, _yawInfluenceAmount);
@@ -100,22 +98,62 @@ public class MouseCamControl : MonoBehaviour
 
         RaycastHit _raycastInfo;
 
-        if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
+        if (GameManager.Instance.Settings.AimAtObject)
         {
-            GameObject collider = _raycastInfo.collider.gameObject;
-            _oldTile = collider.transform;
-
-            if (rubiksCubeController == null || _oldTile.parent == null)
-                return;
-
-            if (forceNewSelection)
-                rubiksCubeController.SetActualCube(_oldTile.parent);
-            else
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableObjectLayer))
             {
-                if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
-                    rubiksCubeController.SetActualCube(_oldTile.parent);
+                GameObject o = _raycastInfo.collider.gameObject;
+
+                var cube = o.GetComponentInParent<SelectionCube>();
+                if (cube)
+                {
+                    if (cube.name == "MiddleZone")
+                    {
+                        List<Transform> cubes = rubiksCubeController.ControlledScript.GetCubesFromFace(cube.transform, rubiksCubeController.SelectedSlice);
+
+                        Transform middleCube = cubes.First(x => x.name.Contains("Middle"));
+                        Tile tile = middleCube.GetComponentInChildren<Tile>();
+
+                        if (tile)
+                        {
+                            _oldTile = tile.transform;
+                        }
+                    }
+                    else
+                    {
+                        var tile = cube.GetComponentInChildren<Tile>();
+
+                        if (tile)
+                        {
+                            _oldTile = tile.transform;
+                        }
+                    }
+                }
             }
         }
+        else
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableTileLayer))
+            {
+                GameObject collider = _raycastInfo.collider.gameObject;
+                _oldTile = collider.transform;
+            }
+        }
+
+        if (_oldTile == null || rubiksCubeController == null || _oldTile.parent == null)
+            return;
+
+        if (forceNewSelection)
+            rubiksCubeController.SetActualCube(_oldTile.parent);
+        else
+        {
+            if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+            {
+                EventManager.TriggerCubeSwitchFace();
+                rubiksCubeController.SetActualCube(_oldTile.parent);
+            }
+        }
+
     }
 
     public float GetVerticalAngle()
@@ -132,6 +170,8 @@ public class MouseCamControl : MonoBehaviour
     {
         _externalRotationInfluence = Quaternion.Euler(pitch, 0f, 0f);
         _rotationInfluenceAmount = influence;
+        _yRotation = pitch;
+        _isExternalPitchForced = true;
     }
 
     public void SetExternalYaw(float yaw, float influence)
@@ -144,6 +184,18 @@ public class MouseCamControl : MonoBehaviour
     {
         _rotationInfluenceAmount = 0f;
         _yawInfluenceAmount = 0f;
+        _isExternalPitchForced = false;
+
+        // Correction finale pour éviter le "regarde le sol" :
+        _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
+    }
+
+    private float NormalizePitchAngle(float angle)
+    {
+        if (angle > 180f)
+            angle -= 360f;
+
+        return Mathf.Clamp(angle, -90f, 90f);
     }
 
     private void OnEnable()
