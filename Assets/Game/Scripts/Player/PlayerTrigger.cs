@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 public class PlayerTrigger : MonoBehaviour
 {
     [SerializeField] Cinemachine.CinemachineVirtualCamera vcam;
+    [SerializeField] Camera overlayCamera;
 
 
     [Header("SpeedZone")]
@@ -32,6 +33,10 @@ public class PlayerTrigger : MonoBehaviour
         {
             Debug.LogError("Cinemachine Virtual Camera not found in PlayerTrigger script.");
         }
+        if (overlayCamera == null)
+        {
+            Debug.LogError("Overlay Camera not found in PlayerTrigger script.");
+        }
     }
 
 
@@ -40,7 +45,9 @@ public class PlayerTrigger : MonoBehaviour
 
         _gameSettings = GameManager.Instance.Settings;
 
-        cmin = _gameSettings.C_MIN;
+        float cminValue = _gameSettings.C_MIN.Evaluate(0.5f);
+        portailInt_Material.SetFloat("_C_Min", cminValue);
+
 
         if (portailInt_Material == null)
         {
@@ -48,6 +55,8 @@ public class PlayerTrigger : MonoBehaviour
         }
 
         float materialCminValue = portailInt_Material.GetFloat("_C_Min");
+
+
 
 
         if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol")?.GetComponent<VolumeProfile>();
@@ -117,7 +126,7 @@ public class PlayerTrigger : MonoBehaviour
 
             vcam.m_Lens.FieldOfView = cameraFOV;
             if (Camera.allCameras.Length > 1)
-                vcam.m_Lens.FieldOfView = cameraOverlayFOV;
+                overlayCamera.fieldOfView = cameraOverlayFOV;
 
         }
     }

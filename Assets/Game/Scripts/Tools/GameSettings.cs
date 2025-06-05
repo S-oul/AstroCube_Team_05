@@ -47,7 +47,7 @@ public class GameSettings : ScriptableObject
     public AnimationCurve CurveFOV => curveFOV;
     public AnimationCurve CurveAberration => curveAberration;
 
-    public float C_MIN => C_Min;
+    public AnimationCurve C_MIN => C_Min;
 
     [Header("-- PLAYER --")]
 
@@ -110,5 +110,5 @@ public class GameSettings : ScriptableObject
 
     [SerializeField] AnimationCurve curveFOV;
     [SerializeField] AnimationCurve curveAberration;
-    [SerializeField] float C_Min = 0.75f;
+    [SerializeField] AnimationCurve C_Min;
 }
