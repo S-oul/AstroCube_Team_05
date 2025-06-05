@@ -21,7 +21,7 @@ public class Reseter : MonoBehaviour
 
         //need
         EventManager.OnPlayerReset += OnReset;
-        EventManager.OnPlayerResetOnce += ResetOnce;
+        EventManager.OnPlayerUndo += Undo;
         
         EventManager.OnStartCubeRotation += SavePose;
 
@@ -29,7 +29,7 @@ public class Reseter : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnPlayerReset -= OnReset;
-        EventManager.OnPlayerResetOnce -= ResetOnce;
+        EventManager.OnPlayerUndo -= Undo;
 
         EventManager.OnStartCubeRotation -= SavePose;
 
@@ -41,7 +41,7 @@ public class Reseter : MonoBehaviour
         _positionOnLastRotation = new Pose();
         transform.GetPositionAndRotation(out _positionOnLastRotation.position, out _positionOnLastRotation.rotation);
     }
-    private void ResetOnce(float time)
+    private void Undo(float time)
     {
         _poseOnReset = new Pose();
         transform.GetPositionAndRotation(out _poseOnReset.position, out _poseOnReset.rotation);

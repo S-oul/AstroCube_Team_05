@@ -50,12 +50,12 @@ public class CameraAnimator : MonoBehaviour
         float delta = Mathf.DeltaAngle(_lastYRotation, _currentYRotation);
         _lastYRotation = _currentYRotation;
 
-        print(delta);
         _isRotating = Mathf.Abs(delta) > 0;
         _rotationDir = delta > 0 ? 1 : -1;
 
+        if (!_isRotating) yield break;
+        
         // decide wether to apply visual feedback. 
-
         if (_rotationDir > 0)
         {
             _mainCameraAnimator.SetTrigger("DriftLeft");
