@@ -44,6 +44,11 @@ public class GameSettings : ScriptableObject
     public float StencilStayDuration => _stencilStayDuration;
 
 
+    public AnimationCurve CurveFOV => curveFOV;
+    public AnimationCurve CurveAberration => curveAberration;
+
+    public AnimationCurve C_MIN => C_Min;
+
     [Header("-- PLAYER --")]
 
     [Header("- Movement")]
@@ -103,4 +108,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] float _stencilFadeOutDuration = 0.5f;
     [SerializeField] float _stencilStayDuration = 2.0f;
 
+    [SerializeField] AnimationCurve curveFOV;
+    [SerializeField] AnimationCurve curveAberration;
+    [SerializeField] AnimationCurve C_Min;
 }
