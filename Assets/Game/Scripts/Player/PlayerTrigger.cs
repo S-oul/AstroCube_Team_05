@@ -5,22 +5,51 @@ using UnityEngine.UIElements;
 
 public class PlayerTrigger : MonoBehaviour
 {
+    [SerializeField] Cinemachine.CinemachineVirtualCamera vcam;
+
+
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
 
-    [Header("Portal")]
-    [SerializeField] AnimationCurve curveFOV;
-    [SerializeField] AnimationCurve curveAberration;
 
     [SerializeField] VolumeProfile vol;
 
+    GameSettings _gameSettings;
 
     PlayerMovement _playerMovement;
     CharacterController _characterController;
 
     FloatingZone _flotingZone;
+    private float cmin;
+
+    [SerializeField] private Material portailInt_Material;
+
+
+
+    private void Awake()
+    {
+        if (vcam == null)
+        {
+            Debug.LogError("Cinemachine Virtual Camera not found in PlayerTrigger script.");
+        }
+    }
+
+
     private void Start()
     {
+
+        _gameSettings = GameManager.Instance.Settings;
+
+        cmin = _gameSettings.C_MIN;
+
+        if (portailInt_Material == null)
+        {
+            Debug.LogError("C_Min_Material is not assigned in PlayerTrigger script.");
+        }
+
+        float materialCminValue = portailInt_Material.GetFloat("_C_Min");
+
+
         if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol")?.GetComponent<VolumeProfile>();
         if (vol)
         {
@@ -74,21 +103,21 @@ public class PlayerTrigger : MonoBehaviour
 
         if (other.CompareTag("Portal"))
         {
-            float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
-            float cameraOverlayFOV = Mathf.Lerp(15, 43, curveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float cameraOverlayFOV = Mathf.Lerp(15, 43, _gameSettings.CurveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
-            float chromaticAbberation = Mathf.Lerp(.1f, 50, curveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float chromaticAbberation = Mathf.Lerp(.1f, 50, _gameSettings.CurveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
 
             if (vol)
             {
-                if(vol.TryGet<ChromaticAberration>(out var ca))
-                ca.intensity.Override(chromaticAbberation);
+                if (vol.TryGet<ChromaticAberration>(out var ca))
+                    ca.intensity.Override(chromaticAbberation);
             }
 
 
-            Camera.allCameras[0].fieldOfView = cameraFOV;
-            if(Camera.allCameras.Length > 1)
-            Camera.allCameras[1].fieldOfView = cameraOverlayFOV;
+            vcam.m_Lens.FieldOfView = cameraFOV;
+            if (Camera.allCameras.Length > 1)
+                vcam.m_Lens.FieldOfView = cameraOverlayFOV;
 
         }
     }
@@ -114,8 +143,7 @@ public class PlayerTrigger : MonoBehaviour
         }
         if (other.CompareTag("Portal"))
         {
-            Camera.main.fieldOfView = GameManager.Instance.CustomSettings.customFov;
-            Camera.allCameras[1].fieldOfView = 43;
+            vcam.m_Lens.FieldOfView = GameManager.Instance.CustomSettings.customFov;
 
             if (vol)
             {
