@@ -9,7 +9,8 @@ public class InputHandler : MonoBehaviour
     [SerializeField] PlayerHold _playerHold;
     [SerializeField] PlayerMovement _playerMovement;
     [SerializeField] MouseCamControl _mouseCam;
-    
+    [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
+
     RubiksCubeController _controller;
     PlayerInput _playerInput;
 
@@ -229,19 +230,23 @@ public class InputHandler : MonoBehaviour
             onFakeMovement(ctx);
             return;
         }
+
         if (!IsInputEnabled(EInputType.CAMERA)) return;
+
         if (!_controller.ControlledScript.IsReversing)
-        _mouseCam.OnCamera(ctx.ReadValue<Vector2>());
+            _mouseCam.OnCamera(ctx);
     }
+
 
     void OnFakeCamera(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.CAMERA)) return;
         if (!_controller.ControlledScript.IsReversing)
-            _mouseCam.OnCamera(ctx.ReadValue<Vector2>());
+            _mouseCam.OnCamera(ctx);
     }
-    
-    
+
+
+
     //Unused
     public void OnJump(InputAction.CallbackContext ctx)
     {

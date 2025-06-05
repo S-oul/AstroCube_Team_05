@@ -13,6 +13,9 @@ public class RubiksCubeController : MonoBehaviour
     RubiksMove _lastInput = null;
     bool _isPreviewDisplayed;
 
+    bool _canPlayerUseIt = true;
+
+
     [SerializeField] RubiksMovement _previewControlledScript;
 
 
@@ -42,7 +45,8 @@ public class RubiksCubeController : MonoBehaviour
     public bool ShowStripLayerToPlayer { get => _ShowStripLayerToPlayer; set => _ShowStripLayerToPlayer = value; }
     public RubiksMovement ControlledScript { get => _controlledScript; }
     public SliceAxis SelectedSlice => _selectedSlice;
-    [field:SerializeField] public SelectionCube ActualFace { get; private set; }
+    [field: SerializeField] public SelectionCube ActualFace { get; private set; }
+    public bool CanPlayerUseIt { get => _canPlayerUseIt; set => _canPlayerUseIt = value; }
 
     #endregion
 
@@ -54,7 +58,7 @@ public class RubiksCubeController : MonoBehaviour
         foreach (GameObject go in ReplicatedCube)
         {
             if (go)
-            _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
+                _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
         if (GameManager.Instance.IsRubiksCubeEnabled)
@@ -147,6 +151,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionSwitchLineCols(bool isLeft)
     {
+        EventManager.TriggerCubeSwitchAxe();
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
         GameManager.Instance.ActualSliceAxis = _selectedSlice;
         switch (_selectedSlice)
@@ -185,6 +190,8 @@ public class RubiksCubeController : MonoBehaviour
     {
         if (_controlledScript && !_controlledScript.IsRotating/* && _canPlayerMoveAxis*/)
         {
+            if (!_canPlayerUseIt) return;
+
             if (!_canPlayerMoveAxis && (!_previewControlledScript || !_isPreviewDisplayed))
                 return;
             if (_previewControlledScript && _previewControlledScript.IsRotating)
@@ -214,7 +221,7 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (_lastInput != null)
                 {
-                    if(_lastInput.cube == null)
+                    if (_lastInput.cube == null)
                     {
                         // Should this happen ?
                     }
@@ -228,7 +235,8 @@ public class RubiksCubeController : MonoBehaviour
 
                 if (!completeAction)
                 {
-                    if (_isPreviewDisplayed) {
+                    if (_isPreviewDisplayed)
+                    {
                         _previewControlledScript.UndoMove(0.0f);
                         Transform equivalence = _previewControlledScript.transform.GetComponentsInChildren<Transform>().First(t => t.GetComponentIndex() == _lastInput.cube.transform.GetComponentIndex());
                         _previewControlledScript.RotateAxis(_previewControlledScript.GetAxisFromCube(equivalence, _lastInput.orientation), _lastInput.cube.transform, clockwise, _gameSettings.PreviewRubikscCubeAxisRotationDuration, _lastInput.orientation);
@@ -378,16 +386,17 @@ public class RubiksCubeController : MonoBehaviour
 
 
                 selectionCubes.Add(selection);
-                if (selection.IsTileLocked ) isOneTileLocked = true;
+                if (selection.IsTileLocked) isOneTileLocked = true;
                 if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
         }
-        foreach (SelectionCube selection in selectionCubes) 
+        foreach (SelectionCube selection in selectionCubes)
         {
             if (isOneTileLocked)
             {
                 selection.Select(SelectionCube.SelectionMode.LOCKED);
-            }else if (isPlayerOnATile) 
+            }
+            else if (isPlayerOnATile)
             {
                 selection.Select(SelectionCube.SelectionMode.PLAYERONTILE);
             }
@@ -395,8 +404,8 @@ public class RubiksCubeController : MonoBehaviour
             {
                 selection.Select(mode);
             }
-        } 
-            
+        }
+
 
         return !(isPlayerOnATile || isOneTileLocked);
     }

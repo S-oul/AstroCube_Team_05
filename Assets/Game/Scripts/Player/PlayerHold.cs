@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerHold : MonoBehaviour
@@ -39,7 +35,8 @@ public class PlayerHold : MonoBehaviour
             IHoldable holdable = _raycastInfo.collider.transform.GetComponent<IHoldable>();
 
             if (holdable != null) 
-            { 
+            {
+                EventManager.TriggerPlayerInteract();
                 _holdedObject = holdable;
                 _Hold();            
             }           
