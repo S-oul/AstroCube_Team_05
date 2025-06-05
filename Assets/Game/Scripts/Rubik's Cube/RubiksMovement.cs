@@ -62,9 +62,6 @@ public class RubiksMovement : MonoBehaviour
 
     private void Awake()
     {
-        EventManager.OnPlayerReset += ReverseMoves;
-        EventManager.OnPlayerResetOnce += UndoMove;
-
         foreach (Transform t in transform.parent)
         {
             if (t.tag == "Movable") _allBlocks.Add(t);
@@ -79,6 +76,8 @@ public class RubiksMovement : MonoBehaviour
     }
     private void OnEnable()
     {
+        EventManager.OnPlayerReset += ReverseMoves;
+        EventManager.OnPlayerUndo += UndoMove;
         if (_PlayOnEvent && AutoMovesSequence.Count > 0)
         {
             EventManager.OnActivateSequence += StartSequenceCoroutine;
@@ -88,7 +87,7 @@ public class RubiksMovement : MonoBehaviour
     void OnDisable()
     {
         EventManager.OnPlayerReset -= ReverseMoves;
-        EventManager.OnPlayerResetOnce -= UndoMove;
+        EventManager.OnPlayerUndo -= UndoMove;
         EventManager.OnActivateSequence -= StartSequenceCoroutine;
     }
 

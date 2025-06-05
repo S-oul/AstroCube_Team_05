@@ -90,7 +90,7 @@ public class MouseCamControl : MonoBehaviour
 
         _playerTransform.rotation = Quaternion.Euler(0f, newYaw, 0f);
 
-        if (!GameManager.Instance.IsRubiksCubeEnabled)
+        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return;
 
         RaycastHit _raycastInfo;
@@ -146,7 +146,7 @@ public class MouseCamControl : MonoBehaviour
         _yawInfluenceAmount = 0f;
         _isExternalPitchForced = false;
 
-        // Correction finale pour éviter le "regarde le sol" :
+        // Correction finale pour ï¿½viter le "regarde le sol" :
         _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
     }
 
