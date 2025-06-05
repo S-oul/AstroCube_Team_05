@@ -265,7 +265,7 @@ public class RubiksMovement : MonoBehaviour
             {
                 if (_isArtCube)
                 {
-                    block.GetComponentInChildren<ArtRubiksAnimator>().StartAnimRota();
+                    block.GetComponentInChildren<ArtRubiksAnimator>()?.StartAnimRota();
                 }
 
                 if (block.name == "Corner") isMiddle = false;
