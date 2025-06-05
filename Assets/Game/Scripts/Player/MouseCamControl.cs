@@ -78,7 +78,6 @@ public class MouseCamControl : MonoBehaviour
             _yRotation -= _mousePos.y;
             _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
         }
-        print(_isExternalPitchForced);
 
         Quaternion baseRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         transform.localRotation = Quaternion.Slerp(baseRotation, _externalRotationInfluence, _rotationInfluenceAmount);
