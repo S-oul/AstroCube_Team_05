@@ -34,8 +34,7 @@ public class MouseCamControl : MonoBehaviour
     GameSettings _settings;
     InputHandler _inputHandler;
 
-    Vector2 mousePos = new();
-
+    Vector2 _mousePos;
     private Quaternion _externalRotationInfluence = Quaternion.identity;
     private float _rotationInfluenceAmount = 0f;
 
@@ -58,7 +57,7 @@ public class MouseCamControl : MonoBehaviour
     public void OnCamera(InputAction.CallbackContext callbackContext)
     {
         Vector2 rawInput = callbackContext.ReadValue<Vector2>();
-        mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
+        _mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
                                rawInput.y * pitchSensitivity * Time.deltaTime);
     }
 
@@ -79,14 +78,15 @@ public class MouseCamControl : MonoBehaviour
 
         if (!_isExternalPitchForced)
         {
-        _yRotation -= mousePos.y;
-        _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
+            _yRotation -= _mousePos.y;
+            _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
         }
+        print(_isExternalPitchForced);
 
         Quaternion baseRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         transform.localRotation = Quaternion.Slerp(baseRotation, _externalRotationInfluence, _rotationInfluenceAmount);
 
-        float yawInput = mousePos.x;
+        float yawInput = _mousePos.x;
 
         float targetYaw = _playerTransform.eulerAngles.y + yawInput;
         float newYaw = Mathf.LerpAngle(targetYaw, _externalYawInfluence, _yawInfluenceAmount);
@@ -185,6 +185,7 @@ public class MouseCamControl : MonoBehaviour
         _rotationInfluenceAmount = 0f;
         _yawInfluenceAmount = 0f;
         _isExternalPitchForced = false;
+        _mousePos = Vector2.zero;
 
         // Correction finale pour �viter le "regarde le sol" :
         _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
@@ -227,7 +228,7 @@ public class MouseCamControl : MonoBehaviour
 
     void ResetMousePosition()
     {
-        mousePos = Vector2.zero;
+        _mousePos = Vector2.zero;
         _yRotation = 0.0f;
     }
 }
