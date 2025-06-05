@@ -122,53 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &97262634
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 97262635}
-  - component: {fileID: 97262636}
-  m_Layer: 0
-  m_Name: 'DISABLE Camera Focus on : CameraFocus'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &97262635
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 97262634}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4683438879077807859}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &97262636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 97262634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d398fe4f994660a716412e14a378a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  durationMode: 0
-  waitTime: 1
-  _targetGameObject: {fileID: 8064630706791946589}
 --- !u!1 &113996765
 GameObject:
   m_ObjectHideFlags: 0
@@ -7395,6 +7348,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1073346284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1073346285}
+  - component: {fileID: 1073346286}
+  m_Layer: 0
+  m_Name: '- wait 1s'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1073346285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073346284}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4683438879077807859}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1073346286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073346284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8aa7046ad0ba7d4e97642524189469b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationMode: 1
+  waitTime: 1
 --- !u!1 &1087386346
 GameObject:
   m_ObjectHideFlags: 0
@@ -9731,21 +9730,21 @@ MonoBehaviour:
   - 0
   - 9.87e-43
   - 60
-  - 0
-  - 1.076e-42
-  - 60
+  - 9.57e-43
+  - 1.15e-42
+  - 4.5321326
+  - 9.44e-43
+  - 1.254e-42
+  - 3.787277
   - 9.43e-43
-  - 1.25e-42
-  - 3.7839081
-  - 9.65e-43
-  - 1.316e-42
-  - 3.7134867
-  - 9.91e-43
-  - 1.351e-42
-  - 3.796799
-  - 9.29e-43
-  - 1.436e-42
-  - 3.744225
+  - 1.281e-42
+  - 3.7324333
+  - 9.6e-43
+  - 1.348e-42
+  - 3.7440977
+  - 9.47e-43
+  - 1.462e-42
+  - 4.4517303
   - 0
   - 1.525e-42
   - 60
@@ -9786,7 +9785,7 @@ MonoBehaviour:
   - 2.601e-42
   - 60
   groupMin: 14
-  minDist: 3.7134867
+  minDist: 3.7324333
   maxIterations: 15
   LODChangeWithDist: 0
 --- !u!23 &2549714608755985778
@@ -9901,7 +9900,7 @@ PrefabInstance:
     - target: {fileID: 550310739817075101, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
       propertyPath: waitTime
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1305672146660429472, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
@@ -9938,6 +9937,21 @@ PrefabInstance:
       propertyPath: _controller
       value: 
       objectReference: {fileID: 1780115220}
+    - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
+        type: 3}
+      propertyPath: _parameters._doOut
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
+        type: 3}
+      propertyPath: _parameters._doStay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
+        type: 3}
+      propertyPath: _parameters._strength
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3132437528909413557, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
       propertyPath: _parameters._focusDuration
@@ -10096,7 +10110,7 @@ PrefabInstance:
     - target: {fileID: 8912114613595750084, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
       propertyPath: m_Name
-      value: '- wait 1s'
+      value: '- wait 0,1s'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -10104,8 +10118,8 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3937781094839229899, guid: f1239200adfa6514699c51bfb884b97f,
         type: 3}
-      insertIndex: 11
-      addedObject: {fileID: 97262635}
+      insertIndex: 10
+      addedObject: {fileID: 1073346285}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1239200adfa6514699c51bfb884b97f, type: 3}
 --- !u!1001 &4331318256184084587
@@ -10645,12 +10659,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8064630706791946589 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 396699714835883297, guid: f1239200adfa6514699c51bfb884b97f,
-    type: 3}
-  m_PrefabInstance: {fileID: 3646937226346117783}
-  m_PrefabAsset: {fileID: 0}
 --- !u!33 &8106341119241339499
 MeshFilter:
   m_ObjectHideFlags: 0
