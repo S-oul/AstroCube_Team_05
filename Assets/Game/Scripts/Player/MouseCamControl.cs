@@ -92,7 +92,7 @@ public class MouseCamControl : MonoBehaviour
 
         _playerTransform.rotation = Quaternion.Euler(0f, newYaw, 0f);
 
-        if (!GameManager.Instance.IsRubiksCubeEnabled)
+        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return;
 
         RaycastHit _raycastInfo;
