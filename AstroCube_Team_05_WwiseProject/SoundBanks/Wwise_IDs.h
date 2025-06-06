@@ -47,6 +47,7 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID RTPC_FOCUS = 1888688417U;
         static const AkUniqueID RTPC_METER_DISTANCE = 625851808U;
         static const AkUniqueID RTPC_METER_GLB = 344904358U;
     } // namespace GAME_PARAMETERS
