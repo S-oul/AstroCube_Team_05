@@ -78,7 +78,7 @@ public class GameActionsSequencer : MonoBehaviour
         if (withAutoReplay && replayOnStop) {
             Play();
         }
-        else print("Stopped sequencer : " + name);
+        //else print("Stopped sequencer : " + name);
     }
 
     public bool IsRunning()
