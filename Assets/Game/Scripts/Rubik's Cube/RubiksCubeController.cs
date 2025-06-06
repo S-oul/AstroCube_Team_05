@@ -387,8 +387,7 @@ public class RubiksCubeController : MonoBehaviour
 
                 selectionCubes.Add(selection);
                 if (selection.IsTileLocked) isOneTileLocked = true;
-                if (_detectParentForGroundRotation.CurrentParent == selection) isPlayerOnATile = true;
-                if (isPlayerOnATile && sliceAxis == SliceAxis.Y && _player.parent.localPosition.y < 0) isPlayerOnATile = false;
+                if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
         }
         foreach (SelectionCube selection in selectionCubes)
