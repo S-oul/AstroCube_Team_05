@@ -18,6 +18,8 @@ public class EventManager : MonoBehaviour
 
     public UnityEvent RotatingFace;
 
+    public UnityEvent RotatingEnd;
+    
     public UnityEvent SelectFace;
     public UnityEvent SwitchtRotation;
 
@@ -35,7 +37,8 @@ public class EventManager : MonoBehaviour
         _gameSettings = GameManager.Instance.Settings;
 
         OnStartCubeRotation += RotatingFace.Invoke;
-
+        OnEndCubeRotation += RotatingEnd.Invoke;
+        
         OnCubeSwitchFace += SelectFace.Invoke;
         OnCubeSwitchAxe += SwitchtRotation.Invoke;
 
@@ -47,8 +50,20 @@ public class EventManager : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        OnStartCubeRotation -= RotatingFace.Invoke;
+        OnEndCubeRotation -= RotatingEnd.Invoke;
+        
+        OnCubeSwitchFace -= SelectFace.Invoke;
+        OnCubeSwitchAxe -= SwitchtRotation.Invoke;
 
+        OnPlayerReset -= Reset.Invoke;
+        OnPlayerUndo -= Undo.Invoke;
 
+        OnPlayerInteract -= Interact.Invoke;
+        
+    }
 
 
     //Game Events
