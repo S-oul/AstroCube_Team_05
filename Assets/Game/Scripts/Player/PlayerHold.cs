@@ -11,20 +11,20 @@ public class PlayerHold : MonoBehaviour
     [SerializeField] private Transform _holdTransform;
     private Camera _camera;
 
-    // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main;
         _isHolding = false;
     }
 
+
     public void TryHold()
     {
         RaycastHit _raycastInfo;
 
-        Debug.DrawRay(transform.position, _camera.transform.forward * _rayDistance, Color.red, 3);
+        Debug.DrawRay(_camera.transform.position, _camera.transform.forward * _rayDistance, Color.red, 3);
 
-        if (Physics.Raycast(transform.position, _camera.transform.forward, out _raycastInfo, _rayDistance, _layerMask))
+        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out _raycastInfo, _rayDistance, _layerMask))
         {
             IHoldable holdable = _raycastInfo.collider.transform.GetComponent<IHoldable>();
 
@@ -47,7 +47,6 @@ public class PlayerHold : MonoBehaviour
 
     private void _Hold()
     {
-        //_holdedObject.GetTransform().parent = _holdTransform;
         _isHolding = true;
         _holdedObject.OnHold(_holdTransform);
     }

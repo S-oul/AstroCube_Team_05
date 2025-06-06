@@ -26,6 +26,7 @@ public class PostProcessManager : MonoBehaviour
     bool _isKalEnabled = false;
     float _currentKalOpacity = 0;
     FullScreenPassRendererFeature _distortionRenderFeature;
+    DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> _distortTween;
 
     private void Awake()
     {
@@ -80,14 +81,18 @@ public class PostProcessManager : MonoBehaviour
 
     public void SetScreenDistortion(float value)
     {
+        if(_distortTween != null)
+            _distortTween.Kill();
         _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", Mathf.Lerp(_minMaxDistortionValue.x, _minMaxDistortionValue.y, value));
     }
 
     public void SetScreenDistortion(float value, float duration, Ease ease = Ease.Linear)
     {
-        DOTween.To(() => _distortionRenderFeature.passMaterial.GetFloat("_DistortionAmount"), 
-                    x => _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", x), 
-                    Mathf.Lerp(_minMaxDistortionValue.x, _minMaxDistortionValue.y, value), duration).SetEase(ease);        
+        if (_distortTween != null)
+            _distortTween.Kill();
+        _distortTween = DOTween.To(() => _distortionRenderFeature.passMaterial.GetFloat("_DistortionAmount"), 
+                        x => _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", x), 
+                        Mathf.Lerp(_minMaxDistortionValue.x, _minMaxDistortionValue.y, value), duration).SetEase(ease);        
     }
 
     private void OnDisable()
