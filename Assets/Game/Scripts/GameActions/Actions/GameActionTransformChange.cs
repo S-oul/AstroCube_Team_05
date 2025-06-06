@@ -12,6 +12,7 @@ public class GameActionTransformChange : AGameAction
     [SerializeField, ShowIf("_moveObject")] Vector3 _targetPosition = new();
     [SerializeField, ShowIf("_moveObject")] float _moveDuration = 1f;
     [SerializeField, ShowIf("_moveObject")] Ease _moveEase = Ease.Linear;
+    [SerializeField, ShowIf("_moveObject")] bool _isLocal = false;
 
     [Header("Rotate Object")]
     [SerializeField] bool _rotateObject;
@@ -24,8 +25,13 @@ public class GameActionTransformChange : AGameAction
 
     protected override void ExecuteSpecific()
     {
-        if(_moveObject)
-            _moveTweener = _targetObject.transform.DOMove(_targetPosition, _moveDuration).SetEase(_moveEase);
+        if (_moveObject)
+        {
+            if(_isLocal)
+                _moveTweener = _targetObject.transform.DOLocalMove(_targetPosition, _moveDuration).SetEase(_moveEase);
+            else
+                _moveTweener = _targetObject.transform.DOMove(_targetPosition, _moveDuration).SetEase(_moveEase);
+        }
         if (_rotateObject)
             _rotationTweener = _targetObject.transform.DORotate(_targetRotation, _rotationDuration, RotateMode.FastBeyond360).SetEase(_rotationEase);
     }

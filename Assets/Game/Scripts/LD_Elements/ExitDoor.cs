@@ -16,9 +16,7 @@ public class ExitDoor : MonoBehaviour
 
     [Header("Camera Focus to end")]
     [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
-    [SerializeField] private float focusStrength = 0.7f;
-    [SerializeField] private float transitionDuration = 1.0f;
-    [SerializeField] private float focusDuration = 2.0f;
+    [SerializeField] private CameraFocusAttractor.CameraFocusParameters _cameraFocusParams = new(1f, 2f, .7f);
 
     private GameSettings _gameSettings;
     private bool _isShowing = false;
@@ -81,9 +79,8 @@ public class ExitDoor : MonoBehaviour
             return;
         }
 
-        _cameraFocusAttractor.SetPointOfInterest(transform);
-        _cameraFocusAttractor.SetFocusParameters(transitionDuration, focusDuration, focusStrength);
-        _cameraFocusAttractor.StartFocus();
+        _cameraFocusParams.PointOfInterest = transform;
+        _cameraFocusAttractor.StartFocus(_cameraFocusParams);
     }
 
     private IEnumerator ShowExit()

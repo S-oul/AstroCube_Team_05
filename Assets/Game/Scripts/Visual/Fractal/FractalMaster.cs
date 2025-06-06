@@ -8,15 +8,15 @@ using UnityEngine.Rendering;
 public class FractalMaster : MonoBehaviour
 {
     [Serializable]
-    public class MandelbulbParameters
+    public class MandelbulbParameters // Inheriting MonoBehaviour makes values animation possible 
     {
         public MandelbulbParameters()
         {
-            _blackAndWhite = 0.7f;
+            _fractalPower = 7;
             _alpha = 1f;
             _colorA = new Color(0.5f, 0F, 0.5f);
             _colorB = new Color(1f, 0.5f, 0f);
-            _fractalPower = 7;
+            _blackAndWhite = 0.7f;
             _darkness = 26f;
         }
 
@@ -35,8 +35,24 @@ public class FractalMaster : MonoBehaviour
         [SerializeField] private float _darkness;
     }
 
+
+    // For Animation (yes this is not sexy, complex problems mean dirty fixes)
+    public float FractalPower { get => _fractalPower; set => _fractalPower = value; }
+    public float Alpha { get => _alpha; set => _alpha = value; }
+    public Color ColorB { get => _colorA; set => _colorA = value; }
+    public Color ColorA { get => _colorB; set => _colorB = value; }
+    public float BlackAndWhite { get => _blackAndWhite; set => _blackAndWhite = value; }
+    public float Darkness { get => _darkness; set => _darkness = value; }
+
+    [SerializeField, Range(1, 20)] private float _fractalPower = 7f;
+    [SerializeField, Range(0f, 1f)] private float _alpha = 1f;
+    [SerializeField] private Color _colorA = new Color(0.5f, 0F, 0.5f);
+    [SerializeField] private Color _colorB = new Color(1f, 0.5f, 0f);
+    [SerializeField, Range(0f, 1f)] private float _blackAndWhite = 0.7f;
+    [SerializeField] private float _darkness = 26f;
+
     public MandelbulbParameters CurrentMandelbulbParameters {  get => _currentMandelbulbParameters; set => _currentMandelbulbParameters = value; }
-    [SerializeField] private MandelbulbParameters _currentMandelbulbParameters = new();
+    private MandelbulbParameters _currentMandelbulbParameters = new();
 
     [HorizontalLine(color: EColor.Blue)]
     [SerializeField] private ComputeShader fractalShader;
@@ -139,8 +155,19 @@ public class FractalMaster : MonoBehaviour
             greenB = Mathf.Cos((Time.time - 0f) * 0.3f) /2 + .5f;
             blueB = Mathf.Sin((Time.time+ .0f) * 0.3f) /2 + .5f;
         }
-        */        
+        */
+        UpdateValues();
         UpdateTexture();
+    }
+
+    void UpdateValues()
+    {
+        _currentMandelbulbParameters.FractalPower = _fractalPower;
+        _currentMandelbulbParameters.Alpha = _alpha;
+        _currentMandelbulbParameters.ColorA = _colorA;
+        _currentMandelbulbParameters.ColorB = _colorB;
+        _currentMandelbulbParameters.BlackAndWhite = _blackAndWhite;
+        _currentMandelbulbParameters.Darkness = _darkness;
     }
 
     void UpdateTexture()
