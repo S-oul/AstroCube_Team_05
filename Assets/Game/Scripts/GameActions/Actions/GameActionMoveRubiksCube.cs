@@ -18,6 +18,7 @@ public class GameActionMoveRubiksCube : AGameAction
     private bool _isTurning = false;
 
     [SerializeField] private UnityEvent _OnRotation;
+    [SerializeField] private UnityEvent _OnRotationFinish;
     protected override void ExecuteSpecific()
     {
         StartCoroutine(DoMove());
@@ -33,6 +34,7 @@ public class GameActionMoveRubiksCube : AGameAction
         }
         _OnRotation.Invoke();
         yield return _rubiksScript.RotateAxisCoroutine(_move.axis, _move.cube, _move.clockWise, _rotationDuration);
+        _OnRotationFinish.Invoke();
         _isTurning = false;
     }
 
