@@ -10,16 +10,19 @@ public class StarCutsceneAction : AGameAction
 
     [Header("- EYES SPAWN PARAMETERS -")]
     [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private GameObject _eyePrefab;
-    [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private int _totalEyeCount = 20;
     [MinMaxSlider(5.0f, 100.0f)]
     [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private Vector2 _minMaxEyeSphereRadius = new(20,70);
-    [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private float _eyeApparitionDuration = 10;
-    [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private AnimationCurve _eyeSpeedCurve;
+    [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private int _totalEyeCount = 20;
+    [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private float _eyeApparitionDuration = 10f;
+    [ShowIf("_starSpawnType", EStarSpawnType.EYE), SerializeField] private AnimationCurve _eyeInvervalCurve;
 
     [Header("- SHOOTING STARS SPAWN PARAMETERS -")]
     [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private GameObject _shootingStarPrefab;
-    [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private float _maxShootingStarRadius = 10;
-    [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private float _interval = 0.5f;
+    [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private int _totalShootingStarCount = 20;
+    [MinMaxSlider(5.0f, 100.0f)]
+    [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private Vector2 _minMaxShootingStarSphereRadius = new(20, 70);
+    [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private float _shootingStarApparitionDuration = 10f;
+    [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private AnimationCurve _shootingStarInvervalCurve;
     [ShowIf("_starSpawnType", EStarSpawnType.SHOOTING_STAR), SerializeField] private Transform _shootingStarTarget;
     
     [Header("- SPHERE FRACTAL SPAWN PARAMETERS -")] 
@@ -36,22 +39,21 @@ public class StarCutsceneAction : AGameAction
         SPHERE_FRACTAL
     }
 
-    public void StartShootingStarApparition(GameObject prefab)
+    public void StartShootingStarApparition(GameObject prefab, int count)
     {
-        StartCoroutine(_ShootingStarApparition(prefab));
+        StartCoroutine(_ShootingStarApparition(prefab, count));
     }
 
     public void StopShootingStarApparition() => _isShootingStars = false;
 
-    IEnumerator _ShootingStarApparition(GameObject prefab)
+    IEnumerator _ShootingStarApparition(GameObject prefab, int count)
     {
-        _isShootingStars = true;
-        while(_isShootingStars)
+        float startTime = Time.time;
+        for (int i = 0; i < count; i++)
         {
-            Vector3 pos = Random.onUnitSphere * _maxShootingStarRadius;
-            ShootingStarMovement star = Instantiate(prefab, pos, Quaternion.identity).GetComponent<ShootingStarMovement>();
-            star.Target = _shootingStarTarget.position;
-            yield return new WaitForSeconds(_interval);
+            Vector3 pos = Random.onUnitSphere * Random.Range(_minMaxShootingStarSphereRadius.x, _minMaxShootingStarSphereRadius.y);
+            Instantiate(prefab, pos, Quaternion.identity);
+            yield return new WaitForSeconds(_shootingStarApparitionDuration / _totalEyeCount * _shootingStarInvervalCurve.Evaluate((Time.time - startTime) / _shootingStarApparitionDuration));
         }
         _isExecuted = true;
     }
@@ -80,7 +82,7 @@ public class StarCutsceneAction : AGameAction
         {
             Vector3 pos = points[i];
             Instantiate(prefab, pos, Quaternion.identity);
-            yield return new WaitForSeconds(_eyeApparitionDuration/_totalEyeCount * _eyeSpeedCurve.Evaluate((Time.time - startTime) / _eyeApparitionDuration));
+            yield return new WaitForSeconds(_eyeApparitionDuration/_totalEyeCount * _eyeInvervalCurve.Evaluate((Time.time - startTime) / _eyeApparitionDuration));
         }
         _isExecuted = true;
     }
@@ -114,7 +116,7 @@ public class StarCutsceneAction : AGameAction
                 StartEyeApparition(_eyePrefab, _totalEyeCount);
                 break;
             case EStarSpawnType.SHOOTING_STAR:
-                StartShootingStarApparition(_shootingStarPrefab);
+                StartShootingStarApparition(_shootingStarPrefab, _totalShootingStarCount);
                 break;
             case EStarSpawnType.SPHERE_FRACTAL:
                 SpawnSphereFractal(_circleFractalPrefab, _sphereFractalCount);

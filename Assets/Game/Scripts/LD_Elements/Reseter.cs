@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class Reseter : MonoBehaviour
@@ -8,7 +10,7 @@ public class Reseter : MonoBehaviour
 
     Rigidbody _rb;
 
-    Pose _positionOnLastRotation;
+    List<Pose> _positionOnLastRotation = new();
 
     //CONTROLLER AND CLOSE INPUTS
 
@@ -21,7 +23,7 @@ public class Reseter : MonoBehaviour
 
         //need
         EventManager.OnPlayerReset += OnReset;
-        EventManager.OnPlayerResetOnce += ResetOnce;
+        EventManager.OnPlayerUndo += Undo;
         
         EventManager.OnStartCubeRotation += SavePose;
 
@@ -29,7 +31,7 @@ public class Reseter : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnPlayerReset -= OnReset;
-        EventManager.OnPlayerResetOnce -= ResetOnce;
+        EventManager.OnPlayerUndo -= Undo;
 
         EventManager.OnStartCubeRotation -= SavePose;
 
@@ -38,10 +40,14 @@ public class Reseter : MonoBehaviour
 
     void SavePose()
     {
-        _positionOnLastRotation = new Pose();
-        transform.GetPositionAndRotation(out _positionOnLastRotation.position, out _positionOnLastRotation.rotation);
+        if (GameManager.Instance.RubiksCube.IsReversing) return;
+        
+        var newPose = new Pose();
+        transform.GetPositionAndRotation(out newPose.position, out newPose.rotation);
+        _positionOnLastRotation.Add(newPose);
+
     }
-    private void ResetOnce(float time)
+    private void Undo(float time)
     {
         _poseOnReset = new Pose();
         transform.GetPositionAndRotation(out _poseOnReset.position, out _poseOnReset.rotation);
@@ -54,12 +60,13 @@ public class Reseter : MonoBehaviour
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(_poseOnReset.position, _positionOnLastRotation.position, elapsedTime / duration);
-            transform.rotation = Quaternion.Lerp(_poseOnReset.rotation, _positionOnLastRotation.rotation, elapsedTime / duration);
+            transform.position = Vector3.Lerp(_poseOnReset.position,    _positionOnLastRotation[^1].position, elapsedTime / duration);
+            transform.rotation = Quaternion.Lerp(_poseOnReset.rotation, _positionOnLastRotation[^1].rotation, elapsedTime / duration);
             yield return null;
         }
-        transform.position = _positionOnLastRotation.position;
-        transform.rotation = _positionOnLastRotation.rotation;
+        transform.position = _positionOnLastRotation[^1].position;
+        transform.rotation = _positionOnLastRotation[^1].rotation;
+        _positionOnLastRotation.RemoveAt(_positionOnLastRotation.Count-1);
     }
     void OnReset(float duration)
     {
@@ -71,6 +78,7 @@ public class Reseter : MonoBehaviour
         _poseOnReset = new Pose();
         transform.GetPositionAndRotation(out _poseOnReset.position, out _poseOnReset.rotation);
         StartCoroutine(Reset(duration));
+        _positionOnLastRotation.Clear();
     }
 
     IEnumerator Reset(float duration)

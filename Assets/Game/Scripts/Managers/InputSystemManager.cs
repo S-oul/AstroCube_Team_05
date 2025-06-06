@@ -23,20 +23,21 @@ public class InputSystemManager : MonoBehaviour
     
     public enum EInputType
     {
-        CLOCKWISE,
-        COUNTER_CLOCKWISE,
-        SWITCH_COLUMNS_LINE_LEFT,
-        SWITCH_COLUMNS_LINE_RIGHT,
-        RESET_ROOM,
-        MOVE_OVERLAY_CUBE,
-        SHOW_STRIPS,
-        GAME_PAUSE,
-        INTERACT,
-        PAUSE_GAME,
-        MOVEMENT,
-        CAMERA,
-        SEE_EXIT,
-        PREVIEW_CANCEL
+        NONE = 0,
+        CLOCKWISE = 1 << 0,
+        COUNTER_CLOCKWISE = 1 << 1,
+        SWITCH_COLUMNS_LINE_LEFT = 1 << 2,
+        SWITCH_COLUMNS_LINE_RIGHT = 1 << 3,
+        RESET_ROOM = 1 << 4,
+        MOVE_OVERLAY_CUBE = 1 << 5,
+        SHOW_STRIPS = 1 << 6,
+        GAME_PAUSE = 1 << 7,
+        INTERACT = 1 << 8,
+        PAUSE_GAME = 1 << 9,
+        MOVEMENT = 1 << 10,
+        CAMERA = 1 << 11,
+        SEE_EXIT = 1 << 12,
+        PREVIEW_CANCEL = 1 << 13,
     }
 
     private void Awake()

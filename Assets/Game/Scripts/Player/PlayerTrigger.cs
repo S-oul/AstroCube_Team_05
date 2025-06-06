@@ -31,11 +31,11 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (vcam == null)
         {
-            Debug.LogError("Cinemachine Virtual Camera not found in PlayerTrigger script.");
+            Debug.LogWarning("Cinemachine Virtual Camera not found in PlayerTrigger script.");
         }
         if (overlayCamera == null)
         {
-            Debug.LogError("Overlay Camera not found in PlayerTrigger script.");
+            Debug.LogWarning("Overlay Camera not found in PlayerTrigger script.");
         }
     }
 
@@ -45,20 +45,12 @@ public class PlayerTrigger : MonoBehaviour
 
         _gameSettings = GameManager.Instance.Settings;
 
-        float cminValue = _gameSettings.C_MIN.Evaluate(0.5f);
-        portailInt_Material.SetFloat("_C_Min", cminValue);
-
 
         if (portailInt_Material == null)
         {
             Debug.LogError("C_Min_Material is not assigned in PlayerTrigger script.");
         }
-
-        float materialCminValue = portailInt_Material.GetFloat("_C_Min");
-
-
-
-
+        
         if (!vol) vol = GameObject.FindGameObjectWithTag("GlobalVol")?.GetComponent<VolumeProfile>();
         if (vol)
         {
@@ -67,6 +59,17 @@ public class PlayerTrigger : MonoBehaviour
         }
         _playerMovement = GetComponent<PlayerMovement>();
         _characterController = GetComponent<CharacterController>();
+        
+        
+        //Set settings on Starts
+        portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(1));
+        if (vcam)
+            vcam.m_Lens.FieldOfView = GameManager.Instance.CustomSettings.customFov;
+        if (vol)
+        {
+            if (vol.TryGet<ChromaticAberration>(out var ca))
+                ca.intensity.Override(.1f);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -112,10 +115,11 @@ public class PlayerTrigger : MonoBehaviour
 
         if (other.CompareTag("Portal"))
         {
-            float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
-            float cameraOverlayFOV = Mathf.Lerp(15, 43, _gameSettings.CurveFOV.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float toEvaluate = Vector3.Distance(this.transform.position, other.transform.position) / 4f;
+            float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(toEvaluate));
+            float cameraOverlayFOV = Mathf.Lerp(15, 43, _gameSettings.CurveFOV.Evaluate(toEvaluate));
 
-            float chromaticAbberation = Mathf.Lerp(.1f, 50, _gameSettings.CurveAberration.Evaluate(Vector3.Distance(this.transform.position, other.transform.position) / 4f));
+            float chromaticAbberation = Mathf.Lerp(.1f, 50, _gameSettings.CurveAberration.Evaluate(toEvaluate));
 
             if (vol)
             {
@@ -124,6 +128,8 @@ public class PlayerTrigger : MonoBehaviour
             }
 
 
+            portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(toEvaluate));
+            
             vcam.m_Lens.FieldOfView = cameraFOV;
             if (Camera.allCameras.Length > 1)
                 overlayCamera.fieldOfView = cameraOverlayFOV;
@@ -153,7 +159,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             vcam.m_Lens.FieldOfView = GameManager.Instance.CustomSettings.customFov;
-
+            portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(1));
             if (vol)
             {
                 if (vol.TryGet<ChromaticAberration>(out var ca))

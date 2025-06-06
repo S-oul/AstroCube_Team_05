@@ -18,6 +18,8 @@ public class EventManager : MonoBehaviour
 
     public UnityEvent RotatingFace;
 
+    public UnityEvent RotatingEnd;
+    
     public UnityEvent SelectFace;
     public UnityEvent SwitchtRotation;
 
@@ -35,20 +37,33 @@ public class EventManager : MonoBehaviour
         _gameSettings = GameManager.Instance.Settings;
 
         OnStartCubeRotation += RotatingFace.Invoke;
-
+        OnEndCubeRotation += RotatingEnd.Invoke;
+        
         OnCubeSwitchFace += SelectFace.Invoke;
         OnCubeSwitchAxe += SwitchtRotation.Invoke;
 
         OnPlayerReset += Reset.Invoke;
-        OnPlayerResetOnce += Undo.Invoke;
+        OnPlayerUndo += Undo.Invoke;
 
         OnPlayerInteract += Interact.Invoke;
 
 
     }
 
+    private void OnDisable()
+    {
+        OnStartCubeRotation -= RotatingFace.Invoke;
+        OnEndCubeRotation -= RotatingEnd.Invoke;
+        
+        OnCubeSwitchFace -= SelectFace.Invoke;
+        OnCubeSwitchAxe -= SwitchtRotation.Invoke;
 
+        OnPlayerReset -= Reset.Invoke;
+        OnPlayerUndo -= Undo.Invoke;
 
+        OnPlayerInteract -= Interact.Invoke;
+        
+    }
 
 
     //Game Events
@@ -82,7 +97,7 @@ public class EventManager : MonoBehaviour
 
     //Player Events
     public static event Action<float> OnPlayerReset;
-    public static event Action<float> OnPlayerResetOnce;
+    public static event Action<float> OnPlayerUndo;
     public static event Action<RubiksMove> OnMoveReset;
     public static event Action OnPreviewCancel;
 
@@ -112,7 +127,7 @@ public class EventManager : MonoBehaviour
 
     public void DebugTest()
     {
-        Debug.Log("CACA -  Test réussi");
+        Debug.Log("CACA -  Test rï¿½ussi");
     }
     public static void TriggerCubeSwitchFace()
     {
@@ -182,11 +197,12 @@ public class EventManager : MonoBehaviour
 
     public void TriggerReset()
     {
-        OnPlayerReset?.Invoke(_gameSettings.ResetDuration);
+        float resetTime = _gameSettings.ResetCurve.Evaluate(GameManager.Instance.RubiksCube.Moves.Count);
+        OnPlayerReset?.Invoke(resetTime);
     }
-    public void TriggerResetOnce()
+    public void TriggerUndo()
     {
-        OnPlayerResetOnce?.Invoke(_gameSettings.ResetDuration / 4);
+        OnPlayerUndo?.Invoke(_gameSettings.UndoDuration);
     }
     public static void TriggerMoveResetOnce(RubiksMove move)
     {

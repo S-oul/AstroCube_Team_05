@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -29,19 +30,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] float _sequenceDuration;
     [SerializeField] Transform _artifact;
     [SerializeField] List<GameObject> _objectToDisable;
+    [SerializeField] GameObject _endPortal;
     CameraAnimator _cameraAnimator;
 
     public static GameManager Instance => instance;
     private static GameManager instance;
 
+    [SerializeField] private RubiksMovement _rubiksCube;
 
     [SerializeField] private GameObject _rubiksCubeUI;
-    public bool IsRubiksCubeEnabled => _isRubiksCubeEnabled;
-    [SerializeField, ReadOnly] private bool _isRubiksCubeEnabled;
+    public bool IsUIRubiksCubeEnabled => isUIRubiksCubeEnabled;
+    [FormerlySerializedAs("_isRubiksCubeEnabled")] [SerializeField, ReadOnly] private bool isUIRubiksCubeEnabled;
 
     [field: SerializeField] public PreviewRubiksCube PreviewRubiksCube { get; private set; }
 
     public SliceAxis ActualSliceAxis { get => _actualSliceAxis; set => _actualSliceAxis = value; }
+
+    public RubiksMovement RubiksCube => _rubiksCube;
+
     [SerializeField] private SliceAxis _actualSliceAxis;
     private void Awake()
     {
@@ -195,7 +201,7 @@ public class GameManager : MonoBehaviour
 
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;
-
+        _endPortal.SetActive(true);
         yield return StartCoroutine(_cameraAnimator.TurnAround());
     }
 
@@ -209,7 +215,7 @@ public class GameManager : MonoBehaviour
     
     private void ToggleRubiksCube(bool isEnabled)
     {
-        _isRubiksCubeEnabled = isEnabled;
+        isUIRubiksCubeEnabled = isEnabled;
         _rubiksCubeUI.SetActive(isEnabled);
     }
 }
