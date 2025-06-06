@@ -11,18 +11,12 @@ public class PlayerHold : MonoBehaviour
     [SerializeField] private Transform _holdTransform;
     private Camera _camera;
 
-    // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main;
         _isHolding = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void TryHold()
     {
@@ -53,7 +47,6 @@ public class PlayerHold : MonoBehaviour
 
     private void _Hold()
     {
-        //_holdedObject.GetTransform().parent = _holdTransform;
         _isHolding = true;
         _holdedObject.OnHold(_holdTransform);
     }
