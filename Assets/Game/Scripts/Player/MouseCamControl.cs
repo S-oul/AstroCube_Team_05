@@ -186,7 +186,6 @@ public class MouseCamControl : MonoBehaviour
         _isExternalPitchForced = false;
         _mousePos = Vector2.zero;
 
-        // Correction finale pour �viter le "regarde le sol" :
         _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
     }
 
