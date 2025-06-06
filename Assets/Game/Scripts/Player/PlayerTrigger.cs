@@ -115,7 +115,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             float toEvaluate = Vector3.Distance(this.transform.position, other.transform.position) / 4f;
-            print(toEvaluate);
+            //print(toEvaluate);
             float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(toEvaluate));
             float cameraOverlayFOV = Mathf.Lerp(15, 43, _gameSettings.CurveFOV.Evaluate(toEvaluate));
 
