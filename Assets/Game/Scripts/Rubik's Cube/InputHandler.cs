@@ -91,7 +91,7 @@ public class InputHandler : MonoBehaviour
 
         _playerInput.actions.FindActionMap("OtherActions").Enable();
 
-        if (!GameManager.Instance.IsRubiksCubeEnabled)
+        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
         {
             _playerInput.actions.FindActionMap("RubiksCube").Disable();
         }
@@ -161,7 +161,7 @@ public class InputHandler : MonoBehaviour
         else if (ctx.canceled && ctx.time - ctx.startTime < 0.5f)
         {
             if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0)
-                EventManager.Instance.TriggerResetOnce();
+                EventManager.Instance.TriggerUndo();
         }
     }
     public void OnPreviewCancel(InputAction.CallbackContext ctx)
@@ -233,7 +233,7 @@ public class InputHandler : MonoBehaviour
 
         if (!IsInputEnabled(EInputType.CAMERA)) return;
 
-        if (!_controller.ControlledScript.IsReversing)
+        if (_controller.ControlledScript == null || !_controller.ControlledScript.IsReversing)
             _mouseCam.OnCamera(ctx);
     }
 
