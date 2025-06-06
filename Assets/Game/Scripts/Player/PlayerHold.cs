@@ -18,12 +18,6 @@ public class PlayerHold : MonoBehaviour
         _isHolding = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void TryHold()
     {
         RaycastHit _raycastInfo;
