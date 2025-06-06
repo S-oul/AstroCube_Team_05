@@ -15,9 +15,8 @@ public class TextApparition : MonoBehaviour
     [field: SerializeField] public float ApparitionDelay { get; private set; }
     [field: SerializeField] public float CharFadeInDelay { get; private set; }
     [field: SerializeField] public float CharFadeInDuration { get; private set; }
-    [field: SerializeField] public float StayDuration { get; private set; }
-
-    [SerializeField] private UnityEvent OnEndTextApparition;
+    [BoxGroup("Stay"), SerializeField] private bool Permanent;
+    [field: BoxGroup("Stay"), HideIf("Permanent"), SerializeField] public float StayDuration { get; private set; }
 
     [field: Header("Disparition")]
     [field: SerializeField] public float CharFadeOutDelay { get; private set; }
@@ -31,6 +30,11 @@ public class TextApparition : MonoBehaviour
     [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public float CharShakeDuration { get; private set; }
     [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public float CharShakeRandomness { get; private set; }
     [field: BoxGroup("Shaking"), ShowIf("ShakeText"), SerializeField] public bool CharShakeFadeOut { get; private set; }
+
+    [Header("Events")]
+    [SerializeField] private UnityEvent OnStartTextApparition;
+    [SerializeField] private UnityEvent OnStayTextApparition;
+    [SerializeField] private UnityEvent OnEndTextApparition;
 
     private DOTweenTMPAnimator animator;
     private Coroutine displayCo;
@@ -54,6 +58,7 @@ public class TextApparition : MonoBehaviour
     {
         yield return new WaitForSeconds(ApparitionDelay);
 
+        OnStartTextApparition?.Invoke();
         for (int i = 0; i < animator.textInfo.characterCount; i++)
         {
             animator.DOFadeChar(i, 1, CharFadeInDuration);
@@ -61,9 +66,14 @@ public class TextApparition : MonoBehaviour
             yield return new WaitForSeconds(CharFadeInDelay);
         }
 
-        yield return new WaitForSeconds(StayDuration);
-        displayCo = null;
-        Hide();
+        OnStayTextApparition?.Invoke();
+        if (!Permanent)
+        {
+            yield return new WaitForSeconds(StayDuration);
+            displayCo = null;
+            Hide();
+        }
+        else displayCo = null;
     }
 
     public void Hide()
