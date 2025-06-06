@@ -31,11 +31,11 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (vcam == null)
         {
-            Debug.LogError("Cinemachine Virtual Camera not found in PlayerTrigger script.");
+            Debug.LogWarning("Cinemachine Virtual Camera not found in PlayerTrigger script.");
         }
         if (overlayCamera == null)
         {
-            Debug.LogError("Overlay Camera not found in PlayerTrigger script.");
+            Debug.LogWarning("Overlay Camera not found in PlayerTrigger script.");
         }
     }
 
@@ -63,7 +63,8 @@ public class PlayerTrigger : MonoBehaviour
         
         //Set settings on Starts
         portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(1));
-        vcam.m_Lens.FieldOfView = GameManager.Instance.CustomSettings.customFov;
+        if (vcam)
+            vcam.m_Lens.FieldOfView = GameManager.Instance.CustomSettings.customFov;
         if (vol)
         {
             if (vol.TryGet<ChromaticAberration>(out var ca))
