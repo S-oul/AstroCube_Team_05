@@ -20,11 +20,12 @@ namespace AK
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID MC_FT = 2275400278U;
         static const AkUniqueID SFX_BUTTON = 125802325U;
+        static const AkUniqueID SFX_CUBE_ROTATION_FACE_LP = 4137597792U;
         static const AkUniqueID SFX_CUBEROTATION = 2382781056U;
         static const AkUniqueID SFX_LASEREMETTING_LP = 2922909946U;
         static const AkUniqueID SFX_LASERRECEIVED = 4087256891U;
         static const AkUniqueID SFX_LASERREFLECTED = 4113391946U;
-        static const AkUniqueID SFX_RC_CUBEROTATION_FACE = 3346727162U;
+        static const AkUniqueID SFX_RC_CUBEROTATION_END = 3901365036U;
     } // namespace EVENTS
 
     namespace SWITCHES
@@ -47,6 +48,7 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID RTPC_FOCUS = 1888688417U;
         static const AkUniqueID RTPC_METER_DISTANCE = 625851808U;
         static const AkUniqueID RTPC_METER_GLB = 344904358U;
     } // namespace GAME_PARAMETERS
