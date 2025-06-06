@@ -38,11 +38,17 @@ public class GameSettings : ScriptableObject
     public float AxisSelectionFadeOutDuration => _axisSelectionFadeOutDuration;
 
     // Global Properties
-    public float ResetDuration => _resetDuration;
+    public AnimationCurve ResetCurve => _resetCurve;
+    public float UndoDuration => _undoDuration;
     public float StencilFadeInDuration => _stencilFadeInDuration;
     public float StencilFadeOutDuration => _stencilFadeOutDuration;
     public float StencilStayDuration => _stencilStayDuration;
 
+
+    public AnimationCurve CurveFOV => curveFOV;
+    public AnimationCurve CurveAberration => curveAberration;
+
+    public AnimationCurve C_MIN => C_Min;
 
     [Header("-- PLAYER --")]
 
@@ -94,8 +100,9 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _axisSelectionFadeInDuration = 0.6f;
     [SerializeField] private float _axisSelectionFadeOutDuration = 0.6f;
 
-    [Header("-- GLOBAL --")]
-    [SerializeField] private float _resetDuration = 2.0f;
+    [Header("-- GLOBAL --")] 
+    [SerializeField] private AnimationCurve _resetCurve;
+    [SerializeField] private float _undoDuration = 2.0f;
 
 
     [Header("- Show Exit")]
@@ -103,4 +110,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] float _stencilFadeOutDuration = 0.5f;
     [SerializeField] float _stencilStayDuration = 2.0f;
 
+    [SerializeField] AnimationCurve curveFOV;
+    [SerializeField] AnimationCurve curveAberration;
+    [SerializeField] AnimationCurve C_Min;
 }

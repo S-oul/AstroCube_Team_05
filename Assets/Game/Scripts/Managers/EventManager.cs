@@ -1,6 +1,7 @@
 using RubiksStatic;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EventManager : MonoBehaviour
 {
@@ -11,13 +12,44 @@ public class EventManager : MonoBehaviour
 
     public static bool gamePaused = false;
 
+
+
+
+
+    public UnityEvent RotatingFace;
+
+    public UnityEvent SelectFace;
+    public UnityEvent SwitchtRotation;
+
+    public UnityEvent<float> Reset;
+    public UnityEvent<float> Undo;
+
+    public UnityEvent Interact;
+
+
     private void Awake()
     {
         if (instance) Destroy(this);
         else instance = this;
 
         _gameSettings = GameManager.Instance.Settings;
+
+        OnStartCubeRotation += RotatingFace.Invoke;
+
+        OnCubeSwitchFace += SelectFace.Invoke;
+        OnCubeSwitchAxe += SwitchtRotation.Invoke;
+
+        OnPlayerReset += Reset.Invoke;
+        OnPlayerUndo += Undo.Invoke;
+
+        OnPlayerInteract += Interact.Invoke;
+
+
     }
+
+
+
+
 
     //Game Events
     public static event Action OnSceneStart;
@@ -40,15 +72,22 @@ public class EventManager : MonoBehaviour
     public static event Action OnEndCubeRotation;
     public static event Action OnEndCubeSequenceRotation;
 
+    public static event Action OnCubeSwitchFace;
+    public static event Action OnCubeSwitchAxe;
+
+
     //Object Events
     public static event Action OnButtonPressed;
     public static event Action OnButtonReleased;
 
     //Player Events
     public static event Action<float> OnPlayerReset;
-    public static event Action<float> OnPlayerResetOnce;
+    public static event Action<float> OnPlayerUndo;
     public static event Action<RubiksMove> OnMoveReset;
     public static event Action OnPreviewCancel;
+
+    public static event Action OnPlayerInteract;
+
 
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
@@ -70,6 +109,25 @@ public class EventManager : MonoBehaviour
     public static event Action<bool> OnVibrationChange;
     public static event Action<bool> OnPreviewChange;
 
+
+    public void DebugTest()
+    {
+        Debug.Log("CACA -  Test r�ussi");
+    }
+    public static void TriggerCubeSwitchFace()
+    {
+        OnCubeSwitchFace?.Invoke();
+    }
+    public static void TriggerCubeSwitchAxe()
+    {
+        OnCubeSwitchAxe?.Invoke();
+    }
+    public static void TriggerPlayerInteract()
+    {
+        OnPlayerInteract?.Invoke();
+    }
+
+
     public static void TriggerPlayerWin()
     {
         OnPlayerWin?.Invoke();
@@ -77,7 +135,6 @@ public class EventManager : MonoBehaviour
 
     public void TriggerPlayerLose()
     {
-        Debug.Log("Lose Event Triggered!");
         OnPlayerLose?.Invoke();
         TriggerReset();
     }
@@ -101,7 +158,6 @@ public class EventManager : MonoBehaviour
     public static void TriggerSeeExit()
     {
         OnSeeExit?.Invoke();
-
     }
 
     public static void TriggerButtonPressed()
@@ -117,25 +173,26 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerChangeParent()
     {
         OnPlayerChangeParent?.Invoke();
-    }    
-    
+    }
+
     public static void TriggerPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
     {
         OnPlayerFootSteps?.Invoke(_groundTypePlayerIsWalkingOn);
     }
-    
+
     public void TriggerReset()
     {
-        OnPlayerReset?.Invoke(_gameSettings.ResetDuration);
+        float resetTime = _gameSettings.ResetCurve.Evaluate(GameManager.Instance.RubiksCube.Moves.Count);
+        OnPlayerReset?.Invoke(resetTime);
     }
-    public void TriggerResetOnce()
+    public void TriggerUndo()
     {
-        OnPlayerResetOnce?.Invoke(_gameSettings.ResetDuration / 4);
+        OnPlayerUndo?.Invoke(_gameSettings.UndoDuration);
     }
     public static void TriggerMoveResetOnce(RubiksMove move)
     {
         OnMoveReset?.Invoke(move);
-    }    
+    }
     public static void TriggerPreviewCancel()
     {
         OnPreviewCancel?.Invoke();
@@ -170,7 +227,7 @@ public class EventManager : MonoBehaviour
     {
         OnStartCubeSequenceRotation?.Invoke();
     }
-    public static void TriggerEndCubeSequenceRotation() 
+    public static void TriggerEndCubeSequenceRotation()
     {
         OnEndCubeSequenceRotation?.Invoke();
     }
@@ -183,7 +240,7 @@ public class EventManager : MonoBehaviour
     public static void TriggerActivateCubeSequence()
     {
         OnActivateSequence?.Invoke();
-    }    
+    }
 
     public static void TriggerEndCubeSequence()
     {

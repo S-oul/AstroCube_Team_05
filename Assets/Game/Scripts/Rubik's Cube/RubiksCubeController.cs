@@ -61,7 +61,7 @@ public class RubiksCubeController : MonoBehaviour
                 _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
-        if (GameManager.Instance.IsRubiksCubeEnabled)
+        if (GameManager.Instance.IsUIRubiksCubeEnabled)
             ActionSwitchLineCols(true);
     }
     private void Start()
@@ -79,13 +79,13 @@ public class RubiksCubeController : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPlayerReset += ResetPreview;
-        EventManager.OnPlayerResetOnce += ResetPreview;
+        EventManager.OnPlayerUndo += ResetPreview;
         EventManager.OnPreviewCancel += ResetPreview;
     }
     private void OnDisable()
     {
         EventManager.OnPlayerReset -= ResetPreview;
-        EventManager.OnPlayerResetOnce -= ResetPreview;
+        EventManager.OnPlayerUndo -= ResetPreview;
         EventManager.OnPreviewCancel -= ResetPreview;
     }
 
@@ -151,6 +151,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionSwitchLineCols(bool isLeft)
     {
+        EventManager.TriggerCubeSwitchAxe();
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
         GameManager.Instance.ActualSliceAxis = _selectedSlice;
         switch (_selectedSlice)
