@@ -61,7 +61,7 @@ public class RubiksCubeController : MonoBehaviour
                 _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
-        if (GameManager.Instance.IsRubiksCubeEnabled)
+        if (GameManager.Instance.IsUIRubiksCubeEnabled)
             ActionSwitchLineCols(true);
     }
     private void Start()
@@ -79,13 +79,13 @@ public class RubiksCubeController : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPlayerReset += ResetPreview;
-        EventManager.OnPlayerResetOnce += ResetPreview;
+        EventManager.OnPlayerUndo += ResetPreview;
         EventManager.OnPreviewCancel += ResetPreview;
     }
     private void OnDisable()
     {
         EventManager.OnPlayerReset -= ResetPreview;
-        EventManager.OnPlayerResetOnce -= ResetPreview;
+        EventManager.OnPlayerUndo -= ResetPreview;
         EventManager.OnPreviewCancel -= ResetPreview;
     }
 
@@ -387,7 +387,8 @@ public class RubiksCubeController : MonoBehaviour
 
                 selectionCubes.Add(selection);
                 if (selection.IsTileLocked) isOneTileLocked = true;
-                if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
+                if (_detectParentForGroundRotation.CurrentParent == selection) isPlayerOnATile = true;
+                if (isPlayerOnATile && sliceAxis == SliceAxis.Y && _player.parent.localPosition.y < 0) isPlayerOnATile = false;
             }
         }
         foreach (SelectionCube selection in selectionCubes)

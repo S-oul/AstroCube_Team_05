@@ -23,13 +23,12 @@ public class GameActionMandelbulbFractal : AGameAction
 
     private IEnumerator FadeParameters()
     {
-        DOTween.To(() => _targetFractal.CurrentMandelbulbParameters.FractalPower, x => _targetFractal.CurrentMandelbulbParameters.FractalPower = x, _newMandelbulbParameters.FractalPower, _transitionDuration).SetEase(_easeMode);
-        DOTween.To(() =>0.0f, x => _targetFractal.CurrentMandelbulbParameters.Alpha = x, _newMandelbulbParameters.Alpha, _transitionDuration).SetEase(_easeMode);
-        DOTween.To(() => _targetFractal.CurrentMandelbulbParameters.BlackAndWhite, x => _targetFractal.CurrentMandelbulbParameters.BlackAndWhite = x, _newMandelbulbParameters.BlackAndWhite, _transitionDuration).SetEase(_easeMode);
-        DOTween.To(() => _targetFractal.CurrentMandelbulbParameters.Darkness, x => _targetFractal.CurrentMandelbulbParameters.Darkness = x, _newMandelbulbParameters.Darkness, _transitionDuration).SetEase(_easeMode);
-        
-        DOTween.To(() => _targetFractal.CurrentMandelbulbParameters.ColorA, x => _targetFractal.CurrentMandelbulbParameters.ColorA = x, _newMandelbulbParameters.ColorA, _transitionDuration).SetEase(_easeMode);
-        yield return DOTween.To(() => _targetFractal.CurrentMandelbulbParameters.ColorB, x => _targetFractal.CurrentMandelbulbParameters.ColorB = x, _newMandelbulbParameters.ColorB, _transitionDuration).SetEase(_easeMode).WaitForCompletion();
+        DOTween.To(() => _targetFractal.FractalPower, x => _targetFractal.FractalPower = x, _newMandelbulbParameters.FractalPower, _transitionDuration).SetEase(_easeMode);
+        DOTween.To(() => _targetFractal.Alpha, x => _targetFractal.Alpha = x, _newMandelbulbParameters.Alpha, _transitionDuration).SetEase(_easeMode);
+        DOTween.To(() => _targetFractal.BlackAndWhite, x => _targetFractal.BlackAndWhite = x, _newMandelbulbParameters.BlackAndWhite, _transitionDuration).SetEase(_easeMode);
+        DOTween.To(() => _targetFractal.Darkness, x => _targetFractal.Darkness = x, _newMandelbulbParameters.Darkness, _transitionDuration).SetEase(_easeMode);        
+        DOTween.To(() => _targetFractal.ColorA, x => _targetFractal.ColorA = x, _newMandelbulbParameters.ColorA, _transitionDuration).SetEase(_easeMode);
+        yield return DOTween.To(() => _targetFractal.ColorB, x => _targetFractal.ColorB = x, _newMandelbulbParameters.ColorB, _transitionDuration).SetEase(_easeMode).WaitForCompletion();
         _wasExecuted = true;
     }
 

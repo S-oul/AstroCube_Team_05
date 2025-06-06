@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class TriggerCamFocus : MonoBehaviour
 {
-    [SerializeField] private CameraFocusAttractor CameraFocusAttractor;
+    [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
+    [SerializeField] private CameraFocusAttractor.CameraFocusParameters _parameters;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (CameraFocusAttractor != null)
+            if (_cameraFocusAttractor != null)
             {
-                CameraFocusAttractor.StartFocus();
+                _cameraFocusAttractor.StartFocus(_parameters);
             }
             else
             {
