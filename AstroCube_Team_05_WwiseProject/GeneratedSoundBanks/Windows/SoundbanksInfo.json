@@ -1126,7 +1126,7 @@
     "GUID": "{653AB8BF-84AF-4F6C-B01A-9079A6DBFE3E}",
     "Color": "25",
     "Language": "SFX",
-    "Hash": "{27C0789C-83E5-7562-353D-5D8C11CE8808}",
+    "Hash": "{DCF567DC-A39B-6BC4-C67A-B5A907FED6DE}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_SFX_SBK\\SFX_SBK",
     "ShortName": "SFX_SBK",
     "Path": "SFX_SBK.bnk",
@@ -1172,12 +1172,28 @@
       "CachePath": "07/{07BACF6C-11F2-306B-7800-A2B581ABFFC0}.wem"
      },
      {
+      "Id": "185086536",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\UI_Menu_Pause.wav",
+      "CachePath": "64/{64203D70-E689-6EAC-D4F9-8A43DCCC6A9B}.wem"
+     },
+     {
       "Id": "260156793",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_03.wav",
       "CachePath": "3F/{3FD22E43-954A-6DE1-74F3-56E27EDBB4A9}.wem"
+     },
+     {
+      "Id": "280075083",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\UI_Button_Press.wav",
+      "CachePath": "9A/{9AE50C6F-C649-0CAF-F292-FE8C21961F8D}.wem"
      },
      {
       "Id": "289915932",
@@ -1196,12 +1212,28 @@
       "CachePath": "F0/{F0BCF6B5-46DE-B47B-B389-C8E2992D010A}.wem"
      },
      {
+      "Id": "319435021",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\UI_Button_Hover.wav",
+      "CachePath": "0B/{0BE79486-B95A-D26B-CA83-7FCA13BEE435}.wem"
+     },
+     {
       "Id": "331691619",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "SFX\\Rotation\\Cube\\SFX_Cube_Rotation_04.wav",
       "CachePath": "9A/{9AB58821-36B9-3EB1-F3D6-78D58A500D4E}.wem"
+     },
+     {
+      "Id": "361825826",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\UI_Button_Cancel.wav",
+      "CachePath": "33/{3386BE78-75F3-B4B9-78C7-C8980D29294E}.wem"
      },
      {
       "Id": "426773908",
@@ -1258,6 +1290,14 @@
       "Location": "Memory",
       "ShortName": "SFX\\Laser\\SFX_Laser_Reflected_02.wav",
       "CachePath": "AE/{AE1DE640-5004-6405-13CF-DCBB623460E8}.wem"
+     },
+     {
+      "Id": "736408788",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\UI_Menu_Unpause.wav",
+      "CachePath": "93/{9393CFA9-F2F3-E02D-2B2D-484F5D5A7B87}.wem"
      },
      {
       "Id": "738113458",
@@ -1510,6 +1550,81 @@
         "Id": "1012076523"
        }
       ]
+     },
+     {
+      "Id": "3086891671",
+      "Name": "UI_Button_Cancel",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_UI\\UI_Button_Cancel",
+      "GUID": "{86F34C8A-7086-463E-9187-17B2EFF17B08}",
+      "Color": "14",
+      "DurationType": "OneShot",
+      "DurationMin": "0.29725",
+      "DurationMax": "0.29725",
+      "MediaRefs": [
+       {
+        "Id": "361825826"
+       }
+      ]
+     },
+     {
+      "Id": "610582865",
+      "Name": "UI_Button_Hover",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_UI\\UI_Button_Hover",
+      "GUID": "{56B33E23-BAC0-4F08-812E-356506E7B2C6}",
+      "Color": "14",
+      "DurationType": "OneShot",
+      "DurationMin": "0.39270833",
+      "DurationMax": "0.39270833",
+      "MediaRefs": [
+       {
+        "Id": "319435021"
+       }
+      ]
+     },
+     {
+      "Id": "12010446",
+      "Name": "UI_Button_Press",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_UI\\UI_Button_Press",
+      "GUID": "{930FA741-1386-4542-B225-8D6241DC995A}",
+      "Color": "14",
+      "DurationType": "OneShot",
+      "DurationMin": "0.361",
+      "DurationMax": "0.361",
+      "MediaRefs": [
+       {
+        "Id": "280075083"
+       }
+      ]
+     },
+     {
+      "Id": "3237189652",
+      "Name": "UI_Menu_Pause",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_UI\\UI_Menu_Pause",
+      "GUID": "{10E0DACA-7A4F-4B8B-835C-D7D84606CFD5}",
+      "Color": "14",
+      "DurationType": "OneShot",
+      "DurationMin": "0.378125",
+      "DurationMax": "0.378125",
+      "MediaRefs": [
+       {
+        "Id": "185086536"
+       }
+      ]
+     },
+     {
+      "Id": "1201970403",
+      "Name": "UI_Menu_Unpause",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_UI\\UI_Menu_Unpause",
+      "GUID": "{C04F9672-8F0A-44F9-9103-83259DA0F443}",
+      "Color": "14",
+      "DurationType": "OneShot",
+      "DurationMin": "0.1449375",
+      "DurationMax": "0.1449375",
+      "MediaRefs": [
+       {
+        "Id": "736408788"
+       }
+      ]
      }
     ],
     "Busses": [
@@ -1552,6 +1667,6 @@
     ]
    }
   ],
-  "FileHash": "{2C6ACB46-9529-AA0C-95F5-606B8D53FDA5}"
+  "FileHash": "{95ACE3AE-A3A7-013D-5D59-8354743C58E7}"
  }
 }
