@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameActionMoveRubiksCube : AGameAction
 {
@@ -16,6 +17,7 @@ public class GameActionMoveRubiksCube : AGameAction
     [SerializeField] private bool _stopWhenPlayerOnTile = false;
     private bool _isTurning = false;
 
+    [SerializeField] private UnityEvent _OnRotation;
     protected override void ExecuteSpecific()
     {
         StartCoroutine(DoMove());
@@ -29,6 +31,7 @@ public class GameActionMoveRubiksCube : AGameAction
             if (_rubiksControllerScript.IsPlayerOnTile(_move.orientation, _move.cube) && _stopWhenPlayerOnTile)
                 yield break;
         }
+        _OnRotation.Invoke();
         yield return _rubiksScript.RotateAxisCoroutine(_move.axis, _move.cube, _move.clockWise, _rotationDuration);
         _isTurning = false;
     }
