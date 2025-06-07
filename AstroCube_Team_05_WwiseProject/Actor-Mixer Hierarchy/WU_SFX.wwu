@@ -533,6 +533,49 @@
 										<ActiveSource Name="SFX_Cube_Rotation_Face_LP" ID="{8DF6BEAB-F25B-42CD-B1DE-16D38E887699}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
+								<Sound Name="SFX_Cube_Previsualisation_LP" ID="{0A802699-5436-4C03-A222-DE07591E9E62}" ShortID="142911830">
+									<PropertyList>
+										<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
+										<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="MaxReachedBehavior" Type="int16" Value="1"/>
+										<Property Name="MaxSoundPerInstance" Type="int16">
+											<ValueList>
+												<Value>1</Value>
+											</ValueList>
+										</Property>
+										<Property Name="UseMaxSoundPerInstance" Type="bool">
+											<ValueList>
+												<Value>True</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-21</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="SFX_Cube_Previsualisation_LP" ID="{1490C317-0E84-4093-B655-CAA6E2B7E380}">
+											<Language>SFX</Language>
+											<AudioFile>SFX\Rotation\Cube\SFX_Cube_Previsualisation_LP.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="446824341"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="SFX_Cube_Previsualisation_LP" ID="{1490C317-0E84-4093-B655-CAA6E2B7E380}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</ActorMixer>
 						<ActorMixer Name="AM_Laser" ID="{197ED416-3D26-409D-B0FD-163ABB48649E}" ShortID="343854570">
