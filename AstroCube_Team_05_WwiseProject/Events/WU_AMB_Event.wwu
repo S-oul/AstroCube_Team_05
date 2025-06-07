@@ -176,6 +176,39 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Event Name="AMB_SP_RC_TorchLight_LP" ID="{9ACC67E8-303F-423A-AEE0-2837A910792E}">
+							<ChildrenList>
+								<Action Name="" ID="{28DC57A8-5DF5-4A89-812A-E3BED1BB0F22}" ShortID="793810689">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="2"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_SP_RC_TorchLight_LP" ID="{50CA2ACF-33B2-44DD-94FB-19F405F452DB}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{E8134B17-4ACF-44B0-AEC4-4BE923A097A4}" ShortID="567175374">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="37"/>
+										<Property Name="Delay" Type="Real64">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{AACC3EE5-88C6-4E15-A72D-A327B68C6B14}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="100"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList/>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="AMB_RFX" ID="{22BE9931-754A-493F-BB4B-4ADB19ED8B15}" ShortID="725743555">
