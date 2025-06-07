@@ -11,7 +11,7 @@
 					<PropertyList>
 						<Property Name="Volume" Type="Real64">
 							<ValueList>
-								<Value>-15</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
@@ -36,6 +36,11 @@
 								<Property Name="UseMaxSoundPerInstance" Type="bool">
 									<ValueList>
 										<Value>True</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-3</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -142,6 +147,11 @@
 									</MediaIDList>
 								</AudioFileSource>
 								<AudioFileSource Name="UI_Button_Press_01" ID="{E31E4685-9231-40A0-B6D4-43400D95BB32}">
+									<PropertyList>
+										<Property Name="FadeInDuration" Type="Real64" Value="0.0129369254494465"/>
+										<Property Name="FadeOutDuration" Type="Real64" Value="0.6153125"/>
+										<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+									</PropertyList>
 									<Language>SFX</Language>
 									<AudioFile>SFX\UI\UI_Button_Press.wav</AudioFile>
 									<MediaIDList>
