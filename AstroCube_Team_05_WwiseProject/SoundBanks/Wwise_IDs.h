@@ -14,6 +14,8 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID AMB_PAD_GLOBAL_LP = 2515429708U;
+        static const AkUniqueID AMB_RFX_DRONE = 37494993U;
+        static const AkUniqueID AMB_RFX_ROCKFALL = 2877702425U;
         static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
         static const AkUniqueID AMB_SP_RC_PULSESHARD = 3134303699U;
         static const AkUniqueID AMB_SP_SHARD_FLOAT_LP = 102969944U;
