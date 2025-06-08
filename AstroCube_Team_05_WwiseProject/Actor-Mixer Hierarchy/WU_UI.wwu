@@ -7,7 +7,14 @@
 				<Property Name="OverrideColor" Type="bool" Value="True"/>
 			</PropertyList>
 			<ChildrenList>
-				<Sound Name="UI_Button_Cancel" ID="{53363EA8-A0FB-4AD7-BA0A-A9150B4C82C0}" ShortID="393129499">
+				<ActorMixer Name="AM_UI" ID="{E23540CC-1B17-4617-B489-E6CC8FE9607D}" ShortID="178352413">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>-3</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -17,106 +24,147 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<AudioFileSource Name="UI_Button_Cancel" ID="{7A9A679F-9689-43A8-A7E9-1CE3419F1377}">
-							<Language>SFX</Language>
-							<AudioFile>UI\UI_Button_Cancel.wav</AudioFile>
-							<MediaIDList>
-								<MediaID ID="361825826"/>
-							</MediaIDList>
-						</AudioFileSource>
+						<Sound Name="UI_Button_Cancel" ID="{53363EA8-A0FB-4AD7-BA0A-A9150B4C82C0}" ShortID="393129499">
+							<PropertyList>
+								<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
+								<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>1</Value>
+									</ValueList>
+								</Property>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-3</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="UI_Button_Cancel" ID="{7A9A679F-9689-43A8-A7E9-1CE3419F1377}">
+									<Language>SFX</Language>
+									<AudioFile>UI\UI_Button_Cancel.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="361825826"/>
+									</MediaIDList>
+								</AudioFileSource>
+								<AudioFileSource Name="UI_Button_Cancel_01" ID="{0F59D4C8-ADB3-4DF1-8788-4029B45E672F}">
+									<Language>SFX</Language>
+									<AudioFile>SFX\UI\UI_Button_Cancel.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="788760774"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="UI_Button_Cancel_01" ID="{0F59D4C8-ADB3-4DF1-8788-4029B45E672F}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="UI_Button_Hover" ID="{127D407E-5541-486B-A888-620B363F24A6}" ShortID="56286778">
+							<PropertyList>
+								<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
+								<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>1</Value>
+									</ValueList>
+								</Property>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="UI_Button_Hover" ID="{9A6AD49F-8D16-4CE4-8043-FF5CB3F3155E}">
+									<Language>SFX</Language>
+									<AudioFile>UI\UI_Button_Hover.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="319435021"/>
+									</MediaIDList>
+								</AudioFileSource>
+								<AudioFileSource Name="UI_Button_Hover_01" ID="{90906DF3-9F3E-4FD8-BC30-A02981181B5F}">
+									<Language>SFX</Language>
+									<AudioFile>SFX\UI\UI_Button_Hover.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="905811177"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="UI_Button_Hover_01" ID="{90906DF3-9F3E-4FD8-BC30-A02981181B5F}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="UI_Button_Press" ID="{601607C5-1D9E-46C9-BCF4-D6888C77CF1F}" ShortID="299563093">
+							<PropertyList>
+								<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
+								<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>1</Value>
+									</ValueList>
+								</Property>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="UI_Button_Press" ID="{6E646BCA-968C-4018-B5AD-D167046C943A}">
+									<Language>SFX</Language>
+									<AudioFile>UI\UI_Button_Press.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="280075083"/>
+									</MediaIDList>
+								</AudioFileSource>
+								<AudioFileSource Name="UI_Button_Press_01" ID="{E31E4685-9231-40A0-B6D4-43400D95BB32}">
+									<PropertyList>
+										<Property Name="FadeInDuration" Type="Real64" Value="0.0129369254494465"/>
+										<Property Name="FadeOutDuration" Type="Real64" Value="0.6153125"/>
+										<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+									</PropertyList>
+									<Language>SFX</Language>
+									<AudioFile>SFX\UI\UI_Button_Press.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="269553734"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="UI_Button_Press_01" ID="{E31E4685-9231-40A0-B6D4-43400D95BB32}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
 					</ChildrenList>
-					<ActiveSourceList>
-						<ActiveSource Name="UI_Button_Cancel" ID="{7A9A679F-9689-43A8-A7E9-1CE3419F1377}" Platform="Linked"/>
-					</ActiveSourceList>
-				</Sound>
-				<Sound Name="UI_Button_Hover" ID="{127D407E-5541-486B-A888-620B363F24A6}" ShortID="56286778">
-					<ReferenceList>
-						<Reference Name="Conversion">
-							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
-						</Reference>
-						<Reference Name="OutputBus">
-							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
-						</Reference>
-					</ReferenceList>
-					<ChildrenList>
-						<AudioFileSource Name="UI_Button_Hover" ID="{9A6AD49F-8D16-4CE4-8043-FF5CB3F3155E}">
-							<Language>SFX</Language>
-							<AudioFile>UI\UI_Button_Hover.wav</AudioFile>
-							<MediaIDList>
-								<MediaID ID="319435021"/>
-							</MediaIDList>
-						</AudioFileSource>
-					</ChildrenList>
-					<ActiveSourceList>
-						<ActiveSource Name="UI_Button_Hover" ID="{9A6AD49F-8D16-4CE4-8043-FF5CB3F3155E}" Platform="Linked"/>
-					</ActiveSourceList>
-				</Sound>
-				<Sound Name="UI_Button_Press" ID="{601607C5-1D9E-46C9-BCF4-D6888C77CF1F}" ShortID="299563093">
-					<ReferenceList>
-						<Reference Name="Conversion">
-							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
-						</Reference>
-						<Reference Name="OutputBus">
-							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
-						</Reference>
-					</ReferenceList>
-					<ChildrenList>
-						<AudioFileSource Name="UI_Button_Press" ID="{6E646BCA-968C-4018-B5AD-D167046C943A}">
-							<Language>SFX</Language>
-							<AudioFile>UI\UI_Button_Press.wav</AudioFile>
-							<MediaIDList>
-								<MediaID ID="280075083"/>
-							</MediaIDList>
-						</AudioFileSource>
-					</ChildrenList>
-					<ActiveSourceList>
-						<ActiveSource Name="UI_Button_Press" ID="{6E646BCA-968C-4018-B5AD-D167046C943A}" Platform="Linked"/>
-					</ActiveSourceList>
-				</Sound>
-				<Sound Name="UI_Menu_Pause" ID="{DBF0E757-1ABB-4948-8426-45E97EA5B962}" ShortID="699761457">
-					<ReferenceList>
-						<Reference Name="Conversion">
-							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
-						</Reference>
-						<Reference Name="OutputBus">
-							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
-						</Reference>
-					</ReferenceList>
-					<ChildrenList>
-						<AudioFileSource Name="UI_Menu_Pause" ID="{33C096A9-A974-44C8-BC08-21FB6779F574}">
-							<Language>SFX</Language>
-							<AudioFile>UI\UI_Menu_Pause.wav</AudioFile>
-							<MediaIDList>
-								<MediaID ID="185086536"/>
-							</MediaIDList>
-						</AudioFileSource>
-					</ChildrenList>
-					<ActiveSourceList>
-						<ActiveSource Name="UI_Menu_Pause" ID="{33C096A9-A974-44C8-BC08-21FB6779F574}" Platform="Linked"/>
-					</ActiveSourceList>
-				</Sound>
-				<Sound Name="UI_Menu_Unpause" ID="{1EB0EC5C-827E-4C23-A38A-0615002D5F48}" ShortID="826290629">
-					<ReferenceList>
-						<Reference Name="Conversion">
-							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
-						</Reference>
-						<Reference Name="OutputBus">
-							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
-						</Reference>
-					</ReferenceList>
-					<ChildrenList>
-						<AudioFileSource Name="UI_Menu_Unpause" ID="{F09A956B-D3FA-46D4-9019-CBA5F2241A75}">
-							<Language>SFX</Language>
-							<AudioFile>UI\UI_Menu_Unpause.wav</AudioFile>
-							<MediaIDList>
-								<MediaID ID="736408788"/>
-							</MediaIDList>
-						</AudioFileSource>
-					</ChildrenList>
-					<ActiveSourceList>
-						<ActiveSource Name="UI_Menu_Unpause" ID="{F09A956B-D3FA-46D4-9019-CBA5F2241A75}" Platform="Linked"/>
-					</ActiveSourceList>
-				</Sound>
+				</ActorMixer>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>
