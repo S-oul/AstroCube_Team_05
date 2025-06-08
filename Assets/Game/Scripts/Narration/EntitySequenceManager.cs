@@ -1,11 +1,4 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.UI;
-using static UnityEngine.Timeline.TimelineAsset;
 
 public class EntitySequenceManager : MonoBehaviour
 {

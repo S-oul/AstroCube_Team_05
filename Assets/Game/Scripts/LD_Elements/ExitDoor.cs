@@ -75,7 +75,7 @@ public class ExitDoor : MonoBehaviour
     {
         if (_cameraFocusAttractor == null)
         {
-            Debug.LogError("GameActionFocusCamera: Missing references!");
+        print(_cameraFocusAttractor.transform.name);
             return;
         }
 
