@@ -6,6 +6,8 @@ public class RightActionObject : MonoBehaviour
 {
     public Pose RightPose { get => _rightPose; set => _rightPose = value; }
     [SerializeField, ReadOnly] private Pose _rightPose;
+    private SelectionCube _selection;
+    bool _isAlreadyInRightPose;
 
     public Pose GetActualPose()
     {
@@ -17,23 +19,30 @@ public class RightActionObject : MonoBehaviour
         return pose;
     }
 
-    private void Awake()
+    private void Start()
     {
-        var infos = PlayModePositionSaver.PositionsSave;
+        _selection = GetComponent<SelectionCube>();
+        var infos = GameManager.Instance.RightActions;
         if (infos == null || infos.RightActionInfos == null)
         {
-            //Debug.LogWarning("You must save object in their final positions");
-            return;            
+            return;
         }
-        else if(infos.RightActionInfos == null)
+        else if (infos.RightActionInfos == null)
         {
             Debug.LogWarning("You must save object in their final positions");
             return;
         }
-        var info = infos.RightActionInfos.FirstOrDefault(x => x.ObjectRef == gameObject);
-        if(info != null)
+        var info = infos.RightActionInfos.FirstOrDefault(x => x.ObjectName == gameObject.name);
+        if (info != null)
+        {
             _rightPose = info.Pose;
+        }
+        if (_IsTheRightPose())
+        {
+            _isAlreadyInRightPose = true;
+        }
     }
+
     private void OnEnable()
     {
         EventManager.OnEndCubeRotation += CheckIsTheRightPose;
@@ -42,17 +51,26 @@ public class RightActionObject : MonoBehaviour
     {
         EventManager.OnEndCubeRotation -= CheckIsTheRightPose;
     }
-    void /*bool*/ CheckIsTheRightPose()
+
+    void CheckIsTheRightPose()
     {
-        if((Vector3.Distance(_rightPose.position,transform.localPosition) < Vector3.kEpsilon) && (Quaternion.Dot(_rightPose.rotation,transform.localRotation ) > 1 - Quaternion.kEpsilon))
+
+        if (!_isAlreadyInRightPose &&_IsTheRightPose())
         {
-            //print("SAMEPOSE");
-            return;// true;
+
+            if (_selection)
+                _selection.StartCorrectActionAnim();
+            Debug.Log("CORRECT ACTION ON : "+ gameObject.name, gameObject);
         }
+    }
+
+    bool _IsTheRightPose()
+    {
+            
+        if ((Vector3.Distance(_rightPose.position,transform.localPosition) < Vector3.kEpsilon) && (Quaternion.Dot(_rightPose.rotation,transform.localRotation ) > 1 - Quaternion.kEpsilon))
+
+            return true;
         else
-        {
-            //print("NOPECONNARD");
-            return;// false;
-        }
+            return false;
     }
 }

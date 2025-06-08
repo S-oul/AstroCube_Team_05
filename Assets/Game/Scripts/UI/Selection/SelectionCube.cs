@@ -174,6 +174,31 @@ public class SelectionCube : MonoBehaviour
         }
     }
 
+    public void StartCorrectActionAnim()
+    {
+        StartCoroutine(CorrectActionAnim());
+    }
+    private IEnumerator CorrectActionAnim()
+    {
+        foreach (var renderer in _renderers)
+        {
+            if (renderer.transform.CompareTag("Floor"))
+            {
+                // Pulse IN
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
+        foreach (var renderer in _renderers)
+        {
+            if (renderer.transform.CompareTag("Floor"))
+            {
+                // Pulse OUT;
+            }
+        }
+    }
+
+
+
     private void _ToggleSelectionShader(bool _selected, Renderer renderer, float duration)
     {
         if (_selected)
