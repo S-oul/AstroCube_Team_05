@@ -14,6 +14,7 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID AMB_PAD_GLOBAL_LP = 2515429708U;
+        static const AkUniqueID AMB_PAD_MAINMENU_LP = 2186918097U;
         static const AkUniqueID AMB_RFX_DRONE = 37494993U;
         static const AkUniqueID AMB_RFX_ROCKFALL = 2877702425U;
         static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
@@ -61,6 +62,7 @@ namespace AK
         static const AkUniqueID UI_BUTTON_CANCEL = 3086891671U;
         static const AkUniqueID UI_BUTTON_HOVER = 610582865U;
         static const AkUniqueID UI_BUTTON_PRESS = 12010446U;
+        static const AkUniqueID UI_MAINMENU_BUTTON_PRESS = 3217026771U;
     } // namespace EVENTS
 
     namespace SWITCHES
