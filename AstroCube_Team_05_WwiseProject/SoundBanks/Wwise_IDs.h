@@ -103,6 +103,7 @@ namespace AK
         static const AkUniqueID BUS_FOL = 4279690731U;
         static const AkUniqueID BUS_REV = 4180996447U;
         static const AkUniqueID BUS_SFX = 3895923845U;
+        static const AkUniqueID BUS_VO = 1763241581U;
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
     } // namespace BUSSES
 
