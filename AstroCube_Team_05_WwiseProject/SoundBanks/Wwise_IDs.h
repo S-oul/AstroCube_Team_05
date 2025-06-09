@@ -22,6 +22,7 @@ namespace AK
         static const AkUniqueID AMB_SP_RC_TORCHLIGHT_LP = 3403072559U;
         static const AkUniqueID AMB_SP_SHARD_FLOAT_LP = 102969944U;
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
+        static const AkUniqueID CIN_LVL03 = 2844602029U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_01 = 615844443U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_02 = 615844440U;
         static const AkUniqueID LVL1_GAMEPLAY_VOICELINE_01 = 655641678U;
@@ -124,6 +125,7 @@ namespace AK
     {
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID AMB_SBK = 3702631076U;
+        static const AkUniqueID CIN_SBK = 914877926U;
         static const AkUniqueID FOL_SBK = 2606446995U;
         static const AkUniqueID MC_SBK = 4067787562U;
         static const AkUniqueID SFX_SBK = 4254072057U;
@@ -132,6 +134,7 @@ namespace AK
     namespace BUSSES
     {
         static const AkUniqueID BUS_AMB = 17439960U;
+        static const AkUniqueID BUS_CIN = 4178583614U;
         static const AkUniqueID BUS_FOL = 4279690731U;
         static const AkUniqueID BUS_REV = 4180996447U;
         static const AkUniqueID BUS_SFX = 3895923845U;
