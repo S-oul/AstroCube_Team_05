@@ -2051,6 +2051,7 @@ GameObject:
   - component: {fileID: 187917081}
   - component: {fileID: 187917083}
   - component: {fileID: 187917082}
+  - component: {fileID: 187917085}
   - component: {fileID: 187917084}
   m_Layer: 0
   m_Name: VO_Manager_Gameplay
@@ -2377,7 +2378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8dc960f5e88a1f4d9483cd2a32efeff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: d1bbb3b5ae8d9d44
+  triggerList: d1bbb3b5
   useOtherObject: 0
   actionOnEventType: 0
   curveInterpolation: 4
@@ -2386,6 +2387,36 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: d97bef08cd55a3447be1cf4f8e852307,
+      type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 1
+  Callbacks: []
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
+--- !u!114 &187917085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187917072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8dc960f5e88a1f4d9483cd2a32efeff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: d1bbb3b5
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 415a7f7c4e16d7a469932a1ac6ab4d16,
       type: 2}
   useCallbacks: 0
   stopSoundOnDestroy: 1
@@ -9317,7 +9348,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OnStartTextApparition.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 187917082}
+      objectReference: {fileID: 187917085}
     - target: {fileID: 5282722652446184263, guid: 0563d5d7c45a263498e3bbf32d01fa14,
         type: 3}
       propertyPath: OnStartTextApparition.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
