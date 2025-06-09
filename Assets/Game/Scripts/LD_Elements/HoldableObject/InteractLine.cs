@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,8 +10,15 @@ public class InteractLine : MonoBehaviour, IHoldable
     {
         print("caca");
         _entityOverlay.gameObject.SetActive(true);
+        StartCoroutine(WaitTimeForSequence());
     }
 
+    IEnumerator WaitTimeForSequence()
+    {
+        yield return new WaitForSeconds(15f);
+        _entityOverlay.gameObject.SetActive(false);
+    }
+    
     public void OnRelease()
     {
         return;
