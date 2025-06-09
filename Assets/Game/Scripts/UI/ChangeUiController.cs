@@ -35,7 +35,7 @@ public class ChangeUiController : MonoBehaviour
         InputDevice lastDevice;
         if (change == InputActionChange.ActionPerformed)
         {
-            _KeyboardGO?.SetActive(false);
+            if(_KeyboardGO) _KeyboardGO.SetActive(false);
 
             receivedInputAction = (InputAction)obj;
             lastDevice = receivedInputAction.activeControl.device;
@@ -50,8 +50,9 @@ public class ChangeUiController : MonoBehaviour
                 if(!_useGameObject) _sprite.sprite = _Keyboard;
                 else
                 {
+                    if(!_KeyboardGO) Debug.LogError(this.name + "Does Not Have GameObject");
                     _sprite.sprite = null;
-                    _KeyboardGO?.SetActive(true);
+                    _KeyboardGO.SetActive(true);
                 }
             }
         }
