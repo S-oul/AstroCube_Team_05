@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +14,8 @@ public class MouseCamControl : MonoBehaviour
 
     [Header("Raycast")]
     [SerializeField] RubiksCubeController rubiksCubeController;
-    [SerializeField] LayerMask _detectableLayer;
+    [SerializeField] LayerMask _detectableTileLayer;
+    [SerializeField] LayerMask _detectableObjectLayer;
     [SerializeField] float _maxDistance;
 
     [Header("Cameras")]
@@ -31,8 +34,7 @@ public class MouseCamControl : MonoBehaviour
     GameSettings _settings;
     InputHandler _inputHandler;
 
-    Vector2 mousePos = new();
-
+    Vector2 _mousePos;
     private Quaternion _externalRotationInfluence = Quaternion.identity;
     private float _rotationInfluenceAmount = 0f;
 
@@ -55,7 +57,7 @@ public class MouseCamControl : MonoBehaviour
     public void OnCamera(InputAction.CallbackContext callbackContext)
     {
         Vector2 rawInput = callbackContext.ReadValue<Vector2>();
-        mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
+        _mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
                                rawInput.y * pitchSensitivity * Time.deltaTime);
     }
 
@@ -76,44 +78,81 @@ public class MouseCamControl : MonoBehaviour
 
         if (!_isExternalPitchForced)
         {
-            _yRotation -= mousePos.y;
+            _yRotation -= _mousePos.y;
             _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
         }
 
         Quaternion baseRotation = Quaternion.Euler(_yRotation, 0f, 0f);
         transform.localRotation = Quaternion.Slerp(baseRotation, _externalRotationInfluence, _rotationInfluenceAmount);
 
-        float yawInput = mousePos.x;
+        float yawInput = _mousePos.x;
 
         float targetYaw = _playerTransform.eulerAngles.y + yawInput;
         float newYaw = Mathf.LerpAngle(targetYaw, _externalYawInfluence, _yawInfluenceAmount);
 
         _playerTransform.rotation = Quaternion.Euler(0f, newYaw, 0f);
 
-        if (!GameManager.Instance.IsRubiksCubeEnabled)
+        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return;
 
         RaycastHit _raycastInfo;
 
-        if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
+        if (GameManager.Instance.Settings.AimAtObject)
         {
-            GameObject collider = _raycastInfo.collider.gameObject;
-            _oldTile = collider.transform;
-
-            if (rubiksCubeController == null || _oldTile.parent == null)
-                return;
-
-            if (forceNewSelection)
-                rubiksCubeController.SetActualCube(_oldTile.parent);
-            else
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableObjectLayer))
             {
-                if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+                GameObject o = _raycastInfo.collider.gameObject;
+
+                var cube = o.GetComponentInParent<SelectionCube>();
+                if (cube)
                 {
-                    EventManager.TriggerCubeSwitchFace();
-                    rubiksCubeController.SetActualCube(_oldTile.parent);
+                    if (cube.name == "MiddleZone")
+                    {
+                        List<Transform> cubes = rubiksCubeController.ControlledScript.GetCubesFromFace(cube.transform, rubiksCubeController.SelectedSlice);
+
+                        Transform middleCube = cubes.First(x => x.name.Contains("Middle"));
+                        Tile tile = middleCube.GetComponentInChildren<Tile>();
+
+                        if (tile)
+                        {
+                            _oldTile = tile.transform;
+                        }
+                    }
+                    else
+                    {
+                        var tile = cube.GetComponentInChildren<Tile>();
+
+                        if (tile)
+                        {
+                            _oldTile = tile.transform;
+                        }
+                    }
                 }
             }
         }
+        else
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableTileLayer))
+            {
+                GameObject collider = _raycastInfo.collider.gameObject;
+                _oldTile = collider.transform;
+            }
+        }
+
+        if (_oldTile == null || rubiksCubeController == null || _oldTile.parent == null)
+            return;
+
+        if (forceNewSelection)
+            rubiksCubeController.SetActualCube(_oldTile.parent);
+        else
+        {
+            if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+            {
+                EventManager.TriggerCubeSwitchFace();
+                rubiksCubeController.SetActualCube(_oldTile.parent);
+            }
+        }
+
     }
 
     public float GetVerticalAngle()
@@ -145,8 +184,8 @@ public class MouseCamControl : MonoBehaviour
         _rotationInfluenceAmount = 0f;
         _yawInfluenceAmount = 0f;
         _isExternalPitchForced = false;
+        _mousePos = Vector2.zero;
 
-        // Correction finale pour éviter le "regarde le sol" :
         _yRotation = NormalizePitchAngle(transform.localEulerAngles.x);
     }
 
@@ -187,7 +226,7 @@ public class MouseCamControl : MonoBehaviour
 
     void ResetMousePosition()
     {
-        mousePos = Vector2.zero;
+        _mousePos = Vector2.zero;
         _yRotation = 0.0f;
     }
 }
