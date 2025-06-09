@@ -79,6 +79,38 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: D
+--- !u!1 &357492606216860792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6050124913674105241}
+  m_Layer: 0
+  m_Name: PivotPoint_FractalCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6050124913674105241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357492606216860792}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.03, y: 0, z: -3.27}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3149004942769766122}
+  m_Father: {fileID: 6420885259454292341}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &970472777763276426
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +174,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3149004942769766122}
+  - {fileID: 6050124913674105241}
   - {fileID: 7378361222936657904}
   - {fileID: 7257510738655789150}
   - {fileID: 3054033046778734772}
@@ -196,7 +228,7 @@ GameObject:
   - component: {fileID: 7088473201323405349}
   - component: {fileID: 2814211019649764470}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: FractalCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,12 +243,12 @@ Transform:
   m_GameObject: {fileID: 1850350222457422863}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03, y: 0, z: -3.27}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2967301918253897072}
-  m_Father: {fileID: 6420885259454292341}
+  m_Father: {fileID: 6050124913674105241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5078392899954029587
 Camera:
@@ -1301,7 +1333,7 @@ GameObject:
   - component: {fileID: 8983205018918871882}
   - component: {fileID: 997923612353664574}
   m_Layer: 0
-  m_Name: Mandelbulb
+  m_Name: -- MANDELBULB FRACTAL --
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1334,13 +1366,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345f8d9f82bd845fc8939f36745e0981, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentMandelbulbParameters:
-    _fractalPower: 3
-    _alpha: 1
-    _colorA: {r: 0.5, g: 0, b: 0.5, a: 1}
-    _colorB: {r: 1, g: 0.5, b: 0, a: 1}
-    _blackAndWhite: 0.7
-    _darkness: 26
+  _fractalPower: 7
+  _alpha: 1
+  _colorA: {r: 0.5, g: 0, b: 0.5, a: 1}
+  _colorB: {r: 1, g: 0.5, b: 0, a: 1}
+  _blackAndWhite: 0.7
+  _darkness: 26
   fractalShader: {fileID: 7200000, guid: d135fb6523b39409b829979ae009b927, type: 3}
   rt: {fileID: 8400000, guid: 08340f0684c572e45b5049d27a21c2b3, type: 2}
   drawDistance: 66.1
@@ -1389,18 +1420,18 @@ MonoBehaviour:
   - 0
   - 1.076e-42
   - 66.1
-  - 0
-  - 1.166e-42
-  - 66.1
-  - 5.77e-43
-  - 1.344e-42
-  - 2.7641854
-  - 5.76e-43
-  - 1.345e-42
-  - 2.7610881
-  - 0
+  - 1.097e-42
+  - 1.243e-42
+  - 2.9880784
+  - 1.142e-42
+  - 1.331e-42
+  - 2.872674
+  - 1.184e-42
+  - 1.355e-42
+  - 2.9192762
+  - 1.127e-42
   - 1.435e-42
-  - 66.1
+  - 3.0369608
   - 0
   - 1.525e-42
   - 66.1
@@ -1440,8 +1471,8 @@ MonoBehaviour:
   - 0
   - 2.601e-42
   - 66.1
-  groupMin: 15
-  minDist: 2.7610881
+  groupMin: 14
+  minDist: 2.872674
   maxIterations: 15
   LODChangeWithDist: 0
 --- !u!33 &1466007327044430049
