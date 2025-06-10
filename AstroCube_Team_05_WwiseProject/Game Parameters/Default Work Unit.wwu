@@ -2,6 +2,10 @@
 <WwiseDocument Type="WorkUnit" ID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}" SchemaVersion="123">
 	<GameParameters>
 		<WorkUnit Name="Default Work Unit" ID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="10"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<GameParameter Name="RTPC_Meter_Glb" ID="{8B19C931-C9A7-42C7-AA3B-8D4B5021F737}">
 					<PropertyList>
@@ -25,6 +29,17 @@
 						<Property Name="RTPCRamping" Type="int16" Value="2"/>
 						<Property Name="SlewRateDown" Type="Real64" Value="0.2"/>
 						<Property Name="SlewRateUp" Type="Real64" Value="0"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="RTPC_Focus" ID="{FC89527A-0769-4511-AF58-938E639B2235}">
+					<PropertyList>
+						<Property Name="BindToBuiltInParam" Type="int16" Value="2"/>
+						<Property Name="FilterTimeDown" Type="Real64" Value="1.5"/>
+						<Property Name="FilterTimeUp" Type="Real64" Value="1.5"/>
+						<Property Name="InitialValue" Type="Real64" Value="0"/>
+						<Property Name="Max" Type="Real64" Value="180"/>
+						<Property Name="Min" Type="Real64" Value="-180"/>
+						<Property Name="RTPCRamping" Type="int16" Value="2"/>
 					</PropertyList>
 				</GameParameter>
 			</ChildrenList>
