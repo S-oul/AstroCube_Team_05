@@ -41,7 +41,7 @@ public class SelectionCube : MonoBehaviour
 
         public SelectionTweens()
         {
-            this.    = null;
+            this.EnableSelectionTween = null;
             this.DisableSelectionTween = null;
             this.EnableGoldTween = null;
             this.DisableGoldTween = null;
