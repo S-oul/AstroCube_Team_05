@@ -140,13 +140,13 @@ public class PlayerTrigger : MonoBehaviour
 
             if(toEvaluate > valueThatTriggersCamPan)
             {
-                cameraFocusAttractor.StartContinuousFocus(new CameraFocusParameters
+                /*cameraFocusAttractor.StartContinuousFocus(new CameraFocusParameters
                 {
                     PointOfInterest = other.transform,
                     InDuration = 0.05f,
                     Strength = 1f,
                     DoIn = true
-                });
+                });*/
             }
 
 
@@ -191,7 +191,7 @@ public class PlayerTrigger : MonoBehaviour
                     ca.intensity.Override(.1f);
             }
         }
-        cameraFocusAttractor.StopAllFocus();
+        /*cameraFocusAttractor.StopAllFocus();*/
 
     }
 }
