@@ -35,10 +35,6 @@ public class PlayModePositionSaverEditor : Editor
             GUI.backgroundColor = Color.white;
             GUILayout.Label($"RightActions saved : {PlayModePositionSaver.PositionsSave.RightActionInfos.Count}");
         }
-        if (GUILayout.Button("Debug Objects", new GUIStyle(GUI.skin.button)))
-        {
-            DebugAllObjects();
-        }
         GUILayout.EndVertical();
 
         GUI.backgroundColor = new Color(0.8f, 1f, 0.7f);
@@ -84,8 +80,7 @@ public class PlayModePositionSaverEditor : Editor
 
         foreach (RightActionObject o in allImportantObjects)
         {
-            RightActionInfo info = new(o.gameObject, o.GetActualPose());
-            o.RightPose = o.GetActualPose();
+            RightActionInfo info = new(o.Name, o.Index, o.GetActualPose());
             PlayModePositionSaver.PositionsSave.RightActionInfos.Add(info);
         }
 
@@ -143,14 +138,6 @@ public class PlayModePositionSaverEditor : Editor
 
         AssetDatabase.SaveAssetIfDirty(PlayModePositionSaver.PositionsSave);
         EditorUtility.ClearDirty(PlayModePositionSaver.PositionsSave);
-    }
-
-    private void DebugAllObjects()
-    {
-        foreach (RightActionInfo a in PlayModePositionSaver.PositionsSave.RightActionInfos)
-        {
-            Debug.Log(a.ObjectName + " " + a.SiblingIndex);
-        }
     }
 
     private void GetSaveAsset()
