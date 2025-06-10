@@ -19,7 +19,7 @@ public class RubiksMovement : MonoBehaviour
 
 
     [SerializeField] List<Transform> Axis = new List<Transform>();
-    List<Transform> _allBlocks = new List<Transform>();
+    [SerializeField] List<Transform> _allBlocks = new List<Transform>();
 
     [SerializeField] bool _doScramble = true;
 
@@ -60,6 +60,12 @@ public class RubiksMovement : MonoBehaviour
     public bool IsLockYAxis { get => _isLockYAxis; }
     public bool IsLockZAxis { get => _isLockZAxis; }
     internal List<RubiksMove> Moves { get => _moves; }
+
+    public List<Transform> AllBlocks
+    {
+        get => _allBlocks;
+        set => _allBlocks = value;
+    }
 
     #endregion
 
