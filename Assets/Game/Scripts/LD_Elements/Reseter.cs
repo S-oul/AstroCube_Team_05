@@ -45,7 +45,6 @@ public class Reseter : MonoBehaviour
         var newPose = new Pose();
         transform.GetPositionAndRotation(out newPose.position, out newPose.rotation);
         _positionOnLastRotation.Add(newPose);
-        //print(_positionOnLastRotation[^1].position);
 
     }
     private void Undo(float time)
@@ -57,7 +56,6 @@ public class Reseter : MonoBehaviour
 
     IEnumerator ResetOneMove(float duration)
     {
-        print(_positionOnLastRotation[^1].position);
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {

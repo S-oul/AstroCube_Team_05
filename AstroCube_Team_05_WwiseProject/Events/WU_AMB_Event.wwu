@@ -74,6 +74,21 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Event Name="AMB_PAD_MainMenu_LP" ID="{408CF21F-CCF3-40D3-A4E5-7E0A7C8A83EE}">
+							<ChildrenList>
+								<Action Name="" ID="{76DCBEF9-4504-473E-88D2-47C5108679AE}" ShortID="856481395">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="2"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_PAD_MainMenu_LP" ID="{81644EA5-6A9F-468C-8306-F84BB48F7835}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="AMB_SP" ID="{1460686D-0B2F-4048-AE65-CE3359427F60}" ShortID="435602428">
@@ -116,7 +131,7 @@
 								<Action Name="" ID="{9B81DEC0-7C25-4FD9-8F72-1D267832DA87}" ShortID="980077785">
 									<ReferenceList>
 										<Reference Name="Target">
-											<ObjectRef Name="RFX_Portal_Whispers" ID="{4CD3BEE8-9A35-4FA7-B37C-CF6ACED21501}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+											<ObjectRef Name="AMB_RFX_Portal_Whispers" ID="{4CD3BEE8-9A35-4FA7-B37C-CF6ACED21501}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
@@ -173,6 +188,69 @@
 										</Property>
 									</PropertyList>
 									<ReferenceList/>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_SP_RC_TorchLight_LP" ID="{9ACC67E8-303F-423A-AEE0-2837A910792E}">
+							<ChildrenList>
+								<Action Name="" ID="{28DC57A8-5DF5-4A89-812A-E3BED1BB0F22}" ShortID="793810689">
+									<PropertyList>
+										<Property Name="FadeInCurve" Type="int16" Value="2"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_SP_RC_TorchLight_LP" ID="{50CA2ACF-33B2-44DD-94FB-19F405F452DB}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_SP_Portal_Open" ID="{2C95C704-A4C7-44ED-B4AE-EAB580A2B1EF}">
+							<ChildrenList>
+								<Action Name="" ID="{ABC08434-5FB5-45A8-BCDC-4103E0DB8FC3}" ShortID="367755939">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_SP_Portal_Open" ID="{B8E51BA8-4769-4711-85D0-5C5F8E3A8364}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="AMB_RFX" ID="{22BE9931-754A-493F-BB4B-4ADB19ED8B15}" ShortID="725743555">
+					<ChildrenList>
+						<Event Name="AMB_RFX_Drone" ID="{9AC07057-9A97-4BA6-996B-3650395B4F65}">
+							<ChildrenList>
+								<Action Name="" ID="{9DE09777-B5F0-418F-842E-AAEE0FCC12C7}" ShortID="839085138">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_RFX_Drone" ID="{6E32C0B8-7E31-4F29-AFB6-B5DD806B899B}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_RFX_RockFall" ID="{1F360F67-DFF6-4492-9DD9-2405A35CF59F}">
+							<ChildrenList>
+								<Action Name="" ID="{3B020C42-EB39-4868-A0EA-5FE461095CDA}" ShortID="229143862">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_RFX_RockFall" ID="{726CE707-5F93-4631-A4FA-4E0B42C3FF5D}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="AMB_RFX_NAR_Pulse" ID="{32D2BAB1-CB3B-40C0-9363-61DAD48B5624}">
+							<ChildrenList>
+								<Action Name="" ID="{B03A697F-20A8-47B3-8E8C-9483C3D11482}" ShortID="660648146">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_RFX_NAR_Pulse" ID="{C4DDA082-46DD-477A-8E47-5BCFE2024978}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
 								</Action>
 							</ChildrenList>
 						</Event>

@@ -12,7 +12,7 @@
 						<Action Name="" ID="{3B4133D2-6869-4853-8295-A7502921A143}" ShortID="824964144">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="SFX_RC_CubeRotation" ID="{F8D8919D-6202-4C3E-A13E-64434FA29F26}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+									<ObjectRef Name="SFX_RC_Rotation_Cube" ID="{F8D8919D-6202-4C3E-A13E-64434FA29F26}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -88,12 +88,77 @@
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="SFX_RC_CubeRotation_Face" ID="{E8CF792C-2D52-4F13-BB81-CA5126A23C71}">
+				<Event Name="SFX_RC_CubeRotation_End" ID="{E8CF792C-2D52-4F13-BB81-CA5126A23C71}">
 					<ChildrenList>
 						<Action Name="" ID="{B43594B9-A71C-4CC5-B90D-CB59462BDA31}" ShortID="428753274">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="SFX_RC_CubeRotation_Face" ID="{8C4974E9-E2EE-430B-B3C6-1EF7360B3908}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+									<ObjectRef Name="SFX_RC_CubeRotation_End" ID="{8C4974E9-E2EE-430B-B3C6-1EF7360B3908}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{FBC3CAED-292A-4D3F-AA00-5D8177A153CC}" ShortID="969101877">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_RC_Rotation_Face" ID="{ED62F1D1-E91C-4BFA-B047-CBE5192C9CCA}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="SFX_Cube_Rotation_Face_LP" ID="{47921CDD-CB40-40A2-A24E-FC71BAC07D02}">
+					<ChildrenList>
+						<Action Name="" ID="{0B12DECC-4D64-4D5D-9AF6-E7C9A55B8838}" ShortID="241174133">
+							<PropertyList>
+								<Property Name="FadeInCurve" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_RC_Rotation_Face" ID="{ED62F1D1-E91C-4BFA-B047-CBE5192C9CCA}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{7159AF7D-4742-4220-8519-0F9B8E349556}" ShortID="989487399">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="37"/>
+								<Property Name="Delay" Type="Real64">
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{920C1DA6-B548-4171-AF38-BD2C4A58FEAC}">
+												<PropertyList>
+													<Property Name="Enabled" Type="bool" Value="True"/>
+													<Property Name="Max" Type="Real64" Value="100"/>
+												</PropertyList>
+											</Modifier>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+							</PropertyList>
+							<ReferenceList/>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="SFX_Cube_Previsualisation_LP" ID="{47411E2B-A77B-4A66-9543-605B8418B032}">
+					<ChildrenList>
+						<Action Name="" ID="{76418E28-37BB-4ED3-9768-CEEFA5CD0591}" ShortID="980078446">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_Cube_Previsualisation_LP" ID="{0A802699-5436-4C03-A222-DE07591E9E62}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="SFX_RC_Tile_Correct" ID="{D9171752-25F4-4F7E-869A-0D0C0A7C6768}">
+					<ChildrenList>
+						<Action Name="" ID="{FC986B63-E6CF-4F03-8A86-673F2017D949}" ShortID="949375043">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_RC_Tile_Correct" ID="{0575F465-9EE6-4E53-9CA2-CBC9F9206934}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
