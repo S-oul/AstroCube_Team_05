@@ -17,8 +17,9 @@ public class RubiksMovement : MonoBehaviour
     [SerializeField] Transform middle;
     [SerializeField] Transform middleGameObject;
 
+
     [SerializeField] List<Transform> Axis = new List<Transform>();
-    List<Transform> _allBlocks = new List<Transform>();
+    [SerializeField] List<Transform> _allBlocks = new List<Transform>();
 
     [SerializeField] bool _doScramble = true;
 
@@ -47,6 +48,8 @@ public class RubiksMovement : MonoBehaviour
     [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenSequence = 1f;
     [ShowIf("_DoAutoMoves"), SerializeField] List<RubiksMove> AutoMovesSequence = new List<RubiksMove>();
 
+    [Header("Visuals")]
+    [SerializeField] GameObject _DustParticleAfterRotate;
 
 
     #region Accessor
@@ -57,6 +60,12 @@ public class RubiksMovement : MonoBehaviour
     public bool IsLockYAxis { get => _isLockYAxis; }
     public bool IsLockZAxis { get => _isLockZAxis; }
     internal List<RubiksMove> Moves { get => _moves; }
+
+    public List<Transform> AllBlocks
+    {
+        get => _allBlocks;
+        set => _allBlocks = value;
+    }
 
     #endregion
 
@@ -327,14 +336,45 @@ public class RubiksMovement : MonoBehaviour
 
         foreach (int i in blockIndexs)
         {
-            Vector3 pos = _allBlocks[i].transform.localPosition;
+            Transform block = _allBlocks[i];
+
+            Tile[] tiles = block.GetComponentsInChildren<Tile>();
+            foreach (var tile in tiles)
+            {
+                if (_DustParticleAfterRotate != null)
+                {
+                    Vector3 normal = (tile.transform.position - block.position).normalized;
+                    Vector3 spawnPos = tile.transform.position + normal  + Vector3.up ;
+
+                    Quaternion spawnRot = Quaternion.LookRotation(normal) * Quaternion.Euler(-90f, 0f, 0f);
+
+                    GameObject particleInstance = Instantiate(_DustParticleAfterRotate, spawnPos, spawnRot);
+
+                    ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
+                    if (ps != null)
+                    {
+                        ps.Play();
+                        Destroy(particleInstance, ps.main.duration + ps.main.startLifetime.constantMax);
+                    }
+                    else
+                    {
+                        Destroy(particleInstance, 2f);
+                    }
+                }
+            }
+
+            Vector3 pos = block.transform.localPosition;
             pos.x = Mathf.Round(pos.x);
             pos.y = Mathf.Round(pos.y);
             pos.z = Mathf.Round(pos.z);
-            _allBlocks[i].transform.localPosition = pos;
-            _allBlocks[i].transform.SetParent(this.transform.parent, true);
-
+            block.transform.localPosition = pos;
+            block.transform.SetParent(this.transform.parent, true);
         }
+
+
+
+
+
 
         if (isMiddle)
         {
