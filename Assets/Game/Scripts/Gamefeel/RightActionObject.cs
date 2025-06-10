@@ -37,31 +37,36 @@ public class RightActionObject : MonoBehaviour
         {
             _rightPose = info.Pose;
         }
-        if (_IsTheRightPose())
-        {
-            _isAlreadyInRightPose = true;
-        }
+        //if (IsTheRightPose())
+        //{
+        //    _isAlreadyInRightPose = true;
+        //}
     }
 
     private void OnEnable()
     {
-        EventManager.OnEndCubeRotation += CheckIsTheRightPose;
+        //EventManager.OnEndCubeRotation += CheckIsTheRightPose;
     }
     private void OnDisable()
     {
-        EventManager.OnEndCubeRotation -= CheckIsTheRightPose;
+        //EventManager.OnEndCubeRotation -= CheckIsTheRightPose;
     }
 
-    void CheckIsTheRightPose()
+    public void CheckIsTheRightPose()
     {
-        if (!_isAlreadyInRightPose &&_IsTheRightPose())
+        if (!_isAlreadyInRightPose && IsTheRightPose())
         {
             if (_selection)
                 _selection.StartCorrectActionAnim();
         }
+    }    
+    public void Shine()
+    {
+        if (_selection)
+            _selection.StartCorrectActionAnim();        
     }
 
-    bool _IsTheRightPose()
+    public bool IsTheRightPose()
     {
         if ((Vector3.Distance(_rightPose.position,transform.localPosition) < 0.01f) && (Mathf.Abs(Quaternion.Dot(_rightPose.rotation,transform.localRotation )) > 1 - 0.01f))
             return true;
