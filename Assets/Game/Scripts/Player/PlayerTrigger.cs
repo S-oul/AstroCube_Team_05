@@ -2,11 +2,16 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
+using static CameraFocusAttractor;
 
 public class PlayerTrigger : MonoBehaviour
 {
     [SerializeField] Cinemachine.CinemachineVirtualCamera vcam;
     [SerializeField] Camera overlayCamera;
+
+    [SerializeField] CameraFocusAttractor cameraFocusAttractor;
+
+    [SerializeField] float valueThatTriggersCamPan = 0.2f;
 
 
     [Header("SpeedZone")]
@@ -24,7 +29,7 @@ public class PlayerTrigger : MonoBehaviour
     private float cmin;
 
     [SerializeField] private Material portailInt_Material;
-
+    
 
 
     private void Awake()
@@ -37,7 +42,13 @@ public class PlayerTrigger : MonoBehaviour
         {
             Debug.LogWarning("Overlay Camera not found in PlayerTrigger script.");
         }
+        if (cameraFocusAttractor == null)
+        {
+            Debug.LogWarning("CameraFocusAttractor not found in PlayerTrigger script.");
+        }
     }
+
+
 
 
     private void Start()
@@ -116,7 +127,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             float toEvaluate = Vector3.Distance(this.transform.position, other.transform.position) / 4f;
-            float cameraFOV = Mathf.Lerp(15, GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(toEvaluate));
+            float cameraFOV = Mathf.Lerp(GameManager.Instance.CustomSettings.customFov, GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(toEvaluate));
             float cameraOverlayFOV = Mathf.Lerp(15, 43, _gameSettings.CurveFOV.Evaluate(toEvaluate));
 
             float chromaticAbberation = Mathf.Lerp(.1f, 50, _gameSettings.CurveAberration.Evaluate(toEvaluate));
@@ -126,6 +137,20 @@ public class PlayerTrigger : MonoBehaviour
                 if (vol.TryGet<ChromaticAberration>(out var ca))
                     ca.intensity.Override(chromaticAbberation);
             }
+
+            if(toEvaluate > valueThatTriggersCamPan)
+            {
+                cameraFocusAttractor.StartContinuousFocus(new CameraFocusParameters
+                {
+                    PointOfInterest = other.transform,
+                    InDuration = 0.05f,
+                    Strength = 1f,
+                    DoIn = true
+                });
+            }
+
+
+
 
 
             portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(toEvaluate));
@@ -166,5 +191,7 @@ public class PlayerTrigger : MonoBehaviour
                     ca.intensity.Override(.1f);
             }
         }
+        cameraFocusAttractor.StopAllFocus();
+
     }
 }
