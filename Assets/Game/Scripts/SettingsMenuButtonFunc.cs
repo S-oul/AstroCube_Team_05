@@ -15,7 +15,7 @@ public class SettingsMenuButtonFunc : MonoBehaviour
 
     [SerializeField] Button _vibrationButton; 
     [SerializeField] Button _previewButton; 
-    [SerializeField] Button _subtitlesButton; 
+    [SerializeField] Button _motionBlurButton; 
 
     PauseMenu _pauseMenu;
 
@@ -37,12 +37,12 @@ public class SettingsMenuButtonFunc : MonoBehaviour
 
         SetButtonApperance(_vibrationButton, "Vibration", _cs.customVibration);
         SetButtonApperance(_previewButton, "Preview", _cs.customPreview);
-        //SetButtonApperance(_subtitlesButton, "Subtitles", _cs.customSubtitles);
+        SetButtonApperance(_motionBlurButton, "MotionBlur", _cs.customSubtitles);
     }
 
     public void BackButton()
     {
-        _pauseMenu.SetActiveSettingsMenu(false);
+        if (_pauseMenu) { _pauseMenu.SetActiveSettingsMenu(false); }
     }
 
     float GetSliderPosition(float? currentVal, float minVal, float maxVal)
