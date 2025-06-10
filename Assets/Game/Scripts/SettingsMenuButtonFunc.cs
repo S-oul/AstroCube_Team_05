@@ -37,7 +37,7 @@ public class SettingsMenuButtonFunc : MonoBehaviour
 
         SetButtonApperance(_vibrationButton, "Vibration", _cs.customVibration);
         SetButtonApperance(_previewButton, "Preview", _cs.customPreview);
-        SetButtonApperance(_subtitlesButton, "Subtitles", _cs.customSubtitles);
+        //SetButtonApperance(_subtitlesButton, "Subtitles", _cs.customSubtitles);
     }
 
     public void BackButton()
