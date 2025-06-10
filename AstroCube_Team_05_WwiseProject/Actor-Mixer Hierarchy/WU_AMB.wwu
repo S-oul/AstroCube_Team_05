@@ -32,7 +32,7 @@
 										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
-												<Value>-25</Value>
+												<Value>-31</Value>
 											</ValueList>
 										</Property>
 									</PropertyList>
@@ -150,7 +150,7 @@
 										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
-												<Value>-2400</Value>
+												<Value>-1600</Value>
 											</ValueList>
 											<ModifierList>
 												<ModifierInfo>
@@ -273,43 +273,6 @@
 										<ActiveSource Name="AMB_Cube_Atmosphere_LP_01" ID="{7691C356-E652-4615-854F-908ECA2FAB2A}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="AMB_Transition_Atmosphere" ID="{C2027C77-7B30-42FD-AB77-72C9E6EF29A1}" ShortID="748833644">
-									<PropertyList>
-										<Property Name="Pitch" Type="int32">
-											<ModifierList>
-												<ModifierInfo>
-													<Modifier Name="" ID="{7F5281C7-22AF-4439-B3AA-D07916C26D84}">
-														<PropertyList>
-															<Property Name="Enabled" Type="bool" Value="True"/>
-															<Property Name="Max" Type="Real64" Value="250"/>
-															<Property Name="Min" Type="Real64" Value="-250"/>
-														</PropertyList>
-													</Modifier>
-												</ModifierInfo>
-											</ModifierList>
-										</Property>
-									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="BUS_AMB" ID="{EF91FD05-69BD-4930-9DB9-D3225B1CDFB7}" WorkUnitID="{67B12A22-DABE-4873-BA4C-896F78872C71}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="AMB_Transition_Atmosphere" ID="{6F9140AE-AEDC-4A43-B12F-3369FBE40A8D}">
-											<Language>SFX</Language>
-											<AudioFile>3.Export\AMB\AMB_Transition_Atmosphere.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="610828645"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="AMB_Transition_Atmosphere" ID="{6F9140AE-AEDC-4A43-B12F-3369FBE40A8D}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
 							</ChildrenList>
 						</ActorMixer>
 						<ActorMixer Name="AM_SP" ID="{24899729-75D6-4D17-B927-4497D487D631}" ShortID="1002376285">
@@ -325,7 +288,6 @@
 								<Sound Name="AMB_SP_Portal_LP" ID="{A53FDBD4-E256-4255-8B36-1DBDFF493589}" ShortID="378218239">
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="2"/>
-										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
 										<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
 										<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
 										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
@@ -385,6 +347,92 @@
 															</Reference>
 														</ReferenceList>
 													</EffectSlot>
+												</Local>
+											</Reference>
+										</ObjectList>
+										<ObjectList Name="RTPC">
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{AA7C8A45-86CA-44BF-8F49-2C5F812D191A}" ShortID="471514109">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Volume"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="RTPC_Focus" ID="{FC89527A-0769-4511-AF58-938E639B2235}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{4B2014E1-1EBF-4EE9-AA0A-1E2248CBAD49}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="3"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-180</XPos>
+																				<YPos>-3</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>3</YPos>
+																				<Flags>0</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>180</XPos>
+																				<YPos>-3</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{A854AE0C-2D6F-4E23-8909-68B3611FEFF0}" ShortID="134778851">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Lowpass"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="RTPC_Focus" ID="{FC89527A-0769-4511-AF58-938E639B2235}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{3CF6EF93-9F84-4C31-A14E-7F355F42571F}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="65537"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-180</XPos>
+																				<YPos>35</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>-1.36157</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>180</XPos>
+																				<YPos>35</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
 												</Local>
 											</Reference>
 										</ObjectList>
@@ -574,16 +622,12 @@
 											</Reference>
 											<Reference>
 												<Local>
-													<EffectSlot Name="" ID="{B4281F91-4A1B-4EEF-A646-D49E9C791B21}" ShortID="648558260">
-														<ReferenceList/>
-													</EffectSlot>
+													<EffectSlot Name="" ID="{B4281F91-4A1B-4EEF-A646-D49E9C791B21}" ShortID="648558260"/>
 												</Local>
 											</Reference>
 											<Reference>
 												<Local>
-													<EffectSlot Name="" ID="{25428961-AF38-4F76-AE63-D088AC2B519A}" ShortID="601358341">
-														<ReferenceList/>
-													</EffectSlot>
+													<EffectSlot Name="" ID="{25428961-AF38-4F76-AE63-D088AC2B519A}" ShortID="601358341"/>
 												</Local>
 											</Reference>
 										</ObjectList>
@@ -623,6 +667,43 @@
 									</ChildrenList>
 									<ActiveSourceList>
 										<ActiveSource Name="AMB_SP_Shard_Float__LP" ID="{46E399EE-3AEA-4921-A147-EAF66F447B6F}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="AMB_Transition_Atmosphere" ID="{C2027C77-7B30-42FD-AB77-72C9E6EF29A1}" ShortID="748833644">
+									<PropertyList>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{7F5281C7-22AF-4439-B3AA-D07916C26D84}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="250"/>
+															<Property Name="Min" Type="Real64" Value="-250"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="BUS_AMB" ID="{EF91FD05-69BD-4930-9DB9-D3225B1CDFB7}" WorkUnitID="{67B12A22-DABE-4873-BA4C-896F78872C71}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="AMB_Transition_Atmosphere" ID="{6F9140AE-AEDC-4A43-B12F-3369FBE40A8D}">
+											<Language>SFX</Language>
+											<AudioFile>3.Export\AMB\AMB_Transition_Atmosphere.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="610828645"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="AMB_Transition_Atmosphere" ID="{6F9140AE-AEDC-4A43-B12F-3369FBE40A8D}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
