@@ -7,7 +7,7 @@
 				<Property Name="OverrideColor" Type="bool" Value="True"/>
 			</PropertyList>
 			<ChildrenList>
-				<ActorMixer Name="AM_MasterAMB" ID="{0CBCD45D-89EF-464E-910D-AA582CB57D26}" ShortID="252710450">
+				<ActorMixer Name="AM_AMB" ID="{0CBCD45D-89EF-464E-910D-AA582CB57D26}" ShortID="252710450">
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -474,7 +474,7 @@
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Attenuation">
-											<ObjectRef Name="ATT_15m" ID="{0D4D7827-3A5C-46EB-A46F-62F7611ADC5A}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+											<ObjectRef Name="ATT_20m" ID="{8CF9A3C9-0616-4D18-AB37-6F832EC4F252}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
 										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -1065,7 +1065,13 @@
 									</ObjectLists>
 								</RandomSequenceContainer>
 								<Sound Name="AMB_SP_Portal_Open" ID="{B8E51BA8-4769-4711-85D0-5C5F8E3A8364}" ShortID="320550655">
+									<PropertyList>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+									</PropertyList>
 									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="ATT_20m" ID="{8CF9A3C9-0616-4D18-AB37-6F832EC4F252}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
 										</Reference>
