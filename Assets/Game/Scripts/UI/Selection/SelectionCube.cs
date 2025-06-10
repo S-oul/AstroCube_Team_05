@@ -36,11 +36,15 @@ public class SelectionCube : MonoBehaviour
     {
         public TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> EnableSelectionTween;
         public TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> DisableSelectionTween;
+        public TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> EnableGoldTween;
+        public TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> DisableGoldTween;
 
         public SelectionTweens()
         {
-            this.EnableSelectionTween = null;
+            this.    = null;
             this.DisableSelectionTween = null;
+            this.EnableGoldTween = null;
+            this.DisableGoldTween = null;
         }
     }
 
@@ -178,26 +182,47 @@ public class SelectionCube : MonoBehaviour
     {
         StartCoroutine(CorrectActionAnim());
     }
+
     private IEnumerator CorrectActionAnim()
     {
         foreach (var renderer in _renderers)
         {
-            if (renderer.transform.CompareTag("Floor"))
+            if (renderer.transform.CompareTag("SelectionShine"))
             {
-                // Pulse IN
+                _ToggleSelectionShader(true, renderer, 0.1f);
+
+                if (_selectionCurrentValues.ContainsKey(renderer))
+                {
+                    if (_selectionCurrentValues[renderer].EnableGoldTween != null && _selectionCurrentValues[renderer].EnableGoldTween.active)
+                        break;
+
+                    if (_selectionCurrentValues[renderer].DisableGoldTween != null && _selectionCurrentValues[renderer].DisableGoldTween.active)
+                        _selectionCurrentValues[renderer].DisableGoldTween.Kill();
+
+                    _selectionCurrentValues[renderer].EnableGoldTween = DOTween.To(() => renderer.material.GetFloat("_Gold_Slider"), x => renderer.material.SetFloat("_Gold_Slider", x), 1.0f, 0.1f).SetEase(Ease.InOutSine);
+                }
             }
         }
         yield return new WaitForSeconds(0.1f);
         foreach (var renderer in _renderers)
         {
-            if (renderer.transform.CompareTag("Floor"))
+            if (renderer.transform.CompareTag("SelectionShine"))
             {
-                // Pulse OUT;
+                _ToggleSelectionShader(false, renderer, 0.5f);
+
+                if (_selectionCurrentValues.ContainsKey(renderer))
+                {
+                    if (_selectionCurrentValues[renderer].DisableGoldTween != null && _selectionCurrentValues[renderer].DisableGoldTween.active)
+                        break;
+                    if (_selectionCurrentValues[renderer].EnableGoldTween != null && _selectionCurrentValues[renderer].EnableGoldTween.active)
+                        _selectionCurrentValues[renderer].EnableGoldTween.Kill();
+
+                    _selectionCurrentValues[renderer].DisableGoldTween = DOTween.To(() => renderer.material.GetFloat("_Gold_Slider"), x => renderer.material.SetFloat("_Gold_Slider", x), 0.0f, 0.5f).SetEase(Ease.InOutSine);
+                }
             }
         }
+
     }
-
-
 
     private void _ToggleSelectionShader(bool _selected, Renderer renderer, float duration)
     {

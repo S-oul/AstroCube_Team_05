@@ -54,21 +54,16 @@ public class RightActionObject : MonoBehaviour
 
     void CheckIsTheRightPose()
     {
-
         if (!_isAlreadyInRightPose &&_IsTheRightPose())
         {
-
             if (_selection)
                 _selection.StartCorrectActionAnim();
-            Debug.Log("CORRECT ACTION ON : "+ gameObject.name, gameObject);
         }
     }
 
     bool _IsTheRightPose()
     {
-            
-        if ((Vector3.Distance(_rightPose.position,transform.localPosition) < Vector3.kEpsilon) && (Quaternion.Dot(_rightPose.rotation,transform.localRotation ) > 1 - Quaternion.kEpsilon))
-
+        if ((Vector3.Distance(_rightPose.position,transform.localPosition) < 0.01f) && (Mathf.Abs(Quaternion.Dot(_rightPose.rotation,transform.localRotation )) > 1 - 0.01f))
             return true;
         else
             return false;
