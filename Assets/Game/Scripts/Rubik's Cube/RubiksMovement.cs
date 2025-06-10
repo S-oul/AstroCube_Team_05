@@ -6,6 +6,7 @@ using System.Linq;
 using NaughtyAttributes;
 using System;
 using UnityEditor;
+using UnityEngine.Events;
 
 [ExecuteAlways]
 public class RubiksMovement : MonoBehaviour
@@ -51,6 +52,7 @@ public class RubiksMovement : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] GameObject _DustParticleAfterRotate;
 
+    public UnityEvent OnCorrectAction;
 
     #region Accessor
     public bool IsPreview { get => _isPreview; set => _isPreview = value; }
@@ -403,8 +405,8 @@ public class RubiksMovement : MonoBehaviour
 
             RightActionObject rightActionObject = block.GetComponent<RightActionObject>();
 
-            if(rightActionObject == null)
-                break;
+            if(rightActionObject == null || rightActionObject.enabled == false)
+                continue;
 
             if(!rightActionObject.IsTheRightPose())
                 isAxisCorrect = false;
@@ -415,15 +417,15 @@ public class RubiksMovement : MonoBehaviour
             {
                 Transform block = _allBlocks[i];
 
-                RightActionObject rightActionObject = block.GetComponent<RightActionObject>();
+                SelectionCube selection = block.GetComponent<SelectionCube>();
 
-                if (rightActionObject == null)
-                    break;
+                if (selection == null)
+                    continue;
 
-                rightActionObject.Shine();
+                selection.StartCorrectActionAnim();
+                OnCorrectAction?.Invoke();
             }
         }
-
     }
 
     RubiksMove CreateRandomMove()

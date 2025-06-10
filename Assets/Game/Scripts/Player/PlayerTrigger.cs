@@ -138,7 +138,7 @@ public class PlayerTrigger : MonoBehaviour
                     ca.intensity.Override(chromaticAbberation);
             }
 
-            if(toEvaluate > valueThatTriggersCamPan)
+            if(toEvaluate > valueThatTriggersCamPan && cameraFocusAttractor)
             {
                 cameraFocusAttractor.StartContinuousFocus(new CameraFocusParameters
                 {
@@ -148,10 +148,6 @@ public class PlayerTrigger : MonoBehaviour
                     DoIn = true
                 });
             }
-
-
-
-
 
             portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(toEvaluate));
             
@@ -191,7 +187,7 @@ public class PlayerTrigger : MonoBehaviour
                     ca.intensity.Override(.1f);
             }
         }
-        cameraFocusAttractor.StopAllFocus();
-
+        if(cameraFocusAttractor)
+            cameraFocusAttractor.StopAllFocus();
     }
 }
