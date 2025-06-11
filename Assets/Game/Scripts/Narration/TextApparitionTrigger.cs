@@ -17,6 +17,7 @@ public class TextApparitionTrigger : MonoBehaviour
 
         foreach (TextApparition text in _texts)
         {
+            if(!text) continue;
             if (_hide) text.Hide();
             else text.Display();
         }
