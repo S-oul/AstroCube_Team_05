@@ -70,7 +70,7 @@ public class SettingsMenuButtonFunc : MonoBehaviour
 
     public void ControlsButton()
     {
-        Debug.Log("You clicked the Controls button.\nBut this menu does not exist yet.\n\nVanilla Extract :P\n\n");
+        if(_toggelMenuElem)_toggelMenuElem.Activate(MenuElement.CONTROLS); // only for start menu
     }
 
     public void PreviewButton()
