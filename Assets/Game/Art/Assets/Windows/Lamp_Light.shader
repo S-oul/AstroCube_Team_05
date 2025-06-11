@@ -50,7 +50,12 @@ Shader "Lamp_Light"
 		Offset 0 , 0
 		AlphaToMask Off
 
-		
+		Stencil
+        {
+            Ref 1
+            Comp NotEqual
+            Pass Keep
+        }
 
 		HLSLINCLUDE
 		#pragma target 4.5
@@ -176,7 +181,12 @@ Shader "Lamp_Light"
 			Offset 0 , 0
 			ColorMask RGBA
 
-			
+			Stencil
+			{
+				Ref 1
+				Comp NotEqual
+				Pass Keep
+			}
 
 			HLSLPROGRAM
 
@@ -811,6 +821,13 @@ Shader "Lamp_Light"
 			AlphaToMask Off
 			ColorMask 0
 
+			Stencil
+			{
+				Ref 1
+				Comp NotEqual
+				Pass Keep
+			}
+
 			HLSLPROGRAM
 
 			
@@ -1131,6 +1148,14 @@ Shader "Lamp_Light"
 			ZWrite On
 			ColorMask R
 			AlphaToMask Off
+
+			Stencil
+			{
+				Ref 1
+				Comp NotEqual
+				Pass Keep
+			}
+
 
 			HLSLPROGRAM
 
