@@ -46,7 +46,7 @@ public class GameActionsSequencer : MonoBehaviour
             if (_currentGameActionIndex >= _gameActionsList.Count) allActionsFinished = true;
             else 
             {
-                //print("Executing action " + currentAction.name + " at index " + _currentGameActionIndex + " of sequencer " + name);
+                print("Executing action " + currentAction.name + " at index " + _currentGameActionIndex + " of sequencer " + name);
                 currentAction = _gameActionsList[_currentGameActionIndex];
                 currentAction.Execute();
             }
