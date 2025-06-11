@@ -15,8 +15,9 @@ public class SettingsMenuButtonFunc : MonoBehaviour
 
     [SerializeField] ToggleButtonFunctionality _vibrationButton; 
     [SerializeField] ToggleButtonFunctionality _previewButton; 
-    [SerializeField] ToggleButtonFunctionality _motionBlurButton; 
+    [SerializeField] ToggleButtonFunctionality _motionBlurButton;
 
+    [SerializeField] ToggleMenuElements _toggelMenuElem;
     PauseMenu _pauseMenu;
 
     private void Start()
@@ -40,9 +41,21 @@ public class SettingsMenuButtonFunc : MonoBehaviour
         _motionBlurButton.SetButtonState(_cs.customMotionBlur);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.JoystickButton1)) // if player presses B on an Xbox controler. 
+        {
+            BackButton();
+        }
+    }
+
     public void BackButton()
     {
         if (_pauseMenu) { _pauseMenu.SetActiveSettingsMenu(false); }
+        else
+        {
+            _toggelMenuElem.Activate(MenuElement.START_MENU);
+        }
     }
 
     float GetSliderPosition(float? currentVal, float minVal, float maxVal)
