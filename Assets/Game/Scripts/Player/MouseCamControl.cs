@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -110,7 +111,9 @@ public class MouseCamControl : MonoBehaviour
                     {
                         List<Transform> cubes = rubiksCubeController.ControlledScript.GetCubesFromFace(cube.transform, rubiksCubeController.SelectedSlice);
 
-                        Transform middleCube = cubes.First(x => x.name.Contains("Middle"));
+                        Transform middleCube = cubes.FirstOrDefault(x => x.name.Contains("Middle"));
+                        if (!middleCube)
+                            return;
                         Tile tile = middleCube.GetComponentInChildren<Tile>();
 
                         if (tile)
