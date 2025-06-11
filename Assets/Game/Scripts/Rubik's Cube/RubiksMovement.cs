@@ -6,6 +6,7 @@ using System.Linq;
 using NaughtyAttributes;
 using System;
 using UnityEditor;
+using UnityEngine.Events;
 
 [ExecuteAlways]
 public class RubiksMovement : MonoBehaviour
@@ -51,6 +52,7 @@ public class RubiksMovement : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] GameObject _DustParticleAfterRotate;
 
+    public UnityEvent OnCorrectAction;
 
     #region Accessor
     public bool IsPreview { get => _isPreview; set => _isPreview = value; }
@@ -371,11 +373,6 @@ public class RubiksMovement : MonoBehaviour
             block.transform.SetParent(this.transform.parent, true);
         }
 
-
-
-
-
-
         if (isMiddle)
         {
             middleGameObject.parent = transform.parent;
@@ -396,8 +393,44 @@ public class RubiksMovement : MonoBehaviour
         }
         if (!_isPreview && !_isArtCube)
         {
-            if (!_DoAutoMoves) EventManager.TriggerEndCubeRotation();
+            if (!_DoAutoMoves)
+            {
+                EventManager.TriggerEndCubeRotation();
+                _CheckCorrectActions(blockIndexs);
+            }
             else EventManager.TriggerEndCubeSequenceRotation();
+        }
+    }
+
+    private void _CheckCorrectActions(List<int> blockIndexs)
+    {
+        bool isAxisCorrect = true;
+        foreach (int i in blockIndexs)
+        {
+            Transform block = _allBlocks[i];
+
+            RightActionObject rightActionObject = block.GetComponent<RightActionObject>();
+
+            if(rightActionObject == null || rightActionObject.enabled == false)
+                continue;
+
+            if(!rightActionObject.IsTheRightPose())
+                isAxisCorrect = false;
+        }
+        if (isAxisCorrect)
+        {
+            foreach (int i in blockIndexs)
+            {
+                Transform block = _allBlocks[i];
+
+                SelectionCube selection = block.GetComponent<SelectionCube>();
+
+                if (selection == null)
+                    continue;
+
+                selection.StartCorrectActionAnim();
+                OnCorrectAction?.Invoke();
+            }
         }
     }
 
