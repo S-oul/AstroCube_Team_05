@@ -146,12 +146,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3816998853808901752}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalRotation: {x: 0.5905018, y: 0.38898292, z: -0.5905018, w: 0.38898286}
+  m_LocalPosition: {x: 0.029180072, y: -0.22735827, z: 0.011739139}
+  m_LocalScale: {x: 0.013375472, y: 0.013375473, z: 0.013375472}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2122691385910555648}
+  m_Father: {fileID: 380055666795190854}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &5014833662191397856
 ParticleSystem:
@@ -4972,7 +4972,6 @@ GameObject:
   - component: {fileID: 9178439567573374004}
   - component: {fileID: 7777166597384360812}
   - component: {fileID: 5912541447841743214}
-  - component: {fileID: 2816959729667911520}
   m_Layer: 13
   m_Name: Chaine
   m_TagString: Untagged
@@ -5054,8 +5053,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4578836245550765179}
   serializedVersion: 4
-  m_Mass: 100
-  m_Drag: 3
+  m_Mass: 5
+  m_Drag: 1
   m_AngularDrag: 4
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5072,7 +5071,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!153 &5912541447841743214
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -5175,27 +5174,6 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 4
   m_ConnectedMassScale: 4
---- !u!135 &2816959729667911520
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4578836245550765179}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.005
-  m_Center: {x: 0.01, y: 0.73, z: 0}
 --- !u!1 &4707030191689316537
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,7 +5285,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!138 &8914162960306154237
 FixedJoint:
   m_ObjectHideFlags: 0
@@ -5493,7 +5471,6 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 6704164682576459620}
   - {fileID: 8610308206429134047}
   - {fileID: 8483433183005802046}
   m_Father: {fileID: 0}
@@ -5613,8 +5590,7 @@ GameObject:
   - component: {fileID: 380055666795190854}
   - component: {fileID: 4688629504039953898}
   - component: {fileID: 4695609715414801267}
-  - component: {fileID: 1010129696254147342}
-  - component: {fileID: 5743020035894634362}
+  - component: {fileID: 8940381724401204000}
   m_Layer: 13
   m_Name: Lampe
   m_TagString: Untagged
@@ -5638,6 +5614,7 @@ Transform:
   - {fileID: 5194803811478580671}
   - {fileID: 5748340145454670385}
   - {fileID: 782240642349326377}
+  - {fileID: 6704164682576459620}
   m_Father: {fileID: 6081227232848241518}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4688629504039953898
@@ -5690,30 +5667,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1010129696254147342
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8502699263318423839}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2526262806704550988, guid: 29a86b947635a8d4ca38fb2c02136751, type: 3}
---- !u!135 &5743020035894634362
-SphereCollider:
+--- !u!136 &8940381724401204000
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5730,8 +5685,10 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.07
+  serializedVersion: 2
+  m_Radius: 0.08
+  m_Height: 0.3
+  m_Direction: 2
   m_Center: {x: -0.00000008944543, y: -6.571344e-11, z: -0.0004710632}
 --- !u!1 &8811206950200261695
 GameObject:
