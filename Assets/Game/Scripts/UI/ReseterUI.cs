@@ -5,11 +5,23 @@ using UnityEngine;
 public class ReseterUI : MonoBehaviour
 {
     [SerializeField] private Material _material;
-    [SerializeField] private string _sliderProperty = "Slider";
+    [SerializeField] private string _sliderProperty = "_Slider1";
+    [SerializeField] private GameObject _sliderObject;
     private GameSettings _gameSettings;
 
 
     private Coroutine _sliderCoroutine;
+
+
+    private void OnEnable()
+    {
+        EventManager.OnPlayerReset += OnReset;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnPlayerReset -= OnReset;
+    }
 
 
     private void Awake()
@@ -17,14 +29,15 @@ public class ReseterUI : MonoBehaviour
         _gameSettings = GameManager.Instance.Settings;
     }
 
-    public void OnReset()
+    public void OnReset(float caca)
     {
+        
+
         if (!_material.HasProperty(_sliderProperty))
         {
             Debug.LogError($"Material doesnt contain the property : '{_sliderProperty}'. Check the shader.");
             return;
         }
-
         float resetTime = _gameSettings.ResetCurve.Evaluate(GameManager.Instance.RubiksCube.Moves.Count);
 
         if (_sliderCoroutine != null)
@@ -35,6 +48,7 @@ public class ReseterUI : MonoBehaviour
 
     private IEnumerator AnimateSlider(float duration)
     {
+        _sliderObject.SetActive(true);
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -47,6 +61,9 @@ public class ReseterUI : MonoBehaviour
 
         _material.SetFloat(_sliderProperty, 1f);
         _sliderCoroutine = null;
+
+        _material.SetFloat(_sliderProperty, 1f);
+        _sliderObject.SetActive(false);
     }
 
 
