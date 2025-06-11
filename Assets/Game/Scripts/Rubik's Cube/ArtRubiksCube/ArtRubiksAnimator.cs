@@ -16,7 +16,7 @@ public class ArtRubiksAnimator : MonoBehaviour
         Coin
     }
 
-    void Awake()
+    void Start()
     {
         //EventManager.OnEndCubeRotation += StartAnimIdle;
 

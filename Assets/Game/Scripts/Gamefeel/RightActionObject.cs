@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class RightActionObject : MonoBehaviour
 {
-    public Pose RightPose { get => _rightPose; set => _rightPose = value; }
-    [SerializeField, ReadOnly] private Pose _rightPose;
+    public string Name {  get; private set; }
+    public int Index {  get; private set; } 
+
+    private SelectionCube _selection;
+    Pose _rightPose;
 
     public Pose GetActualPose()
     {
@@ -19,40 +22,39 @@ public class RightActionObject : MonoBehaviour
 
     private void Awake()
     {
-        var infos = PlayModePositionSaver.PositionsSave;
+        Name = gameObject.name;
+        Index = transform.GetSiblingIndex(); 
+    }
+
+    private void Start()
+    {
+        _selection = GetComponent<SelectionCube>();
+        var infos = GameManager.Instance.RightActions;
         if (infos == null || infos.RightActionInfos == null)
         {
-            //Debug.LogWarning("You must save object in their final positions");
-            return;            
+            return;
         }
-        else if(infos.RightActionInfos == null)
+        else if (infos.RightActionInfos == null)
         {
             Debug.LogWarning("You must save object in their final positions");
             return;
         }
-        var info = infos.RightActionInfos.FirstOrDefault(x => x.ObjectRef == gameObject);
-        if(info != null)
-            _rightPose = info.Pose;
+        var rightActionInfo = infos.RightActionInfos.FirstOrDefault(x => x.ObjectName == Name && x.SiblingIndex == Index); // This is NOT a viable long term solution for indentifying gameobjects
+        if(rightActionInfo != null) 
+            _rightPose = rightActionInfo.Pose;
     }
-    private void OnEnable()
+
+    public void Shine()
     {
-        EventManager.OnEndCubeRotation += CheckIsTheRightPose;
+        if (_selection)
+            _selection.StartCorrectActionAnim();        
     }
-    private void OnDisable()
+
+    public bool IsTheRightPose()
     {
-        EventManager.OnEndCubeRotation -= CheckIsTheRightPose;
-    }
-    void /*bool*/ CheckIsTheRightPose()
-    {
-        if((Vector3.Distance(_rightPose.position,transform.localPosition) < Vector3.kEpsilon) && (Quaternion.Dot(_rightPose.rotation,transform.localRotation ) > 1 - Quaternion.kEpsilon))
-        {
-            //print("SAMEPOSE");
-            return;// true;
-        }
+        if ((Vector3.Distance(_rightPose.position,transform.localPosition) < 0.01f) && (Mathf.Abs(Quaternion.Dot(_rightPose.rotation,transform.localRotation )) > 1 - 0.01f))
+            return true;
         else
-        {
-            //print("NOPECONNARD");
-            return;// false;
-        }
+            return false;
     }
 }

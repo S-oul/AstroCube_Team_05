@@ -1,16 +1,26 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using static PositionSaveFile;
+using static UnityEngine.VFX.VFXTypeAttribute;
 
 [CustomEditor(typeof(PlayModePositionSaver))]
 public class PlayModePositionSaverEditor : Editor
 {
     [SerializeField] Font _font;
+    UnityEngine.SceneManagement.Scene _currentScene;
 
     public override void OnInspectorGUI()
     {
+        if (_currentScene.name == null)
+            _currentScene = EditorSceneManager.GetActiveScene();
+        if (PlayModePositionSaver.PositionsSave == null || PlayModePositionSaver.PositionsSave.SceneName != _currentScene.name)
+            GetSaveAsset();
+
         GUI.skin.font = _font;
 
         GUILayout.BeginVertical("GroupBox");
@@ -19,6 +29,11 @@ public class PlayModePositionSaverEditor : Editor
         if (GUILayout.Button("Save End/Right Positions", new GUIStyle(GUI.skin.button)))
         {
             SaveRightPositions();
+        }        
+        if (PlayModePositionSaver.PositionsSave != null)
+        {
+            GUI.backgroundColor = Color.white;
+            GUILayout.Label($"RightActions saved : {PlayModePositionSaver.PositionsSave.RightActionInfos.Count}");
         }
         GUILayout.EndVertical();
 
@@ -65,13 +80,13 @@ public class PlayModePositionSaverEditor : Editor
 
         foreach (RightActionObject o in allImportantObjects)
         {
-            RightActionInfo info = new(o.gameObject, o.GetActualPose());
-            o.RightPose = o.GetActualPose();
+            RightActionInfo info = new(o.Name, o.Index, o.GetActualPose());
             PlayModePositionSaver.PositionsSave.RightActionInfos.Add(info);
         }
 
         AssetDatabase.SaveAssetIfDirty(PlayModePositionSaver.PositionsSave);
         EditorUtility.ClearDirty(PlayModePositionSaver.PositionsSave);
+        
     }
 
     private void SavePositions()
@@ -123,5 +138,33 @@ public class PlayModePositionSaverEditor : Editor
 
         AssetDatabase.SaveAssetIfDirty(PlayModePositionSaver.PositionsSave);
         EditorUtility.ClearDirty(PlayModePositionSaver.PositionsSave);
+    }
+
+    private void GetSaveAsset()
+    {
+        string path = "Assets/Resources";
+
+        if (!AssetDatabase.IsValidFolder(path + "/CorrectActionsSaves"))
+        {
+            AssetDatabase.CreateFolder(path, "CorrectActionsSaves");
+        }
+
+        string name = "CorrectActionsSave_" + _currentScene.name;
+
+        var _oldSave = AssetDatabase.LoadAssetAtPath(path + "/CorrectActionsSaves/" + name + ".asset", typeof(PositionSaveFile));
+        if (_oldSave == null)
+        {
+            PlayModePositionSaver.PositionsSave = CreateInstance<PositionSaveFile>();
+            PlayModePositionSaver.PositionsSave.SceneName = _currentScene.name;
+            string newAssetPath = path + "/CorrectActionsSaves/" + name + ".asset";
+            AssetDatabase.CreateAsset(PlayModePositionSaver.PositionsSave, newAssetPath);
+            AssetDatabase.SaveAssets();
+        }
+        else
+        {
+            PlayModePositionSaver.PositionsSave = _oldSave as PositionSaveFile;
+        }
+
+        AssetDatabase.Refresh();
     }
 }

@@ -1,27 +1,34 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Test", fileName = "Yippie")]
+[CreateAssetMenu(menuName = "Tools/PositionSaveFile", fileName = "PositionSaveFile")]
 public class PositionSaveFile : ScriptableObject
 {
-    public List<GameObject> Objects;
-    public List<Vector3> Positions;
-    public List<Vector3> EulerAngles;
-    public List<Vector3> Scales;
-    public List<RightActionInfo> RightActionInfos;
+    public string SceneName;
+    public List<GameObject> Objects = new();
+    public List<Vector3> Positions = new();
+    public List<Vector3> EulerAngles = new();
+    public List<Vector3> Scales = new();
+    public List<RightActionInfo> RightActionInfos = new();
 
+    [Serializable]
     public class RightActionInfo
     {
-        public RightActionInfo(GameObject objectRef, Pose pose)
+        public RightActionInfo(string name, int index, Pose pose)
         {
-            _objectRef = objectRef;
+            _objectName = name;
+            _siblingIndex = index;
             _pose = pose;
         }
 
-        public GameObject ObjectRef => _objectRef;
+        public string ObjectName => _objectName;
+        public int SiblingIndex => _siblingIndex;
         public Pose Pose => _pose;
 
-        private GameObject _objectRef;
-        private Pose _pose;
+        [SerializeField] private string _objectName;
+        [SerializeField] private int _siblingIndex;
+        [SerializeField] private Pose _pose;
     }
 }

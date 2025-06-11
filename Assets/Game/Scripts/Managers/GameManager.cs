@@ -12,6 +12,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,12 +50,16 @@ public class GameManager : MonoBehaviour
     public RubiksMovement RubiksCube => _rubiksCube;
 
     [SerializeField] private SliceAxis _actualSliceAxis;
+    public PositionSaveFile RightActions { get; private set; }
+
     private void Awake()
     {
         if (instance) Destroy(this);
         else instance = this;
 
-        if(PreviewRubiksCube == null)
+        RightActions = Resources.Load<PositionSaveFile>($"CorrectActionsSaves/CorrectActionsSave_{SceneManager.GetActiveScene().name}");
+
+        if (PreviewRubiksCube == null)
         {
             PreviewRubiksCube = FindAnyObjectByType<PreviewRubiksCube>();
         }
@@ -169,8 +174,6 @@ public class GameManager : MonoBehaviour
         {
             if(obj)
                 obj.gameObject.SetActive(false);
-            if (obj == null) continue;
-            obj.gameObject.SetActive(false);
         }
         _artifact.gameObject.SetActive(false);
         _entitySequenceManager.gameObject.SetActive(true);

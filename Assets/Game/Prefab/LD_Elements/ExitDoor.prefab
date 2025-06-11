@@ -80,7 +80,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8149431414180772602
 PrefabInstance:
@@ -90,10 +90,40 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5168825579941675567}
     m_Modifications:
+    - target: {fileID: 300336120287051276, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6700001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1928960169384953201, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6700001
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113583762449197653, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6700001
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266476953360039438, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6700001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4247946706753227058, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6700001
+      objectReference: {fileID: 0}
     - target: {fileID: 5071771528953332141, guid: 995fdf26b693755479df11244feac6d2,
         type: 3}
       propertyPath: m_Name
       value: Portal_Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071771528953332141, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5080413183850511259, guid: 995fdf26b693755479df11244feac6d2,
         type: 3}
@@ -145,6 +175,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6115858083792875525, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 7832778314261834386, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6700001
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 369459519076157527, guid: 995fdf26b693755479df11244feac6d2, type: 3}
     - {fileID: 8790184855659686856, guid: 995fdf26b693755479df11244feac6d2, type: 3}
@@ -163,6 +203,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4511603610886933879}
+    - targetCorrespondingSourceObject: {fileID: 5071771528953332141, guid: 995fdf26b693755479df11244feac6d2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8567126769390091698}
   m_SourcePrefab: {fileID: 100100000, guid: 995fdf26b693755479df11244feac6d2, type: 3}
 --- !u!1 &3997531688754445143 stripped
 GameObject:
@@ -242,6 +286,41 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 8e6084f6993c2ca42861683e0c47cd3c,
+      type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 1
+  Callbacks: []
+  soundEmitterObject: {fileID: 3997531688754445143}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
+  MultiPositionType: 1
+  multiPositionTypeLabel: 0
+  attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
+  LargeModePositions: []
+  multiPositionArray: []
+--- !u!114 &8567126769390091698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3997531688754445143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcfc5d937a7c4014b80e53e711a4f7be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: daa35d71afd9e2d48a6c5687e850b0c5,
       type: 2}
   useCallbacks: 0
   stopSoundOnDestroy: 1
