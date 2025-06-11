@@ -13,10 +13,11 @@ public class SettingsMenuButtonFunc : MonoBehaviour
     [SerializeField] Slider _mouseSlider;
     [SerializeField] Slider _volumeSlider;
 
-    [SerializeField] Button _vibrationButton; 
-    [SerializeField] Button _previewButton; 
-    [SerializeField] Button _subtitlesButton; 
+    [SerializeField] ToggleButtonFunctionality _vibrationButton; 
+    [SerializeField] ToggleButtonFunctionality _previewButton; 
+    [SerializeField] ToggleButtonFunctionality _motionBlurButton;
 
+    [SerializeField] ToggleMenuElements _toggelMenuElem;
     PauseMenu _pauseMenu;
 
     private void Start()
@@ -35,14 +36,26 @@ public class SettingsMenuButtonFunc : MonoBehaviour
         _volumeSlider.onValueChanged.AddListener((val) =>
         _cs.customVolume = GetCustomVal(val, _cs.minVolume, _cs.maxVolume));
 
-        SetButtonApperance(_vibrationButton, "Vibration", _cs.customVibration);
-        SetButtonApperance(_previewButton, "Preview", _cs.customPreview);
-        SetButtonApperance(_subtitlesButton, "Subtitles", _cs.customSubtitles);
+        _vibrationButton.SetButtonState(_cs.customVibration);
+        _previewButton.SetButtonState(_cs.customPreview);
+        _motionBlurButton.SetButtonState(_cs.customMotionBlur);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.JoystickButton1)) // if player presses B on an Xbox controler. 
+        {
+            BackButton();
+        }
     }
 
     public void BackButton()
     {
-        _pauseMenu.SetActiveSettingsMenu(false);
+        if (_pauseMenu) { _pauseMenu.SetActiveSettingsMenu(false); }
+        else
+        {
+            _toggelMenuElem.Activate(MenuElement.START_MENU);
+        }
     }
 
     float GetSliderPosition(float? currentVal, float minVal, float maxVal)
@@ -57,28 +70,22 @@ public class SettingsMenuButtonFunc : MonoBehaviour
 
     public void ControlsButton()
     {
-        Debug.Log("You clicked the Controls button.\nBut this menu does not exist yet.\n\nVanilla Extract :P\n\n");
+        if(_toggelMenuElem)_toggelMenuElem.Activate(MenuElement.CONTROLS); // only for start menu
     }
 
-    public void PreviewButton(Button button)
+    public void PreviewButton()
     {
         _cs.customPreview = !_cs.customPreview;
-        SetButtonApperance(button, "Preview", (bool)_cs.customPreview);
+        _previewButton.SetButtonState(_cs.customPreview);
     }
-    public void VibrationButton(Button button)
+    public void VibrationButton()
     {
         _cs.customVibration = !_cs.customVibration;
-        SetButtonApperance(button, "Vibration", (bool)_cs.customVibration);
+        _vibrationButton.SetButtonState(_cs.customVibration);
     }
-    public void SubtitlesButton(Button button)
+    public void MotionBlurButton()
     {
-        _cs.customSubtitles = !_cs.customSubtitles;
-        SetButtonApperance(button, "Subtitles", (bool)_cs.customSubtitles);
-    }
-
-    private void SetButtonApperance(Button button, string v, bool isActivated)
-    {
-        string isActiveLabel = isActivated ? "On" : "Off";
-        button.GetComponentInChildren<TextMeshProUGUI>().text = v + " : " + isActiveLabel;
+        _cs.customMotionBlur = !_cs.customMotionBlur;
+        _motionBlurButton.SetButtonState(_cs.customMotionBlur);
     }
 }
