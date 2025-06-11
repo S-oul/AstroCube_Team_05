@@ -8,10 +8,12 @@ public class EntitySequenceManager : MonoBehaviour
     [SerializeField] List<GameObject> _objectToDisable;
 
     [SerializeField] InteractLine _interactLine;
-    
+
+    public UnityEvent OnEnd;
     public void StartAnim() => _ToggleObjects(false);
     public void StopAnim()
     {
+        OnEnd?.Invoke();
         if(_interactLine) _interactLine.CallCoroutine();
         _ToggleObjects(true);
         gameObject.SetActive(false);

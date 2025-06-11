@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFocusAttractor : MonoBehaviour
@@ -13,34 +12,7 @@ public class CameraFocusAttractor : MonoBehaviour
     [SerializeField] private bool _affectYaw = true;
     [SerializeField] private bool _affectPitch = true;
 
-    private List<Coroutine> _activeCoroutines = new List<Coroutine>();
-    private CameraFocusParameters _continuousFocusParam;
-    private bool _isContinuousFocusActive = false;
-
-    private void Update()
-    {
-        if (_isContinuousFocusActive && _continuousFocusParam != null && _continuousFocusParam.PointOfInterest != null)
-        {
-            Vector3 toTarget = (_continuousFocusParam.PointOfInterest.position - _cameraTransform.position).normalized;
-            Quaternion targetRot = Quaternion.LookRotation(toTarget);
-            Vector3 targetEuler = targetRot.eulerAngles;
-
-            float targetYaw = targetEuler.y;
-            float targetPitch = targetEuler.x;
-
-            float currentYaw = _cameraControl.PlayerTransformEulerY();
-            float newYaw = Mathf.LerpAngle(currentYaw, targetYaw, _continuousFocusParam.Strength * Time.deltaTime * 10f);
-
-            if (_affectYaw)
-                _cameraControl.SetExternalYaw(newYaw, _continuousFocusParam.Strength);
-
-            float currentPitch = _cameraTransform.localEulerAngles.x;
-            float newPitch = Mathf.LerpAngle(currentPitch, targetPitch, _continuousFocusParam.Strength * Time.deltaTime * 10f);
-
-            if (_affectPitch)
-                _cameraControl.SetExternalPitch(newPitch, _continuousFocusParam.Strength);
-        }
-    }
+    private Coroutine _focusCoroutine;
 
     public void StartFocus(CameraFocusParameters param)
     {
@@ -50,39 +22,10 @@ public class CameraFocusAttractor : MonoBehaviour
             return;
         }
 
-        Coroutine routine = StartCoroutine(FocusRoutine(param));
-        _activeCoroutines.Add(routine);
-    }
+        if (_focusCoroutine != null)
+            StopCoroutine(_focusCoroutine);
 
-    public void StartContinuousFocus(CameraFocusParameters param)
-    {
-        if (param.PointOfInterest == null || _cameraControl == null || _cameraTransform == null)
-        {
-            Debug.LogWarning("CameraFocusAttractor: Missing reference(s)");
-            return;
-        }
-
-        _continuousFocusParam = param;
-        _isContinuousFocusActive = true;
-    }
-
-    public void StopFocus()
-    {
-        StopAllFocus();
-    }
-
-    public void StopAllFocus()
-    {
-        foreach (var coroutine in _activeCoroutines)
-        {
-            if (coroutine != null)
-                StopCoroutine(coroutine);
-        }
-
-        _activeCoroutines.Clear();
-        _isContinuousFocusActive = false;
-        _continuousFocusParam = null;
-        _cameraControl.ClearExternalInfluence();
+        _focusCoroutine = StartCoroutine(FocusRoutine(param));
     }
 
     private IEnumerator FocusRoutine(CameraFocusParameters param)
@@ -179,11 +122,14 @@ public class CameraFocusAttractor : MonoBehaviour
                 float p = Mathf.SmoothStep(0f, 1f, rt / param.ReturnDuration);
 
                 float newPitch = Mathf.LerpAngle(initialPitch, targetPitchAtEnd, p);
+
                 if (_affectPitch)
                     _cameraControl.SetExternalPitch(newPitch, Mathf.Lerp(param.Strength, 0f, p));
 
                 if (_affectYaw)
+                {
                     _cameraControl.SetExternalYaw(targetYawAtEnd, Mathf.Lerp(param.Strength, 0f, p));
+                }
 
                 rt += Time.deltaTime;
                 yield return null;
@@ -191,12 +137,27 @@ public class CameraFocusAttractor : MonoBehaviour
         }
 
         _cameraControl.ClearExternalInfluence();
+        _focusCoroutine = null;
     }
 
     public bool IsFocusActive()
     {
-        return _activeCoroutines.Count > 0 || _isContinuousFocusActive;
+        return _focusCoroutine != null;
     }
+
+    /*
+    public void SetPointOfInterest(Transform newTarget)
+    {
+        pointOfInterest = newTarget;
+    }
+
+    public void SetFocusParameters(float transition, float focus, float strengthValue)
+    {
+        transitionDuration = transition;
+        focusDuration = focus;
+        strength = strengthValue;
+    }
+    */
 
     [Serializable]
     public class CameraFocusParameters
