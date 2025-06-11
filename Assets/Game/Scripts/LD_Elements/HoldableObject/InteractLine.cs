@@ -10,13 +10,16 @@ public class InteractLine : MonoBehaviour, IHoldable
 {
     [SerializeField] private EntitySequenceManager _entityOverlay;
     [SerializeField] RubiksMovement _UICube;
-
+    [SerializeField] private RubiksCubeController _controller;
+    [SerializeField] private ExitDoor _exitDoor;
+    
     public UnityEvent onPlayerActivate;
 
     public bool IsLevel8;
     
     private void Start()
     {
+        _controller.ShowStripLayerToPlayer = false;
         var xxx = _UICube.GetCubesFromFace(_UICube.AllBlocks[IsLevel8? 0 :23], SliceAxis.X);
         print(xxx.Count);
         foreach (var block in xxx)
@@ -66,6 +69,12 @@ public class InteractLine : MonoBehaviour, IHoldable
              ani?.SetBool("ImFar",false);
              ani?.SetTrigger("DoAttach");
         }
+        
+        yield return new WaitForSeconds(2f);
+        _exitDoor.FocusCameraToExit();
+        _controller.ShowStripLayerToPlayer = true;
+
+
     }
     
     public void OnRelease()

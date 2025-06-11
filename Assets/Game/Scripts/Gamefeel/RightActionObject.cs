@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class RightActionObject : MonoBehaviour
 {
-    public Pose RightPose { get => _rightPose; set => _rightPose = value; }
-    [SerializeField, ReadOnly] private Pose _rightPose;
+    public string Name {  get; private set; }
+    public int Index {  get; private set; } 
+
     private SelectionCube _selection;
-    bool _isAlreadyInRightPose;
+    Pose _rightPose;
 
     public Pose GetActualPose()
     {
@@ -17,6 +18,12 @@ public class RightActionObject : MonoBehaviour
             rotation = transform.localRotation,
         };
         return pose;
+    }
+
+    private void Awake()
+    {
+        Name = gameObject.name;
+        Index = transform.GetSiblingIndex(); 
     }
 
     private void Start()
@@ -32,36 +39,18 @@ public class RightActionObject : MonoBehaviour
             Debug.LogWarning("You must save object in their final positions");
             return;
         }
-        var info = infos.RightActionInfos.FirstOrDefault(x => x.ObjectName == gameObject.name);
-        if (info != null)
-        {
-            _rightPose = info.Pose;
-        }
-        if (_IsTheRightPose())
-        {
-            _isAlreadyInRightPose = true;
-        }
+        var rightActionInfo = infos.RightActionInfos.FirstOrDefault(x => x.ObjectName == Name && x.SiblingIndex == Index); // This is NOT a viable long term solution for indentifying gameobjects
+        if(rightActionInfo != null) 
+            _rightPose = rightActionInfo.Pose;
     }
 
-    private void OnEnable()
+    public void Shine()
     {
-        EventManager.OnEndCubeRotation += CheckIsTheRightPose;
-    }
-    private void OnDisable()
-    {
-        EventManager.OnEndCubeRotation -= CheckIsTheRightPose;
+        if (_selection)
+            _selection.StartCorrectActionAnim();        
     }
 
-    void CheckIsTheRightPose()
-    {
-        if (!_isAlreadyInRightPose &&_IsTheRightPose())
-        {
-            if (_selection)
-                _selection.StartCorrectActionAnim();
-        }
-    }
-
-    bool _IsTheRightPose()
+    public bool IsTheRightPose()
     {
         if ((Vector3.Distance(_rightPose.position,transform.localPosition) < 0.01f) && (Mathf.Abs(Quaternion.Dot(_rightPose.rotation,transform.localRotation )) > 1 - 0.01f))
             return true;

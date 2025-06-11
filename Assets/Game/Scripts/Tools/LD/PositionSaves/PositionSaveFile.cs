@@ -16,10 +16,10 @@ public class PositionSaveFile : ScriptableObject
     [Serializable]
     public class RightActionInfo
     {
-        public RightActionInfo(GameObject objectRef, Pose pose)
+        public RightActionInfo(string name, int index, Pose pose)
         {
-            _objectName = objectRef.name;
-            _siblingIndex = objectRef.transform.GetSiblingIndex();
+            _objectName = name;
+            _siblingIndex = index;
             _pose = pose;
         }
 
