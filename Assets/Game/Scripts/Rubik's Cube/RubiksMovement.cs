@@ -405,6 +405,7 @@ public class RubiksMovement : MonoBehaviour
     private void _CheckCorrectActions(List<int> blockIndexs)
     {
         bool isAxisCorrect = true;
+        bool axisHasRightAction = false;
         foreach (int i in blockIndexs)
         {
             Transform block = _allBlocks[i];
@@ -414,10 +415,11 @@ public class RubiksMovement : MonoBehaviour
             if(rightActionObject == null || rightActionObject.enabled == false)
                 continue;
 
+            axisHasRightAction = true;
             if(!rightActionObject.IsTheRightPose())
                 isAxisCorrect = false;
         }
-        if (isAxisCorrect)
+        if (isAxisCorrect && axisHasRightAction)
         {
             foreach (int i in blockIndexs)
             {
