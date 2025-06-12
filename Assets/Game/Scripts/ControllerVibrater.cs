@@ -33,6 +33,7 @@ public class ControllerVibrater : MonoBehaviour
 
     void SetVibrationIsActive(bool isActive)
     {
+        Debug.Log("Vibration set to" + isActive);
         _vibrationIsActive = isActive;
     }
 

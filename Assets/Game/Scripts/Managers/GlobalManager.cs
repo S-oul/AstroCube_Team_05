@@ -40,6 +40,7 @@ public class GlobalManager : MonoBehaviour
 
     public void TogglePreview(bool isEnabled)
     {
+        Debug.Log("Preview settings changed");
         if (_gm.PreviewRubiksCube == null) return;
 
         Time.timeScale = 1f;

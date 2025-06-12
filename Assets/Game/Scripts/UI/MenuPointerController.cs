@@ -12,6 +12,8 @@ public class MenuPointerController : MonoBehaviour
     Image _pointerImage;
     Image _altPointerImage;
 
+    Transform _alternatePointer;
+
     private void Start()
     {
         _newArrowPos = transform.position;
@@ -25,8 +27,8 @@ public class MenuPointerController : MonoBehaviour
         if (_currentlySelectedGameObject == _lastSelectedGameObject ) return; // if current selected hasn't changed, end Update loop. 
 
         // check if selected UI has an alternate pointer
-        Transform alternatePointer = FindChildWithTag(_currentlySelectedGameObject, "AlternateMenuUiPointer");
-        if (alternatePointer == null)
+        _alternatePointer = FindChildWithTag(_currentlySelectedGameObject, "AlternateMenuUiPointer");
+        if (_alternatePointer == null)
         {
             if (_altPointerImage!= null) {  // deactivate any active altPointers
                 _altPointerImage.enabled = false;
@@ -41,7 +43,7 @@ public class MenuPointerController : MonoBehaviour
         else
         {
             // activate altPointer and deactivate pointer
-            _altPointerImage = alternatePointer.GetComponent<Image>();
+            _altPointerImage = _alternatePointer.GetComponent<Image>();
             _altPointerImage.enabled = true;
             _pointerImage.enabled = false;
         }

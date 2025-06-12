@@ -5,16 +5,14 @@ using UnityEngine.Events;
 
 public class EventManager : MonoBehaviour
 {
+    [SerializeField] CustomisedSettings cs;
+    
     public static EventManager Instance => instance;
     private static EventManager instance;
 
     private GameSettings _gameSettings;
 
     public static bool gamePaused = false;
-
-
-
-
 
     public UnityEvent RotatingFace;
 
@@ -276,7 +274,7 @@ public class EventManager : MonoBehaviour
     }    
     public static void TriggerVolumeChange(float newVolume)
     {
-        OnVolumeChange?.Invoke(newVolume);
+        OnVolumeChange?.Invoke(newVolume); // does nothing
     }
     public static void TriggerVibrationChange(bool newVibration)
     {
@@ -295,4 +293,15 @@ public class EventManager : MonoBehaviour
         OnOneHandChange?.Invoke(newOneHand);
     }
 
+    private void Start()
+    {
+        // re-affirm all customisable settings at the beginning of each scene. 
+        TriggerFOVChange(cs.customFov);
+        TriggerMouseChange(cs.customMouse);
+        TriggerVolumeChange(cs.customVolume);
+        TriggerVibrationChange(cs.customVibration);
+        TriggerMotionBlurChange(cs.customMotionBlur);
+        TriggerPreviewChange(cs.customPreview);
+        TriggerOneHandChange(cs.customOneHand);
+    }
 }

@@ -218,11 +218,13 @@ public class MouseCamControl : MonoBehaviour
 
     void UpdateCameraFOV(float newFOV)
     {
+        Debug.Log("Camera FOV changed to" + newFOV);
         _mainCamera.fieldOfView = newFOV;
     }
 
     void UpdateCameraMouseSensitivity(float newCamMouseSen)
     {
+        Debug.Log("Mouse Sensitivity set to" + newCamMouseSen);
         yawSensitivity = newCamMouseSen;
         pitchSensitivity = newCamMouseSen;
     }
