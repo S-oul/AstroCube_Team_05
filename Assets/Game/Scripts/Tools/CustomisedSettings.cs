@@ -52,26 +52,6 @@ public class CustomisedSettings : ScriptableObject
         }
     }
 
-    public float defaultJoystick => _defaultJoystick;
-    public float minJoystick => _minimumJoystick;
-    public float maxJoystick => _maximumJoystick;
-    public float customJoystick
-    {
-        get => _customJoystick ?? defaultJoystick;
-        set
-        {
-            if (value < minJoystick)
-            {
-                _customJoystick = minJoystick;
-            }
-            else if (value > maxJoystick)
-            {
-                _customJoystick = maxJoystick;
-            }
-            else { _customJoystick = value; }
-        }
-    }
-
     public float defaultVolume => _defaultVolume;
     public float minVolume => _minimumVolume;
     public float maxVolume => _maximumVolume;
@@ -89,6 +69,7 @@ public class CustomisedSettings : ScriptableObject
                 _customVolume = maxVolume;
             }
             else { _customVolume = value; }
+            EventManager.TriggerVolumeChange(customVolume);
         }
     }
 
@@ -100,6 +81,17 @@ public class CustomisedSettings : ScriptableObject
         { 
             _customVibration = value; 
             EventManager.TriggerVibrationChange(customVibration);
+        }
+    }    
+    
+    public bool defaultMotionBlur => _defaultMotionBlur;
+    public bool customMotionBlur
+    {
+        get => _customMotionBlur ?? _defaultMotionBlur;
+        set 
+        {
+            _customMotionBlur = value; 
+            EventManager.TriggerMotionBlurChange(customMotionBlur);
         }
     }
 
@@ -114,11 +106,15 @@ public class CustomisedSettings : ScriptableObject
         }
     }
 
-    public bool defaultSubtitles => _defaultSubtitles;
-    public bool customMotionBlur
+    public bool defaultOneHand => _defaultOneHand;
+    public bool customOneHand
     {
-        get => _customSubtitles ?? defaultSubtitles;
-        set { _customSubtitles = value; }
+        get => _customOneHand ?? defaultOneHand;
+        set 
+        {
+            _customOneHand = value;
+            EventManager.TriggerOneHandChange(customOneHand);
+        }
     }
 
     [Header("FOV")]
@@ -136,13 +132,6 @@ public class CustomisedSettings : ScriptableObject
     [SerializeField, Label("Maximum")] float _maximumMouse;
     float? _customMouse;
 
-    [Header("JoystickSensibility")]
-
-    [SerializeField, Label("Default")] float _defaultJoystick;
-    [SerializeField, Label("Minimum")] float _minimumJoystick;
-    [SerializeField, Label("Maximum")] float _maximumJoystick;
-    float? _customJoystick;
-
     [Header("Volume")]
 
     [SerializeField, Label("Default")] float _defaultVolume;
@@ -154,13 +143,17 @@ public class CustomisedSettings : ScriptableObject
     [SerializeField, Label("Default")] bool _defaultVibration;
     bool? _customVibration;
 
+    [Header("Motion Blur")]
+    [SerializeField, Label("Default")] bool _defaultMotionBlur;
+    bool? _customMotionBlur;
+
     [Header("Preview")]
     [SerializeField, Label("Default")] bool _defaultPreview;
     bool? _customPreview;
 
-    [Header("Subtitles")]
-    [SerializeField, Label("Default")] bool _defaultSubtitles;
-    bool? _customSubtitles;
+    [Header("One Hand")]
+    [SerializeField, Label("Default")] bool _defaultOneHand;
+    bool? _customOneHand;
 
 
 }

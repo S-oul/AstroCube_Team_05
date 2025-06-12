@@ -120,9 +120,11 @@ public class EventManager : MonoBehaviour
     // Custom Settings Events
     public static event Action<float> OnFOVChange;
     public static event Action<float> OnMouseChange;
-    public static event Action<float> OnJoystickChange;
+    public static event Action<float> OnVolumeChange;
     public static event Action<bool> OnVibrationChange;
+    public static event Action<bool> OnMotionBlurChange;
     public static event Action<bool> OnPreviewChange;
+    public static event Action<bool> OnOneHandChange;
 
 
     public void DebugTest()
@@ -271,18 +273,26 @@ public class EventManager : MonoBehaviour
     public static void TriggerMouseChange(float newMouse)
     {
         OnMouseChange?.Invoke(newMouse);
-    }
-    public static void TriggerJoystickChange(float newJoystick)
+    }    
+    public static void TriggerVolumeChange(float newVolume)
     {
-        OnJoystickChange?.Invoke(newJoystick); // currently does not do anything and is never called. 
+        OnVolumeChange?.Invoke(newVolume);
     }
     public static void TriggerVibrationChange(bool newVibration)
     {
         OnVibrationChange?.Invoke(newVibration);
+    }    
+    public static void TriggerMotionBlurChange(bool newMotionBlur)
+    {
+        OnMotionBlurChange?.Invoke(newMotionBlur);
     }
     public static void TriggerPreviewChange(bool newPreview)
     {
         OnPreviewChange?.Invoke(newPreview);
+    }
+    public static void TriggerOneHandChange(bool newOneHand)
+    {
+        OnOneHandChange?.Invoke(newOneHand);
     }
 
 }

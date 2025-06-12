@@ -40,7 +40,7 @@ public class SettingsMenuButtonFunc : MonoBehaviour
         _vibrationButton.SetButtonState(_cs.customVibration);
         _previewButton.SetButtonState(_cs.customPreview);
         _motionBlurButton.SetButtonState(_cs.customMotionBlur);
-        _oneHandButton.SetButtonState(_cs.customMotionBlur);
+        _oneHandButton.SetButtonState(_cs.customOneHand);
     }
 
     private void Update()
@@ -92,6 +92,7 @@ public class SettingsMenuButtonFunc : MonoBehaviour
     }
     public void OneHandButton()
     {
-        _oneHandButton.OnButtonClick();
+        _cs.customOneHand = !_cs.customOneHand;
+        _oneHandButton.SetButtonState(_cs.customOneHand);
     }
 }
