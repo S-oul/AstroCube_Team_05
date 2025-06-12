@@ -156,7 +156,6 @@ public class PlayerTrigger : MonoBehaviour
             portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(toEvaluate));
             
             vcam.m_Lens.FieldOfView = cameraFOV;
-            print(vcam.m_Lens.FieldOfView+ " ///// " + cameraFOV);
             if (Camera.allCameras.Length > 1)
                 overlayCamera.fieldOfView = cameraOverlayFOV;
 
