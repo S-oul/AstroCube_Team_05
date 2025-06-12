@@ -12,6 +12,8 @@ public class InteractLine : MonoBehaviour, IHoldable
     [SerializeField] RubiksMovement _UICube;
     [SerializeField] private RubiksCubeController _controller;
     [SerializeField] private ExitDoor _exitDoor;
+
+    [SerializeField] private GameObject _blackCanva;
     
     public UnityEvent onPlayerActivate;
 
@@ -34,6 +36,7 @@ public class InteractLine : MonoBehaviour, IHoldable
     {
         onPlayerActivate?.Invoke();
         _entityOverlay.gameObject.SetActive(true);
+        if(_blackCanva) _blackCanva.SetActive(true);
     }
 
 
@@ -48,6 +51,7 @@ public class InteractLine : MonoBehaviour, IHoldable
             block.gameObject.SetActive(false);
         }
         yield return new WaitForSeconds(2f);
+        if(_blackCanva) _blackCanva.SetActive(false);
         var xxx = _UICube.GetCubesFromFace(_UICube.AllBlocks[23], SliceAxis.X);
         if(!IsLevel8)
         {
