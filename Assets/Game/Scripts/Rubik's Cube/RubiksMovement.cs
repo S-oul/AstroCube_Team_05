@@ -73,8 +73,10 @@ public class RubiksMovement : MonoBehaviour
 
     private void Awake()
     {
+        _allBlocks.Clear();
         foreach (Transform t in transform.parent)
         {
+            print("aaa");
             if (t.tag == "Movable") _allBlocks.Add(t);
         }
 
