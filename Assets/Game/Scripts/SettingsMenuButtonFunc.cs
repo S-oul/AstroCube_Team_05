@@ -16,6 +16,7 @@ public class SettingsMenuButtonFunc : MonoBehaviour
     [SerializeField] ToggleButtonFunctionality _vibrationButton; 
     [SerializeField] ToggleButtonFunctionality _previewButton; 
     [SerializeField] ToggleButtonFunctionality _motionBlurButton;
+    [SerializeField] ToggleButtonFunctionality _oneHandButton;
 
     [SerializeField] ToggleMenuElements _toggelMenuElem;
     PauseMenu _pauseMenu;
@@ -39,6 +40,7 @@ public class SettingsMenuButtonFunc : MonoBehaviour
         _vibrationButton.SetButtonState(_cs.customVibration);
         _previewButton.SetButtonState(_cs.customPreview);
         _motionBlurButton.SetButtonState(_cs.customMotionBlur);
+        _oneHandButton.SetButtonState(_cs.customMotionBlur);
     }
 
     private void Update()
@@ -87,5 +89,9 @@ public class SettingsMenuButtonFunc : MonoBehaviour
     {
         _cs.customMotionBlur = !_cs.customMotionBlur;
         _motionBlurButton.SetButtonState(_cs.customMotionBlur);
+    }
+    public void OneHandButton()
+    {
+        _oneHandButton.OnButtonClick();
     }
 }

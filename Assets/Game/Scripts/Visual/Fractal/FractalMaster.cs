@@ -22,8 +22,8 @@ public class FractalMaster : MonoBehaviour
 
         public float FractalPower { get => _fractalPower; set => _fractalPower = value; }
         public float Alpha { get => _alpha; set => _alpha = value; }
-        public Color ColorB { get => _colorA; set => _colorA = value; }
-        public Color ColorA { get => _colorB; set => _colorB = value; }
+        public Color ColorA { get => _colorA; set => _colorA = value; }
+        public Color ColorB { get => _colorB; set => _colorB = value; }
         public float BlackAndWhite { get => _blackAndWhite; set => _blackAndWhite = value; }
         public float Darkness { get => _darkness; set => _darkness = value; }
 
@@ -39,8 +39,8 @@ public class FractalMaster : MonoBehaviour
     // For Animation (yes this is not sexy, complex problems mean dirty fixes)
     public float FractalPower { get => _fractalPower; set => _fractalPower = value; }
     public float Alpha { get => _alpha; set => _alpha = value; }
-    public Color ColorB { get => _colorA; set => _colorA = value; }
-    public Color ColorA { get => _colorB; set => _colorB = value; }
+    public Color ColorA { get => _colorA; set => _colorA = value; }
+    public Color ColorB { get => _colorB; set => _colorB = value; }
     public float BlackAndWhite { get => _blackAndWhite; set => _blackAndWhite = value; }
     public float Darkness { get => _darkness; set => _darkness = value; }
 
