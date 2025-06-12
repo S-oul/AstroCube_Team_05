@@ -16,6 +16,8 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
 
     public Action PickUpDelegate { get; set; }
 
+    private bool _hasDoneOnce = false;
+    
     void Start()
     {
         _originalParent = transform.parent;
@@ -37,6 +39,8 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     public void OnHold(Transform newParent)
     {
         //_exitDoor.SetActive(true);
+        if (_hasDoneOnce) return;
+        _hasDoneOnce = true;
         Destroy(transform.GetComponent<BoxCollider>());
         inputDisplay.OnResolve?.Invoke();
         PickUpDelegate?.Invoke();
