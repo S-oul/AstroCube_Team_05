@@ -66,6 +66,7 @@ public class FractalMaster : MonoBehaviour
 
     RenderTexture target;
     Camera cam;
+    [SerializeField]
     Light directionalLight;
 
     [Header("Animation Settings")]
@@ -115,8 +116,6 @@ public class FractalMaster : MonoBehaviour
 
         cameraToWorldMatrix = cam.cameraToWorldMatrix;
         projectionMatrixInverse = cam.projectionMatrix.inverse;
-
-        directionalLight = FindObjectOfType<Light>();
 
         threadGroupsX = Mathf.CeilToInt(cam.pixelWidth / 64.0f);     //CREATING A THREAD FOR EACH PIXEL (/8 AS IT'S *8 IN THE SHADER)
         threadGroupsY = Mathf.CeilToInt(cam.pixelHeight / 1.0f);
