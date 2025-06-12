@@ -3,9 +3,11 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HoldableRubiksCube : MonoBehaviour, IHoldable
 {
+    [SerializeField] private UnityEvent _onHold;
     [SerializeField] private GameObject _exitDoor;
     [SerializeField] private Light _light;
     [SerializeField] private InputDisplay inputDisplay;
@@ -16,6 +18,8 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
 
     public Action PickUpDelegate { get; set; }
 
+    private bool _hasDoneOnce = false;
+    
     void Start()
     {
         _originalParent = transform.parent;
@@ -37,6 +41,9 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     public void OnHold(Transform newParent)
     {
         //_exitDoor.SetActive(true);
+        _onHold?.Invoke();
+        if (_hasDoneOnce) return;
+        _hasDoneOnce = true;
         Destroy(transform.GetComponent<BoxCollider>());
         inputDisplay.OnResolve?.Invoke();
         PickUpDelegate?.Invoke();

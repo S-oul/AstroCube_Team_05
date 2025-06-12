@@ -5,6 +5,7 @@ using UnityEngine;
 public class MenuCameraAnimator : MonoBehaviour
 {
     Animator _animator;
+    [SerializeField] Animator _textAnimator;
     
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class MenuCameraAnimator : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
+            _textAnimator.SetTrigger("BlinkAway");
             _animator.SetTrigger("StartAnimation");
         }
     }

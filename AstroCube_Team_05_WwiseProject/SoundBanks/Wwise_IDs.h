@@ -83,6 +83,7 @@ namespace AK
         static const AkUniqueID LVL14GP_08 = 1764442286U;
         static const AkUniqueID LVL16BS = 515736325U;
         static const AkUniqueID MC_FT = 2275400278U;
+        static const AkUniqueID MUS_MAINTHEME_LP = 1931499656U;
         static const AkUniqueID SFX_BUTTON = 125802325U;
         static const AkUniqueID SFX_CUBE_PREVISUALISATION_LP = 3556416962U;
         static const AkUniqueID SFX_CUBE_ROTATION_FACE_LP = 4137597792U;
@@ -130,6 +131,7 @@ namespace AK
         static const AkUniqueID CIN_SBK = 914877926U;
         static const AkUniqueID FOL_SBK = 2606446995U;
         static const AkUniqueID MC_SBK = 4067787562U;
+        static const AkUniqueID MUS_SBK = 552161325U;
         static const AkUniqueID SFX_SBK = 4254072057U;
     } // namespace BANKS
 
@@ -138,6 +140,7 @@ namespace AK
         static const AkUniqueID BUS_AMB = 17439960U;
         static const AkUniqueID BUS_CIN = 4178583614U;
         static const AkUniqueID BUS_FOL = 4279690731U;
+        static const AkUniqueID BUS_MUS = 3911715957U;
         static const AkUniqueID BUS_REV = 4180996447U;
         static const AkUniqueID BUS_SFX = 3895923845U;
         static const AkUniqueID BUS_VO = 1763241581U;

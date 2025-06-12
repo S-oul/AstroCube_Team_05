@@ -14,6 +14,7 @@ public class PauseMenu : MonoBehaviour
     PostProcessManager _kaleidoscopeManager;
     [SerializeReference] GameObject SettingsUIHolder;
     [SerializeField] TextMeshProUGUI _sceneName;
+    [SerializeField] GameObject ControlsUIHolder;
 
     private void Start()
     {
@@ -45,6 +46,7 @@ public class PauseMenu : MonoBehaviour
         if (_kaleidoscopeManager) _kaleidoscopeManager.SetEnabled(false);
         _UIHolder.SetActive(false);
         SettingsUIHolder.SetActive(false);
+        ControlsUIHolder.SetActive(false);
     }
 
     public void SetActiveSettingsMenu(bool isActive = true)
