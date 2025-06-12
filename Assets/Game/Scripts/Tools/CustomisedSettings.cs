@@ -115,7 +115,7 @@ public class CustomisedSettings : ScriptableObject
     }
 
     public bool defaultSubtitles => _defaultSubtitles;
-    public bool customSubtitles
+    public bool customMotionBlur
     {
         get => _customSubtitles ?? defaultSubtitles;
         set { _customSubtitles = value; }

@@ -22,7 +22,7 @@ public class CrossfadeTransitionNoKaleido : MonoBehaviour
         EventManager.OnPlayerWin -= StartFade;
     }
 
-    void StartFade()
+    public void StartFade()
     {
         _transitionAnimator.SetTrigger("StartFade");
         InputHandler.Instance.CanMove = false;
