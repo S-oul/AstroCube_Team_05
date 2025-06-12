@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControlsMenuBackButton : MonoBehaviour
 {
@@ -12,12 +13,13 @@ public class ControlsMenuBackButton : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.JoystickButton1))
         {
-            OnClick();
+            OnBackButtonClick();
         }
     }
 
-    public void OnClick()
+    public void OnBackButtonClick()
     {
-        togMenEl.Activate(MenuElement.SETTINGS_MENU);
+        if (togMenEl != null) togMenEl.Activate(MenuElement.SETTINGS_MENU);
+        else GetComponent<Button>().onClick.Invoke();
     }
 }
