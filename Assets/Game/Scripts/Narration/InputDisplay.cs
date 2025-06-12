@@ -31,6 +31,8 @@ public class InputDisplay : MonoBehaviour
     [SerializeField] UnityEvent _onStartShowText;
     [SerializeField] UnityEvent _onEndShowText;
 
+    [SerializeField] bool _animate = true;
+
     bool _isDisplayed = false;
     Collider _colider;
 
@@ -138,7 +140,16 @@ public class InputDisplay : MonoBehaviour
     {
         if (_hasBeenCompleted) return;
         _hasBeenCompleted = true;
-        if (_animator) _animator.SetTrigger("EndDisplay"); 
+        if (_animate)
+        {
+            if (_animator) _animator.SetTrigger("EndDisplay");
+        }
+        else
+        {
+            _FadeDisplay(0f, 1f);
+            _isDisplayed = false;
+            _onEndShowText?.Invoke();
+        }
     }
 
     private void _EndDisplayAnimEnd()
@@ -155,7 +166,7 @@ public class InputDisplay : MonoBehaviour
 
     private void Update()
     {
-        if (_isDisplayed == false) return;
+        if (_isDisplayed == false || !_animate) return;
         _canvasGroup.gameObject.GetComponent<RectTransform>().localPosition = Vector3.Lerp(_startPos, _endPos, _animationProgress);
         _canvasGroup.gameObject.GetComponent<RectTransform>().localScale = Vector3.Lerp(Vector3.one * _maxSize, Vector3.one * _minSize, _animationProgress);
     }
