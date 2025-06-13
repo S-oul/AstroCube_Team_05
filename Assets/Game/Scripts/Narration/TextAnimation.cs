@@ -19,6 +19,7 @@ public class TextAnimation : MonoBehaviour
     [SerializeField] float _durationMoveToLineForEachLetter = 3.0f;
     [SerializeField] float _intervalBetweenEachLetterMove = 0.3f;
     [SerializeField] float _durationFadeOutText = 2.0f;
+    [SerializeField] float _startDisort = 1.0f;
 
     [Header("Display Settings")]
     [SerializeField] private string text;
@@ -154,7 +155,7 @@ public class TextAnimation : MonoBehaviour
         foreach (LetterInfo letter in spawnedText)
         {
             letter.text.material.SetFloat("_Alpha", 0.0f);
-            letter.text.material.SetFloat("_Distort", 1.0f);
+            letter.text.material.SetFloat("_Distort", _startDisort);
         }
         _textLerp = .0f;
     }
