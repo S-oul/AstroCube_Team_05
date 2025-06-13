@@ -35,7 +35,11 @@ public class EventManager : MonoBehaviour
         else instance = this;
 
         _gameSettings = GameManager.Instance.Settings;
+        
+    }
 
+    private void OnEnable()
+    {
         OnStartCubeRotation += RotatingFace.Invoke;
         OnEndCubeRotation += RotatingEnd.Invoke;
         
@@ -46,8 +50,6 @@ public class EventManager : MonoBehaviour
         OnPlayerUndo += Undo.Invoke;
 
         OnPlayerInteract += Interact.Invoke;
-
-
     }
 
     private void OnDisable()
