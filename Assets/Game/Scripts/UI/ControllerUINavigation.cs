@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ControllerUINavigation : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class ControllerUINavigation : MonoBehaviour
 
     GameObject _currentDefaultButton;
 
+    [SerializeField] public GraphicRaycaster uiRaycaster; // from Canvas
+    EventSystem eventSystem;
+
     private void Start()
     {
         _currentDefaultButton = _mainMenuDefaultButton;
@@ -25,6 +29,23 @@ public class ControllerUINavigation : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             EventSystem.current.SetSelectedGameObject(_currentDefaultButton);
+        }
+
+        // set selected to current mouse hover
+        PointerEventData pointerData = new PointerEventData(eventSystem)
+        {
+            position = Input.mousePosition
+        };
+        List<RaycastResult> results = new List<RaycastResult>();
+        uiRaycaster.Raycast(pointerData, results);
+        foreach (RaycastResult result in results)
+        {
+            Button button = result.gameObject.GetComponentInParent<Button>();
+            if (button != null)
+            {
+                EventSystem.current.SetSelectedGameObject(button.gameObject);
+                break;
+            }
         }
     }
 
