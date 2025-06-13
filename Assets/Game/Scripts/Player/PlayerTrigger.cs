@@ -127,7 +127,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             float toEvaluate = Vector3.Distance(this.transform.position, other.transform.position) / 4f;
-            float cameraFOV = Mathf.Lerp(GameManager.Instance.CustomSettings.customFov, GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(toEvaluate));
+            float cameraFOV = Mathf.Lerp(32f,GameManager.Instance.CustomSettings.customFov, _gameSettings.CurveFOV.Evaluate(toEvaluate));
             float cameraOverlayFOV = Mathf.Lerp(15, 43, _gameSettings.CurveFOV.Evaluate(toEvaluate));
 
             float chromaticAbberation = Mathf.Lerp(.1f, 50, _gameSettings.CurveAberration.Evaluate(toEvaluate));
@@ -184,6 +184,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("Portal"))
         {
             vcam.m_Lens.FieldOfView = GameManager.Instance.CustomSettings.customFov;
+            overlayCamera.fieldOfView = 43f;
             portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(1));
             if (vol)
             {

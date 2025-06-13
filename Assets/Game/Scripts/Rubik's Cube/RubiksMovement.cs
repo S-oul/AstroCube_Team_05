@@ -76,7 +76,7 @@ public class RubiksMovement : MonoBehaviour
         _allBlocks.Clear();
         foreach (Transform t in transform.parent)
         {
-            print("aaa");
+            //print("aaa");
             if (t.tag == "Movable") _allBlocks.Add(t);
         }
 
