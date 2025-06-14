@@ -18,9 +18,13 @@ public class ControllerUINavigation : MonoBehaviour
     [SerializeField] public GraphicRaycaster uiRaycaster; // from Canvas
     EventSystem eventSystem;
 
+    Vector3 _lastMousePos;
+
     private void Start()
     {
         _currentDefaultButton = _mainMenuDefaultButton;
+
+        _lastMousePos = Input.mousePosition;
     }
 
     void Update()
@@ -31,20 +35,24 @@ public class ControllerUINavigation : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(_currentDefaultButton);
         }
 
-        // set selected to current mouse hover
-        PointerEventData pointerData = new PointerEventData(eventSystem)
+        if (MouseIsMoving())
         {
-            position = Input.mousePosition
-        };
-        List<RaycastResult> results = new List<RaycastResult>();
-        uiRaycaster.Raycast(pointerData, results);
-        foreach (RaycastResult result in results)
-        {
-            Button button = result.gameObject.GetComponentInParent<Button>();
-            if (button != null)
+
+            // set selected to current mouse hover
+            PointerEventData pointerData = new PointerEventData(eventSystem)
             {
-                EventSystem.current.SetSelectedGameObject(button.gameObject);
-                break;
+                position = Input.mousePosition
+            };
+            List<RaycastResult> results = new List<RaycastResult>();
+            uiRaycaster.Raycast(pointerData, results);
+            foreach (RaycastResult result in results)
+            {
+                Button button = result.gameObject.GetComponentInParent<Button>();
+                if (button != null)
+                {
+                    EventSystem.current.SetSelectedGameObject(button.gameObject);
+                    break;
+                }
             }
         }
     }
@@ -73,5 +81,15 @@ public class ControllerUINavigation : MonoBehaviour
                 break;
         }
         EventSystem.current.SetSelectedGameObject(_currentDefaultButton);
+    }
+
+    bool MouseIsMoving()
+    {
+        if (Input.mousePosition != _lastMousePos)
+        {
+            _lastMousePos = Input.mousePosition;
+            return true;
+        }
+        return false;
     }
 }
