@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float _sequenceDuration;
     [SerializeField] Transform _artifact;
     [SerializeField] List<GameObject> _objectToDisable;
-    [SerializeField] GameObject _endPortal;
+    [SerializeField] ExitDoor _endPortal;
     CameraAnimator _cameraAnimator;
 
     public static GameManager Instance => instance;
@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
 
         EventManager.TriggerActivateCubeSequence();
         EventManager.OnEndSequence += EndNarrativeSequence;
-        _endPortal.SetActive(true);
+        _endPortal.OpenDoor();
         yield return StartCoroutine(_cameraAnimator.TurnAround());
     }
 
