@@ -25,6 +25,7 @@ namespace AK
         static const AkUniqueID AMB_SP_SHARD_FLOAT_LP = 102969944U;
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID CIN_LVL03 = 2844602029U;
+        static const AkUniqueID CIN_LVL16 = 2861379591U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_01 = 615844443U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_02 = 615844440U;
         static const AkUniqueID LVL1_GAMEPLAY_VOICELINE_01 = 655641678U;
@@ -82,6 +83,7 @@ namespace AK
         static const AkUniqueID LVL14GP_07 = 1764442273U;
         static const AkUniqueID LVL14GP_08 = 1764442286U;
         static const AkUniqueID LVL16BS = 515736325U;
+        static const AkUniqueID LVL16GP = 599624485U;
         static const AkUniqueID MC_FT = 2275400278U;
         static const AkUniqueID MUS_MAINTHEME_LP = 1931499656U;
         static const AkUniqueID SFX_BUTTON = 125802325U;
