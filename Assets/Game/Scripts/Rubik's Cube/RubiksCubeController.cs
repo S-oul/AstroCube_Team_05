@@ -315,7 +315,7 @@ public class RubiksCubeController : MonoBehaviour
         List<SelectionCube> selectionCubes = new List<SelectionCube>();
         bool isOneTileLocked = false;
         bool isPlayerOnATile = false;
-        if (_controlledScript != null && _lastInput != null)
+        if (_controlledScript != null && _lastInput != null && _lastInput.cube != null)
         {
             foreach (Transform go in _controlledScript.GetCubesFromFace(_lastInput.cube.transform, _lastInput.orientation))
             {
