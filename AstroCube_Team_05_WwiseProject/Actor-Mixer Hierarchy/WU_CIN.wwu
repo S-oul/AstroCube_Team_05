@@ -30,6 +30,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="CIN_Lvl16" ID="{0F75DA77-874C-4376-82CA-EADA06A7DEE8}" ShortID="544828731">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>-9</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -51,6 +58,278 @@
 						<ActiveSource Name="CIN_Lvl16" ID="{5A7FF5A6-B736-469A-8CE5-914791C66B61}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
+				<RandomSequenceContainer Name="CIN_RC_BlinkingEye" ID="{71EFF99D-89A7-4726-A898-1AA6D7D3009B}" ShortID="133481308">
+					<PropertyList>
+						<Property Name="3DSpatialization" Type="int16" Value="2"/>
+						<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
+						<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
+						<Property Name="Pitch" Type="int32">
+							<ModifierList>
+								<ModifierInfo>
+									<Modifier Name="" ID="{2DF23B60-C6C4-4120-AD71-27BDE08A8B4F}">
+										<PropertyList>
+											<Property Name="Enabled" Type="bool" Value="True"/>
+											<Property Name="Max" Type="Real64" Value="200"/>
+											<Property Name="Min" Type="Real64" Value="-200"/>
+										</PropertyList>
+									</Modifier>
+								</ModifierInfo>
+							</ModifierList>
+						</Property>
+						<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
+						<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
+						<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="2"/>
+						<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+						<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="3"/>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>-6</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="ATT_30m" ID="{A6DAB947-CEC4-4C2B-92F4-124FA7835B6D}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="BUS_CIN_SFX" ID="{50494C21-5A78-4698-A2AF-067EEEC36989}" WorkUnitID="{67B12A22-DABE-4873-BA4C-896F78872C71}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Sound Name="CIN_BlinkinEye_01" ID="{099F90F5-2040-45DC-A860-1FEEF0BE2B3A}" ShortID="683086898">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="CIN_BlinkinEye_01" ID="{CDDF6DBD-6734-426B-812A-05EE6EB381A8}">
+									<Language>SFX</Language>
+									<AudioFile>CIN\CIN_BlinkinEye_01.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="366738936"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="CIN_BlinkinEye_01" ID="{CDDF6DBD-6734-426B-812A-05EE6EB381A8}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="CIN_BlinkinEye_02" ID="{05FEA4A1-389A-49E8-AE0C-B091A24F0FF7}" ShortID="338650803">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="CIN_BlinkinEye_02" ID="{32BC3DFA-B22C-48AE-B12C-D07B00D92319}">
+									<Language>SFX</Language>
+									<AudioFile>CIN\CIN_BlinkinEye_02.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="29426759"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="CIN_BlinkinEye_02" ID="{32BC3DFA-B22C-48AE-B12C-D07B00D92319}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="CIN_BlinkinEye_03" ID="{3EA5EED5-7F57-4C4D-966C-82402FD3DBFC}" ShortID="348345621">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-9</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="CIN_BlinkinEye_03" ID="{B32C827C-4210-4D31-B83C-BB31471C0995}">
+									<Language>SFX</Language>
+									<AudioFile>CIN\CIN_BlinkinEye_03.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="610991921"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="CIN_BlinkinEye_03" ID="{B32C827C-4210-4D31-B83C-BB31471C0995}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="CIN_BlinkinEye_04" ID="{AD933D69-E150-4455-83C9-69F61403376B}" ShortID="313922223">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-9</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="CIN_BlinkinEye_04" ID="{C52C8E6A-4C36-4190-B534-8F75C895912D}">
+									<Language>SFX</Language>
+									<AudioFile>CIN\CIN_BlinkinEye_04.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="973481976"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="CIN_BlinkinEye_04" ID="{C52C8E6A-4C36-4190-B534-8F75C895912D}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="CIN_BlinkinEye_05" ID="{0912178F-BB21-44E9-AAA3-76F22107CDD3}" ShortID="81788131">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-9</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="CIN_BlinkinEye_05" ID="{321F45BE-4B7B-4EAF-9691-2888202F3D85}">
+									<Language>SFX</Language>
+									<AudioFile>CIN\CIN_BlinkinEye_05.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="409475340"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="CIN_BlinkinEye_05" ID="{321F45BE-4B7B-4EAF-9691-2888202F3D85}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="CIN_BlinkinEye_06" ID="{414DFB13-1E34-4177-A909-792194B0F2F8}" ShortID="626558971">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-9</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="CIN_BlinkinEye_06" ID="{06302FC9-4CAC-4A92-8F3A-6E8BC119DB19}">
+									<Language>SFX</Language>
+									<AudioFile>CIN\CIN_BlinkinEye_06.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="204588091"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="CIN_BlinkinEye_06" ID="{06302FC9-4CAC-4A92-8F3A-6E8BC119DB19}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+					</ChildrenList>
+					<ObjectLists>
+						<ObjectList Name="RTPC">
+							<Reference>
+								<Local>
+									<RTPC Name="" ID="{BCE038E2-7773-4763-AF9F-B22DB89C5082}" ShortID="920377594">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="Volume"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="RTPC_Azimuth" ID="{2299870E-4F6E-4416-8D09-58F6BB3B4546}" WorkUnitID="{11206DBC-2BC6-47B3-89AE-CC96EAC1CFB3}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{EC676348-2BF5-4F7B-A129-6E4E2879D015}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="3"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>-180</XPos>
+																<YPos>-200</YPos>
+																<Flags>5</Flags>
+																<SegmentShape>SCurve</SegmentShape>
+															</Point>
+															<Point>
+																<XPos>-50.43779</XPos>
+																<YPos>-200</YPos>
+																<Flags>0</Flags>
+																<SegmentShape>SCurve</SegmentShape>
+															</Point>
+															<Point>
+																<XPos>-0.2765</XPos>
+																<YPos>0</YPos>
+																<Flags>0</Flags>
+																<SegmentShape>SCurve</SegmentShape>
+															</Point>
+															<Point>
+																<XPos>49.88479</XPos>
+																<YPos>-200</YPos>
+																<Flags>0</Flags>
+																<SegmentShape>SCurve</SegmentShape>
+															</Point>
+															<Point>
+																<XPos>180</XPos>
+																<YPos>-200</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</Local>
+							</Reference>
+						</ObjectList>
+					</ObjectLists>
+				</RandomSequenceContainer>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>

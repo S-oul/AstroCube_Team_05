@@ -26,6 +26,7 @@ namespace AK
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID CIN_LVL03 = 2844602029U;
         static const AkUniqueID CIN_LVL16 = 2861379591U;
+        static const AkUniqueID CIN_RC_BLINKINGEYE = 570792765U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_01 = 615844443U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_02 = 615844440U;
         static const AkUniqueID LVL1_GAMEPLAY_VOICELINE_01 = 655641678U;
@@ -127,6 +128,8 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID RTPC_AZIMUTH = 3972935021U;
+        static const AkUniqueID RTPC_ELEVATION = 1474581964U;
         static const AkUniqueID RTPC_FOCUS = 1888688417U;
         static const AkUniqueID RTPC_METER_DISTANCE = 625851808U;
         static const AkUniqueID RTPC_METER_GLB = 344904358U;
@@ -147,6 +150,7 @@ namespace AK
     {
         static const AkUniqueID BUS_AMB = 17439960U;
         static const AkUniqueID BUS_CIN = 4178583614U;
+        static const AkUniqueID BUS_CIN_SFX = 3391678782U;
         static const AkUniqueID BUS_FOL = 4279690731U;
         static const AkUniqueID BUS_MUS = 3911715957U;
         static const AkUniqueID BUS_REV = 4180996447U;

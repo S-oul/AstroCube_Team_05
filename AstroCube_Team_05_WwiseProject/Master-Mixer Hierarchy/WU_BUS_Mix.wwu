@@ -75,6 +75,24 @@
 					</DuckingList>
 				</Bus>
 				<Bus Name="BUS_MUS" ID="{1B2724D6-F8F1-4ED9-8708-5F53B241438B}"/>
+				<Bus Name="BUS_CIN_SFX" ID="{50494C21-5A78-4698-A2AF-067EEEC36989}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="26"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+						<Property Name="RecoveryTime" Type="Real64" Value="0.9"/>
+					</PropertyList>
+					<DuckingList>
+						<DuckItem>
+							<BusRef Name="BUS_CIN" ID="{964335C1-D4CC-4C03-B0BA-E2C04F078AEC}"/>
+							<DuckingParam>
+								<Volume>-6</Volume>
+								<FadeInTime>0.600000023841858</FadeInTime>
+								<FadeOutTime>0.600000023841858</FadeOutTime>
+								<FadeCurve>FadeLog2</FadeCurve>
+							</DuckingParam>
+						</DuckItem>
+					</DuckingList>
+				</Bus>
 			</ChildrenList>
 		</WorkUnit>
 	</Busses>

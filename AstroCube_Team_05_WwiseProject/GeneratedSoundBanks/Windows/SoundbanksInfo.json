@@ -55,18 +55,66 @@
     "GUID": "{1E075888-A6E1-4430-909E-721B92FD7DCE}",
     "Color": "6",
     "Language": "SFX",
-    "Hash": "{C28E65B4-FB36-5468-0142-D4AC955FBFE8}",
+    "Hash": "{B065FEEF-3836-EB88-18AA-968C3FA1A30A}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\WU_CIN_SBK\\CIN_SBK",
     "ShortName": "CIN_SBK",
     "Path": "CIN_SBK.bnk",
     "Media": [
+     {
+      "Id": "29426759",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CIN\\CIN_BlinkinEye_02.wav",
+      "CachePath": "38/{385825CD-9B8B-B018-71FB-4D7516BC8F68}.wem"
+     },
+     {
+      "Id": "204588091",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CIN\\CIN_BlinkinEye_06.wav",
+      "CachePath": "49/{4967085E-5EE2-AE38-53D2-E59A0E3DA756}.wem"
+     },
+     {
+      "Id": "366738936",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CIN\\CIN_BlinkinEye_01.wav",
+      "CachePath": "56/{56681C97-CA85-3EB6-6737-D884E469D884}.wem"
+     },
+     {
+      "Id": "409475340",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CIN\\CIN_BlinkinEye_05.wav",
+      "CachePath": "2E/{2E76FC15-42E7-1E75-A117-3010CA4681D6}.wem"
+     },
+     {
+      "Id": "610991921",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CIN\\CIN_BlinkinEye_03.wav",
+      "CachePath": "F3/{F340D197-44BC-43BC-B399-2B1AD63809D4}.wem"
+     },
      {
       "Id": "626265775",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "CIN\\CIN_Lvl16.wav",
-      "CachePath": "A0/{A0434D1E-8E66-0F26-A0D7-2A501D5F40C9}.wem"
+      "CachePath": "94/{945483DA-C29A-693D-374E-F1F1644CC91A}.wem"
+     },
+     {
+      "Id": "973481976",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CIN\\CIN_BlinkinEye_04.wav",
+      "CachePath": "10/{1087D6E3-2029-105B-2E17-E32D2F589F53}.wem"
      },
      {
       "Id": "1021278469",
@@ -100,13 +148,51 @@
       "GUID": "{F259A477-D561-4CAB-BF2D-6B2E57F0C3AF}",
       "Color": "6",
       "DurationType": "OneShot",
-      "DurationMin": "93.067604",
-      "DurationMax": "93.067604",
+      "DurationMin": "96.27671",
+      "DurationMax": "96.27671",
       "MediaRefs": [
        {
         "Id": "626265775"
        }
       ]
+     },
+     {
+      "Id": "570792765",
+      "Name": "CIN_RC_BlinkingEye",
+      "ObjectPath": "\\Events\\Default Work Unit\\WU_CIN\\CIN_RC_BlinkingEye",
+      "GUID": "{BF83B3AA-7B81-4EF9-9770-D88537284D89}",
+      "Color": "6",
+      "MaxAttenuation": "30",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "29426759"
+       },
+       {
+        "Id": "204588091"
+       },
+       {
+        "Id": "366738936"
+       },
+       {
+        "Id": "409475340"
+       },
+       {
+        "Id": "610991921"
+       },
+       {
+        "Id": "973481976"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "3972935021",
+      "Name": "RTPC_Azimuth",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Azimuth",
+      "GUID": "{2299870E-4F6E-4416-8D09-58F6BB3B4546}",
+      "Color": "10"
      }
     ]
    },
@@ -115,7 +201,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{B89D69E2-6B70-A722-DC24-834C412B9FC2}",
+    "Hash": "{B7DC94D2-CE55-88E9-AA6A-847E53550F8B}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -153,6 +239,13 @@
       "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Mix\\BUS_VO",
       "GUID": "{89EC3EF6-6D37-41E1-A42D-D021E1B82C5B}",
       "Color": "15"
+     },
+     {
+      "Id": "3391678782",
+      "Name": "BUS_CIN_SFX",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\WU_BUS_Mix\\BUS_CIN_SFX",
+      "GUID": "{50494C21-5A78-4698-A2AF-067EEEC36989}",
+      "Color": "26"
      },
      {
       "Id": "3803692087",
@@ -228,10 +321,24 @@
       "Color": "10"
      },
      {
+      "Id": "1474581964",
+      "Name": "RTPC_Elevation",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Elevation",
+      "GUID": "{40A9A764-65FD-4EF5-8B81-CFB51C4B4A23}",
+      "Color": "10"
+     },
+     {
       "Id": "1888688417",
       "Name": "RTPC_Focus",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Focus",
       "GUID": "{FC89527A-0769-4511-AF58-938E639B2235}",
+      "Color": "10"
+     },
+     {
+      "Id": "3972935021",
+      "Name": "RTPC_Azimuth",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\RTPC_Azimuth",
+      "GUID": "{2299870E-4F6E-4416-8D09-58F6BB3B4546}",
       "Color": "10"
      }
     ],
@@ -3908,6 +4015,6 @@
     ]
    }
   ],
-  "FileHash": "{4162F525-4F0C-E881-3AA2-69E3891F2FAE}"
+  "FileHash": "{44E60D24-13F4-2ACB-EF76-2093C845AFBA}"
  }
 }
