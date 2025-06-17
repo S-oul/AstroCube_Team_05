@@ -26,7 +26,6 @@ namespace AK
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID CIN_LVL03 = 2844602029U;
         static const AkUniqueID CIN_LVL16 = 2861379591U;
-        static const AkUniqueID CIN_RC_BLINKINGEYE = 570792765U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_01 = 615844443U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_02 = 615844440U;
         static const AkUniqueID LVL1_GAMEPLAY_VOICELINE_01 = 655641678U;
