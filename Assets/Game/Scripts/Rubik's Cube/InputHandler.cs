@@ -64,6 +64,10 @@ public class InputHandler : MonoBehaviour
     {
         return _globalInputEnabled && !_disabledInputs.Contains(type);
     }
+    private void Awake()
+    {
+        EnableAllInputs();
+    }
 
     void Start()
     {
