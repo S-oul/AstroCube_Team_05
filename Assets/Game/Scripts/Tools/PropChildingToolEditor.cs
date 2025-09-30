@@ -6,6 +6,12 @@ public class PropChildingToolEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        EditorGUILayout.LabelField("Potassium");
+        DrawDefaultInspector();
+
+        PropChildingTool propChildingTool = (PropChildingTool)target;
+        if (GUILayout.Button("Run Tool"))
+        {
+            propChildingTool.RunTool();
+        }
     }
 }
