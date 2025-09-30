@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ExitDoor : MonoBehaviour
@@ -34,6 +33,11 @@ public class ExitDoor : MonoBehaviour
             OpenDoor();
         else
             CloseDoor();
+
+        if (!_cameraFocusAttractor)
+        {
+            _cameraFocusAttractor = FindObjectOfType<CameraFocusAttractor>();
+        }
     }
 
     private void Start()

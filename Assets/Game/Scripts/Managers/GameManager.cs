@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
 
     void StopDeltaTime()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0.0f;
     }    
     
     void ResetDeltaTime()

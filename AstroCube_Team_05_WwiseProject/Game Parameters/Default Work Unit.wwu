@@ -42,6 +42,28 @@
 						<Property Name="RTPCRamping" Type="int16" Value="2"/>
 					</PropertyList>
 				</GameParameter>
+				<GameParameter Name="RTPC_Azimuth" ID="{2299870E-4F6E-4416-8D09-58F6BB3B4546}">
+					<PropertyList>
+						<Property Name="BindToBuiltInParam" Type="int16" Value="2"/>
+						<Property Name="FilterTimeDown" Type="Real64" Value="0.7"/>
+						<Property Name="FilterTimeUp" Type="Real64" Value="0.7"/>
+						<Property Name="InitialValue" Type="Real64" Value="0"/>
+						<Property Name="Max" Type="Real64" Value="180"/>
+						<Property Name="Min" Type="Real64" Value="-180"/>
+						<Property Name="RTPCRamping" Type="int16" Value="2"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="RTPC_Elevation" ID="{40A9A764-65FD-4EF5-8B81-CFB51C4B4A23}">
+					<PropertyList>
+						<Property Name="BindToBuiltInParam" Type="int16" Value="3"/>
+						<Property Name="FilterTimeDown" Type="Real64" Value="0.7"/>
+						<Property Name="FilterTimeUp" Type="Real64" Value="0.7"/>
+						<Property Name="InitialValue" Type="Real64" Value="0"/>
+						<Property Name="Max" Type="Real64" Value="90"/>
+						<Property Name="Min" Type="Real64" Value="-90"/>
+						<Property Name="RTPCRamping" Type="int16" Value="2"/>
+					</PropertyList>
+				</GameParameter>
 			</ChildrenList>
 		</WorkUnit>
 	</GameParameters>

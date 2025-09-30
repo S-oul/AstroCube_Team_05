@@ -49,6 +49,7 @@ public class MouseCamControl : MonoBehaviour
     public Transform PlayerTransform => _playerTransform;
 
     CinemachineVirtualCamera _cinemashineCam;
+    LayerMask _detectableLayer;
 
     void Start()
     {
@@ -59,6 +60,7 @@ public class MouseCamControl : MonoBehaviour
         UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
         ForceResetSelection();
+        _detectableLayer = GameManager.Instance.Settings.AimAtObject? _detectableObjectLayer : _detectableTileLayer;
     }
 
     public void OnCamera(InputAction.CallbackContext callbackContext)
@@ -106,7 +108,7 @@ public class MouseCamControl : MonoBehaviour
 
         if (GameManager.Instance.Settings.AimAtObject)
         {
-            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableObjectLayer))
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
             {
                 GameObject o = _raycastInfo.collider.gameObject;
 

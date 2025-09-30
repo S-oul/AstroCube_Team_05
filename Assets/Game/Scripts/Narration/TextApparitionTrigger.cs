@@ -11,6 +11,11 @@ public class TextApparitionTrigger : MonoBehaviour
     
     private bool _triggered;
 
+    private void Start()
+    {
+        gameObject.layer = LayerMask.NameToLayer("TextTrigger");
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player") || _triggered || _texts == null) return;

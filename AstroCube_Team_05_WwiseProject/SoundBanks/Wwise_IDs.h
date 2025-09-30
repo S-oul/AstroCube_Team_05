@@ -53,6 +53,12 @@ namespace AK
         static const AkUniqueID LVL3_GAMEPLAY_VOICELINE_01 = 543526564U;
         static const AkUniqueID LVL3_GAMEPLAY_VOICELINE_02 = 543526567U;
         static const AkUniqueID LVL3_GAMEPLAY_VOICELINE_03 = 543526566U;
+        static const AkUniqueID LVL04_BS_01 = 4261734617U;
+        static const AkUniqueID LVL04_BS_02 = 4261734618U;
+        static const AkUniqueID LVL04_GP_01 = 1644113721U;
+        static const AkUniqueID LVL04_GP_02 = 1644113722U;
+        static const AkUniqueID LVL04_GP_03 = 1644113723U;
+        static const AkUniqueID LVL04_GP_04 = 1644113724U;
         static const AkUniqueID LVL5BS = 3382403683U;
         static const AkUniqueID LVL5GP_01 = 3869901219U;
         static const AkUniqueID LVL5GP_02 = 3869901216U;
@@ -121,6 +127,8 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID RTPC_AZIMUTH = 3972935021U;
+        static const AkUniqueID RTPC_ELEVATION = 1474581964U;
         static const AkUniqueID RTPC_FOCUS = 1888688417U;
         static const AkUniqueID RTPC_METER_DISTANCE = 625851808U;
         static const AkUniqueID RTPC_METER_GLB = 344904358U;
@@ -141,6 +149,7 @@ namespace AK
     {
         static const AkUniqueID BUS_AMB = 17439960U;
         static const AkUniqueID BUS_CIN = 4178583614U;
+        static const AkUniqueID BUS_CIN_SFX = 3391678782U;
         static const AkUniqueID BUS_FOL = 4279690731U;
         static const AkUniqueID BUS_MUS = 3911715957U;
         static const AkUniqueID BUS_REV = 4180996447U;

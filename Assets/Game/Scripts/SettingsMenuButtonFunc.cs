@@ -79,16 +79,19 @@ public class SettingsMenuButtonFunc : MonoBehaviour
     {
         _cs.customPreview = !_cs.customPreview;
         _previewButton.SetButtonState(_cs.customPreview);
+        EventManager.TriggerPreviewChange(_cs.customPreview);
     }
     public void VibrationButton()
     {
         _cs.customVibration = !_cs.customVibration;
         _vibrationButton.SetButtonState(_cs.customVibration);
+        EventManager.TriggerVibrationChange(_cs.customVibration);
     }
     public void MotionBlurButton()
     {
         _cs.customMotionBlur = !_cs.customMotionBlur;
         _motionBlurButton.SetButtonState(_cs.customMotionBlur);
+        EventManager.TriggerMotionBlurChange(_cs.customMotionBlur);
     }
     public void OneHandButton()
     {
