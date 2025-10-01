@@ -51,7 +51,7 @@ jobs:
           # Timestamp si dispo
           TS="$(jq -r '.head_commit.timestamp // empty' "$EVENT_JSON_FILE")"
 
-          # Construit l’embed
+          # Construit l’embed avec interpolation jq (évite les +)
           PAYLOAD="$(jq -n \
             --arg repo     "$REPO" \
             --arg branch   "$BRANCH" \
@@ -62,14 +62,14 @@ jobs:
             '{
               username: "GitHub Bot",
               embeds: [{
-                title: "[" + $repo + "] push sur " + $branch,
+                title: "[\($repo)] push sur \($branch)",
                 url: $compare,
                 description: $desc,
-                footer: { text: "Pushed by " + $pusher },
+                footer: { text: "Pushed by \($pusher)" },
                 color: 5814783
               }]
             } | if ($ts|length)>0 then
-                .embeds[0].timestamp = $ts
+                (.embeds[0].timestamp = $ts)
               else .
               end
             ')"
