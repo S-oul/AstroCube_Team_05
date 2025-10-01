@@ -1,12 +1,11 @@
 name: Notify Discord on every push
 
 on:
-  push: {}   # <-- toutes les branches, tous les push
+  push: {}   # toutes les branches, tous les push
 
 jobs:
   notify:
-    # Si c'est une suppression de ref (delete branch), on ne poste rien
-    if: ${{ github.event.deleted != true }}
+    if: ${{ github.event.deleted != true }}  # ignore les suppressions de branches/tags
     runs-on: ubuntu-latest
 
     steps:
@@ -16,65 +15,70 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Données utiles
           REPO="${{ github.repository }}"
           BRANCH="${{ github.ref_name }}"
           PUSHER="${{ github.actor }}"
           BEFORE="${{ github.event.before }}"
           AFTER="${{ github.event.after }}"
           COMPARE_URL="https://github.com/${REPO}/compare/${BEFORE}...${AFTER}"
-          EVENT_JSON='${{ toJson(github.event) }}'
 
-          # Liste lisible des commits (limite à 15 pour éviter d'exploser la taille Discord)
-          COMMITS_BLOCK="$(echo "$EVENT_JSON" \
-            | jq -r '
-                .commits
-                | ( . // [] )
-                | map("- [`" + (.id[0:7]) + "`](" + .url + ") — **" +
-                      ((.author.username // .author.name // "unknown")) + "**: " +
-                      ((.message // "") | gsub("\r";"") | split("\n")[0]) )
-                | .[:15]
-                | join("\n")
-              '
-          )"
+          # Stocke l'événement GitHub brut sans casser les quotes/apostrophes
+          EVENT_JSON_FILE="$(mktemp)"
+          cat > "$EVENT_JSON_FILE" <<'JSON'
+          ${{ toJson(github.event) }}
+          JSON
 
-          # Fallback si pas de commits (peu probable, mais arrive pour certains refs)
+          # Liste lisible des commits (max 15 lignes)
+          COMMITS_BLOCK="$(jq -r '
+              .commits // [] |
+              map(
+                "- [`" + (.id[0:7]) + "`](" + .url + ") — **" +
+                ((.author.username // .author.name // "unknown")) + "**: " +
+                ((.message // "") | gsub("\r";"") | split("\n")[0])
+              )[:15] | join("\n")
+            ' "$EVENT_JSON_FILE")"
+
           if [ -z "$COMMITS_BLOCK" ]; then
             COMMITS_BLOCK="(aucun détail de commit disponible pour cet événement)"
           fi
 
-          # Tronque prudemment si trop long (Discord: 4096 chars max pour description d'un embed)
+          # Tronque prudemment pour Discord (limite de description des embeds ~4096 chars)
           MAX=4000
           if [ "${#COMMITS_BLOCK}" -gt "$MAX" ]; then
             COMMITS_BLOCK="${COMMITS_BLOCK:0:$MAX}\n…"
           fi
 
-          # Génère un embed propre
+          # Timestamp si dispo
+          TS="$(jq -r '.head_commit.timestamp // empty' "$EVENT_JSON_FILE")"
+
+          # Construit l’embed
           PAYLOAD="$(jq -n \
-            --arg repo   "$REPO" \
-            --arg branch "$BRANCH" \
-            --arg pusher "$PUSHER" \
-            --arg compare "$COMPARE_URL" \
-            --arg desc   "$COMMITS_BLOCK" \
-            --arg timestamp "${{ github.event.head_commit.timestamp || '' }}" \
+            --arg repo     "$REPO" \
+            --arg branch   "$BRANCH" \
+            --arg pusher   "$PUSHER" \
+            --arg compare  "$COMPARE_URL" \
+            --arg desc     "$COMMITS_BLOCK" \
+            --arg ts       "$TS" \
             '{
               username: "GitHub Bot",
-              embeds: [
-                {
-                  title: "[" + $repo + "] push sur " + $branch,
-                  url: $compare,
-                  description: $desc,
-                  footer: { text: "Pushed by " + $pusher },
-                  timestamp: ( $timestamp | select(length>0) ),
-                  color: 5814783
-                }
-              ]
-            }'
-          )"
+              embeds: [{
+                title: "[" + $repo + "] push sur " + $branch,
+                url: $compare,
+                description: $desc,
+                footer: { text: "Pushed by " + $pusher },
+                color: 5814783
+              }]
+            } | if ($ts|length)>0 then
+                .embeds[0].timestamp = $ts
+              else .
+              end
+            ')"
 
-          echo "payload<<__JSON__" >> "$GITHUB_OUTPUT"
-          echo "$PAYLOAD" >> "$GITHUB_OUTPUT"
-          echo "__JSON__" >> "$GITHUB_OUTPUT"
+          {
+            echo 'payload<<__JSON__'
+            echo "$PAYLOAD"
+            echo '__JSON__'
+          } >> "$GITHUB_OUTPUT"
 
       - name: Send to Discord
         env:
