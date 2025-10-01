@@ -21,18 +21,22 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Layout_faces 3
-  m_Shader: {fileID: -6465566751694194690, guid: 3fd540da214b34543b821715e2a5a365,
-    type: 3}
-  m_Parent: {fileID: 2100000, guid: 4506b58582bf8af4a8cadcf07aa3e4b6, type: 2}
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 2100000, guid: f2f4e88d16b417142aa1ea715c17aedc, type: 2}
   m_ModifiedSerializedProperties: 16
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -74,5 +78,6 @@ Material:
     - _IsFloor: 1
     - _QueueOffset: 0
     m_Colors:
-    - _Color: {r: 0.8732661, g: 1, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
