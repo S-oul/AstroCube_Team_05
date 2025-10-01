@@ -1,0 +1,89 @@
+name: Notify Discord on every push
+
+on:
+  push: {}   # <-- toutes les branches, tous les push
+
+jobs:
+  notify:
+    # Si c'est une suppression de ref (delete branch), on ne poste rien
+    if: ${{ github.event.deleted != true }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build Discord payload
+        id: build
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Données utiles
+          REPO="${{ github.repository }}"
+          BRANCH="${{ github.ref_name }}"
+          PUSHER="${{ github.actor }}"
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.event.after }}"
+          COMPARE_URL="https://github.com/${REPO}/compare/${BEFORE}...${AFTER}"
+          EVENT_JSON='${{ toJson(github.event) }}'
+
+          # Liste lisible des commits (limite à 15 pour éviter d'exploser la taille Discord)
+          COMMITS_BLOCK="$(echo "$EVENT_JSON" \
+            | jq -r '
+                .commits
+                | ( . // [] )
+                | map("- [`" + (.id[0:7]) + "`](" + .url + ") — **" +
+                      ((.author.username // .author.name // "unknown")) + "**: " +
+                      ((.message // "") | gsub("\r";"") | split("\n")[0]) )
+                | .[:15]
+                | join("\n")
+              '
+          )"
+
+          # Fallback si pas de commits (peu probable, mais arrive pour certains refs)
+          if [ -z "$COMMITS_BLOCK" ]; then
+            COMMITS_BLOCK="(aucun détail de commit disponible pour cet événement)"
+          fi
+
+          # Tronque prudemment si trop long (Discord: 4096 chars max pour description d'un embed)
+          MAX=4000
+          if [ "${#COMMITS_BLOCK}" -gt "$MAX" ]; then
+            COMMITS_BLOCK="${COMMITS_BLOCK:0:$MAX}\n…"
+          fi
+
+          # Génère un embed propre
+          PAYLOAD="$(jq -n \
+            --arg repo   "$REPO" \
+            --arg branch "$BRANCH" \
+            --arg pusher "$PUSHER" \
+            --arg compare "$COMPARE_URL" \
+            --arg desc   "$COMMITS_BLOCK" \
+            --arg timestamp "${{ github.event.head_commit.timestamp || '' }}" \
+            '{
+              username: "GitHub Bot",
+              embeds: [
+                {
+                  title: "[" + $repo + "] push sur " + $branch,
+                  url: $compare,
+                  description: $desc,
+                  footer: { text: "Pushed by " + $pusher },
+                  timestamp: ( $timestamp | select(length>0) ),
+                  color: 5814783
+                }
+              ]
+            }'
+          )"
+
+          echo "payload<<__JSON__" >> "$GITHUB_OUTPUT"
+          echo "$PAYLOAD" >> "$GITHUB_OUTPUT"
+          echo "__JSON__" >> "$GITHUB_OUTPUT"
+
+      - name: Send to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "Secret DISCORD_WEBHOOK_URL manquant." >&2
+            exit 1
+          fi
+          curl -sS -H "Content-Type: application/json" \
+               -d '${{ steps.build.outputs.payload }}' \
+               "$DISCORD_WEBHOOK_URL"
