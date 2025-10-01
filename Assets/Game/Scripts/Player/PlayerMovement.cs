@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Scene Requirements")]
-    [SerializeField] CharacterController _controller;
+    [SerializeField] Rigidbody _rb;
     [SerializeField] Transform _camera;
     [SerializeField] Transform _floorCheck;
     [SerializeField] LayerMask _floorLayer;
@@ -11,7 +11,8 @@ public class PlayerMovement : MonoBehaviour
     bool _hasGravity = true;
 
     [Header("Movement Modifiers")]
-    [SerializeField, Range(0.0f,2.0f)] float _speedMultiplier = 1.0f;
+    [SerializeField] float _movementSpeed;
+    [SerializeField] private float _stepHeightMax;
 
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
@@ -29,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _resetRotationWhenNoClip = false;
 
     bool _canMove = true;
-
     Vector3 _gravityDirection;
 
     private GroundTypePlayerIsWalkingOn _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
@@ -44,8 +44,6 @@ public class PlayerMovement : MonoBehaviour
     bool _isGrounded;
 
     float _defaultCameraHeight;
-    float _defaultControllerHeight;
-    Vector3 _defaultControllerCenter;
 
     float _xInput = 0;
     float _zInput = 0;
@@ -74,6 +72,9 @@ public class PlayerMovement : MonoBehaviour
 
     private float _timerBeforeNextStep = 0;
     public float _timerTNextStep = 1;
+    
+    //slope handler
+    private RaycastHit _currentSlope;
 
     private void OnEnable()
     {
@@ -101,10 +102,8 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<DetectNewParent>().DoGravityRotation = _gameSettings.EnableGravityRotation;
 
         _defaultCameraHeight = _camera.transform.localPosition.y;
-        _defaultControllerHeight = _controller.height;
-        _defaultControllerCenter = _controller.center;
 
-        defaultSpeed = _gameSettings.PlayerMoveSpeed * _speedMultiplier;
+        defaultSpeed = _gameSettings.PlayerMoveSpeed;
         _currentMoveSpeed = defaultSpeed;
     }
 
@@ -155,39 +154,25 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _jumpInput = false;
-
-        // crouch
-        if (_crouchInput) {
-            _controller.height *= _gameSettings.CrouchHeight;
-            _controller.center = Vector3.up * _gameSettings.CrouchHeight * -1;
-
-            newCamPos = _camera.transform.localPosition;
-            newCamPos.y = _defaultCameraHeight * _gameSettings.CrouchHeight;
-        } else {
-            _controller.height = _defaultControllerHeight;
-            _controller.center = _defaultControllerCenter;
-            newCamPos = _camera.transform.localPosition;
-            newCamPos.y = _defaultCameraHeight;
-        }
-
         _crouchInput = false;
 
         // no clip
         _horizontalVelocity += transform.up * _yInput;
-
-        // apply calculated Movement
-        float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
-        if (_hasGravity) {
-            _controller.Move(_horizontalVelocity *
-                             (_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
-                             + _externallyAppliedMovement);
-            _controller.Move(_verticalVelocity * Time.deltaTime);
-        } else // no clip
+        if (_OnSlope())
         {
-            _controller.Move(_horizontalVelocity *
-                             (moveSpeed / 10) * Time.deltaTime
-                             + _externallyAppliedMovement);
+            _verticalVelocity = Vector3.zero;
+            _horizontalVelocity = Vector3.ProjectOnPlane(_horizontalVelocity, _currentSlope.normal);
         }
+
+        if (_IsInFrontOfStep(out float newYLevel))
+        {
+            transform.position += new Vector3(0, newYLevel, 0);
+        }
+        
+        // apply calculated Movement
+        _rb.velocity += _horizontalVelocity * (_movementSpeed * Time.deltaTime) + _externallyAppliedMovement;
+        _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _movementSpeed);
+        _rb.velocity += _verticalVelocity;
 
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
@@ -291,7 +276,7 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
         _hasGravity = false;
         _verticalVelocity = Vector3.zero;
-        _controller.Move(Vector3.zero);
+        _rb.velocity = Vector3.zero;
         transform.SetParent(null);
         if (_resetRotationWhenNoClip) {
             transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
@@ -338,6 +323,26 @@ public class PlayerMovement : MonoBehaviour
             //Debug.Log("No ground or tag detected , setting to default.");
             _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
         }
+    }
+
+    private bool _OnSlope()
+    {
+        if (Physics.Raycast(transform.position + transform.forward * 0.2f, -transform.up, out _currentSlope, _floorLayer))
+        {
+            return _currentSlope.normal != Vector3.up;
+        }
+        return false;
+    }
+    
+    private bool _IsInFrontOfStep(out float stepHeight)
+    {
+        stepHeight = 0.0f;
+        if (Physics.Raycast(transform.position + _horizontalVelocity * 0.8f, -transform.up, out RaycastHit hit, _floorLayer))
+        {
+            stepHeight = hit.point.y - _floorCheck.position.y + 0.03f;
+            return stepHeight > 0.05f && stepHeight < _stepHeightMax;
+        }
+        return false;
     }
 
 }
