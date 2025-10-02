@@ -182,4 +182,13 @@ public class PlayerTrigger : MonoBehaviour
         vcam.m_Lens.FieldOfView = targetFOV;
         _fovCoroutine = null;
     }
+
+    // Deactivates CromaticAberration filter when exiting playmode. 
+    private void OnApplicationQuit()
+    {
+        if (vol && vol.TryGet<ChromaticAberration>(out var ca))
+        {
+            ca.intensity.Override(0f);
+        }
+    }
 }
