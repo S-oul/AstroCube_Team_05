@@ -9,6 +9,7 @@ public class SkyboxAnimator : MonoBehaviour
 
     private void Update()
     {
-        RenderSettings.skybox.SetFloat("_Rotation", (Time.time * rotationSpeed)+_startAngle);
+        //RenderSettings.skybox.SetFloat("_Rotation", (Time.time * rotationSpeed)+_startAngle
+        // THIS DOESNT WORK WITH HDRP (SKYBOXES ARE IN POST PROCESS VOLUME ON CAMERA)
     }
 }
