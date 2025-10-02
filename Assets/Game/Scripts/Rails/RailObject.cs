@@ -1,5 +1,7 @@
+using NaughtyAttributes;
 using System.Linq;
 using UnityEngine;
+using static RailConnector;
 
 public class RailObject : MonoBehaviour
 {
@@ -8,68 +10,67 @@ public class RailObject : MonoBehaviour
     float _railLenght;
     [SerializeField] float _objRailPos = 0;
 
-    float _momemtum = 0f;
-    [SerializeField] float _defaultMomemtumAcceleration = 0.01f;
+    [ShowNonSerializedField] float _momemtum = 0f;
     [SerializeField] float _maxMomemtum = .5f;
-    [SerializeField] float _treshHoldFurObjToFall = .1f;
 
-    [SerializeField,Range(0,1)] float LerpFactor = .1f;
+    [SerializeField] float _gravityFactor = 1;
+
+    [SerializeField, Range(0, 1), InfoBox("If 0 or 1 : it will auto snap to the Newpos")] float _lerpFactor = .1f;
+
+
+    bool UpdatedThisFrame = false;
     private void Start()
     {
-
-        _railImOn._GetRailLenght();
-        transform.position = _railImOn._GetObjPos(_objRailPos);
+        _railImOn.ObjOnRail = this;
+        transform.position = _railImOn._GetObjPos(ObjRailPos);
     }
-    GUIContent aa;
-    Vector3[] v3;
-    private void Update()
+
+    #region acccesseur
+    public float ObjRailPos { get => _objRailPos; set => _objRailPos = value; }
+
+    #endregion
+
+    private void LateUpdate()
     {
         UpdatePhysics();
+        UpdatedThisFrame = false;
     }
 
-    private void UpdatePhysics()
+    public void UpdatePhysics()
     {
-        //[Forward, Backward, actual, nearestPoint]
-        v3= _railImOn._GetObjAllPos(_objRailPos, _momemtum == 0 ? _defaultMomemtumAcceleration : _momemtum);
-        if (v3.All(v => v == Vector3.zero))
-        {
-            Debug.LogError("No valid positions returned from _GetObjAllPos. Skipping movement.");
-            return;
-        }
+        if (UpdatedThisFrame) return;
+        UpdatedThisFrame = true;
 
-        float difForward = v3[0].y - transform.position.y;
-        float difBackward = v3[1].y - transform.position.y;
-
-        int i = 0;
-
-        if (difForward < 0f)
+        RailInfo info = _railImOn._GetRailInfoAtPos(ObjRailPos);
+        print("DOT : " + Vector3.Dot(info.position - transform.position, info.direction));
+        if (Vector3.Dot(info.position - transform.position,info.direction) > 0)
         {
-            _momemtum = Mathf.Min(_maxMomemtum, _maxMomemtum + _defaultMomemtumAcceleration);
-            _objRailPos += _momemtum;
-            transform.position = Vector3.Lerp(transform.position, v3[0], LerpFactor); // forward
-        }
-        else if (difBackward < 0f)
-        {
-            _momemtum = Mathf.Min(_maxMomemtum, _maxMomemtum + _defaultMomemtumAcceleration);
-            _objRailPos -= _momemtum;
-            transform.position = Vector3.Lerp(transform.position, v3[1], LerpFactor); // Backward
+            _momemtum = 0f;
         }
         else
         {
-            _momemtum = 0;
-            transform.position = Vector3.Lerp(transform.position, v3[3], .9f);
+            float acceleration = Physics.gravity.y * info.direction.y * _gravityFactor;
+            _momemtum += acceleration * Time.deltaTime;
+            //print(_momemtum + " // dir : " + info.direction.y);
         }
 
-        _objRailPos = Mathf.Clamp(_objRailPos, 0f, _railImOn._GetRailLenght());
+
+
+        _momemtum = Mathf.Clamp(_momemtum, -_maxMomemtum, _maxMomemtum);
+
+        ObjRailPos += _momemtum * Time.deltaTime;
+        ObjRailPos = Mathf.Clamp(ObjRailPos, 0f, _railImOn.RailLenght);
+
+        transform.position = (_lerpFactor == 0 || _lerpFactor == 1) ? info.position : Vector3.Lerp(transform.position, info.position, _lerpFactor);
+
+        /*if (Mathf.Abs(_momemtum) < 0.1f)
+        {
+            _momemtum = 0f;
+        }*/
     }
 
     private void OnGUI()
     {
-        foreach (Vector3 v in v3)
-        {
-            aa = new GUIContent(v.ToString());
-            GUILayout.Label(aa);
-        }
+        GUILayout.Label(_momemtum.ToString());
     }
-
 }
