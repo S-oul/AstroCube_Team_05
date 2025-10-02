@@ -105,8 +105,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(_currentSlope.normal);
-        
         if (!_canMove) return;
         /*
         // collect player inputs
