@@ -155,7 +155,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1537851944306892503}
   - component: {fileID: 700580131499637484}
-  - component: {fileID: 7069003786607905744}
+  - component: {fileID: 3346178413430330620}
+  - component: {fileID: 8708569820521048632}
   - component: {fileID: 8895847318250023099}
   - component: {fileID: 4747696836999268114}
   - component: {fileID: 390007284634587234}
@@ -202,22 +203,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68aaab3c2dd3bd240afbe69cd9b69d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controller: {fileID: 7069003786607905744}
+  _rb: {fileID: 3346178413430330620}
   _camera: {fileID: 2682455399166526803}
   _floorCheck: {fileID: 7652035074635611970}
   _floorLayer:
     serializedVersion: 2
     m_Bits: 449
-  _speedMultiplier: 1
-  _canJump: 0
-  _canCrouch: 1
+  _movementSpeed: 50
+  _stepHeightMax: 0.4
+  _canJump: 1
+  _canCrouch: 0
   _slippingMovementControl: 0.01
   _enableGravityRotation: 0
   _resetRotationWhenNoClip: 0
   isOnDefaultGround: 0
   _timerTNextStep: 1
---- !u!143 &7069003786607905744
-CharacterController:
+--- !u!54 &3346178413430330620
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 10
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 2
+--- !u!136 &8708569820521048632
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -234,13 +263,10 @@ CharacterController:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
+  serializedVersion: 2
   m_Radius: 0.7
-  m_SlopeLimit: 100
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8895847318250023099
 MonoBehaviour:
