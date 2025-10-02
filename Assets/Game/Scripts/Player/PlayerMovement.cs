@@ -163,11 +163,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // apply calculated Movement
-        _rb.velocity += _horizontalVelocity * (_gameSettings.PlayerMoveSpeed * Time.deltaTime) + _externallyAppliedMovement;
-        _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _gameSettings.PlayerMoveSpeed);
+        _rb.linearVelocity += _horizontalVelocity * (_gameSettings.PlayerMoveSpeed * Time.deltaTime) + _externallyAppliedMovement;
+        _rb.linearVelocity = Vector3.ClampMagnitude(_rb.linearVelocity, _gameSettings.PlayerMoveSpeed);
         if (!_isGrounded && !_OnSlope())
         {
-            _rb.velocity += Vector3.down * _gameSettings.Gravity;
+            _rb.linearVelocity += Vector3.down * _gameSettings.Gravity;
         }
 
         _ApplyCameraHeight(newCamPos.y);
@@ -271,7 +271,7 @@ public class PlayerMovement : MonoBehaviour
     {
         GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
         _hasGravity = false;
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         transform.SetParent(null);
         if (_resetRotationWhenNoClip) {
             transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
