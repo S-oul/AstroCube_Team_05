@@ -1,16 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuPointerController : MonoBehaviour
 {
-    GameObject _currentlySelectedGameObject;
-    GameObject _lastSelectedGameObject;
-    Vector3 _newArrowPos;
-    Image _pointerImage;
-    Image _altPointerImage;
+    private GameObject _currentlySelectedGameObject;
+    private GameObject _lastSelectedGameObject;
+    private Vector3 _newArrowPos;
+    private Image _pointerImage;
+    private Image _altPointerImage;
 
     private void Start()
     {
@@ -20,47 +19,49 @@ public class MenuPointerController : MonoBehaviour
 
     private void Update()
     {
-        // get selected UI
+        // Récupère l’UI sélectionnée
         _currentlySelectedGameObject = EventSystem.current.currentSelectedGameObject;
-        if (_currentlySelectedGameObject == _lastSelectedGameObject ) return; // if current selected hasn't changed, end Update loop. 
+        if (_currentlySelectedGameObject == _lastSelectedGameObject) return;
 
-        // check if selected UI has an alternate pointer
         if (_currentlySelectedGameObject != null)
         {
+            // Vérifie s’il existe un pointeur alternatif
             Transform alternatePointer = FindChildWithTag(_currentlySelectedGameObject, "AlternateMenuUiPointer");
             if (alternatePointer == null)
             {
                 if (_altPointerImage != null)
-                {  // deactivate any active altPointers
+                {
+                    // Désactive les altPointers actifs
                     _altPointerImage.enabled = false;
                     _altPointerImage = null;
                     _pointerImage.enabled = true;
                 }
 
-                // move pointer to correct position
+                // Déplace le pointeur sur l’élément
                 _newArrowPos.y = _currentlySelectedGameObject.transform.position.y;
                 transform.position = _newArrowPos;
             }
             else
             {
-                // activate altPointer and deactivate pointer
+                // Active altPointer et désactive le pointeur normal
                 _altPointerImage = alternatePointer.GetComponent<Image>();
-                _altPointerImage.enabled = true;
-                _pointerImage.enabled = false;
+                if (_altPointerImage != null)
+                {
+                    _altPointerImage.enabled = true;
+                    _pointerImage.enabled = false;
+                }
             }
         }
 
         _lastSelectedGameObject = _currentlySelectedGameObject;
     }
 
-    Transform FindChildWithTag(GameObject parent, string tag)
+    private Transform FindChildWithTag(GameObject parent, string tag)
     {
         foreach (Transform child in parent.transform)
         {
             if (child.CompareTag(tag))
-            {
                 return child;
-            }
         }
         return null;
     }

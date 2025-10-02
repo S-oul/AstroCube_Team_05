@@ -14,10 +14,10 @@ public class UIManager : MonoBehaviour
         foreach (var view in registeredViews)
         {
             if (view == null) continue;
+            view.gameObject.SetActive(true);
             var type = view.GetType();
             if (!_views.ContainsKey(type))
                 _views.Add(type, view);
-
             view.Hide();
         }
     }
@@ -48,5 +48,6 @@ public class UIManager : MonoBehaviour
         foreach (var view in _views.Values)
             view.Hide();
     }
+
 }
 
