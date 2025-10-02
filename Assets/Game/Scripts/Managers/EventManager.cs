@@ -50,6 +50,8 @@ public class EventManager : MonoBehaviour
         OnPlayerUndo += Undo.Invoke;
 
         OnPlayerInteract += Interact.Invoke;
+
+
     }
 
     private void OnDisable()
@@ -92,6 +94,10 @@ public class EventManager : MonoBehaviour
     public static event Action OnCubeSwitchFace;
     public static event Action OnCubeSwitchAxe;
 
+    //UI Events
+    public static event Action<UIView> OnViewShow;
+    public static event Action<UIView> OnViewHide;
+
 
     //Object Events
     public static event Action OnButtonPressed;
@@ -126,6 +132,15 @@ public class EventManager : MonoBehaviour
     public static event Action<bool> OnMotionBlurChange;
     public static event Action<bool> OnPreviewChange;
 
+    public static void TriggerViewShow(UIView uiView)
+    {
+        OnViewShow?.Invoke(uiView);
+    }
+
+    public static void TriggerViewHide(UIView uiView)
+    {
+        OnViewHide?.Invoke(uiView);
+    }
 
     public void DebugTest()
     {
