@@ -13,6 +13,7 @@ public class MenuPointerController : MonoBehaviour
 
     private void Start()
     {
+       
         _newArrowPos = transform.position;
         _pointerImage = GetComponent<Image>();
     }
@@ -39,6 +40,7 @@ public class MenuPointerController : MonoBehaviour
 
                 // Déplace le pointeur sur l’élément
                 _newArrowPos.y = _currentlySelectedGameObject.transform.position.y;
+                _pointerImage.color = Color.white;
                 transform.position = _newArrowPos;
             }
             else

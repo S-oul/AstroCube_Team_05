@@ -627,7 +627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5395028304068077272
 RectTransform:
   m_ObjectHideFlags: 0
@@ -677,8 +677,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 8169633346382088058}
+  viewFadeDuration: 0.8
   cameraPosition: {fileID: 3610781761052546958}
   cameraLookAt: {fileID: 2996053606012454522}
+  firstLevelName: LVL01_NAR02
+  newGameButton: {fileID: 3638351569273859267}
+  continueButton: {fileID: 5918202715437438651}
+  LevelsButton: {fileID: 4783085022013289720}
+  settingsButton: {fileID: 3119625604592534838}
+  quitButton: {fileID: 7571948903686060173}
 --- !u!1 &1448428859724541489
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,7 +789,7 @@ GameObject:
   - component: {fileID: 2014872471638536757}
   - component: {fileID: 3579769027978706356}
   m_Layer: 5
-  m_Name: Start
+  m_Name: New game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1715,7 +1722,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: New game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2ab607e49697d2449565035b842057a, type: 2}
   m_sharedMaterial: {fileID: -9022631021449638832, guid: c2ab607e49697d2449565035b842057a,
