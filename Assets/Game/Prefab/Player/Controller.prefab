@@ -69,7 +69,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerHold: {fileID: 0}
   _playerMovement: {fileID: 0}
-  _parentChanger: {fileID: 0}
+  _mouseCam: {fileID: 0}
+  _cameraFocusAttractor: {fileID: 0}
   _canMove: 0
 --- !u!1001 &5652325772714741600
 PrefabInstance:
@@ -79,11 +80,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 660084835029549841}
     m_Modifications:
-    - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 16
-      objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_ActionId
@@ -229,6 +225,11 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3706481031665168761}
+    - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_CallState

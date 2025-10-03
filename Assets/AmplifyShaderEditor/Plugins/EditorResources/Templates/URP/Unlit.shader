@@ -18,6 +18,7 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
         [HideInInspector][NoScaleOffset] unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset] unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
 
+		[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
 		[HideInInspector][ToggleOff] _ReceiveShadows("Receive Shadows", Float) = 1.0
 	}
 
@@ -91,7 +92,29 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 				false:SetShaderProperty:_ReceiveShadows,0
 			Option:Receive SSAO:false,true:true
 				true:SetDefine:Forward:pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+				true:SetDefine:GBuffer:pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
 				false:RemoveDefine:Forward:pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+				false:RemoveDefine:GBuffer:pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+			Option:Motion Vectors:false,true:true
+				true:ShowOption:  Add Precomputed Velocity
+				true:ShowOption:  XR Motion Vectors
+				true:IncludePass:MotionVectors
+				true:SetOption:Tessellation,0
+				false:HideOption:  Add Precomputed Velocity
+				false:HideOption:  XR Motion Vectors
+				false:ExcludePass:MotionVectors
+				false:ExcludePass:XRMotionVectors
+			Option:  Add Precomputed Velocity:false,true:false
+				true:SetShaderProperty:_AddPrecomputedVelocity,[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
+				true:SetShaderProperty:_AddPrecomputedVelocity,1
+				true:SetDefine:MotionVectors:pragma shader_feature_local_vertex _ADD_PRECOMPUTED_VELOCITY
+				true:SetDefine:XRMotionVectors:pragma shader_feature_local_vertex _ADD_PRECOMPUTED_VELOCITY
+				false:SetShaderProperty:_AddPrecomputedVelocity,//[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
+				false:RemoveDefine:MotionVectors:pragma shader_feature_local_vertex _ADD_PRECOMPUTED_VELOCITY
+				false:RemoveDefine:XRMotionVectors:pragma shader_feature_local_vertex _ADD_PRECOMPUTED_VELOCITY
+			Option:  XR Motion Vectors:false,true:false
+				true:IncludePass:XRMotionVectors
+				false:ExcludePass:XRMotionVectors
 			Option:GPU Instancing:false,true:true
 				true:SetDefine:Forward:pragma multi_compile_instancing
 				true:SetDefine:ShadowCaster:pragma multi_compile_instancing
@@ -104,14 +127,18 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 				true:SetDefine:Forward:pragma instancing_options renderinglayer
 				false:RemoveDefine:Forward:pragma instancing_options renderinglayer
 			Option:LOD CrossFade:false,true:true
-				true:SetDefine:Forward:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-				true:SetDefine:ShadowCaster:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-				true:SetDefine:DepthOnly:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-				true:SetDefine:DepthNormals:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-				false:RemoveDefine:Forward:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-				false:RemoveDefine:ShadowCaster:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-				false:RemoveDefine:DepthOnly:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-				false:RemoveDefine:DepthNormals:pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+				true:SetDefine:Forward:pragma multi_compile _ LOD_FADE_CROSSFADE
+				true:SetDefine:ShadowCaster:pragma multi_compile _ LOD_FADE_CROSSFADE
+				true:SetDefine:MotionVectors:pragma multi_compile _ LOD_FADE_CROSSFADE
+				true:SetDefine:XRMotionVectors:pragma multi_compile _ LOD_FADE_CROSSFADE
+				true:SetDefine:DepthOnly:pragma multi_compile _ LOD_FADE_CROSSFADE
+				true:SetDefine:DepthNormals:pragma multi_compile _ LOD_FADE_CROSSFADE
+				false:RemoveDefine:Forward:pragma multi_compile _ LOD_FADE_CROSSFADE
+				false:RemoveDefine:ShadowCaster:pragma multi_compile _ LOD_FADE_CROSSFADE
+				false:RemoveDefine:MotionVectors:pragma multi_compile _ LOD_FADE_CROSSFADE
+				false:RemoveDefine:XRMotionVectors:pragma multi_compile _ LOD_FADE_CROSSFADE
+				false:RemoveDefine:DepthOnly:pragma multi_compile _ LOD_FADE_CROSSFADE
+				false:RemoveDefine:DepthNormals:pragma multi_compile _ LOD_FADE_CROSSFADE
 			Option:Built-in Fog:false,true:true
 				true:SetDefine:Forward:pragma multi_compile_fog
 				false:RemoveDefine:Forward:pragma multi_compile_fog
@@ -140,6 +167,7 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 				false,disable:RemoveDefine:pragma domain DomainFunction
 				false,disable:HideOption:  Phong
 				false,disable:HideOption:  Type
+				true:SetOption:Motion Vectors,0
 			Option:  Phong:false,true:false
 				true:SetDefine:ASE_PHONG_TESSELLATION
 				false,disable:RemoveDefine:ASE_PHONG_TESSELLATION
@@ -351,19 +379,10 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			HLSLPROGRAM
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
 			#pragma vertex vert
 			#pragma fragment frag
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
@@ -613,19 +632,8 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			HLSLPROGRAM
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-			/*ase_srp_cond_end*/
-
-			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
 			#pragma multi_compile_fragment _ DEBUG_DISPLAY
 
 			#pragma vertex vert
@@ -633,35 +641,16 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			#define SHADERPASS SHADERPASS_UNLIT
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:>=140007*/
-			#if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-
-			/*ase_srp_cond_begin:>=140010*/
-			#if ASE_SRP_VERSION >=140010
 			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:<140010*/
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-			/*ase_srp_cond_end*/
-
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -898,6 +887,12 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 				inputData.normalWS = NormalWS;
 				inputData.viewDirectionWS = ViewDirWS;
 
+				#if defined(_SCREEN_SPACE_OCCLUSION) && !defined(_SURFACE_TYPE_TRANSPARENT)
+					float2 normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
+					AmbientOcclusionFactor aoFactor = GetScreenSpaceAmbientOcclusion(normalizedScreenSpaceUV);
+					Color.rgb *= aoFactor.directAmbientOcclusion;
+				#endif
+
 				#ifdef ASE_FOG
 					inputData.fogCoord = InitializeInputDataFog(float4(inputData.positionWS, 1.0), input.positionWSAndFogFactor.w);
 				#endif
@@ -949,10 +944,6 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			HLSLPROGRAM
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
 			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
 			#pragma vertex vert
@@ -960,12 +951,7 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			#define SHADERPASS SHADERPASS_SHADOWCASTER
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -1198,24 +1184,15 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 		    }
 
 			ZWrite On
-			ColorMask R
+			ColorMask 0
 			AlphaToMask Off
 
 			HLSLPROGRAM
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
 			#pragma vertex vert
 			#pragma fragment frag
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -1663,17 +1640,6 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-
-			/*ase_srp_cond_begin:>=140010*/
-			#if ASE_SRP_VERSION >=140010
-			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:<140010*/
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -1778,10 +1744,6 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			HLSLPROGRAM
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -1789,34 +1751,15 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 			#define ATTRIBUTES_NEED_TANGENT
 			#define SHADERPASS SHADERPASS_DEPTHONLY
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:>=140007*/
-			#if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-
-			/*ase_srp_cond_begin:>=140010*/
-			#if ASE_SRP_VERSION >=140010
 			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:<140010*/
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-			/*ase_srp_cond_end*/
-
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -2009,10 +1952,6 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			HLSLPROGRAM
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -2021,34 +1960,15 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			#define SHADERPASS SHADERPASS_DEPTHONLY
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:>=140007*/
-			#if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-
-			/*ase_srp_cond_begin:>=140010*/
-			#if ASE_SRP_VERSION >=140010
 			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:<140010*/
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-			/*ase_srp_cond_end*/
-
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -2248,15 +2168,7 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			HLSLPROGRAM
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
         	#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
-
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-			/*ase_srp_cond_end*/
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -2267,34 +2179,15 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			#define SHADERPASS SHADERPASS_DEPTHNORMALSONLY
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:>=140007*/
-			#if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-
-			/*ase_srp_cond_begin:>=140010*/
-			#if ASE_SRP_VERSION >=140010
 			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:<140010*/
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-			/*ase_srp_cond_end*/
-
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -2535,15 +2428,7 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 			HLSLPROGRAM
 			#pragma exclude_renderers gles gles3 glcore
 
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-			/*ase_srp_cond_end*/
-
         	#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
-
-			/*ase_srp_cond_begin:<140007*/
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-			/*ase_srp_cond_end*/
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -2556,34 +2441,15 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 
 			#define SHADERPASS SHADERPASS_DEPTHNORMALSONLY
 
-			/*ase_srp_cond_begin:>=140007*/
-            #if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:>=140007*/
-			#if ASE_SRP_VERSION >=140007
 			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-
-			/*ase_srp_cond_begin:>=140010*/
-			#if ASE_SRP_VERSION >=140010
 			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-			#endif
-			/*ase_srp_cond_end*/
-
-			/*ase_srp_cond_begin:<140010*/
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-			/*ase_srp_cond_end*/
-
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -2759,6 +2625,751 @@ Shader /*ase_name*/ "Hidden/Universal/Unlit" /*end*/
 				#endif
 
 				return half4( NormalizeNormalPerPixel( input.normalWS ), 0.0 );
+			}
+
+			ENDHLSL
+		}
+
+		/*ase_pass*/
+		Pass
+		{
+			/*ase_hide_pass*/
+			Name "MotionVectors"
+			Tags
+			{
+				"LightMode" = "MotionVectors"
+			}
+
+			ColorMask RG
+
+			HLSLPROGRAM
+
+			#pragma vertex vert
+			#pragma fragment frag
+
+            #define SHADERPASS SHADERPASS_MOTION_VECTORS
+
+            #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+		    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
+		    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
+		    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
+
+			#if defined(LOD_FADE_CROSSFADE)
+				#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
+			#endif
+
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MotionVectorsCommon.hlsl"
+
+			/*ase_pragma*/
+
+			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
+				#define ASE_SV_DEPTH SV_DepthLessEqual
+				#define ASE_SV_POSITION_QUALIFIERS linear noperspective centroid
+			#else
+				#define ASE_SV_DEPTH SV_Depth
+				#define ASE_SV_POSITION_QUALIFIERS
+			#endif
+
+			struct Attributes
+			{
+				float4 positionOS : POSITION;
+				float3 positionOld : TEXCOORD4;
+				#if _ADD_PRECOMPUTED_VELOCITY
+					float3 alembicMotionVector : TEXCOORD5;
+				#endif
+				half3 normalOS : NORMAL;
+				half4 tangentOS : TANGENT;
+				/*ase_vdata:p=p;n=n;t=t;uv4=tc4;uv5=tc5*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct PackedVaryings
+			{
+				float4 positionCS : SV_POSITION;
+				float4 positionCSNoJitter : TEXCOORD0;
+				float4 previousPositionCSNoJitter : TEXCOORD1;
+				float3 positionWS : TEXCOORD2;
+				/*ase_interp(3,):sp=sp.xyzw*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+			};
+
+			CBUFFER_START(UnityPerMaterial)
+			#ifdef ASE_TRANSMISSION
+				float _TransmissionShadow;
+			#endif
+			#ifdef ASE_TRANSLUCENCY
+				float _TransStrength;
+				float _TransNormal;
+				float _TransScattering;
+				float _TransDirect;
+				float _TransAmbient;
+				float _TransShadow;
+			#endif
+			#ifdef ASE_TESSELLATION
+				float _TessPhongStrength;
+				float _TessValue;
+				float _TessMin;
+				float _TessMax;
+				float _TessEdgeLength;
+				float _TessMaxDisp;
+			#endif
+			CBUFFER_END
+
+			#ifdef SCENEPICKINGPASS
+				float4 _SelectionID;
+			#endif
+
+			#ifdef SCENESELECTIONPASS
+				int _ObjectId;
+				int _PassValue;
+			#endif
+
+			/*ase_globals*/
+
+			/*ase_funcs*/
+
+			PackedVaryings VertexFunction( Attributes input /*ase_vert_input*/ )
+			{
+				PackedVaryings output = (PackedVaryings)0;
+				UNITY_SETUP_INSTANCE_ID(input);
+				UNITY_TRANSFER_INSTANCE_ID(input, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+				/*ase_vert_code:input=Attributes;output=PackedVaryings*/
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+					float3 defaultVertexValue = input.positionOS.xyz;
+				#else
+					float3 defaultVertexValue = float3(0, 0, 0);
+				#endif
+
+				float3 vertexValue = /*ase_vert_out:Vertex Offset;Float3;2;-1;_Vertex*/defaultVertexValue/*end*/;
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+					input.positionOS.xyz = vertexValue;
+				#else
+					input.positionOS.xyz += vertexValue;
+				#endif
+
+				VertexPositionInputs vertexInput = GetVertexPositionInputs( input.positionOS.xyz );
+
+				#if defined(APLICATION_SPACE_WARP_MOTION)
+					output.positionCSNoJitter = mul(_NonJitteredViewProjMatrix, mul(UNITY_MATRIX_M, input.positionOS));
+					output.positionCS = output.positionCSNoJitter;
+				#else
+					output.positionCS = vertexInput.positionCS;
+					output.positionCSNoJitter = mul(_NonJitteredViewProjMatrix, mul(UNITY_MATRIX_M, input.positionOS));
+				#endif
+
+				float4 prevPos = ( unity_MotionVectorsParams.x == 1 ) ? float4( input.positionOld, 1 ) : input.positionOS;
+
+				#if _ADD_PRECOMPUTED_VELOCITY
+					prevPos = prevPos - float4(input.alembicMotionVector, 0);
+				#endif
+
+				output.previousPositionCSNoJitter = mul( _PrevViewProjMatrix, mul( UNITY_PREV_MATRIX_M, prevPos ) );
+				output.positionWS = vertexInput.positionWS;
+				return output;
+			}
+
+			PackedVaryings vert ( Attributes input )
+			{
+				return VertexFunction( input );
+			}
+
+			half4 frag(	PackedVaryings input
+				#if defined( ASE_DEPTH_WRITE_ON )
+				,out float outputDepth : ASE_SV_DEPTH
+				#endif
+				/*ase_frag_input*/ ) : SV_Target
+			{
+				UNITY_SETUP_INSTANCE_ID(input);
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( input );
+
+				/*ase_local_var:wp*/float3 PositionWS = input.positionWS;
+				/*ase_local_var:rwp*/float3 PositionRWS = GetCameraRelativePositionWS( PositionWS );
+				/*ase_local_var:spn*/float4 ScreenPosNorm = float4( GetNormalizedScreenSpaceUV( input.positionCS ), input.positionCS.zw );
+				/*ase_local_var:sp*/float4 ClipPos = ComputeClipSpacePosition( ScreenPosNorm.xy, input.positionCS.z ) * input.positionCS.w;
+
+				/*ase_frag_code:input=PackedVaryings*/
+
+				float Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
+				float AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/0.5/*end*/;
+
+				#if defined( ASE_DEPTH_WRITE_ON )
+					float DeviceDepth = /*ase_frag_out:Depth;Float;17;-1;_DepthValue*/input.positionCS.z/*end*/;
+				#endif
+
+				#ifdef _ALPHATEST_ON
+					clip(Alpha - AlphaClipThreshold);
+				#endif
+
+				#if defined( ASE_CHANGES_WORLD_POS )
+					float3 positionOS = mul( GetWorldToObjectMatrix(),  float4( PositionWS, 1.0 ) ).xyz;
+					float3 previousPositionWS = mul( GetPrevObjectToWorldMatrix(),  float4( positionOS, 1.0 ) ).xyz;
+					input.positionCSNoJitter = mul( _NonJitteredViewProjMatrix, float4( PositionWS, 1.0 ) );
+					input.previousPositionCSNoJitter = mul( _PrevViewProjMatrix, float4( previousPositionWS, 1.0 ) );
+				#endif
+
+				#if defined( LOD_FADE_CROSSFADE )
+					LODFadeCrossFade( input.positionCS );
+				#endif
+
+				#if defined( ASE_DEPTH_WRITE_ON )
+					outputDepth = DeviceDepth;
+				#endif
+
+				#if defined(APLICATION_SPACE_WARP_MOTION)
+					return float4( CalcAswNdcMotionVectorFromCsPositions( input.positionCSNoJitter, input.previousPositionCSNoJitter ), 1 );
+				#else
+					return float4( CalcNdcMotionVectorFromCsPositions( input.positionCSNoJitter, input.previousPositionCSNoJitter ), 0, 0 );
+				#endif
+			}
+			ENDHLSL
+		}
+
+		/*ase_pass*/
+		Pass
+		{
+			/*ase_hide_pass*/
+			Name "XRMotionVectors"
+			Tags
+			{
+				"LightMode" = "XRMotionVectors"
+			}
+
+			ColorMask RGBA
+
+			Stencil
+			{
+				WriteMask 1
+				Ref 1
+				Comp Always
+				Pass Replace
+			}
+
+			HLSLPROGRAM
+
+			#pragma vertex vert
+			#pragma fragment frag
+
+			#define APLICATION_SPACE_WARP_MOTION 1
+
+			#define SHADERPASS SHADERPASS_MOTION_VECTORS
+
+            #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+		    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
+		    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
+		    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
+		    #include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
+
+			#if defined(LOD_FADE_CROSSFADE)
+				#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
+			#endif
+
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MotionVectorsCommon.hlsl"
+
+			/*ase_pragma*/
+
+			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
+				#define ASE_SV_DEPTH SV_DepthLessEqual
+				#define ASE_SV_POSITION_QUALIFIERS linear noperspective centroid
+			#else
+				#define ASE_SV_DEPTH SV_Depth
+				#define ASE_SV_POSITION_QUALIFIERS
+			#endif
+
+			struct Attributes
+			{
+				float4 positionOS : POSITION;
+				float3 positionOld : TEXCOORD4;
+				#if _ADD_PRECOMPUTED_VELOCITY
+					float3 alembicMotionVector : TEXCOORD5;
+				#endif
+				half3 normalOS : NORMAL;
+				half4 tangentOS : TANGENT;
+				/*ase_vdata:p=p;n=n;t=t;uv4=tc4;uv5=tc5*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct PackedVaryings
+			{
+				float4 positionCS : SV_POSITION;
+				float4 positionCSNoJitter : TEXCOORD0;
+				float4 previousPositionCSNoJitter : TEXCOORD1;
+				float3 positionWS : TEXCOORD2;
+				/*ase_interp(3,):sp=sp.xyzw*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+			};
+
+			CBUFFER_START(UnityPerMaterial)
+			#ifdef ASE_TRANSMISSION
+				float _TransmissionShadow;
+			#endif
+			#ifdef ASE_TRANSLUCENCY
+				float _TransStrength;
+				float _TransNormal;
+				float _TransScattering;
+				float _TransDirect;
+				float _TransAmbient;
+				float _TransShadow;
+			#endif
+			#ifdef ASE_TESSELLATION
+				float _TessPhongStrength;
+				float _TessValue;
+				float _TessMin;
+				float _TessMax;
+				float _TessEdgeLength;
+				float _TessMaxDisp;
+			#endif
+			CBUFFER_END
+
+			#ifdef SCENEPICKINGPASS
+				float4 _SelectionID;
+			#endif
+
+			#ifdef SCENESELECTIONPASS
+				int _ObjectId;
+				int _PassValue;
+			#endif
+
+			/*ase_globals*/
+
+			/*ase_funcs*/
+
+			PackedVaryings VertexFunction( Attributes input /*ase_vert_input*/ )
+			{
+				PackedVaryings output = (PackedVaryings)0;
+				UNITY_SETUP_INSTANCE_ID(input);
+				UNITY_TRANSFER_INSTANCE_ID(input, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+				/*ase_vert_code:input=Attributes;output=PackedVaryings*/
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+					float3 defaultVertexValue = input.positionOS.xyz;
+				#else
+					float3 defaultVertexValue = float3(0, 0, 0);
+				#endif
+
+				float3 vertexValue = /*ase_vert_out:Vertex Offset;Float3;2;-1;_Vertex*/defaultVertexValue/*end*/;
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+					input.positionOS.xyz = vertexValue;
+				#else
+					input.positionOS.xyz += vertexValue;
+				#endif
+
+				VertexPositionInputs vertexInput = GetVertexPositionInputs( input.positionOS.xyz );
+
+				#if defined(APLICATION_SPACE_WARP_MOTION)
+					output.positionCSNoJitter = mul(_NonJitteredViewProjMatrix, mul(UNITY_MATRIX_M, input.positionOS));
+					output.positionCS = output.positionCSNoJitter;
+				#else
+					output.positionCS = vertexInput.positionCS;
+					output.positionCSNoJitter = mul(_NonJitteredViewProjMatrix, mul(UNITY_MATRIX_M, input.positionOS));
+				#endif
+
+				float4 prevPos = ( unity_MotionVectorsParams.x == 1 ) ? float4( input.positionOld, 1 ) : input.positionOS;
+
+				#if _ADD_PRECOMPUTED_VELOCITY
+					prevPos = prevPos - float4(input.alembicMotionVector, 0);
+				#endif
+
+				output.previousPositionCSNoJitter = mul( _PrevViewProjMatrix, mul( UNITY_PREV_MATRIX_M, prevPos ) );
+				output.positionWS = vertexInput.positionWS;
+				return output;
+			}
+
+			PackedVaryings vert ( Attributes input )
+			{
+				return VertexFunction( input );
+			}
+
+			half4 frag(	PackedVaryings input
+				#if defined( ASE_DEPTH_WRITE_ON )
+				,out float outputDepth : ASE_SV_DEPTH
+				#endif
+				/*ase_frag_input*/ ) : SV_Target
+			{
+				UNITY_SETUP_INSTANCE_ID(input);
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( input );
+
+				/*ase_local_var:wp*/float3 PositionWS = input.positionWS;
+				/*ase_local_var:rwp*/float3 PositionRWS = GetCameraRelativePositionWS( PositionWS );
+				/*ase_local_var:spn*/float4 ScreenPosNorm = float4( GetNormalizedScreenSpaceUV( input.positionCS ), input.positionCS.zw );
+				/*ase_local_var:sp*/float4 ClipPos = ComputeClipSpacePosition( ScreenPosNorm.xy, input.positionCS.z ) * input.positionCS.w;
+
+				/*ase_frag_code:input=PackedVaryings*/
+
+				float Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
+				float AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/0.5/*end*/;
+
+				#if defined( ASE_DEPTH_WRITE_ON )
+					float DeviceDepth = /*ase_frag_out:Depth;Float;17;-1;_DepthValue*/input.positionCS.z/*end*/;
+				#endif
+
+				#ifdef _ALPHATEST_ON
+					clip(Alpha - AlphaClipThreshold);
+				#endif
+
+				#if defined( ASE_CHANGES_WORLD_POS )
+					float3 positionOS = mul( GetWorldToObjectMatrix(),  float4( PositionWS, 1.0 ) ).xyz;
+					float3 previousPositionWS = mul( GetPrevObjectToWorldMatrix(),  float4( positionOS, 1.0 ) ).xyz;
+					input.positionCSNoJitter = mul( _NonJitteredViewProjMatrix, float4( PositionWS, 1.0 ) );
+					input.previousPositionCSNoJitter = mul( _PrevViewProjMatrix, float4( previousPositionWS, 1.0 ) );
+				#endif
+
+				#if defined( LOD_FADE_CROSSFADE )
+					LODFadeCrossFade( input.positionCS );
+				#endif
+
+				#if defined( ASE_DEPTH_WRITE_ON )
+					outputDepth = DeviceDepth;
+				#endif
+
+				#if defined(APLICATION_SPACE_WARP_MOTION)
+					return float4( CalcAswNdcMotionVectorFromCsPositions( input.positionCSNoJitter, input.previousPositionCSNoJitter ), 1 );
+				#else
+					return float4( CalcNdcMotionVectorFromCsPositions( input.positionCSNoJitter, input.previousPositionCSNoJitter ), 0, 0 );
+				#endif
+			}
+			ENDHLSL
+		}
+
+		/*ase_pass*/
+		Pass
+		{
+			/*ase_hide_pass:SyncP*/
+			Name "GBuffer"
+			Tags
+			{
+				"LightMode" = "UniversalGBuffer"
+		    }
+
+			Blend One Zero
+			ZWrite On
+			ZTest LEqual
+			Offset 0,0
+			ColorMask RGBA
+
+			/*ase_stencil*/
+
+			HLSLPROGRAM
+
+			/*ase_srp_cond_begin:<140007*/
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+			/*ase_srp_cond_end*/
+
+			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+			#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
+			#pragma multi_compile_fragment _ _RENDER_PASS_ENABLED
+
+			/*ase_srp_cond_begin:<140007*/
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+			/*ase_srp_cond_end*/
+
+			#pragma vertex vert
+			#pragma fragment frag
+
+			#define SHADERPASS SHADERPASS_GBUFFER
+
+			/*ase_srp_cond_begin:>=140007*/
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+			/*ase_srp_cond_end*/
+
+			/*ase_srp_cond_begin:>=140007*/
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+			/*ase_srp_cond_end*/
+
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+
+			/*ase_unity_cond_begin:>=20220316*/
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
+            /*ase_unity_cond_end*/
+
+			/*ase_unity_cond_begin:>=20220316*/
+            #if ASE_SRP_VERSION >=140009
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+			/*ase_unity_cond_end*/
+
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
+			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
+
+			#if defined(LOD_FADE_CROSSFADE)
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
+            #endif
+
+			#if defined(UNITY_INSTANCING_ENABLED) && defined(_TERRAIN_INSTANCED_PERPIXEL_NORMAL)
+				#define ENABLE_TERRAIN_PERPIXEL_NORMAL
+			#endif
+
+			/*ase_pragma*/
+
+			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
+				#define ASE_SV_DEPTH SV_DepthLessEqual
+				#define ASE_SV_POSITION_QUALIFIERS linear noperspective centroid
+			#else
+				#define ASE_SV_DEPTH SV_Depth
+				#define ASE_SV_POSITION_QUALIFIERS
+			#endif
+
+			struct Attributes
+			{
+				float4 positionOS : POSITION;
+				half3 normalOS : NORMAL;
+				/*ase_vdata:p=p;n=n*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct PackedVaryings
+			{
+				ASE_SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
+				float3 positionWS : TEXCOORD0;
+				half3 normalWS : TEXCOORD1;
+				/*ase_interp(2,):sp=sp;wp=tc0.xyz;wn=tc1.xyz*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+			};
+
+			CBUFFER_START(UnityPerMaterial)
+			#ifdef ASE_TRANSMISSION
+				float _TransmissionShadow;
+			#endif
+			#ifdef ASE_TRANSLUCENCY
+				float _TransStrength;
+				float _TransNormal;
+				float _TransScattering;
+				float _TransDirect;
+				float _TransAmbient;
+				float _TransShadow;
+			#endif
+			#ifdef ASE_TESSELLATION
+				float _TessPhongStrength;
+				float _TessValue;
+				float _TessMin;
+				float _TessMax;
+				float _TessEdgeLength;
+				float _TessMaxDisp;
+			#endif
+			CBUFFER_END
+
+			#ifdef SCENEPICKINGPASS
+				float4 _SelectionID;
+			#endif
+
+			#ifdef SCENESELECTIONPASS
+				int _ObjectId;
+				int _PassValue;
+			#endif
+
+			/*ase_globals*/
+
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityGBuffer.hlsl"
+
+			/*ase_funcs*/
+
+			PackedVaryings VertexFunction( Attributes input /*ase_vert_input*/ )
+			{
+				PackedVaryings output = (PackedVaryings)0;
+				UNITY_SETUP_INSTANCE_ID(input);
+				UNITY_TRANSFER_INSTANCE_ID(input, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+				/*ase_vert_code:input=Attributes;output=PackedVaryings*/
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+					float3 defaultVertexValue = input.positionOS.xyz;
+				#else
+					float3 defaultVertexValue = float3(0, 0, 0);
+				#endif
+
+				float3 vertexValue = /*ase_vert_out:Vertex Offset;Float3;8;-1;_Vertex*/defaultVertexValue/*end*/;
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+					input.positionOS.xyz = vertexValue;
+				#else
+					input.positionOS.xyz += vertexValue;
+				#endif
+
+				VertexPositionInputs vertexInput = GetVertexPositionInputs( input.positionOS.xyz );
+				VertexNormalInputs normalInput = GetVertexNormalInputs( input.normalOS );
+
+				output.positionCS = vertexInput.positionCS;
+				output.positionWS = vertexInput.positionWS;
+				output.normalWS = normalInput.normalWS;
+				return output;
+			}
+
+			#if defined(ASE_TESSELLATION)
+			struct VertexControl
+			{
+				float4 positionOS : INTERNALTESSPOS;
+				half3 normalOS : NORMAL;
+				/*ase_vcontrol*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct TessellationFactors
+			{
+				float edge[3] : SV_TessFactor;
+				float inside : SV_InsideTessFactor;
+			};
+
+			VertexControl vert ( Attributes input )
+			{
+				VertexControl output;
+				UNITY_SETUP_INSTANCE_ID(input);
+				UNITY_TRANSFER_INSTANCE_ID(input, output);
+				output.positionOS = input.positionOS;
+				output.normalOS = input.normalOS;
+				/*ase_control_code:input=Attributes;output=VertexControl*/
+				return output;
+			}
+
+			TessellationFactors TessellationFunction (InputPatch<VertexControl,3> input)
+			{
+				TessellationFactors output;
+				float4 tf = 1;
+				float tessValue = /*ase_inline_begin*/_TessValue/*ase_inline_end*/; float tessMin = /*ase_inline_begin*/_TessMin/*ase_inline_end*/; float tessMax = /*ase_inline_begin*/_TessMax/*ase_inline_end*/;
+				float edgeLength = /*ase_inline_begin*/_TessEdgeLength/*ase_inline_end*/; float tessMaxDisp = /*ase_inline_begin*/_TessMaxDisp/*ase_inline_end*/;
+				#if defined(ASE_FIXED_TESSELLATION)
+				tf = FixedTess( tessValue );
+				#elif defined(ASE_DISTANCE_TESSELLATION)
+				tf = DistanceBasedTess(input[0].positionOS, input[1].positionOS, input[2].positionOS, tessValue, tessMin, tessMax, GetObjectToWorldMatrix(), _WorldSpaceCameraPos );
+				#elif defined(ASE_LENGTH_TESSELLATION)
+				tf = EdgeLengthBasedTess(input[0].positionOS, input[1].positionOS, input[2].positionOS, edgeLength, GetObjectToWorldMatrix(), _WorldSpaceCameraPos, _ScreenParams );
+				#elif defined(ASE_LENGTH_CULL_TESSELLATION)
+				tf = EdgeLengthBasedTessCull(input[0].positionOS, input[1].positionOS, input[2].positionOS, edgeLength, tessMaxDisp, GetObjectToWorldMatrix(), _WorldSpaceCameraPos, _ScreenParams, unity_CameraWorldClipPlanes );
+				#endif
+				output.edge[0] = tf.x; output.edge[1] = tf.y; output.edge[2] = tf.z; output.inside = tf.w;
+				return output;
+			}
+
+			[domain("tri")]
+			[partitioning("fractional_odd")]
+			[outputtopology("triangle_cw")]
+			[patchconstantfunc("TessellationFunction")]
+			[outputcontrolpoints(3)]
+			VertexControl HullFunction(InputPatch<VertexControl, 3> patch, uint id : SV_OutputControlPointID)
+			{
+				return patch[id];
+			}
+
+			[domain("tri")]
+			PackedVaryings DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
+			{
+				Attributes output = (Attributes) 0;
+				output.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
+				output.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				/*ase_domain_code:patch=VertexControl;output=Attributes;bary=SV_DomainLocation*/
+				#if defined(ASE_PHONG_TESSELLATION)
+				float3 pp[3];
+				for (int i = 0; i < 3; ++i)
+					pp[i] = output.positionOS.xyz - patch[i].normalOS * (dot(output.positionOS.xyz, patch[i].normalOS) - dot(patch[i].positionOS.xyz, patch[i].normalOS));
+				float phongStrength = /*ase_inline_begin*/_TessPhongStrength/*ase_inline_end*/;
+				output.positionOS.xyz = phongStrength * (pp[0]*bary.x + pp[1]*bary.y + pp[2]*bary.z) + (1.0f-phongStrength) * output.positionOS.xyz;
+				#endif
+				UNITY_TRANSFER_INSTANCE_ID(patch[0], output);
+				return VertexFunction(output);
+			}
+			#else
+			PackedVaryings vert ( Attributes input )
+			{
+				return VertexFunction( input );
+			}
+			#endif
+
+			FragmentOutput frag ( PackedVaryings input
+								#if defined( ASE_DEPTH_WRITE_ON )
+								,out float outputDepth : ASE_SV_DEPTH
+								#endif
+								/*ase_frag_input*/ )
+			{
+				UNITY_SETUP_INSTANCE_ID(input);
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+
+				#if defined(LOD_FADE_CROSSFADE)
+					LODFadeCrossFade( input.positionCS );
+				#endif
+
+				/*ase_local_var:wp*/float3 PositionWS = input.positionWS;
+				/*ase_local_var:wvd*/float3 ViewDirWS = GetWorldSpaceNormalizeViewDir( PositionWS );
+				/*ase_local_var:spn*/float4 ScreenPosNorm = float4( GetNormalizedScreenSpaceUV( input.positionCS ), input.positionCS.zw );
+				/*ase_local_var:sp*/float4 ClipPos = ComputeClipSpacePosition( ScreenPosNorm.xy, input.positionCS.z ) * input.positionCS.w;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( ClipPos );
+				/*ase_local_var:wn*/half3 NormalWS = normalize( input.normalWS );
+
+				/*ase_frag_code:input=PackedVaryings*/
+
+				float3 Color = /*ase_frag_out:Color;Float3;2;-1;_Color*/float3(0.5, 0.5, 0.5)/*end*/;
+				float Alpha = /*ase_frag_out:Alpha;Float;3;-1;_Alpha*/1/*end*/;
+				float AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;4;-1;_AlphaClip*/0.5/*end*/;
+				float AlphaClipThresholdShadow = /*ase_frag_out:Alpha Clip Threshold Shadow;Float;7;-1;_AlphaClipShadow*/0.5/*end*/;
+
+				#if defined( ASE_DEPTH_WRITE_ON )
+					float DeviceDepth = /*ase_frag_out:Depth;Float;17;-1;_DepthValue*/input.positionCS.z/*end*/;
+				#endif
+
+				#ifdef _ALPHATEST_ON
+					clip(Alpha - AlphaClipThreshold);
+				#endif
+
+				InputData inputData = (InputData)0;
+				inputData.positionWS = PositionWS;
+				inputData.positionCS = float4( input.positionCS.xy, ClipPos.zw / ClipPos.w );
+				inputData.normalizedScreenSpaceUV = ScreenPosNorm.xy;
+				inputData.normalWS = NormalWS;
+				inputData.viewDirectionWS = ViewDirWS;
+
+				#if defined(_DBUFFER)
+					ApplyDecalToBaseColor(input.positionCS, Color);
+				#endif
+
+				#if defined( ASE_DEPTH_WRITE_ON )
+					outputDepth = DeviceDepth;
+				#endif
+
+				SurfaceData surfaceData = (SurfaceData)0;
+				surfaceData.albedo = Color;
+				surfaceData.alpha = Alpha;
+
+			#if defined( _SCREEN_SPACE_OCCLUSION ) // GBuffer never has transparents
+				float2 normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV( input.positionCS );
+				AmbientOcclusionFactor aoFactor = GetScreenSpaceAmbientOcclusion( normalizedScreenSpaceUV );
+				surfaceData.occlusion = aoFactor.directAmbientOcclusion;
+			#else
+				surfaceData.occlusion = 1;
+			#endif
+
+				return SurfaceDataToGbuffer( surfaceData, inputData, float3( 0, 0, 0 ), kLightingInvalid );
 			}
 
 			ENDHLSL

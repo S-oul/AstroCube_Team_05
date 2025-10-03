@@ -10,6 +10,7 @@ public class GameSettings : ScriptableObject
 
     // Player Properties
     public float PlayerMoveSpeed => _playerMoveSpeed;
+    public float StepHeightMax => _stepHeightMax;
     public float Gravity => _gravity;
     public float JumpHeight => _jumpHeight;
     public float CrouchSpeed => _crouchSpeed;
@@ -54,6 +55,7 @@ public class GameSettings : ScriptableObject
 
     [Header("- Movement")]
     [SerializeField] float _playerMoveSpeed = 12f;
+    [SerializeField] float _stepHeightMax = 12f;
     [SerializeField] float _gravity = -20.0f;
 
     [Header("- Jump")]

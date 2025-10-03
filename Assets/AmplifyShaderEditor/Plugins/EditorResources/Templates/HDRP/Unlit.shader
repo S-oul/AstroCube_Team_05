@@ -31,7 +31,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Float) = 0
 		[HideInInspector][ToggleUI] _EnableFogOnTransparent("Enable Fog", Float) = 1
 		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2 // This mode is dedicated to Forward to correctly handle backface then front face rendering thin transparent
-		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][Enum(UnityEngine.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("_TransparentCullMode", Int) = 2 // Back culling by default
 		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4 // Less equal
 		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 4 // Less equal
 		[HideInInspector][ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
@@ -51,7 +51,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 		//_TessMaxDisp( "Tess Max Displacement", Float ) = 25
 
 		[HideInInspector][ToggleUI] _TransparentWritingMotionVec("Transparent Writing MotionVec", Float) = 0
-		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][Enum(UnityEngine.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("_OpaqueCullMode", Int) = 2 // Back culling by default
 		[HideInInspector][ToggleUI] _SupportDecals("Support Decals", Float) = 1
 		[HideInInspector][ToggleUI] _ReceivesSSRTransparent("Receives SSR Transparent", Float) = 0
 		[HideInInspector] _EmissionColor("Color", Color) = (1, 1, 1)
@@ -176,16 +176,18 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 				false,disable:SetShaderProperty:_ShadowMatteFilter,//[HideInInspector] _ShadowMatteFilter("Shadow Matte Filter", Float) = 2.006836
 				false,disable:HidePort:Forward Unlit:Shadow Tint
 				false,disable:RemoveDefine:_ENABLE_SHADOW_MATTE 1
-				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
-				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
+				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment PUNCTUAL_SHADOW_LOW PUNCTUAL_SHADOW_MEDIUM PUNCTUAL_SHADOW_HIGH
+				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment DIRECTIONAL_SHADOW_LOW DIRECTIONAL_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH
 				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
+				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
 				false,disable:RemoveDefine:MotionVectors:WRITE_NORMAL_BUFFER
 				false,disable:RemoveDefine:DepthForwardOnly:WRITE_NORMAL_BUFFER
 				true:SetDefine:_ENABLE_SHADOW_MATTE 1
 				true:ShowPort:Forward Unlit:Shadow Tint
-				true:SetDefine:Forward Unlit:pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
-				true:SetDefine:Forward Unlit:pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
+				true:SetDefine:Forward Unlit:pragma multi_compile_fragment PUNCTUAL_SHADOW_LOW PUNCTUAL_SHADOW_MEDIUM PUNCTUAL_SHADOW_HIGH
+				true:SetDefine:Forward Unlit:pragma multi_compile_fragment DIRECTIONAL_SHADOW_LOW DIRECTIONAL_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH
 				true:SetDefine:Forward Unlit:pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
+				true:SetDefine:Forward Unlit:pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
 				true:SetDefine:MotionVectors:WRITE_NORMAL_BUFFER
 				true:SetDefine:DepthForwardOnly:WRITE_NORMAL_BUFFER
 			Option:Cast Shadows:false,true:true
@@ -298,8 +300,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 		#pragma target 4.5
 		#pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
 
+        #define SUPPORT_GLOBAL_MIP_BIAS 1
+
 		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
+		#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 
 		#ifndef ASE_TESS_FUNCS
 		#define ASE_TESS_FUNCS
@@ -414,6 +419,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
             }
 
 			Blend [_SrcBlend] [_DstBlend], [_AlphaSrcBlend] [_AlphaDstBlend]
+			Blend 1 One OneMinusSrcAlpha
+			Blend 2 One [_DstBlend2]
+			Blend 3 One [_DstBlend2]
+			Blend 4 One OneMinusSrcAlpha
 
 			Cull [_CullModeForward]
 			ZTest [_ZTestDepthEqualForOpaque]
@@ -440,11 +449,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-	        #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+	        #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
 	        #define _WRITE_TRANSPARENT_MOTION_VECTOR
 	        #endif
 
 			#define SHADERPASS SHADERPASS_FORWARD_UNLIT
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -495,6 +505,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -595,7 +606,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 					float3 shadow3;
 					posInput = GetPositionInput(fragInputs.positionSS.xy, _ScreenSize.zw, fragInputs.positionSS.z, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
 					float3 normalWS = normalize(fragInputs.tangentToWorld[1]);
-					uint renderingLayers = _EnableLightLayers ? asuint(unity_RenderingLayer.x) : DEFAULT_LIGHT_LAYERS;
+					uint renderingLayers = GetMeshRenderingLayerMask();
 					ShadowLoopMin(shadowContext, posInput, normalWS, asuint(_ShadowMatteFilter), renderingLayers, shadow3);
 					shadow = dot(shadow3, float3(1.0f/3.0f, 1.0f/3.0f, 1.0f/3.0f));
 
@@ -615,7 +626,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 				builtinData.opacity = surfaceDescription.Alpha;
 
 				#if defined(DEBUG_DISPLAY)
-					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+					builtinData.renderingLayers = GetMeshRenderingLayerMask();
 				#endif
 
                 #ifdef _ALPHATEST_ON
@@ -909,11 +920,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
 			#define _WRITE_TRANSPARENT_MOTION_VECTOR
 			#endif
 
 			#define SHADERPASS SHADERPASS_SHADOWS
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
+
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
@@ -969,6 +982,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -1043,7 +1057,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 				builtinData.opacity = surfaceDescription.Alpha;
 
 				#if defined(DEBUG_DISPLAY)
-					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+					builtinData.renderingLayers = GetMeshRenderingLayerMask();
 				#endif
 
 				#ifdef _ALPHATEST_ON
@@ -1230,19 +1244,21 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 
 				#ifdef WRITE_MSAA_DEPTH
 					depthColor = packedInput.vmesh.positionCS.z;
-					#ifdef _ALPHATOMASK_ON
 					depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
-					#endif
 				#endif
 
 				#if defined(WRITE_NORMAL_BUFFER)
 				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
 				#endif
 
-				#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+				#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 					DecalPrepassData decalPrepassData;
+					#ifdef _DISABLE_DECALS
+					ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+					#else
 					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-					decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
+					#endif
+					decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
 					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
 				#endif
 			}
@@ -1273,11 +1289,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
-
 			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
+            #define SCENEPICKINGPASS
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
@@ -1314,6 +1331,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -1416,7 +1434,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 				ZERO_INITIALIZE( BuiltinData, builtinData );
 				builtinData.opacity = surfaceDescription.Alpha;
 				#if defined(DEBUG_DISPLAY)
-					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+					builtinData.renderingLayers = GetMeshRenderingLayerMask();
 				#endif
 
 				#ifdef _ALPHATEST_ON
@@ -1649,6 +1667,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 
 			#define SHADERPASS SHADERPASS_DEPTH_ONLY
 			#define SCENESELECTIONPASS 1
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -1689,6 +1708,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -1984,6 +2004,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#pragma fragment Frag
 
 			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -2021,6 +2042,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -2113,7 +2135,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 				builtinData.opacity =  surfaceDescription.Alpha;
 
 				#if defined(DEBUG_DISPLAY)
-					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+					builtinData.renderingLayers = GetMeshRenderingLayerMask();
 				#endif
 
                 #ifdef _ALPHATEST_ON
@@ -2345,11 +2367,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
 			#define _WRITE_TRANSPARENT_MOTION_VECTOR
 			#endif
 
 			#define SHADERPASS SHADERPASS_MOTION_VECTORS
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -2387,6 +2410,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -2483,7 +2507,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 				builtinData.opacity =  surfaceDescription.Alpha;
 
 				#if defined(DEBUG_DISPLAY)
-                    builtinData.renderingLayers = GetMeshRenderingLightLayer();
+                    builtinData.renderingLayers = GetMeshRenderingLayerMask();
                 #endif
 
 
@@ -2774,10 +2798,9 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 					ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
 					#else
 					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-					decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
 					#endif
+					decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
 					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
-					outDecalBuffer.w = (GetMeshRenderingLightLayer() & 0x000000FF) / 255.0;
 				#endif
 
 				#if defined(_DEPTHOFFSET_ON) || defined(ASE_DEPTH_WRITE_ON)
@@ -2824,6 +2847,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#pragma fragment Frag
 
 			#define SHADERPASS SHADERPASS_DISTORTION
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
+
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
@@ -2862,6 +2887,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -3116,7 +3142,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			HLSLPROGRAM
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
+			#pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
 
 			#pragma editor_sync_compilation
 
@@ -3125,9 +3151,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
 			#define _WRITE_TRANSPARENT_MOTION_VECTOR
 			#endif
+
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+			#define SCENEPICKINGPASS 1
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
 
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -3142,9 +3172,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
             #define ATTRIBUTES_NEED_NORMAL
             #define ATTRIBUTES_NEED_TANGENT
             #define VARYINGS_NEED_TANGENT_TO_WORLD
-
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-			#define SCENEPICKINGPASS 1
 
 			#define SHADER_UNLIT
 
@@ -3176,6 +3203,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			float _BlendMode;
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -3267,7 +3295,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 				builtinData.opacity = surfaceDescription.Alpha;
 
 				#if defined(DEBUG_DISPLAY)
-					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+					builtinData.renderingLayers = GetMeshRenderingLayerMask();
 				#endif
 
                 #ifdef _ALPHATEST_ON
@@ -3463,6 +3491,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
 			#define SHADERPASS SHADERPASS_FULL_SCREEN_DEBUG
+            #define SUPPORT_GLOBAL_MIP_BIAS 1
 
 			struct AttributesMesh
 			{

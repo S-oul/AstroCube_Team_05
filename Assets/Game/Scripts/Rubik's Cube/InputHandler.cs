@@ -248,17 +248,15 @@ public class InputHandler : MonoBehaviour
         if (!_controller.ControlledScript.IsReversing)
             _mouseCam.OnCamera(ctx);
     }
-
-
-
-    //Unused
+    
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.MOVEMENT)) return;
         if (!ctx.performed && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionJump();
     }
-
+    
+    //Unused
     public void OnCrouch(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.MOVEMENT)) return;

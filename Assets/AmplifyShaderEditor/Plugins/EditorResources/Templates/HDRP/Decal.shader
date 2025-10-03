@@ -94,6 +94,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		#pragma multi_compile_instancing
 		#pragma instancing_options renderinglayer
 
+		#define SUPPORT_GLOBAL_MIP_BIAS
+
 		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
 
@@ -163,6 +165,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_DBUFFER_PROJECTOR
+			#define SUPPORT_GLOBAL_MIP_BIAS
 
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -377,7 +380,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -514,6 +517,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_FORWARD_EMISSIVE_PROJECTOR
+			#define SUPPORT_GLOBAL_MIP_BIAS
 
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -677,7 +681,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -827,6 +831,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_DBUFFER_MESH
+			#define SUPPORT_GLOBAL_MIP_BIAS
 
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -1053,7 +1058,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -1184,6 +1189,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_FORWARD_EMISSIVE_MESH
+			#define SUPPORT_GLOBAL_MIP_BIAS
 
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -1390,7 +1396,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -1495,12 +1501,17 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
             HLSLPROGRAM
 		    #pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
-
-            #define ATTRIBUTES_NEED_NORMAL
-            #define ATTRIBUTES_NEED_TANGENT
+			#pragma editor_sync_compilation
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+            #define SHADERPASS SHADERPASS_DEPTH_ONLY
+            #define SCENEPICKINGPASS 1
+			#define SUPPORT_GLOBAL_MIP_BIAS
+
+            #define ATTRIBUTES_NEED_NORMAL
+            #define ATTRIBUTES_NEED_TANGENT
 
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1510,9 +1521,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 			// Require _SelectionID variable
             float4 _SelectionID;
 
-            #define SHADERPASS SHADERPASS_DEPTH_ONLY
-            #define SCENEPICKINGPASS 1
-
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Packing.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
@@ -1521,7 +1529,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/Decal.hlsl"
 
-            #pragma editor_sync_compilation
+
 
 			/*ase_pragma*/
 
