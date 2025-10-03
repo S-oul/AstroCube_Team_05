@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
 using static CameraFocusAttractor;
 
@@ -23,7 +23,6 @@ public class PlayerTrigger : MonoBehaviour
     CharacterController _characterController;
 
     FloatingZone _flotingZone;
-    private float cmin;
 
     [SerializeField] private Material portailInt_Material;
     [SerializeField] float fovMultiplier = 1.0f;
