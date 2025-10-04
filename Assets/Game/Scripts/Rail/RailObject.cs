@@ -5,9 +5,8 @@ using static RailConnector;
 public class RailObject : MonoBehaviour
 {
     [Header("Physics Settings")]
-    [SerializeField] private bool _frictionFree = false;
-    [SerializeField] private float _gravityFactor = 1f;
     [SerializeField] private float _friction = 0.2f;
+    [SerializeField] private float _gravityFactor = 1f;
     [SerializeField] private float _maxMomentum = 20f;
     [SerializeField] private float _stopThreshold = 0.05f;
 
@@ -38,14 +37,8 @@ public class RailObject : MonoBehaviour
         float acceleration = Vector3.Dot(Physics.gravity, info.direction) * _gravityFactor;
 
         _momentum += acceleration * Time.deltaTime;
-        if (!_frictionFree)
-        {
-            if (_momentum > 0)
-                _momentum -= _friction * Time.deltaTime;
-            else if (_momentum < 0)
-                _momentum += _friction * Time.deltaTime;
-        }
-
+        if (_momentum > 0) _momentum -= _friction * Time.deltaTime;
+        else if (_momentum < 0) _momentum += _friction * Time.deltaTime;
 
         _momentum = Mathf.Clamp(_momentum, -_maxMomentum, _maxMomentum);
         if (Mathf.Abs(_momentum) < _stopThreshold)
@@ -60,6 +53,7 @@ public class RailObject : MonoBehaviour
 
         if ((_momentum > 0 && info.direction.y > 0f) || (_momentum < 0 && info.direction.y < 0f))
         {
+            //if info.direction.y == 0 APLY MAX FRICTION
             _momentum = 0f;
         }
 
