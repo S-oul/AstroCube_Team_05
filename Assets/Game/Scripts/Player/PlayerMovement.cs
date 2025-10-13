@@ -73,16 +73,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnStartCubeRotation += DisableMovement;
-        EventManager.OnEndCubeRotation += EnableMovement;
+        //EventManager.OnStartCubeRotation += DisableMovement;
+        //EventManager.OnEndCubeRotation += EnableMovement;
         EventManager.OnEndCubeRotation += UnParentPlayer;
 
     }
 
     private void OnDisable()
     {
-        EventManager.OnStartCubeRotation -= DisableMovement;
-        EventManager.OnEndCubeRotation -= EnableMovement;
+        //EventManager.OnStartCubeRotation -= DisableMovement;
+        //EventManager.OnEndCubeRotation -= EnableMovement;
         EventManager.OnEndCubeRotation -= UnParentPlayer;
 
     }
