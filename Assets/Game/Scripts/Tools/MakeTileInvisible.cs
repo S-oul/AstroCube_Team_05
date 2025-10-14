@@ -1,12 +1,18 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.WSA;
+using System.Data;
+using TMPro;
 
 [ExecuteInEditMode]
 public class MakeTileInvisible : MonoBehaviour
 {
-    //[SerializeField] bool activated = false;
+    [SerializeField] bool activated = true;
     [SerializeField] GameObject tileParent;
+    [SerializeField] float updateInterval = 1f;
+    float lastUpdated = 0;
+
+    bool isReset = false;
     
     private void OnEnable()
     {
@@ -20,7 +26,21 @@ public class MakeTileInvisible : MonoBehaviour
 
     void ManageTileVisibility(SceneView sceneView)
     {
-        //if (activated == false) return;
+        if (activated == false)
+        {
+            if (!isReset)
+            {
+                SceneVisibilityManager.instance.Show(tileParent, true);
+                isReset = true;
+            }
+            return;
+        }
+        isReset = false;  
+
+        if (EditorApplication.timeSinceStartup - lastUpdated < updateInterval) { return; }
+        lastUpdated = (float)EditorApplication.timeSinceStartup;
+        Debug.Log("updated");
+
 
         Camera sceneCam = sceneView.camera;
         if (sceneCam == null) { 
