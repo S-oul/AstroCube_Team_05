@@ -6,10 +6,10 @@ using UnityEngine.WSA;
 public class MakeTileInvisible : MonoBehaviour
 {
     //[SerializeField] bool activated = false;
+    [SerializeField] GameObject tileParent;
     
     private void OnEnable()
     {
-        Debug.Log("on enable"); 
         SceneView.duringSceneGui += ManageTileVisibility;
     }
 
@@ -22,9 +22,6 @@ public class MakeTileInvisible : MonoBehaviour
     {
         //if (activated == false) return;
 
-        MeshRenderer mesh = GetComponent<MeshRenderer>();
-
-        Debug.Log("managing Visibility");
         Camera sceneCam = sceneView.camera;
         if (sceneCam == null) { 
             return; 
@@ -36,7 +33,13 @@ public class MakeTileInvisible : MonoBehaviour
 
         float dot = Vector3.Dot(forwardDirect, viewDirection);
 
-        if (dot > 0) mesh.enabled = true;
-        else mesh.enabled = false; 
+        if (dot > 0)
+        {
+            SceneVisibilityManager.instance.Show(tileParent, true);
+        }
+        else
+        {
+            SceneVisibilityManager.instance.Hide(tileParent, true);
+        }
     }
 }
