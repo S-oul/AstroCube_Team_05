@@ -10,10 +10,6 @@ public class PlayerMovement : MonoBehaviour
 
     bool _hasGravity = true;
 
-    [Header("Movement Modifiers")]
-    [SerializeField] float _movementSpeed;
-    [SerializeField] private float _stepHeightMax;
-
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
 
@@ -39,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
 
     float _currentMoveSpeed;
     float _currentMoveSpeedFactor = 1f;
-    Vector3 _verticalVelocity;
     Vector3 _horizontalVelocity;
     bool _isGrounded;
 
@@ -108,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (!_canMove) return;
         /*
@@ -125,10 +120,6 @@ public class PlayerMovement : MonoBehaviour
         //apply gravity
         if (_hasGravity) {
             _gravityDirection = transform.up;
-            _verticalVelocity += _gravityDirection * _gameSettings.Gravity * Time.deltaTime;
-            if (_isGrounded) {
-                _verticalVelocity = Vector3.zero;
-            }
         }
 
         //_gravityDirection = transform.up;
@@ -147,10 +138,12 @@ public class PlayerMovement : MonoBehaviour
             _horizontalVelocity.z = _horizontalVelocity.z > 1 ? 1 : _horizontalVelocity.z;
             _horizontalVelocity.z = _horizontalVelocity.z < -1 ? -1 : _horizontalVelocity.z;
         }
-
+        
         // jump
-        if (_jumpInput && _isGrounded) {
-            _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
+        if (_jumpInput && _isGrounded)
+        {
+            Debug.Log("jump");
+            _rb.AddForce(transform.up * (_gameSettings.JumpHeight * 0.75f), ForceMode.Impulse);
         }
 
         _jumpInput = false;
@@ -160,19 +153,20 @@ public class PlayerMovement : MonoBehaviour
         _horizontalVelocity += transform.up * _yInput;
         if (_OnSlope())
         {
-            _verticalVelocity = Vector3.zero;
-            _horizontalVelocity = Vector3.ProjectOnPlane(_horizontalVelocity, _currentSlope.normal);
+            _horizontalVelocity = Vector3.ProjectOnPlane(_horizontalVelocity, _currentSlope.normal) * Mathf.Sqrt(2.0f);
         }
-
         if (_IsInFrontOfStep(out float newYLevel))
         {
-            transform.position += new Vector3(0, newYLevel, 0);
+            transform.position += new Vector3(0, newYLevel, 0) + _horizontalVelocity * 0.05f;
         }
-        
+
         // apply calculated Movement
-        _rb.velocity += _horizontalVelocity * (_movementSpeed * Time.deltaTime) + _externallyAppliedMovement;
-        _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _movementSpeed);
-        _rb.velocity += _verticalVelocity;
+        _rb.linearVelocity += _horizontalVelocity * (_gameSettings.PlayerMoveSpeed * Time.deltaTime) + _externallyAppliedMovement;
+        _rb.linearVelocity = Vector3.ClampMagnitude(_rb.linearVelocity, _gameSettings.PlayerMoveSpeed);
+        if (!_isGrounded && !_OnSlope())
+        {
+            _rb.linearVelocity += Vector3.down * _gameSettings.Gravity;
+        }
 
         _ApplyCameraHeight(newCamPos.y);
         ExecuteFootStep();
@@ -275,8 +269,7 @@ public class PlayerMovement : MonoBehaviour
     {
         GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
         _hasGravity = false;
-        _verticalVelocity = Vector3.zero;
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         transform.SetParent(null);
         if (_resetRotationWhenNoClip) {
             transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
@@ -327,7 +320,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _OnSlope()
     {
-        if (Physics.Raycast(transform.position + transform.forward * 0.2f, -transform.up, out _currentSlope, _floorLayer))
+        float threshold = _currentSlope.normal != Vector3.up ? 0.0f : 0.2f;
+        
+        if (Physics.Raycast(transform.position + transform.forward * threshold, -transform.up, out _currentSlope, 100, LayerMask.GetMask("Floor")))
         {
             return _currentSlope.normal != Vector3.up;
         }
@@ -337,10 +332,10 @@ public class PlayerMovement : MonoBehaviour
     private bool _IsInFrontOfStep(out float stepHeight)
     {
         stepHeight = 0.0f;
-        if (Physics.Raycast(transform.position + _horizontalVelocity * 0.8f, -transform.up, out RaycastHit hit, _floorLayer))
+        if (Physics.Raycast(transform.position + _horizontalVelocity * 0.6f, -transform.up, out RaycastHit hit, 100, LayerMask.GetMask("Floor")))
         {
             stepHeight = hit.point.y - _floorCheck.position.y + 0.03f;
-            return stepHeight > 0.05f && stepHeight < _stepHeightMax;
+            return stepHeight > 0.05f && stepHeight < _gameSettings.StepHeightMax;
         }
         return false;
     }
