@@ -1,6 +1,7 @@
 using MoreMountains.FeedbacksForThirdParty;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 public class NarraActivationTool : MonoBehaviour
 {
@@ -15,11 +16,15 @@ public class NarraActivationTool : MonoBehaviour
 #endif
     }
 
+    public static event Action NarraIsDisabledEvent;
+
     private void Start()
     {
-        if (_isNarraActiveTool == false)
+        if (IsNarraActiveTool == false)
         {
             Debug.Log("WARNING ! Narrative scene triggers are currently DEACTIVATED in this scene.");
+
+            NarraIsDisabledEvent?.Invoke();
         }
     }
 }
