@@ -13,10 +13,21 @@ public class GameActionActivateGameObject : AGameAction
     public override string BuildGameObjectName()
     {
         string strGameObject = "[GameObject]";
-        if (_targetGameObject != null) {
+        if (_targetGameObject != null)
+        {
             strGameObject = _targetGameObject.name;
         }
 
         return $"ACTIVATE {strGameObject}";
+    }
+
+    private void OnEnable()
+    {
+        NarraActivationTool.NarraIsDisabledEvent += ExecuteSpecific;
+    }
+
+    private void OnDisable()
+    {
+        NarraActivationTool.NarraIsDisabledEvent -= ExecuteSpecific;
     }
 }

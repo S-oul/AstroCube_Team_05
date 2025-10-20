@@ -39,7 +39,6 @@ public class MakeTileInvisible : MonoBehaviour
 
         if (EditorApplication.timeSinceStartup - lastUpdated < updateInterval) { return; }
         lastUpdated = (float)EditorApplication.timeSinceStartup;
-        Debug.Log("updated");
 
 
         Camera sceneCam = sceneView.camera;
