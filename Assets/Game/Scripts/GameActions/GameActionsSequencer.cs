@@ -21,6 +21,14 @@ public class GameActionsSequencer : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_EDITOR
+        NarraActivationTool _narraActivationTool = Object.FindAnyObjectByType<NarraActivationTool>(); // 
+        if (_narraActivationTool != null)
+        {
+            if (_narraActivationTool.IsNarraActiveTool == false) return;
+        }
+#endif
+
         if (autoPlay) {
             Play();
         }
