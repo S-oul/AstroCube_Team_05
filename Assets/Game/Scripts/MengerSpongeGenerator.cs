@@ -24,6 +24,11 @@ public class MengerSpongeGenerator : MonoBehaviour
         _meshRender = GetComponent<MeshRenderer>();
         _meshFilter = GetComponent<MeshFilter>();
 
+        if (DEPTH > 6)
+        {
+            Debug.Log("Depth of 6 or more will not be permited (for the sake of your computer device and sanity");
+            DEPTH = 5;
+        }
         DrawMangerSponge(DEPTH, 10, Vector3.zero);
     }
 
