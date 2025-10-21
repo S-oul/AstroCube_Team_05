@@ -36,6 +36,16 @@ public class LevelSelection : Editor
     static RubicsCube _script;
     static SerializedObject _serializedObj;
 
+    private static Dictionary<ECubeFace, int> _faceIds = new()
+    {
+        {ECubeFace.DOWN, 0},
+        {ECubeFace.FRONT, 1},
+        {ECubeFace.BACK, 2},
+        {ECubeFace.LEFT, 3},
+        {ECubeFace.RIGHT, 4},
+        {ECubeFace.UP, 5}
+    };
+
     private void OnEnable()
     {
         _isInIsolatedMode = false;
@@ -386,6 +396,17 @@ public class LevelSelection : Editor
         if (_isFoldout)
             Foldin();
         _isFoldout = false;
+    }
+
+    static List<GameObject> GetTilesFromFaceID(ECubeFace face)
+    {
+        List<GameObject> tiles = new List<GameObject>();
+        for (int i = 0; i < 9; i++)
+        {
+            int index = _faceIds[face] * 9 + i;
+            tiles.Add((GameObject)_tilesPerFaces.GetArrayElementAtIndex(index).objectReferenceValue);
+        }
+        return tiles;
     }
 
 #endregion
