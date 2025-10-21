@@ -18,24 +18,7 @@
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
-											<ObjectRef Name="AMB_PAD_Cube_Atmosphere_LP" ID="{570C6C41-670B-4749-A414-376D7709C6A3}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
-								<Action Name="" ID="{AE9ECCD4-A29C-487B-B0DB-207095EED98E}" ShortID="5228804">
-									<PropertyList>
-										<Property Name="FadeInCurve" Type="int16" Value="5"/>
-										<Property Name="FadeTime" Type="Real64" Value="0.75">
-											<ModifierList>
-												<ModifierInfo>
-													<Modifier Name="" ID="{95292536-D4EB-416B-8770-31A289013492}"/>
-												</ModifierInfo>
-											</ModifierList>
-										</Property>
-									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="AMB_PAD_Global_LP" ID="{C4DBE038-0122-42ED-B8F6-739EE9DBE592}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+											<ObjectRef Name="AMB_PAD_Global_LP" ID="{37DD4673-B63E-4E60-AF6F-253242D8973E}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
@@ -221,7 +204,7 @@
 				</Folder>
 				<Folder Name="AMB_RFX" ID="{22BE9931-754A-493F-BB4B-4ADB19ED8B15}" ShortID="725743555">
 					<ChildrenList>
-						<Event Name="AMB_RFX_Drone" ID="{9AC07057-9A97-4BA6-996B-3650395B4F65}">
+						<Event Name="AMB_RFX_Manager" ID="{9AC07057-9A97-4BA6-996B-3650395B4F65}">
 							<ChildrenList>
 								<Action Name="" ID="{9DE09777-B5F0-418F-842E-AAEE0FCC12C7}" ShortID="839085138">
 									<ReferenceList>
@@ -230,14 +213,38 @@
 										</Reference>
 									</ReferenceList>
 								</Action>
-							</ChildrenList>
-						</Event>
-						<Event Name="AMB_RFX_RockFall" ID="{1F360F67-DFF6-4492-9DD9-2405A35CF59F}">
-							<ChildrenList>
-								<Action Name="" ID="{3B020C42-EB39-4868-A0EA-5FE461095CDA}" ShortID="229143862">
+								<Action Name="" ID="{476561D4-9175-40DF-B624-A39602EF6A95}" ShortID="354298228">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_RFX_Granular" ID="{1A5ADF00-04CF-4297-9071-FED61440EF97}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{4247C5C8-0C9B-428C-93B6-907CEB34BB7A}" ShortID="506970204">
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="AMB_RFX_RockFall" ID="{726CE707-5F93-4631-A4FA-4E0B42C3FF5D}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{F520AF46-28EB-482A-91EF-9AA3A1605AF4}" ShortID="649761336">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_RFX_Whisper" ID="{1BA5EAC2-8FF5-408A-A96C-6FAA9759230A}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{47BCD0AC-61CE-4B5E-8B1D-60BA1AF2D0EE}" ShortID="534986809">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_RFX_WindGhust" ID="{65F31C57-9A37-489D-A15F-3EBC639A799A}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{72F401A3-AD60-4263-BA05-D3A0D69929BC}" ShortID="528642664">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_RFX_WindGhust_Howl" ID="{D21C1AD8-09AC-4C32-9228-4FEC99F844D5}" WorkUnitID="{A9C6891E-CDA0-4F80-9E9D-2678C166EA92}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
