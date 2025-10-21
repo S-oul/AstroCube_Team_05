@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class UIView : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] protected CanvasGroup canvasGroup;
     [SerializeField] private float viewFadeDuration = 0.8f;
 
     [Header("(OPTIONAL)")]
