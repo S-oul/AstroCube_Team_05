@@ -142,7 +142,6 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (_jumpInput && _isGrounded)
         {
-            Debug.Log("jump");
             _rb.AddForce(transform.up * (_gameSettings.JumpHeight * 0.75f), ForceMode.Impulse);
         }
 
@@ -320,9 +319,10 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _OnSlope()
     {
-        float threshold = _currentSlope.normal != Vector3.up ? 0.0f : 0.2f;
+        float threshold = _currentSlope.normal != Vector3.up ? 0.05f : 0.2f;
+        Debug.DrawLine(transform.position + transform.forward * threshold, transform.position + transform.forward * threshold - transform.up * 1.7f, Color.red, Time.deltaTime);
         
-        if (Physics.Raycast(transform.position + transform.forward * threshold, -transform.up, out _currentSlope, 100, LayerMask.GetMask("Floor")))
+        if (Physics.Raycast(transform.position + transform.forward * threshold, -transform.up, out _currentSlope, 1.7f, LayerMask.GetMask("Floor")))
         {
             return _currentSlope.normal != Vector3.up;
         }
@@ -332,7 +332,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _IsInFrontOfStep(out float stepHeight)
     {
         stepHeight = 0.0f;
-        if (Physics.Raycast(transform.position + _horizontalVelocity * 0.6f, -transform.up, out RaycastHit hit, 100, LayerMask.GetMask("Floor")))
+        if (Physics.Raycast(transform.position + _horizontalVelocity * 0.6f, -transform.up, out RaycastHit hit, 10, LayerMask.GetMask("Floor")))
         {
             stepHeight = hit.point.y - _floorCheck.position.y + 0.03f;
             return stepHeight > 0.05f && stepHeight < _gameSettings.StepHeightMax;
