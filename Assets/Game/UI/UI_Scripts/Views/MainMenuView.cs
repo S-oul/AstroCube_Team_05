@@ -61,7 +61,9 @@ public class MainMenuView : UIView
 
     private void OnSettingsClicked()
     {
-        throw new NotImplementedException();
+        Hide();
+        var uiManager = FindObjectOfType<UIManager>();
+        uiManager?.Show<SettingsMenuScreenView>();
     }
 
     private void OnQuitClicked()

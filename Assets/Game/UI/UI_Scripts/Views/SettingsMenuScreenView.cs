@@ -15,16 +15,13 @@ public class SettingsMenuScreenView : UIView
     public override void Show()
     {
         base.Show();
-        gameObject.SetActive(true);
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
+
     }
 
     public override void Hide()
     {
         base.Hide();
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
+
     }
 
 }
