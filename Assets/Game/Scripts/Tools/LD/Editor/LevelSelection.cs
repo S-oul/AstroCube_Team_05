@@ -398,7 +398,7 @@ public class LevelSelection : Editor
         _isFoldout = false;
     }
 
-    static List<GameObject> GetTilesFromFaceID(ECubeFace face)
+    public static List<GameObject> GetTilesFromFaceID(ECubeFace face)
     {
         List<GameObject> tiles = new List<GameObject>();
         for (int i = 0; i < 9; i++)

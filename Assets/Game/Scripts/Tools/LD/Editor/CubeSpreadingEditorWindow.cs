@@ -16,7 +16,8 @@ public class CubeSpreadingEditorWindow : EditorWindow
     private float _cubeSpreading;
     private ECubeFace _selectedCubeFaces;
 
-    private Dictionary<ECubeFace, GameObject> _faces = new();
+    private Dictionary<ECubeFace, List<Tile>> _tiles = new();
+    private Dictionary<Tile, Vector3> _defaultPosition = new();
 
     
     [MenuItem("Tools/Cube/Spreader")]
@@ -28,13 +29,50 @@ public class CubeSpreadingEditorWindow : EditorWindow
 
     private void CreateGUI()
     {
-        GameObject cubeLogic = GameObject.Find("CubeLogic");
-        _faces[ECubeFace.FRONT] = cubeLogic.transform.Find("ZBack").gameObject;
-        _faces[ECubeFace.UP] = cubeLogic.transform.Find("YUp").gameObject;
-        _faces[ECubeFace.DOWN] = cubeLogic.transform.Find("YDown").gameObject;
-        _faces[ECubeFace.LEFT] = cubeLogic.transform.Find("XBack").gameObject;
-        _faces[ECubeFace.RIGHT] = cubeLogic.transform.Find("XFront").gameObject;
-        _faces[ECubeFace.BACK] = cubeLogic.transform.Find("ZFront").gameObject;
+        foreach (ECubeFace face in Enum.GetValues(typeof(ECubeFace)))
+        {
+            _tiles[face] = new List<Tile>();
+        }
+        
+        List<Tile> tiles = FindObjectsByType<Tile>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
+            .Where(obj => obj.name == "Tile")
+            .Where(obj => obj.GetComponentInParent<PreviewRubiksCube>() == null).ToList();
+
+        foreach (Tile tile in tiles)
+        {
+            _defaultPosition[tile] = tile.transform.position;
+            
+            if (tile.transform.right == Vector3.up)
+            {
+                _tiles[ECubeFace.DOWN].Add(tile);
+            } else if (tile.transform.right == Vector3.down)
+            {
+                _tiles[ECubeFace.UP].Add(tile);
+            } else if (tile.transform.right == Vector3.left)
+            {
+                _tiles[ECubeFace.RIGHT].Add(tile);
+            } else if (tile.transform.right == Vector3.right)
+            {
+                _tiles[ECubeFace.LEFT].Add(tile);
+            } else if (tile.transform.right == Vector3.forward)
+            {
+                _tiles[ECubeFace.FRONT].Add(tile);
+            } else
+            {
+                _tiles[ECubeFace.BACK].Add(tile);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (ECubeFace faces in Enum.GetValues(typeof(ECubeFace)))
+        {
+            foreach (Tile tile in _tiles[faces])
+            {
+                tile.transform.position = _defaultPosition[tile];
+            }
+        }
     }
 
     private void OnGUI()
@@ -80,6 +118,16 @@ public class CubeSpreadingEditorWindow : EditorWindow
             GUILayout.Label("Spread Distance", new GUIStyle(GUI.skin.label){fontSize = 18, fontStyle = FontStyle.Bold, fixedHeight = 30});
             GUILayout.FlexibleSpace();
             _cubeSpreading = EditorGUILayout.FloatField(_cubeSpreading, new GUIStyle(GUI.skin.textField){margin = new RectOffset(25, 50, 0, 0), fontSize = 18, fontStyle = FontStyle.Bold, fixedHeight = 30, alignment = TextAnchor.MiddleCenter});
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("+", new GUIStyle(GUI.skin.button) { fixedHeight = 30, fixedWidth = 30, fontSize = 20 }))
+            {
+                _cubeSpreading += 5.0f;
+            }
+            GUI.backgroundColor = Color.red;
+            if (GUILayout.Button("-", new GUIStyle(GUI.skin.button) { fixedHeight = 30, fixedWidth = 30, fontSize = 20 }))
+            {
+                _cubeSpreading -= 5.0f;
+            }
             GUILayout.FlexibleSpace();
         }
         EditorGUILayout.EndHorizontal();
@@ -94,7 +142,12 @@ public class CubeSpreadingEditorWindow : EditorWindow
             CenterCamera();
         }
         GUI.backgroundColor = Color.red;
-        GUILayout.Button("Resume Spreading", new GUIStyle(GUI.skin.button){fixedHeight = 40, margin = new RectOffset(10, 10, 10, 10), fontSize = 20});
+        if (GUILayout.Button("Resume Spreading",
+                new GUIStyle(GUI.skin.button)
+                    { fixedHeight = 40, margin = new RectOffset(10, 10, 10, 10), fontSize = 20 }))
+        {
+            Close();
+        }
         GUI.backgroundColor = Color.white;
         
         UpdateFaces();
@@ -131,12 +184,21 @@ public class CubeSpreadingEditorWindow : EditorWindow
 
     private void ApplyCubeSpreading()
     {
-        foreach (ECubeFace face in Enum.GetValues(typeof(ECubeFace)))
+        foreach (ECubeFace faces in Enum.GetValues(typeof(ECubeFace)))
         {
-            if ((_selectedCubeFaces & face) != 0)
+            if ((faces & _selectedCubeFaces) != 0)
             {
-                GameObject faceObj = _faces[face];
-                
+                foreach (Tile tile in _tiles[faces])
+                {
+                    tile.transform.position = _defaultPosition[tile] - tile.transform.right * _cubeSpreading;
+                }
+            }
+            else
+            {
+                foreach (Tile tile in _tiles[faces])
+                {
+                    tile.transform.position = _defaultPosition[tile];
+                }
             }
         }
     }
