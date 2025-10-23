@@ -100,10 +100,24 @@
 						<Action Name="" ID="{FBC3CAED-292A-4D3F-AA00-5D8177A153CC}" ShortID="969101877">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeOutCurve" Type="int16" Value="5"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="SFX_RC_Rotation_Face" ID="{ED62F1D1-E91C-4BFA-B047-CBE5192C9CCA}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{07A8BE8B-E7BF-460D-979E-5B8D03782574}" ShortID="1056604757">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeOutCurve" Type="int16" Value="5"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_RFX_Cube_Rotation" ID="{D1D75656-6CC7-49FC-9C24-A75D9B805E56}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -139,6 +153,17 @@
 								</Property>
 							</PropertyList>
 							<ReferenceList/>
+						</Action>
+						<Action Name="" ID="{AE3CD91F-A0C8-490B-B2EF-9DBA299AF571}" ShortID="680522817">
+							<PropertyList>
+								<Property Name="FadeInCurve" Type="int16" Value="5"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_RFX_Cube_Rotation" ID="{D1D75656-6CC7-49FC-9C24-A75D9B805E56}" WorkUnitID="{E7440703-FB3C-472C-96C8-0CAA08E43D79}"/>
+								</Reference>
+							</ReferenceList>
 						</Action>
 					</ChildrenList>
 				</Event>
