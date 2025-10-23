@@ -106,6 +106,22 @@ namespace AK
         static const AkUniqueID UI_MAINMENU_BUTTON_PRESS = 3217026771U;
     } // namespace EVENTS
 
+    namespace STATES
+    {
+        namespace ST_PORTAL
+        {
+            static const AkUniqueID GROUP = 1414354033U;
+
+            namespace STATE
+            {
+                static const AkUniqueID IN = 1752637612U;
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID OUT = 645492555U;
+            } // namespace STATE
+        } // namespace ST_PORTAL
+
+    } // namespace STATES
+
     namespace SWITCHES
     {
         namespace SW_FT
