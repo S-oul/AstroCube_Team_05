@@ -72,7 +72,7 @@ public class Reseter : MonoBehaviour
     {
         if (_rb)
         {
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
         }
         _poseOnReset = new Pose();
@@ -86,7 +86,7 @@ public class Reseter : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
             InputHandler.Instance.CanMove = false;
-            GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
+            //GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
         }
 
         float elapsedTime = 0f;
@@ -103,7 +103,7 @@ public class Reseter : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
             InputHandler.Instance.CanMove = true;
-            GetComponent<CharacterController>().excludeLayers = 0;
+            //GetComponent<CharacterController>().excludeLayers = 0;
         }
     }
 

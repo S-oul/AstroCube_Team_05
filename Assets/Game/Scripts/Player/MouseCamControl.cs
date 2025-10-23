@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -19,8 +20,9 @@ public class MouseCamControl : MonoBehaviour
     [SerializeField] LayerMask _detectableObjectLayer;
     [SerializeField] float _maxDistance;
 
-    [Header("Cameras")]
-    [SerializeField] Camera _mainCamera;
+    //[Header("Cameras")]
+    //[SerializeField] 
+    Camera _mainCamera;
 
     [Header("Options")]
     [SerializeField] bool _doReversedCam = true;
@@ -46,13 +48,19 @@ public class MouseCamControl : MonoBehaviour
 
     public Transform PlayerTransform => _playerTransform;
 
+    CinemachineVirtualCamera _cinemashineCam;
+    LayerMask _detectableLayer;
+
     void Start()
     {
+        _cinemashineCam = GetComponent<CinemachineVirtualCamera>();
+        _mainCamera = GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
         _settings = GameManager.Instance.Settings;
         UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
         ForceResetSelection();
+        _detectableLayer = GameManager.Instance.Settings.AimAtObject? _detectableObjectLayer : _detectableTileLayer;
     }
 
     public void OnCamera(InputAction.CallbackContext callbackContext)
@@ -100,7 +108,7 @@ public class MouseCamControl : MonoBehaviour
 
         if (GameManager.Instance.Settings.AimAtObject)
         {
-            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableObjectLayer))
+            if (Physics.Raycast(transform.position, transform.forward, out _raycastInfo, _maxDistance, _detectableLayer))
             {
                 GameObject o = _raycastInfo.collider.gameObject;
 
@@ -218,7 +226,7 @@ public class MouseCamControl : MonoBehaviour
 
     void UpdateCameraFOV(float newFOV)
     {
-        _mainCamera.fieldOfView = newFOV;
+        _cinemashineCam.m_Lens.FieldOfView = newFOV;
     }
 
     void UpdateCameraMouseSensitivity(float newCamMouseSen)

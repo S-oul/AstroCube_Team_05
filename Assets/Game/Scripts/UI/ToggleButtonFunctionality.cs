@@ -20,7 +20,7 @@ public class ToggleButtonFunctionality : MonoBehaviour
 
     public void SetButtonState(bool state)
     {
-        if (_buttonState == state) return;
+        //if (_buttonState == state) return;
 
         _buttonState = state;
         _stateText.SetText(state ? _activeStateText : _nonActiveStateText);

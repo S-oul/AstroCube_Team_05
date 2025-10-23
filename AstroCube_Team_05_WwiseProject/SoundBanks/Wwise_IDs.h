@@ -15,9 +15,8 @@ namespace AK
     {
         static const AkUniqueID AMB_PAD_GLOBAL_LP = 2515429708U;
         static const AkUniqueID AMB_PAD_MAINMENU_LP = 2186918097U;
-        static const AkUniqueID AMB_RFX_DRONE = 37494993U;
+        static const AkUniqueID AMB_RFX_MANAGER = 4036686450U;
         static const AkUniqueID AMB_RFX_NAR_PULSE = 750298598U;
-        static const AkUniqueID AMB_RFX_ROCKFALL = 2877702425U;
         static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
         static const AkUniqueID AMB_SP_PORTAL_OPEN = 1481211399U;
         static const AkUniqueID AMB_SP_RC_PULSESHARD = 3134303699U;
@@ -25,6 +24,7 @@ namespace AK
         static const AkUniqueID AMB_SP_SHARD_FLOAT_LP = 102969944U;
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID CIN_LVL03 = 2844602029U;
+        static const AkUniqueID CIN_LVL16 = 2861379591U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_01 = 615844443U;
         static const AkUniqueID LVL1_BLACKSCREEN_VOICELINE_02 = 615844440U;
         static const AkUniqueID LVL1_GAMEPLAY_VOICELINE_01 = 655641678U;
@@ -52,6 +52,12 @@ namespace AK
         static const AkUniqueID LVL3_GAMEPLAY_VOICELINE_01 = 543526564U;
         static const AkUniqueID LVL3_GAMEPLAY_VOICELINE_02 = 543526567U;
         static const AkUniqueID LVL3_GAMEPLAY_VOICELINE_03 = 543526566U;
+        static const AkUniqueID LVL04_BS_01 = 4261734617U;
+        static const AkUniqueID LVL04_BS_02 = 4261734618U;
+        static const AkUniqueID LVL04_GP_01 = 1644113721U;
+        static const AkUniqueID LVL04_GP_02 = 1644113722U;
+        static const AkUniqueID LVL04_GP_03 = 1644113723U;
+        static const AkUniqueID LVL04_GP_04 = 1644113724U;
         static const AkUniqueID LVL5BS = 3382403683U;
         static const AkUniqueID LVL5GP_01 = 3869901219U;
         static const AkUniqueID LVL5GP_02 = 3869901216U;
@@ -82,6 +88,7 @@ namespace AK
         static const AkUniqueID LVL14GP_07 = 1764442273U;
         static const AkUniqueID LVL14GP_08 = 1764442286U;
         static const AkUniqueID LVL16BS = 515736325U;
+        static const AkUniqueID LVL16GP = 599624485U;
         static const AkUniqueID MC_FT = 2275400278U;
         static const AkUniqueID MUS_MAINTHEME_LP = 1931499656U;
         static const AkUniqueID SFX_BUTTON = 125802325U;
@@ -98,6 +105,22 @@ namespace AK
         static const AkUniqueID UI_BUTTON_PRESS = 12010446U;
         static const AkUniqueID UI_MAINMENU_BUTTON_PRESS = 3217026771U;
     } // namespace EVENTS
+
+    namespace STATES
+    {
+        namespace ST_PORTAL
+        {
+            static const AkUniqueID GROUP = 1414354033U;
+
+            namespace STATE
+            {
+                static const AkUniqueID IN = 1752637612U;
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID OUT = 645492555U;
+            } // namespace STATE
+        } // namespace ST_PORTAL
+
+    } // namespace STATES
 
     namespace SWITCHES
     {
@@ -119,6 +142,8 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID RTPC_AZIMUTH = 3972935021U;
+        static const AkUniqueID RTPC_ELEVATION = 1474581964U;
         static const AkUniqueID RTPC_FOCUS = 1888688417U;
         static const AkUniqueID RTPC_METER_DISTANCE = 625851808U;
         static const AkUniqueID RTPC_METER_GLB = 344904358U;
@@ -139,6 +164,7 @@ namespace AK
     {
         static const AkUniqueID BUS_AMB = 17439960U;
         static const AkUniqueID BUS_CIN = 4178583614U;
+        static const AkUniqueID BUS_CIN_SFX = 3391678782U;
         static const AkUniqueID BUS_FOL = 4279690731U;
         static const AkUniqueID BUS_MUS = 3911715957U;
         static const AkUniqueID BUS_REV = 4180996447U;

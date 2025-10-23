@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ControllerUINavigation : MonoBehaviour
 {
@@ -14,9 +15,16 @@ public class ControllerUINavigation : MonoBehaviour
 
     GameObject _currentDefaultButton;
 
+    [SerializeField] public GraphicRaycaster uiRaycaster; // from Canvas
+    EventSystem eventSystem;
+
+    Vector3 _lastMousePos;
+
     private void Start()
     {
         _currentDefaultButton = _mainMenuDefaultButton;
+
+        _lastMousePos = Input.mousePosition;
     }
 
     void Update()
@@ -25,6 +33,27 @@ public class ControllerUINavigation : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             EventSystem.current.SetSelectedGameObject(_currentDefaultButton);
+        }
+
+        if (MouseIsMoving())
+        {
+
+            // set selected to current mouse hover
+            PointerEventData pointerData = new PointerEventData(eventSystem)
+            {
+                position = Input.mousePosition
+            };
+            List<RaycastResult> results = new List<RaycastResult>();
+            uiRaycaster.Raycast(pointerData, results);
+            foreach (RaycastResult result in results)
+            {
+                Button button = result.gameObject.GetComponentInParent<Button>();
+                if (button != null)
+                {
+                    EventSystem.current.SetSelectedGameObject(button.gameObject);
+                    break;
+                }
+            }
         }
     }
 
@@ -52,5 +81,15 @@ public class ControllerUINavigation : MonoBehaviour
                 break;
         }
         EventSystem.current.SetSelectedGameObject(_currentDefaultButton);
+    }
+
+    bool MouseIsMoving()
+    {
+        if (Input.mousePosition != _lastMousePos)
+        {
+            _lastMousePos = Input.mousePosition;
+            return true;
+        }
+        return false;
     }
 }

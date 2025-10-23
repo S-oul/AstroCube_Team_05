@@ -241,7 +241,8 @@ public class FractalMaster : MonoBehaviour
 
         fractalShader.SetMatrix("_CameraToWorld", cameraToWorldMatrix);
         fractalShader.SetMatrix("_CameraInverseProjection", projectionMatrixInverse);
-        fractalShader.SetVector("_LightDirection", directionalLight.transform.forward);
+        if(directionalLight)
+            fractalShader.SetVector("_LightDirection", directionalLight.transform.forward);
 
         fractalShader.SetBuffer(handleCSMain, "GroupMinBuffer", groupMinBuffer);
     }

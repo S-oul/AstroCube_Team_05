@@ -52,26 +52,6 @@ public class CustomisedSettings : ScriptableObject
         }
     }
 
-    public float defaultJoystick => _defaultJoystick;
-    public float minJoystick => _minimumJoystick;
-    public float maxJoystick => _maximumJoystick;
-    public float customJoystick
-    {
-        get => _customJoystick ?? defaultJoystick;
-        set
-        {
-            if (value < minJoystick)
-            {
-                _customJoystick = minJoystick;
-            }
-            else if (value > maxJoystick)
-            {
-                _customJoystick = maxJoystick;
-            }
-            else { _customJoystick = value; }
-        }
-    }
-
     public float defaultVolume => _defaultVolume;
     public float minVolume => _minimumVolume;
     public float maxVolume => _maximumVolume;
@@ -103,6 +83,17 @@ public class CustomisedSettings : ScriptableObject
         }
     }
 
+    public bool defaultMotionBlur => _defaultMotionBlur;
+    public bool customMotionBlur
+    {
+        get => _customMotionBlur ?? _defaultMotionBlur;
+        set
+        {
+            _customMotionBlur = value;
+            EventManager.TriggerMotionBlurChange(customMotionBlur);
+        }
+    }
+
     public bool defaultPreview => _defaultPreview;
     public bool customPreview
     {
@@ -115,7 +106,7 @@ public class CustomisedSettings : ScriptableObject
     }
 
     public bool defaultSubtitles => _defaultSubtitles;
-    public bool customMotionBlur
+    public bool customSubtitles
     {
         get => _customSubtitles ?? defaultSubtitles;
         set { _customSubtitles = value; }
@@ -128,20 +119,12 @@ public class CustomisedSettings : ScriptableObject
     [SerializeField, Label("Maximum")] float _maximumFOV;
     float? _customFov;
 
-
     [Header("MouseSensibility")]
 
     [SerializeField, Label("Default")] float _defaultMouse;
     [SerializeField, Label("Minimum")] float _minimumMouse;
     [SerializeField, Label("Maximum")] float _maximumMouse;
     float? _customMouse;
-
-    [Header("JoystickSensibility")]
-
-    [SerializeField, Label("Default")] float _defaultJoystick;
-    [SerializeField, Label("Minimum")] float _minimumJoystick;
-    [SerializeField, Label("Maximum")] float _maximumJoystick;
-    float? _customJoystick;
 
     [Header("Volume")]
 
@@ -153,6 +136,10 @@ public class CustomisedSettings : ScriptableObject
     [Header("Vibration")]
     [SerializeField, Label("Default")] bool _defaultVibration;
     bool? _customVibration;
+    
+    [Header("MotionBlur")]
+    [SerializeField, Label("Default")] bool _defaultMotionBlur;
+    bool? _customMotionBlur;
 
     [Header("Preview")]
     [SerializeField, Label("Default")] bool _defaultPreview;

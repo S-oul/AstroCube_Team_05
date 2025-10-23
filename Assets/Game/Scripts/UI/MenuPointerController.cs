@@ -25,25 +25,29 @@ public class MenuPointerController : MonoBehaviour
         if (_currentlySelectedGameObject == _lastSelectedGameObject ) return; // if current selected hasn't changed, end Update loop. 
 
         // check if selected UI has an alternate pointer
-        Transform alternatePointer = FindChildWithTag(_currentlySelectedGameObject, "AlternateMenuUiPointer");
-        if (alternatePointer == null)
+        if (_currentlySelectedGameObject != null)
         {
-            if (_altPointerImage!= null) {  // deactivate any active altPointers
-                _altPointerImage.enabled = false;
-                _altPointerImage = null;
-                _pointerImage.enabled = true;
-            }
+            Transform alternatePointer = FindChildWithTag(_currentlySelectedGameObject, "AlternateMenuUiPointer");
+            if (alternatePointer == null)
+            {
+                if (_altPointerImage != null)
+                {  // deactivate any active altPointers
+                    _altPointerImage.enabled = false;
+                    _altPointerImage = null;
+                    _pointerImage.enabled = true;
+                }
 
-            // move pointer to correct position
-            _newArrowPos.y = _currentlySelectedGameObject.transform.position.y;
-            transform.position = _newArrowPos;
-        } 
-        else
-        {
-            // activate altPointer and deactivate pointer
-            _altPointerImage = alternatePointer.GetComponent<Image>();
-            _altPointerImage.enabled = true;
-            _pointerImage.enabled = false;
+                // move pointer to correct position
+                _newArrowPos.y = _currentlySelectedGameObject.transform.position.y;
+                transform.position = _newArrowPos;
+            }
+            else
+            {
+                // activate altPointer and deactivate pointer
+                _altPointerImage = alternatePointer.GetComponent<Image>();
+                _altPointerImage.enabled = true;
+                _pointerImage.enabled = false;
+            }
         }
 
         _lastSelectedGameObject = _currentlySelectedGameObject;
