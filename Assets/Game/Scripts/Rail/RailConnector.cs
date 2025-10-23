@@ -49,7 +49,7 @@ public class RailConnector : MonoBehaviour
         if (_railLenght != somme)
         {
             //crossProduct
-            print("LENGHT IS DIFFERRENTE");
+            //print("LENGHT IS DIFFERRENTE");
             _objOnRail.ObjRailPos = (_objOnRail.ObjRailPos * somme) / _railLenght;
             _objOnRail._UpdatePhysics();
 
