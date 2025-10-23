@@ -30,18 +30,20 @@ public class SettingsMenuScreenView : UIView
 
     [SerializeField] private Slider fovSlider;
     [SerializeField] private Slider cameraSensitivitySlider;
-    [SerializeField] private Button motionBlurButton;
+    [SerializeField] private UIToggleButton motionBlurButton;
 
 
     [Header("Accessibility Settings")]
 
-    [SerializeField] private Button rumbleButton;
-    [SerializeField] private Button previewButton;
+    [SerializeField] private UIToggleButton rumbleButton;
+    [SerializeField] private UIToggleButton previewButton;
 
 
     [Header("Others")]
 
-    [SerializeField] private Button quitButton;
+    [SerializeField] private Button backButton;
+
+
 
 
     private UIManager _uiManager;
@@ -70,26 +72,74 @@ public class SettingsMenuScreenView : UIView
 
 
         SetupUI();
-        SetupHoover();
+        SetupHover();
     }
 
-    public void OnSettingHovered(string key)
+    private void SetupUI()
     {
-        if (_descriptionBySettings.TryGetValue(key, out var description))
-        {
-            titleText.text = key;
-            descriptionText.text = description;
-        }
+        //Lance pas la bonne fonction
+
+        generalSoundSlider.onValueChanged.AddListener((value) => OnGeneralSoundSliderValueChanged(value));
+        musicSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Music :"));
+        soundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Sound Effects :"));
+        voiceSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Voice :"));
+
+        fovSlider.onValueChanged.AddListener((value) => OnSettingSelected("Field of View :"));
+        cameraSensitivitySlider.onValueChanged.AddListener((value) => OnSettingSelected("Camera Sensitivity :"));
+        motionBlurButton.onToggleChanged.AddListener(OnMotionBlurToggled);
+
+        rumbleButton.onToggleChanged.AddListener(OnRumbleToggled);
+        previewButton.onToggleChanged.AddListener(OnRumbleToggled);
+
+        backButton.onClick.AddListener(OnQuitClicked);
+
+
+        motionBlurButton.ApplySavedState();
+        rumbleButton.ApplySavedState();
+        previewButton.ApplySavedState();
     }
 
-    private void AddHover(GameObject obj, string key)
+
+    #region Button Methods
+
+    private void OnQuitClicked()
     {
-        var hover = obj.GetComponent<SettingsHoverElement>();
-        if (hover == null)
-            hover = obj.AddComponent<SettingsHoverElement>();
-        hover.Initialize(this, key);
+        Hide();
+        _uiManager.Show<MainMenuView>();
     }
 
+    private void OnMotionBlurToggled(bool state)
+    {
+        Debug.Log("Motion Blur Toggled : " + state);
+    }
+
+    private void OnRumbleToggled(bool state)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void OnPreviewToggled(bool state)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnGeneralSoundSliderValueChanged(float value)
+    {
+
+    }
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region Hover Interface Implementation
 
 
     private void OnSettingSelected(string key)
@@ -101,34 +151,7 @@ public class SettingsMenuScreenView : UIView
         }
     }
 
-    private void OnQuitClicked()
-    {
-        Hide();
-        _uiManager.Show<MainMenuView>();
-    }
-
-
-    private void SetupUI()
-    {
-        //Lance pas la bonne fonction
-
-        generalSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("General :"));
-        musicSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Music :"));
-        soundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Sound Effects :"));
-        voiceSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Voice :"));
-
-        fovSlider.onValueChanged.AddListener((value) => OnSettingSelected("Field of View :"));
-        cameraSensitivitySlider.onValueChanged.AddListener((value) => OnSettingSelected("Camera Sensitivity :"));
-        motionBlurButton.onClick.AddListener(() => OnSettingSelected("Motion Blur :"));
-
-        rumbleButton.onClick.AddListener(() => OnSettingSelected("Rumble :"));
-        previewButton.onClick.AddListener(() => OnSettingSelected("Preview Hints :"));
-
-        quitButton.onClick.AddListener(OnQuitClicked);
-
-    }
-
-    private void SetupHoover()
+    private void SetupHover()
     {
         AddHover(generalSoundSlider.gameObject, "General :");
         AddHover(musicSoundSlider.gameObject, "Music :");
@@ -144,5 +167,24 @@ public class SettingsMenuScreenView : UIView
 
     }
 
+    public void OnSettingHovered(string key)
+    {
+        if (_descriptionBySettings.TryGetValue(key, out var description))
+        {
+            titleText.text = key;
+            descriptionText.text = description;
+        }
+    }
+
+
+    private void AddHover(GameObject obj, string key)
+    {
+        var hover = obj.GetComponent<SettingsHoverElement>();
+        if (hover == null)
+            hover = obj.AddComponent<SettingsHoverElement>();
+        hover.Initialize(this, key);
+    }
+
+    #endregion
 
 }
