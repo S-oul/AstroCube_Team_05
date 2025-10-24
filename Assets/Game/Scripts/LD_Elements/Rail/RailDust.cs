@@ -8,32 +8,27 @@ public class RailDust : MonoBehaviour
     public float lenght = 1;
     public bool isEnd = false;
 
-    [SerializeField] private bool isPowered = false;
-
     RailDust before;
     RailDust After;
 
     [SerializeField] LayerMask layerMask;
 
-    MeshRenderer _renderer;
-    [SerializeField] Material _poweredMat;
-    [SerializeField] Material _baseMat;
+    RailPart _myRailPart;
+
+    public RailPart MyRailPart { get => _myRailPart; set => _myRailPart = value; }
 
     void Start()
     {
-        _renderer = GetComponent<MeshRenderer>();
-        _renderer.material = isPowered ? _poweredMat : _baseMat;
-
+        MyRailPart = transform.parent.GetComponent<RailPart>();
         CheckForDust();
     }
 
 
-    public bool IsPowered { get => isPowered; set => isPowered = value; }
 
     [Button("CheckForDust")]
     void CheckForDust()
     {
-        var cols = Physics.OverlapSphere(transform.position + transform.forward * transform.lossyScale.z / 2, lenght,(int)layerMask);
+        var cols = Physics.OverlapSphere(transform.position + transform.forward * transform.lossyScale.z / 2, lenght, (int)layerMask);
         var dust = cols.First(c => c.transform != this.transform);
         if (dust)
         {
@@ -41,24 +36,11 @@ public class RailDust : MonoBehaviour
             After = dust.transform.GetComponent<RailDust>();
             if (!After) return;
 
-            if (IsPowered && !After.IsPowered)
-            {
-                After.PowerRail(true);
-                After.CheckForDust();
-            }
-        }
-        else if (After)
-        {
-            After.PowerRail(false);
-            After = null;
+            //MyRailPart.GetLinePos();
+
         }
     }
 
-    public void PowerRail(bool shouldPower)
-    {
-        IsPowered = shouldPower;
-        _renderer.material = shouldPower ? _poweredMat : _baseMat;
-    }
 
     private void OnDrawGizmos()
     {

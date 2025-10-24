@@ -34,7 +34,7 @@ public class RailConnector : MonoBehaviour
     }
     private void Update()
     {
-        _SetLineRendererPos();
+        //_SetLineRendererPos();
         //_UpdateRailLenght(); // recalculate length
     }
 

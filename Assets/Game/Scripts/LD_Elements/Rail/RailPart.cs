@@ -1,40 +1,18 @@
-using NaughtyAttributes;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(LineRenderer))]
 public class RailPart : MonoBehaviour
 {
-    [SerializeField] List<Transform> _allPos = new();
-    LineRenderer _line;
+    [SerializeField] private Transform[] controlPoints; // spline control points in local space
 
-    public RailObject OnlyRailObjectInScene;
-
-    public int NumberOfPos { get => _allPos.Count; }
-
-
-    [Button("setup")]
-    private void Start()
+    public Vector3[] GetWorldPoints()
     {
-        _line = GetComponent<LineRenderer>();
-        _line.positionCount = _allPos.Count;
-        _line.SetPositions(_allPos.ConvertAll(t => t.position).ToArray());
+        Vector3[] worldPoints = new Vector3[controlPoints.Length];
+        for (int i = 0; i < controlPoints.Length; i++)
+            worldPoints[i] = controlPoints[i].position;
+        return worldPoints;
     }
 
-    public List<Vector3> GetLinePos(bool reverseIt)
-    {
-        List<Vector3> result = new();
-        if (reverseIt)
-        {
-            for(int i = _allPos.Count - 1; i > 0; i--)
-            {
-                result.Add(_allPos[i].position);
-            }
-            return result;
-        }
-        else
-        {
-            return result = _allPos.ConvertAll(t => t.position);
-        }
-    }
+    public Vector3 StartPoint => controlPoints[0].position;
+    public Vector3 EndPoint => controlPoints[controlPoints.Length - 1].position;
 }
