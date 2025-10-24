@@ -19,7 +19,6 @@ public class RailDust : MonoBehaviour
     [SerializeField] Material _poweredMat;
     [SerializeField] Material _baseMat;
 
-    public bool doprint = false;
     void Start()
     {
         _renderer = GetComponent<MeshRenderer>();
@@ -28,33 +27,24 @@ public class RailDust : MonoBehaviour
         CheckForDust();
     }
 
-    RaycastHit hitInfo;
 
     public bool IsPowered { get => isPowered; set => isPowered = value; }
 
     [Button("CheckForDust")]
     void CheckForDust()
     {
-        if (doprint) print(0);
+        var cols = Physics.OverlapSphere(transform.position + transform.forward * transform.lossyScale.z / 2, lenght,(int)layerMask);
+        var dust = cols.First(c => c.transform != this.transform);
+        if (dust)
+        {
 
-        if (Physics.SphereCast(
-            transform.position + transform.forward * transform.lossyScale.z / 2
-            , lenght
-            , transform.forward
-            , out hitInfo
-            , 3f
-            , layerMask)
-        ){
-
-            if (doprint) print(1);
-            After = hitInfo.transform.GetComponent<RailDust>();
+            After = dust.transform.GetComponent<RailDust>();
             if (!After) return;
-            if (doprint) print(2);
 
             if (IsPowered && !After.IsPowered)
             {
-                if (doprint) print(3);
                 After.PowerRail(true);
+                After.CheckForDust();
             }
         }
         else if (After)
@@ -66,17 +56,17 @@ public class RailDust : MonoBehaviour
 
     public void PowerRail(bool shouldPower)
     {
-        if (doprint) print(4);
         IsPowered = shouldPower;
         _renderer.material = shouldPower ? _poweredMat : _baseMat;
-        CheckForDust();
-
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + transform.forward * transform.lossyScale.z / 2, lenght);
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position + transform.forward * transform.lossyScale.z / (2 + .01f), transform.forward * lenght);
+
     }
 
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8523208839411660847}
   - component: {fileID: 1786590967041841606}
   m_Layer: 16
-  m_Name: Dust
+  m_Name: Rail_Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3853065520866593816}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0.7071068, z: -0, w: 0}
+  m_LocalRotation: {x: -0.7071068, y: 0.7071068, z: 1.7994516e-11, w: 6.908407e-12}
   m_LocalPosition: {x: 0.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.020000001, z: 1}
+  m_LocalScale: {x: 0.05, y: 0.02, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -100,15 +100,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dafa3ea395b6ca4ab84d60d99fcd390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lenght: 0.4
+  lenght: 0.5
   isEnd: 0
   isPowered: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 65536
   _poweredMat: {fileID: 2100000, guid: 5a26de236ce89e94b963be8fa2b7ade6, type: 2}
-  _baseMat: {fileID: 7933299137048178034, guid: a9f670f4eae962b4683c35ae3d1db878,
-    type: 3}
+  _baseMat: {fileID: 2100000, guid: 71cf56d225f38e84694d3c6cccbb9037, type: 2}
+  doprint: 0
 --- !u!65 &1786590967041841606
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -119,7 +119,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -51,7 +51,7 @@ public class RailObject : MonoBehaviour
             _momentum = 0f;
         }
 
-        if ((_momentum > 0 && info.direction.y > 0f) || (_momentum < 0 && info.direction.y < 0f))
+        if ((_momentum > 0 && info.direction.y >= 0f) || (_momentum < 0 && info.direction.y <= 0f))
         {
             //if info.direction.y == 0 APLY MAX FRICTION
             _momentum = 0f;

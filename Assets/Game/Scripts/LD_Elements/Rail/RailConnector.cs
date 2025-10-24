@@ -1,27 +1,41 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RailConnector : MonoBehaviour
 {
-    [SerializeField] private Transform TestOBJ;
+    [SerializeField] private float _max_Dist = 5;
+    [SerializeField] private Transform _testOBJ;
 
     [SerializeField] private List<Transform> _railPoint = new List<Transform>();
     [SerializeField] private Vector3[] _railPointVec3;
 
     private RailObject _objOnRail;
 
-    public bool doRailLoop;
+    [SerializeField] bool doRailLoop;
 
-    private float _railLenght =1;
-
-
+    private float _railLenght = 1;
     private LineRenderer _lineRenderer;
 
+
+
+    public RailObject ObjOnRail { get => _objOnRail; set => _objOnRail = value; }
+    public float RailLenght { get => _railLenght; set => _railLenght = value; }
+    public Vector3[] RailPointVec3 { get => _railPointVec3; set => _railPointVec3 = value; }
+
+
+    //gif dog freaking out uhguuhughuguhguhughguuh
+    List<RailPart> allRailParts;
+
+    private void Start()
+    {
+        allRailParts = FindObjectsByType<RailPart>(FindObjectsSortMode.None).ToList();
+    }
     private void Update()
     {
         _SetLineRendererPos();
-        _UpdateRailLenght(); // recalculate length
+        //_UpdateRailLenght(); // recalculate length
     }
 
     [Button("Update Line")]
@@ -42,7 +56,8 @@ public class RailConnector : MonoBehaviour
         float somme = 0;
         for (int i = 0; i < _railPointVec3.Length - 1; i++)
         {
-            somme += Vector3.Distance(_railPointVec3[i], _railPointVec3[i + 1]);
+            float dist = Vector3.Distance(_railPointVec3[i], _railPointVec3[i + 1]);
+            somme += dist;
         }
 
         //update oj pos
@@ -58,8 +73,20 @@ public class RailConnector : MonoBehaviour
         return _railLenght = somme;
     }
 
-    public RailObject ObjOnRail { get => _objOnRail; set => _objOnRail = value; }
-    public float RailLenght { get => _railLenght; set => _railLenght = value; }
+    public static float _UpdateRailLenght(Vector3[] allPos, float oldLenght, RailObject objToUpdate)
+    {
+        float somme = 0;
+        for (int i = 0; i < allPos.Length - 1; i++)
+        {
+            float dist = Vector3.Distance(allPos[i], allPos[i + 1]);
+            somme += dist;
+        }
+        objToUpdate.ObjRailPos = (objToUpdate.ObjRailPos * somme) / oldLenght;
+        objToUpdate._UpdatePhysics();
+
+        return somme;
+    }
+
 
     public Vector3 _GetObjPos(float pos)
     {
@@ -79,13 +106,6 @@ public class RailConnector : MonoBehaviour
         }
 
         return _railPointVec3[_railPointVec3.Length - 1];
-    }
-
-    public struct RailInfo
-    {
-        public Vector3 position;
-        public Vector3 direction;    //slope dir // dir.y is the slope angle downward 
-        public Vector3 nearestPoint; // Nearest previous rail point | this maybe usefull in an edghecase situation;
     }
 
     /// <summary>
@@ -134,6 +154,15 @@ public class RailConnector : MonoBehaviour
     {
         _lineRenderer = GetComponent<LineRenderer>();
         _SetLineRendererPos();
+    
     }
+}
 
+public struct RailInfo
+{
+    public RailPart railpart;
+
+    public Vector3 position;
+    public Vector3 direction;    //slope dir // dir.y is the slope angle downward 
+    public Vector3 nearestPoint; // Nearest previous rail point | this maybe usefull in an edghecase situation;
 }
