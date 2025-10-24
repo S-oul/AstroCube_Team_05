@@ -4,30 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-
 [CreateAssetMenu(fileName = "CustomisedSettings", menuName = "ScriptableObjects/CustomisedSettings", order = 2)]
-
 public class CustomisedSettings : ScriptableObject
 {
-    //Current
     public float defaultFOV => _defaultFOV;
     public float minFOV => _minimumFOV;
     public float maxFOV => _maximumFOV;
-    public float customFov 
+    public float customFov
     {
         get => _customFov ?? defaultFOV;
         set
         {
             if (value < minFOV)
-            {
-               _customFov = minFOV;
-            }
+                _customFov = minFOV;
             else if (value > maxFOV)
-            {
-               _customFov = maxFOV;
-            }
-            else {_customFov = value; }
+                _customFov = maxFOV;
+            else
+                _customFov = value;
+
             EventManager.TriggerFOVChange(customFov);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
     }
 
@@ -40,15 +39,17 @@ public class CustomisedSettings : ScriptableObject
         set
         {
             if (value < minMouse)
-            {
-               _customMouse = minMouse;
-            }
+                _customMouse = minMouse;
             else if (value > maxMouse)
-            {
-               _customMouse = maxMouse;
-            }
-            else { _customMouse = value; }
+                _customMouse = maxMouse;
+            else
+                _customMouse = value;
+
             EventManager.TriggerMouseChange(customMouse);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
     }
 
@@ -61,14 +62,15 @@ public class CustomisedSettings : ScriptableObject
         set
         {
             if (value < minVolume)
-            {
                 _customVolume = minVolume;
-            }
             else if (value > maxVolume)
-            {
                 _customVolume = maxVolume;
-            }
-            else { _customVolume = value; }
+            else
+                _customVolume = value;
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
     }
 
@@ -76,10 +78,14 @@ public class CustomisedSettings : ScriptableObject
     public bool customVibration
     {
         get => _customVibration ?? _defaultVibration;
-        set 
-        { 
-            _customVibration = value; 
+        set
+        {
+            _customVibration = value;
             EventManager.TriggerVibrationChange(customVibration);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
     }
 
@@ -91,6 +97,10 @@ public class CustomisedSettings : ScriptableObject
         {
             _customMotionBlur = value;
             EventManager.TriggerMotionBlurChange(customMotionBlur);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
     }
 
@@ -98,10 +108,14 @@ public class CustomisedSettings : ScriptableObject
     public bool customPreview
     {
         get => _customPreview ?? defaultPreview;
-        set 
-        { 
+        set
+        {
             _customPreview = value;
             EventManager.TriggerPreviewChange(customPreview);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
     }
 
@@ -109,25 +123,29 @@ public class CustomisedSettings : ScriptableObject
     public bool customSubtitles
     {
         get => _customSubtitles ?? defaultSubtitles;
-        set { _customSubtitles = value; }
+        set
+        {
+            _customSubtitles = value;
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
     }
 
     [Header("FOV")]
-
     [SerializeField, Label("Default")] float _defaultFOV;
     [SerializeField, Label("Minimum")] float _minimumFOV;
     [SerializeField, Label("Maximum")] float _maximumFOV;
     float? _customFov;
 
-    [Header("MouseSensibility")]
-
+    [Header("Mouse Sensibility")]
     [SerializeField, Label("Default")] float _defaultMouse;
     [SerializeField, Label("Minimum")] float _minimumMouse;
     [SerializeField, Label("Maximum")] float _maximumMouse;
     float? _customMouse;
 
     [Header("Volume")]
-
     [SerializeField, Label("Default")] float _defaultVolume;
     [SerializeField, Label("Minimum")] float _minimumVolume;
     [SerializeField, Label("Maximum")] float _maximumVolume;
@@ -136,8 +154,8 @@ public class CustomisedSettings : ScriptableObject
     [Header("Vibration")]
     [SerializeField, Label("Default")] bool _defaultVibration;
     bool? _customVibration;
-    
-    [Header("MotionBlur")]
+
+    [Header("Motion Blur")]
     [SerializeField, Label("Default")] bool _defaultMotionBlur;
     bool? _customMotionBlur;
 
@@ -148,6 +166,4 @@ public class CustomisedSettings : ScriptableObject
     [Header("Subtitles")]
     [SerializeField, Label("Default")] bool _defaultSubtitles;
     bool? _customSubtitles;
-
-
 }

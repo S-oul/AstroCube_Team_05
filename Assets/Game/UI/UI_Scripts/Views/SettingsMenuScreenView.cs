@@ -43,6 +43,9 @@ public class SettingsMenuScreenView : UIView
 
     [SerializeField] private Button backButton;
 
+    [Header("Settings Referendes")]
+    [SerializeField] private CustomisedSettings _customisedSettings;
+
 
 
 
@@ -77,28 +80,26 @@ public class SettingsMenuScreenView : UIView
 
     private void SetupUI()
     {
-        //Lance pas la bonne fonction
-
-        generalSoundSlider.onValueChanged.AddListener((value) => OnGeneralSoundSliderValueChanged(value));
+        generalSoundSlider.onValueChanged.AddListener(OnGeneralSoundSliderValueChanged);
         musicSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Music :"));
         soundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Sound Effects :"));
         voiceSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Voice :"));
 
         fovSlider.onValueChanged.AddListener((value) => OnSettingSelected("Field of View :"));
         cameraSensitivitySlider.onValueChanged.AddListener((value) => OnSettingSelected("Camera Sensitivity :"));
-        motionBlurButton.onToggleChanged.AddListener(OnMotionBlurToggled);
 
+        motionBlurButton.onToggleChanged.AddListener(OnMotionBlurToggled);
         rumbleButton.onToggleChanged.AddListener(OnRumbleToggled);
-        previewButton.onToggleChanged.AddListener(OnRumbleToggled);
+        previewButton.onToggleChanged.AddListener(OnPreviewToggled);
 
         backButton.onClick.AddListener(OnQuitClicked);
 
+        motionBlurButton.SetState(_customisedSettings.customMotionBlur, false);
+        rumbleButton.SetState(_customisedSettings.customVibration, false);
+        previewButton.SetState(_customisedSettings.customPreview, false);
 
-        motionBlurButton.ApplySavedState();
-        rumbleButton.ApplySavedState();
-        previewButton.ApplySavedState();
+        Debug.Log($"[Init Settings] MotionBlur={_customisedSettings.customMotionBlur}, Rumble={_customisedSettings.customVibration}, Preview={_customisedSettings.customPreview}");
     }
-
 
     #region Button Methods
 
@@ -111,16 +112,20 @@ public class SettingsMenuScreenView : UIView
     private void OnMotionBlurToggled(bool state)
     {
         Debug.Log("Motion Blur Toggled : " + state);
+        _customisedSettings.customMotionBlur = state;
     }
 
     private void OnRumbleToggled(bool state)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Rumble toggled");
+        _customisedSettings.customVibration = state;
     }
 
     private void OnPreviewToggled(bool state)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Preview toggled");
+        _customisedSettings.customPreview = state;
+
     }
 
     public void OnGeneralSoundSliderValueChanged(float value)

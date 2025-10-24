@@ -62,4 +62,17 @@ public class UIToggleButton : MonoBehaviour
         RefreshUI();
         onToggleChanged?.Invoke(isEnable);
     }
+
+    public void SetState(bool state,bool notify = false)
+    {
+        isEnable = state;
+        RefreshUI();
+
+        if (!string.IsNullOrEmpty(saveKey))
+            PlayerPrefs.SetInt(saveKey, isEnable ? 1 : 0);
+
+        if (notify)
+            onToggleChanged?.Invoke(isEnable);
+
+    }
 }
