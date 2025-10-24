@@ -19,8 +19,12 @@ namespace AK
         static const AkUniqueID AMB_RFX_NAR_PULSE = 750298598U;
         static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
         static const AkUniqueID AMB_SP_PORTAL_OPEN = 1481211399U;
+        static const AkUniqueID AMB_SP_RC_CLOTH_LP = 4131450245U;
+        static const AkUniqueID AMB_SP_RC_FOLIAGE_LP = 2649180490U;
+        static const AkUniqueID AMB_SP_RC_INSECTS_LP = 4157787404U;
         static const AkUniqueID AMB_SP_RC_PULSESHARD = 3134303699U;
         static const AkUniqueID AMB_SP_RC_TORCHLIGHT_LP = 3403072559U;
+        static const AkUniqueID AMB_SP_RC_WATERLAPPING_LP = 785339989U;
         static const AkUniqueID AMB_SP_SHARD_FLOAT_LP = 102969944U;
         static const AkUniqueID AMB_TRANSITION = 2906819207U;
         static const AkUniqueID CIN_LVL03 = 2844602029U;
@@ -94,6 +98,7 @@ namespace AK
         static const AkUniqueID SFX_BUTTON = 125802325U;
         static const AkUniqueID SFX_CUBE_PREVISUALISATION_LP = 3556416962U;
         static const AkUniqueID SFX_CUBE_ROTATION_FACE_LP = 4137597792U;
+        static const AkUniqueID SFX_CUBE_SURFACE_SWITCH = 3963779485U;
         static const AkUniqueID SFX_CUBEROTATION = 2382781056U;
         static const AkUniqueID SFX_LASEREMETTING_LP = 2922909946U;
         static const AkUniqueID SFX_LASERRECEIVED = 4087256891U;
