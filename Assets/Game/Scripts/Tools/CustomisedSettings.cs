@@ -7,6 +7,8 @@ using UnityEngine.Rendering;
 [CreateAssetMenu(fileName = "CustomisedSettings", menuName = "ScriptableObjects/CustomisedSettings", order = 2)]
 public class CustomisedSettings : ScriptableObject
 {
+
+
     public float defaultFOV => _defaultFOV;
     public float minFOV => _minimumFOV;
     public float maxFOV => _maximumFOV;
@@ -22,7 +24,7 @@ public class CustomisedSettings : ScriptableObject
             else
                 _customFov = value;
 
-            EventManager.TriggerFOVChange(customFov);
+            EventManager.TriggerFOVChange(_customFov.HasValue ? _customFov.Value : defaultFOV);
 
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
@@ -45,7 +47,7 @@ public class CustomisedSettings : ScriptableObject
             else
                 _customMouse = value;
 
-            EventManager.TriggerMouseChange(customMouse);
+            EventManager.TriggerMouseChange(_customMouse.Value);
 
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
@@ -166,4 +168,45 @@ public class CustomisedSettings : ScriptableObject
     [Header("Subtitles")]
     [SerializeField, Label("Default")] bool _defaultSubtitles;
     bool? _customSubtitles;
+
+
+    public void SaveRuntimeValues()
+    {
+        PlayerPrefs.SetInt("Setting_MotionBlur", customMotionBlur ? 1 : 0);
+        PlayerPrefs.SetInt("Setting_Vibration", customVibration ? 1 : 0);
+        PlayerPrefs.SetInt("Setting_Preview", customPreview ? 1 : 0);
+
+        PlayerPrefs.SetFloat("Setting_FOV", customFov);
+        PlayerPrefs.SetFloat("Setting_MouseSensitivity", customMouse);
+
+        PlayerPrefs.Save();
+    }
+
+    public void LoadRuntimeValues()
+    {
+        if (PlayerPrefs.HasKey("Setting_FOV"))
+        {
+            float fov = PlayerPrefs.GetFloat("Setting_FOV");
+            Debug.Log($"[LoadRuntimeValues] Loaded FOV from prefs: {fov}");
+            _customFov = fov; 
+        }
+        else
+        {
+            _customFov = defaultFOV;
+        }
+
+        if (PlayerPrefs.HasKey("Setting_MouseSensitivity"))
+        {
+            float sens = PlayerPrefs.GetFloat("Setting_MouseSensitivity");
+            Debug.Log($"[LoadRuntimeValues] Loaded MouseSensitivity from prefs: {sens}");
+            _customMouse = sens; 
+        }
+
+        if (PlayerPrefs.HasKey("Setting_MotionBlur"))
+            customMotionBlur = PlayerPrefs.GetInt("Setting_MotionBlur") == 1;
+        if (PlayerPrefs.HasKey("Setting_Vibration"))
+            customVibration = PlayerPrefs.GetInt("Setting_Vibration") == 1;
+        if (PlayerPrefs.HasKey("Setting_Preview"))
+            customPreview = PlayerPrefs.GetInt("Setting_Preview") == 1;
+    }
 }

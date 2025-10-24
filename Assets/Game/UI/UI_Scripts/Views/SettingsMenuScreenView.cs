@@ -48,7 +48,7 @@ public class SettingsMenuScreenView : UIView
 
 
 
-
+    private bool _isInitializing = false;
     private UIManager _uiManager;
     private Dictionary<string, string> _descriptionBySettings;
 
@@ -74,19 +74,22 @@ public class SettingsMenuScreenView : UIView
         };
 
 
+        _customisedSettings.LoadRuntimeValues();
         SetupUI();
         SetupHover();
     }
 
     private void SetupUI()
     {
+        _isInitializing = true;
+
         generalSoundSlider.onValueChanged.AddListener(OnGeneralSoundSliderValueChanged);
         musicSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Music :"));
         soundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Sound Effects :"));
         voiceSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Voice :"));
 
-        fovSlider.onValueChanged.AddListener((value) => OnSettingSelected("Field of View :"));
-        cameraSensitivitySlider.onValueChanged.AddListener((value) => OnSettingSelected("Camera Sensitivity :"));
+        fovSlider.onValueChanged.AddListener(OnFovSliderChanged);
+        cameraSensitivitySlider.onValueChanged.AddListener(OnCameraSensitivityChanged);
 
         motionBlurButton.onToggleChanged.AddListener(OnMotionBlurToggled);
         rumbleButton.onToggleChanged.AddListener(OnRumbleToggled);
@@ -98,7 +101,17 @@ public class SettingsMenuScreenView : UIView
         rumbleButton.SetState(_customisedSettings.customVibration, false);
         previewButton.SetState(_customisedSettings.customPreview, false);
 
-        Debug.Log($"[Init Settings] MotionBlur={_customisedSettings.customMotionBlur}, Rumble={_customisedSettings.customVibration}, Preview={_customisedSettings.customPreview}");
+        fovSlider.minValue = _customisedSettings.minFOV;
+        fovSlider.maxValue = _customisedSettings.maxFOV;
+        fovSlider.value = _customisedSettings.customFov;
+
+        cameraSensitivitySlider.minValue = _customisedSettings.minMouse;
+        cameraSensitivitySlider.maxValue = _customisedSettings.maxMouse;
+        cameraSensitivitySlider.value = _customisedSettings.customMouse;
+
+        _isInitializing = false;
+
+        Debug.Log($"[Init Settings] MotionBlur={_customisedSettings.customMotionBlur}, Rumble={_customisedSettings.customVibration}, Preview={_customisedSettings.customPreview}, fov value = {_customisedSettings.customFov},  senssitivity value : {_customisedSettings.customMouse}");
     }
 
     #region Button Methods
@@ -133,6 +146,22 @@ public class SettingsMenuScreenView : UIView
 
     }
 
+    public void OnFovSliderChanged(float value)
+    {
+        if (_isInitializing) return;
+
+        _customisedSettings.customFov = value;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.Log($"[UI] FOV changed to {value}");
+    }
+    public void OnCameraSensitivityChanged(float value)
+    {
+        if (_isInitializing) return;
+
+        _customisedSettings.customMouse = value;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.Log($"[UI] Sensitivity changed to {value}");
+    }
     #endregion
 
 
