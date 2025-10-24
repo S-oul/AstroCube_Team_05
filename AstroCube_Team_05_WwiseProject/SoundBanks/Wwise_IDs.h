@@ -140,6 +140,7 @@ namespace AK
                 static const AkUniqueID DEBUG = 1031089514U;
                 static const AkUniqueID DIRT = 2195636714U;
                 static const AkUniqueID TILES = 3316001432U;
+                static const AkUniqueID WATER = 2654748154U;
             } // namespace SWITCH
         } // namespace SW_FT
 
