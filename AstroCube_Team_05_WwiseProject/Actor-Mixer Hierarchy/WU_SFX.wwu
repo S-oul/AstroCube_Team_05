@@ -183,7 +183,6 @@
 									<PropertyList>
 										<Property Name="3DSpatialization" Type="int16" Value="2"/>
 										<Property Name="BelowThresholdBehavior" Type="int16" Value="2"/>
-										<Property Name="EnableDiffraction" Type="bool" Value="True"/>
 										<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
 										<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
 										<Property Name="MaxSoundPerInstance" Type="int16">
@@ -193,6 +192,7 @@
 										</Property>
 										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideEffect" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="OverrideVirtualVoice" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ModifierList>
@@ -215,9 +215,6 @@
 										</Property>
 										<Property Name="VirtualVoiceQueueBehavior" Type="int16" Value="2"/>
 										<Property Name="Volume" Type="Real64">
-											<ValueList>
-												<Value>-3</Value>
-											</ValueList>
 											<ModifierList>
 												<ModifierInfo>
 													<Modifier Name="" ID="{BA07849B-4D4F-41A7-A400-22CD4786FAC7}">
@@ -232,7 +229,7 @@
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Attenuation">
-											<ObjectRef Name="ATT_50m" ID="{B1265286-FCE8-4EB4-8791-559038B99D02}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+											<ObjectRef Name="ATT_100m" ID="{94E252E4-AF10-4F83-85F4-168C52758179}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
 										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
@@ -418,9 +415,6 @@
 										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="2"/>
 										<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
-											<ValueList>
-												<Value>-3</Value>
-											</ValueList>
 											<ModifierList>
 												<ModifierInfo>
 													<Modifier Name="" ID="{7E951E89-AD5D-4322-9E84-B5BFAD9064EA}">
@@ -577,16 +571,21 @@
 								</Sound>
 								<RandomSequenceContainer Name="SFX_RC_Rotation_Face" ID="{ED62F1D1-E91C-4BFA-B047-CBE5192C9CCA}" ShortID="614709189">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="2"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="2"/>
 										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
-												<Value>-6</Value>
+												<Value>-3</Value>
 											</ValueList>
 										</Property>
 									</PropertyList>
 									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="ATT_100m" ID="{94E252E4-AF10-4F83-85F4-168C52758179}" WorkUnitID="{42323A0C-CEDD-4ED8-B43A-D53C49611A6D}"/>
+										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
 										</Reference>
@@ -691,6 +690,14 @@
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{B20DEB1C-FCE0-4FFA-A0A0-79F593138336}">
+											<PropertyList>
+												<Property Name="PanX" Type="Real64" Value="15.5143338954469"/>
+												<Property Name="PanY" Type="Real64" Value="-6.50994575045207"/>
+											</PropertyList>
+										</Panner>
+									</PositioningInfo>
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="SFX_RC_Tile_Correct" ID="{0575F465-9EE6-4E53-9CA2-CBC9F9206934}" ShortID="789926613">
 									<PropertyList>
@@ -1108,8 +1115,6 @@
 											</ValueList>
 										</Property>
 										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
-										<Property Name="OverLimitBehavior" Type="int16" Value="1"/>
-										<Property Name="OverrideVirtualVoice" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ModifierList>
 												<ModifierInfo>
@@ -1146,7 +1151,7 @@
 										</Property>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
-												<Value>-18</Value>
+												<Value>-6</Value>
 											</ValueList>
 										</Property>
 									</PropertyList>
