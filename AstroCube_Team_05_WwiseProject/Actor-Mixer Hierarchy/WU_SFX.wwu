@@ -397,8 +397,11 @@
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="SFX_RC_Rotation_Cube" ID="{F8D8919D-6202-4C3E-A13E-64434FA29F26}" ShortID="224128307">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 										<Property Name="OverrideGameAuxSends" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ModifierList>
 												<ModifierInfo>
@@ -413,8 +416,13 @@
 											</ModifierList>
 										</Property>
 										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="2"/>
+										<Property Name="SpeakerPanning" Type="int16" Value="2"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="60"/>
 										<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-6</Value>
+											</ValueList>
 											<ModifierList>
 												<ModifierInfo>
 													<Modifier Name="" ID="{7E951E89-AD5D-4322-9E84-B5BFAD9064EA}">
@@ -524,7 +532,59 @@
 												<ActiveSource Name="SFX_Cube_Rotation_04" ID="{620DE96A-F904-4902-B1DD-1A671A0BCE41}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
+										<Sound Name="SFX_Cube_Rotation_05" ID="{96792FDA-D855-4578-A97C-60D396FCDE96}" ShortID="827362268">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Cube_Rotation_05" ID="{88E1637C-3699-462B-9EAA-94B929DC26B0}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_05.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="98741852"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Cube_Rotation_05" ID="{88E1637C-3699-462B-9EAA-94B929DC26B0}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="SFX_Cube_Rotation_06" ID="{CF67E897-ACB8-406A-A570-C40BD942E921}" ShortID="152284644">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D82A492B-6496-433E-9014-82B894937049}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{21225781-E533-4FEC-8567-8CF7D2EC9036}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="SFX_Cube_Rotation_06" ID="{FF585329-8C37-4367-A78D-D5474F62D0ED}">
+													<Language>SFX</Language>
+													<AudioFile>SFX\Rotation\Cube\SFX_Cube_Rotation_06.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="905797454"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="SFX_Cube_Rotation_06" ID="{FF585329-8C37-4367-A78D-D5474F62D0ED}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
 									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{FE2EB315-250A-4370-BFEB-C1D1DA83E1C6}">
+											<PropertyList>
+												<Property Name="PanX" Type="Real64" Value="31.3659359190557"/>
+												<Property Name="PanY" Type="Real64" Value="20.253164556962"/>
+											</PropertyList>
+										</Panner>
+									</PositioningInfo>
 								</RandomSequenceContainer>
 								<Sound Name="SFX_Cube_Previsualisation_LP" ID="{0A802699-5436-4C03-A222-DE07591E9E62}" ShortID="142911830">
 									<PropertyList>
@@ -1151,7 +1211,7 @@
 										</Property>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
-												<Value>-6</Value>
+												<Value>-12</Value>
 											</ValueList>
 										</Property>
 									</PropertyList>
