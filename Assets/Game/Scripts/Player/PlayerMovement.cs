@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
 
         // jump
         if (_jumpInput && _isGrounded) {
-            _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.JumpHeight * -2f * _gameSettings.Gravity);
+            _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
         }
 
         _jumpInput = false;
@@ -178,9 +178,7 @@ public class PlayerMovement : MonoBehaviour
         // apply calculated Movement
         float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
         if (_hasGravity) {
-            _controller.Move(_horizontalVelocity *
-                             (_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime
-                             + _externallyAppliedMovement);
+            _controller.Move((_horizontalVelocity * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime) + _externallyAppliedMovement)  * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
             _controller.Move(_verticalVelocity * Time.deltaTime);
         } else // no clip
         {
