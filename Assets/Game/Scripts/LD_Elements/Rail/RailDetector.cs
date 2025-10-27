@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -27,16 +28,27 @@ public class RailDetector : MonoBehaviour
     private void Awake()
     {
         EventManager.OnEndCubeRotation += CheckForRails;
-        EventManager.OnStartCubeRotation += CheckForRails;
+        EventManager.OnStartCubeRotation += LaunchDelay;
     }
     private void OnDisable()
     {
         EventManager.OnEndCubeRotation -= CheckForRails;
-        EventManager.OnStartCubeRotation -= CheckForRails;
+        EventManager.OnStartCubeRotation -= LaunchDelay;
 
     }
 
+    void LaunchDelay()
+    {
+        StartCoroutine(DelayCheck());
+    }
+    IEnumerator DelayCheck()
+    {
+        yield return new WaitForSeconds(.4f);
+        CheckForRails();
+    }
 
+
+    RailDetector oldRail;
     [Button("CheckForRails")]
     void CheckForRails()
     {
@@ -45,11 +57,16 @@ public class RailDetector : MonoBehaviour
         gameObject.layer = baseLayer;
 
         var result = cols.FirstOrDefault(c => c != this);
-        if (!result) return;
+        if (!result)
+        {
+            groupIsIn?.RemoveFromGroup(this);
+            oldRail?.groupIsIn?.RemoveFromGroup(this);
+            oldRail = null;
+            return;
+        }
 
         RailDetector otherRail = result.GetComponent<RailDetector>();
-
-
+        oldRail = otherRail;
         if (otherRail.groupIsIn == groupIsIn)
         {
             return;
@@ -58,7 +75,8 @@ public class RailDetector : MonoBehaviour
         imEnd = false;
         otherRail.imEnd = false;
         //I Do not have group but other Have
-        if (otherRail.groupIsIn.usable && !groupIsIn.usable)
+        if (otherRail.groupIsIn.usable 
+            && !groupIsIn.usable)
         {
             otherRail.groupIsIn.AddToGroup(this);
         }

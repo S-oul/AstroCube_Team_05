@@ -153,13 +153,50 @@ public class RailGroup
         SortPositionsByNearest();
     }
 
+    private void RemoveRailPositions(RailDetector detector)
+    {
+        foreach (Transform t in detector.RailPos)
+        {
+            // Check if any other detector in the group is still using this position
+            bool stillUsedByOthers = false;
+            foreach (RailDetector otherDetector in detectors)
+            {
+                if (otherDetector != detector && otherDetector.RailPos.Contains(t))
+                {
+                    stillUsedByOthers = true;
+                    break;
+                }
+            }
+
+            // Only remove if no other detector uses this position
+            if (!stillUsedByOthers)
+            {
+                allPositions.Remove(t);
+
+                RailDetector v;
+                if (t.TryGetComponent<RailDetector>(out v))
+                {
+                    if (v != detector && detectors.Contains(v))
+                    {
+                        detectors.Remove(v);
+                        v.groupIsIn = null;
+                    }
+                }
+            }
+        }
+    }
 
 
     public void RemoveFromGroup(RailDetector detector)
     {
         if (detector.groupIsIn != this) return;
+
+        RemoveRailPositions(detector);
+
         detectors.Remove(detector);
         detector.groupIsIn = null;
+
+        SortPositionsByNearest();
     }
 
     //shortest One If possible;
