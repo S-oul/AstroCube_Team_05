@@ -24,11 +24,11 @@ public class SelectionCube : MonoBehaviour
 {
     [SerializeField]
     bool _isTileLocked;
+    /*
     [SerializeField]
     int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
-
+    */
     private Renderer[] _renderers;
-    private Material[] allOldMat = new Material[0];
 
     public SelectionMode CurrentSelectionMode { get; private set; }
 
@@ -73,6 +73,8 @@ public class SelectionCube : MonoBehaviour
                 renderer.material = Instantiate(renderer.material);
                 _selectionCurrentValues.Add(renderer, new SelectionTweens());
                 _selectionCurrentValues[renderer] = new SelectionTweens();
+                if(_isTileLocked)
+                    renderer.material.SetFloat("_IsLocked", _isTileLocked ? 1f : 0f);
             }
         }
 
@@ -98,28 +100,13 @@ public class SelectionCube : MonoBehaviour
                     {
                         _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     }
-                    //else
-                    //    renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisObjectSelectionRenderingLayerMask);    
                     break;
-                /*
-                case SelectionMode.CUBE:
-                    if (renderer.transform.CompareTag("Floor"))
-                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeSelectionRenderingLayerMask);
-                    else
-                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _cubeObjectSelectionRenderingLayerMask);                    
-                    break;
-                */
                 case SelectionMode.LOCKED:
-                case SelectionMode.PLAYERONTILE:
-                    /*
                     if (renderer.transform.CompareTag("Floor"))
                     {
-                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _axisLockRenderingLayerMask);
-                    }
-                    else
-                        renderer.renderingLayerMask = (uint)Mathf.Pow(2, _objectLockRenderingLayerMask);
-                    */
-                    break;    
+                        _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
+                    } 
+                    break;
                 case SelectionMode.ENABLE:
                     renderer.enabled = true;
                     break;
@@ -137,15 +124,17 @@ public class SelectionCube : MonoBehaviour
             return;
         foreach (var renderer in _renderers)
         {
-            if((CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE)
+            if((CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE || CurrentSelectionMode == SelectionMode.LOCKED)
                 && (renderer.transform.CompareTag("Floor")))
             {
                 _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
             }
+            /*
             else
             {
                 renderer.renderingLayerMask = (uint)Mathf.Pow(2, _defaultRenderingLayerMask);
             }
+            */
         }
         CurrentSelectionMode = SelectionMode.NOT_SELECTED;
     }
@@ -232,7 +221,7 @@ public class SelectionCube : MonoBehaviour
             {
                 if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
                     return;
-
+                           
                 if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
                     _selectionCurrentValues[renderer].DisableSelectionTween.Kill();
 
