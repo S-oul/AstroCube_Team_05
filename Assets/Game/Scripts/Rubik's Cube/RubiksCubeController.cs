@@ -7,6 +7,8 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class RubiksCubeController : MonoBehaviour
 {
+    [Header("Wwise")]
+    [SerializeField] private AK.Wwise.Event previewChangeEvent;
 
     [SerializeField] GameObject _controlledCube;
     RubiksMovement _controlledScript;
@@ -62,7 +64,7 @@ public class RubiksCubeController : MonoBehaviour
         }
         _gameSettings = GameManager.Instance.Settings;
         if (GameManager.Instance.IsUIRubiksCubeEnabled)
-            ActionSwitchLineCols(true);
+            ActionSwitchLineCols(true, false);
     }
     private void Start()
     {
@@ -153,7 +155,7 @@ public class RubiksCubeController : MonoBehaviour
         _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
     }
 
-    public void ActionSwitchLineCols(bool isLeft)
+    public void ActionSwitchLineCols(bool isLeft, bool playEvent = true)
     {
         EventManager.TriggerCubeSwitchAxe();
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
@@ -188,6 +190,7 @@ public class RubiksCubeController : MonoBehaviour
                 break;
         }
         if (ActualFace) SetActualCube(ActualFace.transform);
+        if (playEvent) previewChangeEvent?.Post(gameObject);
     }
 
     public void ActionMakeTurn(bool clockwise)
