@@ -52,6 +52,11 @@ public class MakeTileInvisible : MonoBehaviour
 
         float dot = Vector3.Dot(forwardDirect, viewDirection);
 
+        if (tileParent == null) 
+        {
+            return;
+        }
+
         if (dot > 0)
         {
             SceneVisibilityManager.instance.Show(tileParent, true);
