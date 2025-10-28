@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 public abstract class UIView : MonoBehaviour
@@ -10,8 +12,7 @@ public abstract class UIView : MonoBehaviour
     [Header("(OPTIONAL)")]
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Transform cameraLookAt;
-
-
+    [SerializeField] private Selectable firstSelected;
 
     public Transform CameraPosition => cameraPosition;
     public Transform CameraLookAt => cameraLookAt;
@@ -32,7 +33,12 @@ public abstract class UIView : MonoBehaviour
 
         gameObject.SetActive(true);
 
-        fadeCoroutine = StartCoroutine(FadeCanvas(0f, 1f));
+        fadeCoroutine = StartCoroutine(FadeCanvas(0f, 1f, onComplete: ()=>
+        {
+            if (firstSelected != null)
+                StartCoroutine(SelectAfterFrame());
+        
+        }));
     }
 
     public virtual void Hide()
@@ -78,6 +84,12 @@ public abstract class UIView : MonoBehaviour
         }
 
         onComplete?.Invoke();
+    }
+
+    private IEnumerator SelectAfterFrame()
+    {
+        yield return null;
+        EventSystem.current?.SetSelectedGameObject(firstSelected.gameObject);
     }
 }
 
