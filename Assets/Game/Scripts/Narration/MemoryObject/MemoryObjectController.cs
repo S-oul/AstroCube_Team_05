@@ -16,6 +16,5 @@ public class MemoryObjectController : MonoBehaviour
     public void LinkOriginToVFX()
     {
         _vfx.SetVector3("Origin", _origin.transform.localPosition);
-        Debug.Log(_origin.transform.localPosition);
     }
 }
