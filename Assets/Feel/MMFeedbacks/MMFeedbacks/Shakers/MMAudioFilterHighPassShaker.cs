@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to an audio high pass filter to shake its values remapped along a curve 
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MMAudioFilterHighPassShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MM Audio Filter High Pass Shaker")]
 	[RequireComponent(typeof(AudioHighPassFilter))]
 	public class MMAudioFilterHighPassShaker : MMShaker
 	{
@@ -113,13 +113,16 @@ namespace MoreMountains.Feedbacks
 				_originalRelativeHighPass = RelativeHighPass;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeHighPass = highPassCurve;
-			RemapHighPassZero = remapMin * feedbacksIntensity;
-			RemapHighPassOne = remapMax * feedbacksIntensity;
-			RelativeHighPass = relativeHighPass;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeHighPass = highPassCurve;
+				RemapHighPassZero = remapMin * feedbacksIntensity;
+				RemapHighPassOne = remapMax * feedbacksIntensity;
+				RelativeHighPass = relativeHighPass;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

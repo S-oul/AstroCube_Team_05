@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to an AudioSource to shake its volume remapped along a curve 
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MMAudioSourceVolumeShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MM Audio Source Volume Shaker")]
 	[RequireComponent(typeof(AudioSource))]
 	public class MMAudioSourceVolumeShaker : MMShaker
 	{
@@ -113,13 +113,16 @@ namespace MoreMountains.Feedbacks
 				_originalRelativeValues = RelativeVolume;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeVolume = volumeCurve;
-			RemapVolumeZero = remapMin * feedbacksIntensity;
-			RemapVolumeOne = remapMax * feedbacksIntensity;
-			RelativeVolume = relativeVolume;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeVolume = volumeCurve;
+				RemapVolumeZero = remapMin * feedbacksIntensity;
+				RemapVolumeOne = remapMax * feedbacksIntensity;
+				RelativeVolume = relativeVolume;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

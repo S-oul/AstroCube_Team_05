@@ -8,6 +8,7 @@ namespace MoreMountains.Feel
 	/// <summary>
 	/// A simple class used to pilot Feel's Blob demo character, who simply moves on a loop when its target key is pressed
 	/// </summary>
+	[AddComponentMenu("")]
 	public class Blob : MonoBehaviour
 	{
 		[Header("Cooldown")]

@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to a SpriteRenderer to have it receive MMSpriteRendererShakeEvents from feedbacks or to shake it locally
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Renderer/MMSpriteRendererShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Renderer/MM Sprite Renderer Shaker")]
 	[RequireComponent(typeof(SpriteRenderer))]
 	public class MMSpriteRendererShaker : MMShaker
 	{
@@ -145,11 +145,14 @@ namespace MoreMountains.Feedbacks
 				_originalColorOverTime = ColorOverTime;
 			}
 
-			ModifyColor = modifyColor;
-			ShakeDuration = shakeDuration;
-			ColorOverTime = colorOverTime;
-			FlipX = flipX;
-			FlipY = flipY;
+			if (!OnlyUseShakerValues)
+			{
+				ModifyColor = modifyColor;
+				ShakeDuration = shakeDuration;
+				ColorOverTime = colorOverTime;
+				FlipX = flipX;
+				FlipY = flipY;
+			}
 
 			if (FlipX)
 			{
