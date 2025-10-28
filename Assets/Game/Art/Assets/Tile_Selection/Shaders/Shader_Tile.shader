@@ -1091,6 +1091,7 @@ Shader "Shader_Tile"
 				#endif
 
 				float2 uv_Texture = packedInput.ase_texcoord5.xy * _Texture_ST.xy + _Texture_ST.zw;
+				float4 tex2DNode76 = tex2D( _Texture, uv_Texture );
 				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1164721 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5964752 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 temp_cast_1 = (_Min2).xxxx;
 				float4 temp_cast_2 = (_Max2).xxxx;
@@ -1113,21 +1114,23 @@ Shader "Shader_Tile"
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _IsLocked);
 				float2 temp_cast_8 = (2.0).xx;
 				float2 texCoord103 = packedInput.ase_texcoord5.xy * temp_cast_8 + float2( -1,0 );
-				float4 temp_output_43_0 = ( ( lerpResult131 * tex2D( _TextureSample0, texCoord103 ).a ) * _HDR * _Alpha );
-				float4 lerpResult138 = lerp( float4( tex2D( _Texture, uv_Texture ).rgb , 0.0 ) , temp_output_43_0 , float4( 0,0,0,0 ));
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float4 temp_output_43_0 = ( ( lerpResult131 * tex2DNode10.a ) * _HDR * _Alpha );
+				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
+				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
 				
 				float2 uv_Normal = packedInput.ase_texcoord5.xy * _Normal_ST.xy + _Normal_ST.zw;
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord5.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
-				float4 lerpResult74 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
+				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
 				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
-				surfaceDescription.BaseColor = lerpResult138.rgb;
-				surfaceDescription.Normal = tex2D( _Normal, uv_Normal ).rgb;
+				surfaceDescription.BaseColor = lerpResult143.rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
 				surfaceDescription.Metallic = tex2DNode96.b;
@@ -1138,7 +1141,7 @@ Shader "Shader_Tile"
 
 				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Occlusion = 1;
-				surfaceDescription.Emission = lerpResult74.rgb;
+				surfaceDescription.Emission = lerpResult142.rgb;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -1948,6 +1951,7 @@ Shader "Shader_Tile"
 				float3 V = float3(1.0, 1.0, 1.0);
 
 				float2 uv_Texture = packedInput.ase_texcoord2.xy * _Texture_ST.xy + _Texture_ST.zw;
+				float4 tex2DNode76 = tex2D( _Texture, uv_Texture );
 				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1164721 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5964752 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 temp_cast_1 = (_Min2).xxxx;
 				float4 temp_cast_2 = (_Max2).xxxx;
@@ -1970,21 +1974,23 @@ Shader "Shader_Tile"
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _IsLocked);
 				float2 temp_cast_8 = (2.0).xx;
 				float2 texCoord103 = packedInput.ase_texcoord2.xy * temp_cast_8 + float2( -1,0 );
-				float4 temp_output_43_0 = ( ( lerpResult131 * tex2D( _TextureSample0, texCoord103 ).a ) * _HDR * _Alpha );
-				float4 lerpResult138 = lerp( float4( tex2D( _Texture, uv_Texture ).rgb , 0.0 ) , temp_output_43_0 , float4( 0,0,0,0 ));
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float4 temp_output_43_0 = ( ( lerpResult131 * tex2DNode10.a ) * _HDR * _Alpha );
+				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
+				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
 				
 				float2 uv_Normal = packedInput.ase_texcoord2.xy * _Normal_ST.xy + _Normal_ST.zw;
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord2.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
-				float4 lerpResult74 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
+				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
 				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
-				surfaceDescription.BaseColor = lerpResult138.rgb;
-				surfaceDescription.Normal = tex2D( _Normal, uv_Normal ).rgb;
+				surfaceDescription.BaseColor = lerpResult143.rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
 				surfaceDescription.Metallic = tex2DNode96.b;
@@ -1995,7 +2001,7 @@ Shader "Shader_Tile"
 
 				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Occlusion = 1;
-				surfaceDescription.Emission = lerpResult74.rgb;
+				surfaceDescription.Emission = lerpResult142.rgb;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -4049,7 +4055,7 @@ Shader "Shader_Tile"
 
 				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
 
-				surfaceDescription.Normal = tex2D( _Normal, uv_Normal ).rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Alpha = 1;
 
@@ -4830,7 +4836,7 @@ Shader "Shader_Tile"
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
 
-				surfaceDescription.Normal = tex2D( _Normal, uv_Normal ).rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Alpha = 1;
 
@@ -5797,6 +5803,7 @@ Shader "Shader_Tile"
 				#endif
 
 				float2 uv_Texture = packedInput.ase_texcoord7.xy * _Texture_ST.xy + _Texture_ST.zw;
+				float4 tex2DNode76 = tex2D( _Texture, uv_Texture );
 				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1164721 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5964752 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 temp_cast_1 = (_Min2).xxxx;
 				float4 temp_cast_2 = (_Max2).xxxx;
@@ -5819,21 +5826,23 @@ Shader "Shader_Tile"
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _IsLocked);
 				float2 temp_cast_8 = (2.0).xx;
 				float2 texCoord103 = packedInput.ase_texcoord7.xy * temp_cast_8 + float2( -1,0 );
-				float4 temp_output_43_0 = ( ( lerpResult131 * tex2D( _TextureSample0, texCoord103 ).a ) * _HDR * _Alpha );
-				float4 lerpResult138 = lerp( float4( tex2D( _Texture, uv_Texture ).rgb , 0.0 ) , temp_output_43_0 , float4( 0,0,0,0 ));
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float4 temp_output_43_0 = ( ( lerpResult131 * tex2DNode10.a ) * _HDR * _Alpha );
+				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
+				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
 				
 				float2 uv_Normal = packedInput.ase_texcoord7.xy * _Normal_ST.xy + _Normal_ST.zw;
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord7.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
-				float4 lerpResult74 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
+				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
 				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
-				surfaceDescription.BaseColor = lerpResult138.rgb;
-				surfaceDescription.Normal = tex2D( _Normal, uv_Normal ).rgb;
+				surfaceDescription.BaseColor = lerpResult143.rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
 				surfaceDescription.Metallic = tex2DNode96.b;
@@ -5844,7 +5853,7 @@ Shader "Shader_Tile"
 
 				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Occlusion = 1;
-				surfaceDescription.Emission = lerpResult74.rgb;
+				surfaceDescription.Emission = lerpResult142.rgb;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -6838,7 +6847,7 @@ Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Cult
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;27;-2096,-176;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-0.03,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;46;-1760,448;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0.05,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;43;48,-144;Inherit;True;3;3;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;-896,80;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;None;87251aa1ca7216948b371ca795bcce83;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;-896,80;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;None;c2d591c55e414bf49ab1cd6f06d4ecdb;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;103;-960,336;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;107;-1120,512;Inherit;False;Constant;_Vector0;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;106;-1152,400;Inherit;False;Constant;_Float0;Float 0;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
@@ -6850,17 +6859,19 @@ Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.
 Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;48;-816,-592;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;131;-480,-448;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;75;-304,-336;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;76;-32,64;Inherit;True;Property;_Texture;Texture;9;0;Create;True;0;0;0;False;0;False;-1;None;d7291e8f96c39d34d89f1ebc69fbb3cc;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;93;-32,256;Inherit;True;Property;_Normal;Normal;11;0;Create;True;0;0;0;False;0;False;-1;None;46ab138737c6f2b4d9577d12a92100ad;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;76;-32,64;Inherit;True;Property;_Texture;Texture;9;0;Create;True;0;0;0;False;0;False;-1;None;e23c2db2f53f3a14793c19e2627a7fc3;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;70;-32,448;Inherit;False;Property;_Alpha_shader;Alpha_shader;8;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;138;480,-160;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;96;-32,528;Inherit;True;Property;_MetallicRoughness;Metallic Roughness;12;0;Create;True;0;0;0;False;0;False;-1;None;871ef3ce332b4484fbb8465f0cb8ad44;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;74;480,0;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;96;-32,528;Inherit;True;Property;_MetallicRoughness;Metallic Roughness;12;0;Create;True;0;0;0;False;0;False;-1;None;420472abb5daa07449a61ee5805dd11d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;136;-672,-400;Inherit;False;Property;_IsLocked;IsLocked;14;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;44;-256,-112;Inherit;False;Property;_HDR;HDR;7;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;90;-384,-32;Inherit;False;Property;_Alpha;Alpha;10;0;Create;True;0;0;0;False;0;False;0;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;49;-1024,-592;Inherit;False;0;4;2;0.3762475,0,0.5169811,0;0.6824901,0.2734567,0.7283019,0.1164721;0.9245283,0.1796724,0.6323621,0.5964752;1,1,1,0.798825;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;140;-1024,-304;Inherit;False;0;4;2;0.3962264,0.02097896,0.02018509,0;0.8792453,0.1177857,0.1341067,0.4011749;0.9490196,0.2196078,0.2528196,0.6082399;1,1,1,0.798825;1,0;1,1;0;1;OBJECT;0
+Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;141;314.2709,306.6747;Inherit;False;Constant;_Color0;Color 0;15;0;Create;True;0;0;0;False;0;False;0.5,0.5,1,1;0,0,0,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;142;448,0;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;93;-32,256;Inherit;True;Property;_Normal;Normal;11;0;Create;True;0;0;0;False;0;False;-1;None;ba4d366b1decf3f4e8d7d132dc42c649;True;0;True;white;Auto;True;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;138;320,-160;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;143;512,-160;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;118;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;119;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;120;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
@@ -6910,14 +6921,18 @@ WireConnection;131;1;137;0
 WireConnection;131;2;136;0
 WireConnection;75;0;131;0
 WireConnection;75;1;10;4
+WireConnection;142;1;43;0
+WireConnection;142;2;70;0
 WireConnection;138;0;76;5
 WireConnection;138;1;43;0
-WireConnection;74;1;43;0
-WireConnection;74;2;70;0
-WireConnection;117;0;138;0
-WireConnection;117;1;93;5
+WireConnection;138;2;10;4
+WireConnection;143;0;76;0
+WireConnection;143;1;138;0
+WireConnection;143;2;70;0
+WireConnection;117;0;143;0
+WireConnection;117;1;93;0
 WireConnection;117;4;96;3
 WireConnection;117;7;96;2
-WireConnection;117;6;74;0
+WireConnection;117;6;142;0
 ASEEND*/
-//CHKSM=77D05D3CCAB422750493BC7E3F8B60F369AB8F5F
+//CHKSM=2D3F61DA9CE6D78BD5675B1927543C1DCD382473
