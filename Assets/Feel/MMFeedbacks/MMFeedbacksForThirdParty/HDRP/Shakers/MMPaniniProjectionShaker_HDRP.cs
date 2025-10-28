@@ -14,7 +14,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_HDRP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMPaniniProjectionShaker_HDRP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Panini Projection Shaker HDRP")]
 	public class MMPaniniProjectionShaker_HDRP : MMShaker
 	{
 		[MMInspectorGroup("Panini Projection Distance", true, 49)]
@@ -112,13 +112,16 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRelativeDistance = RelativeDistance;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeDistance = distance;
-			RemapDistanceZero = remapMin * attenuation;
-			RemapDistanceOne = remapMax * attenuation;
-			RelativeDistance = relativeDistance;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeDistance = distance;
+				RemapDistanceZero = remapMin * attenuation;
+				RemapDistanceOne = remapMax * attenuation;
+				RelativeDistance = relativeDistance;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

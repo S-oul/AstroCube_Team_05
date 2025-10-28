@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace MoreMountains.Feel
 {
+	[AddComponentMenu("")]
 	public class FeelBrass : MonoBehaviour
 	{
 		[Header("Bindings")]

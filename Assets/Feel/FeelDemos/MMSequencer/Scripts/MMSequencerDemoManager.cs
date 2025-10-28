@@ -8,6 +8,7 @@ namespace MoreMountains.Feel
 	/// <summary>
 	/// This class handles Feel's MMSequencer demo scene, detecting input and starting/stopping its target sequencer 
 	/// </summary>
+	[AddComponentMenu("")]
 	public class MMSequencerDemoManager : MonoBehaviour
 	{
 		[Header("Sequence")]

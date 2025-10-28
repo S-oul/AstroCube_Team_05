@@ -5,13 +5,16 @@ using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if MM_UI
 using UnityEngine.UI;
+#endif
 
 namespace MoreMountains.Feel
 {
 	/// <summary>
 	/// A class used to handle Feel's Snake demo's snake "head", the part controlled by the player
 	/// </summary>
+	[AddComponentMenu("")]
 	public class Snake : MonoBehaviour
 	{
 		[Header("Movement")]
@@ -41,8 +44,10 @@ namespace MoreMountains.Feel
 		public float MinTimeBetweenLostParts = 2f;
 
 		[Header("Bindings")] 
+		#if MM_UI
 		/// a Text component on which to display our current score
 		public Text PointsCounter;
+		#endif
 
 		[Header("Feedbacks")] 
 		/// a feedback to play when the snake turns
@@ -79,7 +84,9 @@ namespace MoreMountains.Feel
 			_speed = Speed;
 			SnakePoints = 0;
 			_recorder = this.gameObject.GetComponent<MMPositionRecorder>();
-			PointsCounter.text = "0";
+			#if MM_UI
+				PointsCounter.text = "0";
+			#endif
 			_snakeBodyParts = new List<SnakeBodyPart>();
 		}
         
@@ -165,7 +172,9 @@ namespace MoreMountains.Feel
             
 			EatFeedback?.PlayFeedbacks();
 			SnakePoints++;
-			PointsCounter.text = SnakePoints.ToString();
+			#if MM_UI
+				PointsCounter.text = SnakePoints.ToString();
+			#endif
 			StartCoroutine(EatCo());
 		}
 
@@ -238,7 +247,9 @@ namespace MoreMountains.Feel
 			Destroy(_snakeBodyParts[_snakeBodyParts.Count-1].gameObject);
 			_snakeBodyParts.RemoveAt(_snakeBodyParts.Count-1);
 			SnakePoints--;
-			PointsCounter.text = SnakePoints.ToString();
+			#if MM_UI
+				PointsCounter.text = SnakePoints.ToString();
+			#endif
 		}
 	}
 }
