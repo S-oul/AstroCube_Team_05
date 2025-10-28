@@ -104,7 +104,19 @@ public class RailGroup
 
         allPositions = sorted;
     }
+    public RailGroup(RailDetector r1)
+    {
+        usable = true;
 
+        detectors = new();
+        allPositions = new();
+
+        AddToGroup(r1);
+
+        r1.groupIsIn = this;;
+
+        RailManager.instance.ListRailGroups.Add(this);
+    }
     public RailGroup(RailDetector r1, RailDetector r2)
     {
         usable = true;

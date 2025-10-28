@@ -62,6 +62,9 @@ public class RailDetector : MonoBehaviour
             groupIsIn?.RemoveFromGroup(this);
             oldRail?.groupIsIn?.RemoveFromGroup(this);
             oldRail = null;
+
+            groupIsIn = new RailGroup(this);
+            
             return;
         }
 
@@ -75,8 +78,7 @@ public class RailDetector : MonoBehaviour
         imEnd = false;
         otherRail.imEnd = false;
         //I Do not have group but other Have
-        if (otherRail.groupIsIn.usable 
-            && !groupIsIn.usable)
+        if (otherRail.groupIsIn.usable && !groupIsIn.usable)
         {
             otherRail.groupIsIn.AddToGroup(this);
         }
