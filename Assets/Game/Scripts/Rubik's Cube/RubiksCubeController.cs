@@ -436,6 +436,8 @@ public class RubiksCubeController : MonoBehaviour
 
     void _ExteriorCollidersActivation(SliceAxis sliceAxis, Transform actualFace)
     {
+        if (_player.parent != null && sliceAxis == SliceAxis.Y) return; // if player is snanding on the ground while it rotates. 
+
         if (_controlledScript != null)
         {
             foreach (Transform go in _controlledScript.GetCubesFromFace(actualFace, sliceAxis))
