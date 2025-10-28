@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -10,6 +11,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback will let you animate the position/rotation/scale of a target transform to match the one of a destination transform.")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("Transform/Destination")]
 	public class MMF_DestinationTransform : MMF_Feedback
 	{
@@ -51,6 +53,9 @@ namespace MoreMountains.Feedbacks
 		/// the duration of the transition, in seconds
 		[Tooltip("the duration of the transition, in seconds")]
 		public float Duration = 0.2f;
+		/// if this is true, the destination will be updated every frame, allowing for dynamic changes to the destination transform, otherwise the destination will be cached on init and not updated after that
+		[Tooltip("if this is true, the destination will be updated every frame, allowing for dynamic changes to the destination transform, otherwise the destination will be cached on init and not updated after that")]
+		public bool UpdateDestinationEveryFrame = false;
 
 		[MMFInspectorGroup("Axis Locks", true, 64)]
         
@@ -91,24 +96,21 @@ namespace MoreMountains.Feedbacks
 		public bool SeparatePositionCurve = false;
 		/// the curve to use to animate the position on
 		[Tooltip("the curve to use to animate the position on")]
-		[MMFCondition("SeparatePositionCurve", true)]
-		public MMTweenType AnimatePositionTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)));
+		public MMTweenType AnimatePositionTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)), "SeparatePositionCurve");
         
 		/// whether or not to use a separate animation curve to animate the rotation
 		[Tooltip("whether or not to use a separate animation curve to animate the rotation")]
 		public bool SeparateRotationCurve = false;
 		/// the curve to use to animate the rotation on
 		[Tooltip("the curve to use to animate the rotation on")]
-		[MMFCondition("SeparateRotationCurve", true)]
-		public MMTweenType AnimateRotationTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)));
+		public MMTweenType AnimateRotationTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)), "SeparateRotationCurve");
         
 		/// whether or not to use a separate animation curve to animate the scale
 		[Tooltip("whether or not to use a separate animation curve to animate the scale")]
 		public bool SeparateScaleCurve = false;
 		/// the curve to use to animate the scale on
-		[Tooltip("the curve to use to animate the scale on")]
-		[MMFCondition("SeparateScaleCurve", true)]
-		public MMTweenType AnimateScaleTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)));
+		[Tooltip("the curve to use to animate the scale on")] 
+		public MMTweenType AnimateScaleTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)), "SeparateScaleCurve");
         
 		/// the duration of this feedback is the duration of the movement
 		public override float FeedbackDuration { get { return ApplyTimeMultiplier(Duration); } set { Duration = value; } }
@@ -149,6 +151,7 @@ namespace MoreMountains.Feedbacks
 			{
 				return;
 			}
+			if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 			_coroutine = Owner.StartCoroutine(AnimateToDestination());
 		}
 
@@ -161,34 +164,22 @@ namespace MoreMountains.Feedbacks
 			_initialPosition = TargetTransform.position;
 			_initialRotation = TargetTransform.rotation;
 			_initialScale = TargetTransform.localScale;
-			
+
 			_pointAPosition = ForceOrigin ? Origin.transform.position : TargetTransform.position;
-			_pointBPosition = Destination.transform.position;
-
-			if (!AnimatePositionX) { _pointAPosition.x = TargetTransform.position.x; _pointBPosition.x = _pointAPosition.x; }
-			if (!AnimatePositionY) { _pointAPosition.y = TargetTransform.position.y; _pointBPosition.y = _pointAPosition.y; }
-			if (!AnimatePositionZ) { _pointAPosition.z = TargetTransform.position.z; _pointBPosition.z = _pointAPosition.z; }
-            
 			_pointARotation = ForceOrigin ? Origin.transform.rotation : TargetTransform.rotation;
-			_pointBRotation = Destination.transform.rotation;
-            
-			if (!AnimateRotationX) { _pointARotation.x = TargetTransform.rotation.x; _pointBRotation.x = _pointARotation.x; }
-			if (!AnimateRotationY) { _pointARotation.y = TargetTransform.rotation.y; _pointBRotation.y = _pointARotation.y; }
-			if (!AnimateRotationZ) { _pointARotation.z = TargetTransform.rotation.z; _pointBRotation.z = _pointARotation.z; }
-			if (!AnimateRotationW) { _pointARotation.w = TargetTransform.rotation.w; _pointBRotation.w = _pointARotation.w; }
-
 			_pointAScale = ForceOrigin ? Origin.transform.localScale : TargetTransform.localScale;
-			_pointBScale = Destination.transform.localScale;
-            
-			if (!AnimateScaleX) { _pointAScale.x = TargetTransform.localScale.x; _pointBScale.x = _pointAScale.x; }
-			if (!AnimateScaleY) { _pointAScale.y = TargetTransform.localScale.y; _pointBScale.y = _pointAScale.y; }
-			if (!AnimateScaleZ) { _pointAScale.z = TargetTransform.localScale.z; _pointBScale.z = _pointAScale.z; }
+			
+			CacheDestinationValues();
 
 			IsPlaying = true;
-			float journey = NormalPlayDirection ? 0f : Duration;
-			while ((journey >= 0) && (journey <= Duration) && (Duration > 0))
+			float journey = NormalPlayDirection ? 0f : FeedbackDuration;
+			while ((journey >= 0) && (journey <= FeedbackDuration) && (FeedbackDuration > 0))
 			{
-				float percent = Mathf.Clamp01(journey / Duration);
+				if (UpdateDestinationEveryFrame)
+				{
+					CacheDestinationValues();
+				}
+				float percent = Mathf.Clamp01(journey / FeedbackDuration);
 				ChangeTransformValues(percent);
 				journey += NormalPlayDirection ? FeedbackDeltaTime : -FeedbackDeltaTime;
 				yield return null;
@@ -200,6 +191,28 @@ namespace MoreMountains.Feedbacks
 			IsPlaying = false;
 			_coroutine = null;
 			yield break;
+		}
+
+		protected virtual void CacheDestinationValues()
+		{
+			_pointBPosition = Destination.transform.position;
+
+			if (!AnimatePositionX) { _pointAPosition.x = TargetTransform.position.x; _pointBPosition.x = _pointAPosition.x; }
+			if (!AnimatePositionY) { _pointAPosition.y = TargetTransform.position.y; _pointBPosition.y = _pointAPosition.y; }
+			if (!AnimatePositionZ) { _pointAPosition.z = TargetTransform.position.z; _pointBPosition.z = _pointAPosition.z; }
+            
+			_pointBRotation = Destination.transform.rotation;
+            
+			if (!AnimateRotationX) { _pointARotation.x = TargetTransform.rotation.x; _pointBRotation.x = _pointARotation.x; }
+			if (!AnimateRotationY) { _pointARotation.y = TargetTransform.rotation.y; _pointBRotation.y = _pointARotation.y; }
+			if (!AnimateRotationZ) { _pointARotation.z = TargetTransform.rotation.z; _pointBRotation.z = _pointARotation.z; }
+			if (!AnimateRotationW) { _pointARotation.w = TargetTransform.rotation.w; _pointBRotation.w = _pointARotation.w; }
+
+			_pointBScale = Destination.transform.localScale;
+            
+			if (!AnimateScaleX) { _pointAScale.x = TargetTransform.localScale.x; _pointBScale.x = _pointAScale.x; }
+			if (!AnimateScaleY) { _pointAScale.y = TargetTransform.localScale.y; _pointBScale.y = _pointAScale.y; }
+			if (!AnimateScaleZ) { _pointAScale.z = TargetTransform.localScale.z; _pointBScale.z = _pointAScale.z; }
 		}
 
 		/// <summary>
@@ -267,6 +280,12 @@ namespace MoreMountains.Feedbacks
 			MMFeedbacksHelpers.MigrateCurve(AnimatePositionCurve, AnimatePositionTween, Owner);
 			MMFeedbacksHelpers.MigrateCurve(AnimateRotationCurve, AnimateRotationTween, Owner);
 			MMFeedbacksHelpers.MigrateCurve(AnimateScaleCurve, AnimateScaleTween, Owner);
+			if (string.IsNullOrEmpty(AnimatePositionTween.ConditionPropertyName))
+			{
+				AnimatePositionTween.ConditionPropertyName = "SeparatePositionCurve";
+				AnimateRotationTween.ConditionPropertyName = "SeparateRotationCurve";
+				AnimateScaleTween.ConditionPropertyName = "SeparateScaleCurve";
+			}
 		}
 	}    
 }

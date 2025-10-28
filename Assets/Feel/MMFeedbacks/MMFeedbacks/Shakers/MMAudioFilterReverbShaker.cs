@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to an audio reverb filter to shake its values remapped along a curve 
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MMAudioFilterReverbShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MM Audio Filter Reverb Shaker")]
 	[RequireComponent(typeof(AudioReverbFilter))]
 	public class MMAudioFilterReverbShaker : MMShaker
 	{
@@ -119,13 +119,16 @@ namespace MoreMountains.Feedbacks
 				return;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeReverb = reverbCurve;
-			RemapReverbZero = remapMin * feedbacksIntensity;
-			RemapReverbOne = remapMax * feedbacksIntensity;
-			RelativeReverb = relativeReverb;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeReverb = reverbCurve;
+				RemapReverbZero = remapMin * feedbacksIntensity;
+				RemapReverbOne = remapMax * feedbacksIntensity;
+				RelativeReverb = relativeReverb;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

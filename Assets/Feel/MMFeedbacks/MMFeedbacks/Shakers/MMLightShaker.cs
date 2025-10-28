@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to a light to have it receive MMLightShakeEvents from feedbacks or to shake it locally
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Lights/MMLightShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Lights/MM Light Shaker")]
 	[RequireComponent(typeof(Light))]
 	public class MMLightShaker : MMShaker
 	{
@@ -215,19 +215,22 @@ namespace MoreMountains.Feedbacks
 				_originalRemapShadowStrengthOne = RemapShadowStrengthOne;
 			}
 
-			ModifyColor = modifyColor;
-			RelativeValues = relativeValues;
-			ShakeDuration = shakeDuration;
-			ColorOverTime = colorOverTime;
-			IntensityCurve = intensityCurve;
-			RemapIntensityZero = remapIntensityZero;
-			RemapIntensityOne = remapIntensityOne;
-			RangeCurve = rangeCurve;
-			RemapRangeZero = remapRangeZero;
-			RemapRangeOne = remapRangeOne;
-			ShadowStrengthCurve = shadowStrengthCurve;
-			RemapShadowStrengthZero = remapShadowStrengthZero;
-			RemapShadowStrengthOne = remapShadowStrengthOne;
+			if (!OnlyUseShakerValues)
+			{
+				ModifyColor = modifyColor;
+				RelativeValues = relativeValues;
+				ShakeDuration = shakeDuration;
+				ColorOverTime = colorOverTime;
+				IntensityCurve = intensityCurve;
+				RemapIntensityZero = remapIntensityZero;
+				RemapIntensityOne = remapIntensityOne;
+				RangeCurve = rangeCurve;
+				RemapRangeZero = remapRangeZero;
+				RemapRangeOne = remapRangeOne;
+				ShadowStrengthCurve = shadowStrengthCurve;
+				RemapShadowStrengthZero = remapShadowStrengthZero;
+				RemapShadowStrengthOne = remapShadowStrengthOne;
+			}
 
 			Play();
 		}

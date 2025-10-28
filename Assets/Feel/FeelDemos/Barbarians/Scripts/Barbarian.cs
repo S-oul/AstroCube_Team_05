@@ -10,6 +10,7 @@ namespace MoreMountains.Feel
 	/// A simple class controlling the hero character in the Barbarians demo scene
 	/// It simulates a very simple character controller in an ARPG game
 	/// </summary>
+	[AddComponentMenu("")]
 	public class Barbarian : MonoBehaviour
 	{
 		[Header("Cooldown")]

@@ -16,7 +16,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_URP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMColorAdjustmentsShaker_URP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Color Adjustments Shaker URP")]
 	public class MMColorAdjustmentsShaker_URP : MMShaker
 	{
 		/// whether or not to add to the initial value
@@ -236,26 +236,29 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalColorFilterCurve = ColorFilterCurve;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			RelativeValues = relativeValues;
-			ShakePostExposure = shakePostExposure;
-			RemapPostExposureZero = remapPostExposureZero;
-			RemapPostExposureOne = remapPostExposureOne;
-			ShakeHueShift = shakeHueShift;
-			RemapHueShiftZero = remapHueShiftZero;
-			RemapHueShiftOne = remapHueShiftOne;
-			ShakeSaturation = shakeSaturation;
-			RemapSaturationZero = remapSaturationZero;
-			RemapSaturationOne = remapSaturationOne;
-			ShakeContrast = shakeContrast;
-			RemapContrastZero = remapContrastZero;
-			RemapContrastOne = remapContrastOne;
-			ColorFilterMode = colorFilterMode;
-			ColorFilterGradient = colorFilterGradient;
-			ColorFilterDestination = colorFilterDestination;
-			ColorFilterCurve = colorFilterCurve;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				RelativeValues = relativeValues;
+				ShakePostExposure = shakePostExposure;
+				RemapPostExposureZero = remapPostExposureZero;
+				RemapPostExposureOne = remapPostExposureOne;
+				ShakeHueShift = shakeHueShift;
+				RemapHueShiftZero = remapHueShiftZero;
+				RemapHueShiftOne = remapHueShiftOne;
+				ShakeSaturation = shakeSaturation;
+				RemapSaturationZero = remapSaturationZero;
+				RemapSaturationOne = remapSaturationOne;
+				ShakeContrast = shakeContrast;
+				RemapContrastZero = remapContrastZero;
+				RemapContrastOne = remapContrastOne;
+				ColorFilterMode = colorFilterMode;
+				ColorFilterGradient = colorFilterGradient;
+				ColorFilterDestination = colorFilterDestination;
+				ColorFilterCurve = colorFilterCurve;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

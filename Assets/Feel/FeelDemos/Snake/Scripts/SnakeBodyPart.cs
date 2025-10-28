@@ -10,6 +10,7 @@ namespace MoreMountains.Feel
 	/// <summary>
 	/// A class used to handle Feel's Snake demo's snake bodyparts
 	/// </summary>
+	[AddComponentMenu("")]
 	public class SnakeBodyPart : MonoBehaviour
 	{
 		/// a position recorder this body part will look at to know where to go to
@@ -22,14 +23,18 @@ namespace MoreMountains.Feel
 		public int Index = 0;
         
 		protected Snake _snake;
+		#if MM_PHYSICS2D
 		protected BoxCollider2D _collider2D;
+		#endif
 
 		/// <summary>
 		/// On awake we store our collider and enable it after a delay
 		/// </summary>
 		protected virtual void Awake()
 		{
+			#if MM_PHYSICS2D
 			_collider2D = this.gameObject.MMGetComponentNoAlloc<BoxCollider2D>();
+			#endif
 			StartCoroutine(ActivateCollider());
 		}
 
@@ -40,7 +45,9 @@ namespace MoreMountains.Feel
 		protected virtual IEnumerator ActivateCollider()
 		{
 			yield return MMCoroutine.WaitFor(1f);
+			#if MM_PHYSICS2D
 			_collider2D.enabled = true;
+			#endif
 		}
 
 		/// <summary>
@@ -69,6 +76,7 @@ namespace MoreMountains.Feel
 			NewFeedback?.PlayFeedbacks();
 		}
         
+		#if MM_PHYSICS2D
 		/// <summary>
 		/// If we connect with the snake's head, we lose a part
 		/// </summary>
@@ -87,5 +95,6 @@ namespace MoreMountains.Feel
 				_snake.Lose(this);    
 			}
 		}
+		#endif
 	}    
 }
