@@ -1,18 +1,8 @@
-using AmplifyShaderEditor;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using TMPro;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.ProBuilder;
-using UnityEngine.Rendering;
 
 public class MengerSpongeGenerator : MonoBehaviour
 {
