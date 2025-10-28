@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
-public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler
+public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private string settingKey;
     private SettingsMenuScreenView settingsView;
@@ -21,4 +22,31 @@ public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler
             settingsView.OnSettingHovered(settingKey);
         }
     }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        showDescription();
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        hideDescription();
+    }
+
+    private void showDescription()
+    {
+        if (settingsView != null && !string.IsNullOrEmpty(settingKey))
+        {
+            settingsView.OnSettingHovered(settingKey);
+        }
+    }
+
+    private void hideDescription()
+    {
+        if (settingsView != null)
+        {
+            settingsView.OnSettingHovered("");
+        }
+    }
+
 }

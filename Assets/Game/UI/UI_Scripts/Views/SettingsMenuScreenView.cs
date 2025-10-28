@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.VisualScripting;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class SettingsMenuScreenView : UIView
 {
@@ -84,9 +85,9 @@ public class SettingsMenuScreenView : UIView
         _isInitializing = true;
 
         generalSoundSlider.onValueChanged.AddListener(OnGeneralSoundSliderValueChanged);
-        musicSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Music :"));
-        soundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Sound Effects :"));
-        voiceSoundSlider.onValueChanged.AddListener((value) => OnSettingSelected("Voice :"));
+        musicSoundSlider.onValueChanged.AddListener(OnMusicSoundSliderValueChanged);
+        soundSlider.onValueChanged.AddListener(OnSoundSoundSliderValueChanged);
+        voiceSoundSlider.onValueChanged.AddListener(OnVoiceSoundSliderValueChanged);
 
         fovSlider.onValueChanged.AddListener(OnFovSliderChanged);
         cameraSensitivitySlider.onValueChanged.AddListener(OnCameraSensitivityChanged);
@@ -108,6 +109,23 @@ public class SettingsMenuScreenView : UIView
         cameraSensitivitySlider.minValue = _customisedSettings.minMouse;
         cameraSensitivitySlider.maxValue = _customisedSettings.maxMouse;
         cameraSensitivitySlider.value = _customisedSettings.customMouse;
+
+        generalSoundSlider.minValue = _customisedSettings.minVolume;
+        generalSoundSlider.maxValue = _customisedSettings.maxVolume;
+        generalSoundSlider.value = _customisedSettings.customVolume;
+
+
+        musicSoundSlider.minValue = _customisedSettings.minMusicVolume;
+        musicSoundSlider.maxValue = _customisedSettings.maxMusicVolume;
+        musicSoundSlider.value = _customisedSettings.customMusicVolume;
+
+        soundSlider.minValue = _customisedSettings.minSoundEffectsVolume;
+        soundSlider.maxValue = _customisedSettings.maxSoundEffectsVolume;
+        soundSlider.value = _customisedSettings.customSoundEffectsVolume;
+
+        voiceSoundSlider.minValue = _customisedSettings.minVoiceVolume;
+        voiceSoundSlider.maxValue = _customisedSettings.maxVoiceVolume;
+        voiceSoundSlider.value = _customisedSettings.customVoiceVolume;
 
         _isInitializing = false;
 
@@ -143,7 +161,38 @@ public class SettingsMenuScreenView : UIView
 
     public void OnGeneralSoundSliderValueChanged(float value)
     {
+        if(_isInitializing) return;
 
+        _customisedSettings.customVolume = value;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.Log($"[UI] General sound changed to {value}");
+    }
+
+    private void OnMusicSoundSliderValueChanged(float value)
+    {
+        if (_isInitializing) return;
+
+        _customisedSettings.customMusicVolume = value;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.Log($"[UI] Music sound changed to {value}");
+    }
+
+    private void OnSoundSoundSliderValueChanged(float value)
+    {
+        if (_isInitializing) return;
+
+        _customisedSettings.customSoundEffectsVolume = value;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.Log($"[UI] Sound Effects changed to {value}");
+    }
+
+    private void OnVoiceSoundSliderValueChanged(float value)
+    {
+        if (_isInitializing) return;
+
+        _customisedSettings.customVoiceVolume = value;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.Log($"[UI] Voice sound changed to {value}");
     }
 
     public void OnFovSliderChanged(float value)
