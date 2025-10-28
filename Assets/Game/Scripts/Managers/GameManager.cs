@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
     }
     void ChangeScene()
     {
-        SceneManager.LoadScene(nextScene);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     void StopDeltaTime()
