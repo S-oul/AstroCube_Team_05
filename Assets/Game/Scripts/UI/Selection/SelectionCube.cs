@@ -29,6 +29,7 @@ public class SelectionCube : MonoBehaviour
     int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
     */
     private Renderer[] _renderers;
+    private BoxCollider[] _colliders;
 
     public SelectionMode CurrentSelectionMode { get; private set; }
 
@@ -65,6 +66,7 @@ public class SelectionCube : MonoBehaviour
     void Awake()
     {
         _renderers = GetComponentsInChildren<Renderer>();
+        _colliders = GetComponentsInChildren<BoxCollider>();
 
         foreach (Renderer renderer in _renderers) 
         {
@@ -78,9 +80,24 @@ public class SelectionCube : MonoBehaviour
             }
         }
 
+        // disable all exterior colliders by default.
+        ExteriorColiderEnabled(false);
+
         CurrentSelectionMode = SelectionMode.NOT_SELECTED;
 
         if (_isTileLocked) Select(SelectionMode.LOCKED);
+    }
+
+    public void ExteriorColiderEnabled(bool isEnabled)
+    {
+        // when enabled, the collider will prevent the player from accessing the tile.
+        foreach (BoxCollider collider in _colliders)
+        {
+            if (collider.transform.CompareTag("ExteriorTileCollider"))
+            {
+                collider.enabled = isEnabled;
+            }
+        }
     }
 
     public void Select(SelectionMode mode)
@@ -165,6 +182,17 @@ public class SelectionCube : MonoBehaviour
                 _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
             }
         }
+    }
+
+    public void StartActivateExteriorColliders()
+    {
+        StartCoroutine(ActivateExteriorColliders());
+    }
+    private IEnumerator ActivateExteriorColliders()
+    {
+        ExteriorColiderEnabled(true);
+        yield return new WaitForSeconds(GameManager.Instance.Settings.RubikscCubeAxisRotationDuration);
+        ExteriorColiderEnabled(false);
     }
 
     public void StartCorrectActionAnim()
