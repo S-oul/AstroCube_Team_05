@@ -94,39 +94,6 @@ public class RubiksCubeController : MonoBehaviour
         EventManager.OnPlayerChangeParent -= CheckPreview;
     }
 
-    /* OLD
-    public void SetActualCube(Transform newFace)
-    {
-        ShutDownFace();
-        GameObject newCube = null;
-        if (newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) newCube = newFace.parent.parent.gameObject;
-        else if (newFace.parent.CompareTag("Rubiks")) newCube = newFace.parent.gameObject;
-
-        if (newCube && newCube != controlledCube)
-        {
-            if ((ReplicatedCube.Contains(newCube)))
-            {
-                print("bahoui connard");
-                return;
-            }
-            controlledCube = newCube;
-            _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
-        }
-
-        if (_controlledScript == null) return;
-        if (ActualFace) ActualFace.enabled = false;
-        ActualFace = newFace.GetComponent<Outline>();
-
-        IlluminateFace(_selectedSlice, SelectionCube.SelectionMode.CUBE);        
-
-        ActualFace.OutlineColor = Color.red;
-        ActualFace.OutlineWidth = 15;
-        ActualFace.enabled = true;
-
-        _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
-    }
-    */
-
     public void SetActualCube(Transform newFace)
     {
         _ShutDownFace();
@@ -276,6 +243,7 @@ public class RubiksCubeController : MonoBehaviour
                     }
                     _HidePreview();
                     _ShineSelection(_lastInput.orientation, SelectionCube.SelectionMode.AXIS, _lastInput.cube.transform);
+                    _ExteriorCollidersActivation(_lastInput.orientation, _lastInput.cube.transform);
                     _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(_lastInput.cube.transform, _lastInput.orientation), _lastInput.cube.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _lastInput.orientation);
                     _lastInput = null;
                     _isPreviewDisplayed = false;
@@ -296,6 +264,7 @@ public class RubiksCubeController : MonoBehaviour
                 }
 
                 _ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS, ActualFace.transform);
+                _ExteriorCollidersActivation(_selectedSlice, ActualFace.transform);
                 _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
             }
         }
@@ -461,6 +430,21 @@ public class RubiksCubeController : MonoBehaviour
                 SelectionCube selection = go.GetComponent<SelectionCube>();
                 if (selection == null) continue;
                 selection.StartShineAnim();
+            }
+        }
+    }
+
+    void _ExteriorCollidersActivation(SliceAxis sliceAxis, Transform actualFace)
+    {
+        if (_player.parent != null && sliceAxis == SliceAxis.Y) return; // if player is snanding on the ground while it rotates. 
+
+        if (_controlledScript != null)
+        {
+            foreach (Transform go in _controlledScript.GetCubesFromFace(actualFace, sliceAxis))
+            {
+                SelectionCube selection = go.GetComponent<SelectionCube>();
+                if (selection == null) continue;
+                selection.StartActivateExteriorColliders();
             }
         }
     }
