@@ -46,7 +46,7 @@ public class AlphaGameObject : MonoBehaviour
 
             print(timeSinceStart + " / " + percent + "%");
 
-            if (!ToDisappearCol.isTrigger && percent > 0.75f)
+            if (percent > 0.75f && ToDisappearCol.isTrigger)
             {
                 ToAppearCol.isTrigger = true;
                 ToDisappearCol.isTrigger = false;
