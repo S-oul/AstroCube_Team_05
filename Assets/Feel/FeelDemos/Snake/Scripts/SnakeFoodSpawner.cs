@@ -9,6 +9,7 @@ namespace MoreMountains.Feel
 	/// <summary>
 	/// A simple class used to spawn snake food in Feel's Snake demo scene
 	/// </summary>
+	[AddComponentMenu("")]
 	public class SnakeFoodSpawner : MonoBehaviour
 	{
 		/// the food prefab to spawn
