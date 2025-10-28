@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 #if MM_CINEMACHINE
 using Cinemachine;
+#elif MM_CINEMACHINE3
+using Unity.Cinemachine;
 #endif
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 
 namespace MoreMountains.FeedbacksForThirdParty
 {
 	/// <summary>
 	/// This class will allow you to trigger zooms on your cinemachine camera by sending MMCameraZoomEvents from any other class
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Cinemachine/MMCinemachineZoom")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Cinemachine/MM Cinemachine Zoom")]
 	#if MM_CINEMACHINE
 	[RequireComponent(typeof(Cinemachine.CinemachineVirtualCamera))]
+	#elif MM_CINEMACHINE3
+	[RequireComponent(typeof(CinemachineCamera))]
 	#endif
 	public class MMCinemachineZoom : MonoBehaviour
 	{
@@ -32,11 +37,14 @@ namespace MoreMountains.FeedbacksForThirdParty
 		         "right click anywhere in your project (usually in a Data folder) and go MoreMountains > MMChannel, then name it with some unique name")]
 		[MMFEnumCondition("ChannelMode", (int)MMChannelModes.MMChannel)]
 		public MMChannel MMChannelDefinition = null;
+		/// if this is true, triggering a new zoom event will interrupt any transition that may be in progress
+		[Tooltip("if this is true, triggering a new zoom event will interrupt any transition that may be in progress")]
+		public bool Interruptable = false;
 
 		[Header("Transition Speed")]
 		/// the animation curve to apply to the zoom transition
 		[Tooltip("the animation curve to apply to the zoom transition")]
-		public AnimationCurve ZoomCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 1f));
+		public MMTweenType ZoomTween = new MMTweenType( new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 1f)));
 
 		[Header("Test Zoom")]
 		/// the mode to apply the zoom in when using the test button in the inspector
@@ -59,29 +67,39 @@ namespace MoreMountains.FeedbacksForThirdParty
 		public virtual float GetTime() { return (TimescaleMode == TimescaleModes.Scaled) ? Time.time : Time.unscaledTime; }
 		public virtual float GetDeltaTime() { return (TimescaleMode == TimescaleModes.Scaled) ? Time.deltaTime : Time.unscaledDeltaTime; }
 
-		public TimescaleModes TimescaleMode { get; set; }
+		public virtual TimescaleModes TimescaleMode { get; set; }
         
 		#if MM_CINEMACHINE
 		protected Cinemachine.CinemachineVirtualCamera _virtualCamera;
+		#elif MM_CINEMACHINE3
+		protected CinemachineCamera _virtualCamera;
+		#endif
 		protected float _initialFieldOfView;
 		protected MMCameraZoomModes _mode;
-		protected bool _zooming = false;
 		protected float _startFieldOfView;
 		protected float _transitionDuration;
 		protected float _duration;
 		protected float _targetFieldOfView;
-		protected float _delta = 0f;
+		protected float _elapsedTime = 0f;
 		protected int _direction = 1;
 		protected float _reachedDestinationTimestamp;
 		protected bool _destinationReached = false;
+		protected float _zoomStartedAt = 0f;
 
 		/// <summary>
 		/// On Awake we grab our virtual camera
 		/// </summary>
 		protected virtual void Awake()
 		{
+			#if MM_CINEMACHINE
 			_virtualCamera = this.gameObject.GetComponent<Cinemachine.CinemachineVirtualCamera>();
 			_initialFieldOfView = _virtualCamera.m_Lens.FieldOfView;
+			#elif MM_CINEMACHINE3
+			_virtualCamera = this.gameObject.GetComponent<CinemachineCamera>();
+			_initialFieldOfView = _virtualCamera.Lens.FieldOfView;
+			#endif
+			MMCameraZoomEvent.Register(OnCameraZoomEvent);
+			this.enabled = false;
 		}	
         
 		/// <summary>
@@ -89,15 +107,15 @@ namespace MoreMountains.FeedbacksForThirdParty
 		/// </summary>
 		protected virtual void Update()
 		{
-			if (!_zooming)
+			_elapsedTime = GetTime() - _zoomStartedAt;
+			if (_elapsedTime <= _transitionDuration)
 			{
-				return;
-			}
-            
-			if (_virtualCamera.m_Lens.FieldOfView != _targetFieldOfView)
-			{
-				_delta += GetDeltaTime() / _transitionDuration;
-				_virtualCamera.m_Lens.FieldOfView = Mathf.LerpUnclamped(_startFieldOfView, _targetFieldOfView, ZoomCurve.Evaluate(_delta));
+				float t = MMMaths.Remap(_elapsedTime, 0f, _transitionDuration, 0f, 1f);
+				#if MM_CINEMACHINE
+				_virtualCamera.m_Lens.FieldOfView = Mathf.LerpUnclamped(_startFieldOfView, _targetFieldOfView, ZoomTween.Evaluate(t));
+				#elif MM_CINEMACHINE3
+				_virtualCamera.Lens.FieldOfView = Mathf.LerpUnclamped(_startFieldOfView, _targetFieldOfView, ZoomTween.Evaluate(t));
+				#endif
 			}
 			else
 			{
@@ -106,21 +124,20 @@ namespace MoreMountains.FeedbacksForThirdParty
 					_reachedDestinationTimestamp = GetTime();
 					_destinationReached = true;
 				}
-
 				if ((_mode == MMCameraZoomModes.For) && (_direction == 1))
 				{
 					if (GetTime() - _reachedDestinationTimestamp > _duration)
 					{
 						_direction = -1;
+						_zoomStartedAt = GetTime();
 						_startFieldOfView = _targetFieldOfView;
 						_targetFieldOfView = _initialFieldOfView;
-						_delta = 0f;
 					}                    
 				}
 				else
 				{
-					_zooming = false;
-				}                
+					this.enabled = false;
+				}   
 			}
 		}
 
@@ -131,24 +148,34 @@ namespace MoreMountains.FeedbacksForThirdParty
 		/// <param name="newFieldOfView"></param>
 		/// <param name="transitionDuration"></param>
 		/// <param name="duration"></param>
-		public virtual void Zoom(MMCameraZoomModes mode, float newFieldOfView, float transitionDuration, float duration, bool useUnscaledTime, bool relative = false)
+		public virtual void Zoom(MMCameraZoomModes mode, float newFieldOfView, float transitionDuration, float duration, bool useUnscaledTime, bool relative = false, MMTweenType tweenType = null)
 		{
-			if (_zooming)
+			if (this.enabled && !Interruptable)
 			{
 				return;
 			}
 
-			_zooming = true;
-			_delta = 0f;
+			this.enabled = true;
+			_elapsedTime = 0f;
 			_mode = mode;
 
 			TimescaleMode = useUnscaledTime ? TimescaleModes.Unscaled : TimescaleModes.Scaled;
+			#if MM_CINEMACHINE
 			_startFieldOfView = _virtualCamera.m_Lens.FieldOfView;
+			#elif MM_CINEMACHINE3
+			_startFieldOfView = _virtualCamera.Lens.FieldOfView;
+			#endif
 			_transitionDuration = transitionDuration;
 			_duration = duration;
 			_transitionDuration = transitionDuration;
 			_direction = 1;
 			_destinationReached = false;
+			_zoomStartedAt = GetTime();
+			
+			if (tweenType != null)
+			{
+				ZoomTween = tweenType;
+			}
 
 			switch (mode)
 			{
@@ -183,7 +210,8 @@ namespace MoreMountains.FeedbacksForThirdParty
 		/// When we get an MMCameraZoomEvent we call our zoom method 
 		/// </summary>
 		/// <param name="zoomEvent"></param>
-		public virtual void OnCameraZoomEvent(MMCameraZoomModes mode, float newFieldOfView, float transitionDuration, float duration, MMChannelData channelData, bool useUnscaledTime, bool stop = false, bool relative = false, bool restore = false)
+		public virtual void OnCameraZoomEvent(MMCameraZoomModes mode, float newFieldOfView, float transitionDuration, float duration, MMChannelData channelData, 
+			bool useUnscaledTime, bool stop = false, bool relative = false, bool restore = false, MMTweenType tweenType = null)
 		{
 			if (!MMChannel.Match(channelData, ChannelMode, Channel, MMChannelDefinition))
 			{
@@ -191,32 +219,27 @@ namespace MoreMountains.FeedbacksForThirdParty
 			}
 			if (stop)
 			{
-				_zooming = false;
+				this.enabled = false;
 				return;
 			}
 			if (restore)
 			{
+				#if MM_CINEMACHINE
 				_virtualCamera.m_Lens.FieldOfView = _initialFieldOfView;
+				#elif MM_CINEMACHINE3
+				_virtualCamera.Lens.FieldOfView = _initialFieldOfView;
+				#endif
 				return;
 			}
-			this.Zoom(mode, newFieldOfView, transitionDuration, duration, useUnscaledTime, relative);
-		}
-
-		/// <summary>
-		/// Starts listening for MMCameraZoomEvents
-		/// </summary>
-		protected virtual void OnEnable()
-		{
-			MMCameraZoomEvent.Register(OnCameraZoomEvent);
+			this.Zoom(mode, newFieldOfView, transitionDuration, duration, useUnscaledTime, relative, tweenType);
 		}
 
 		/// <summary>
 		/// Stops listening for MMCameraZoomEvents
 		/// </summary>
-		protected virtual void OnDisable()
+		protected virtual void OnDestroy()
 		{
 			MMCameraZoomEvent.Unregister(OnCameraZoomEvent);
 		}
-		#endif
 	}
 }
