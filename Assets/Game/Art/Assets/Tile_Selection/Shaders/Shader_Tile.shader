@@ -19,6 +19,7 @@ Shader "Shader_Tile"
 		_Normal( "Normal", 2D ) = "white" {}
 		_MetallicRoughness( "Metallic Roughness", 2D ) = "white" {}
 		_Texture0( "Texture 0", 2D ) = "white" {}
+		_IsLocked( "IsLocked", Float ) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 1
@@ -42,6 +43,7 @@ Shader "Shader_Tile"
 		[HideInInspector] _BlendMode("Blend Mode", Float) = 0
 		[HideInInspector] _SrcBlend("Src Blend", Float) = 1
 		[HideInInspector] _DstBlend("Dst Blend", Float) = 0
+		[HideInInspector] _DstBlend2("__dst2", Float) = 0
 		[HideInInspector] _AlphaSrcBlend("Alpha Src Blend", Float) = 1
 		[HideInInspector] _AlphaDstBlend("Alpha Dst Blend", Float) = 0
 		[HideInInspector][ToggleUI] _ZWrite("ZWrite", Float) = 1
@@ -50,7 +52,7 @@ Shader "Shader_Tile"
 		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Float) = 0
 		[HideInInspector][ToggleUI] _EnableFogOnTransparent("Enable Fog", Float) = 1
 		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2 // This mode is dedicated to Forward to correctly handle backface then front face rendering thin transparent
-		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][Enum(UnityEngine.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
 		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4 // Less equal
 		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 4 // Less equal
 		[HideInInspector][ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
@@ -68,7 +70,8 @@ Shader "Shader_Tile"
 		//_TessMaxDisp( "Tess Max Displacement", Float ) = 25
 
 		[HideInInspector][ToggleUI] _TransparentWritingMotionVec("Transparent Writing MotionVec", Float) = 0
-		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][ToggleUI] _PerPixelSorting("_PerPixelSorting", Float) = 0.0
+		[HideInInspector][Enum(UnityEngine.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
 		[HideInInspector][ToggleUI] _EnableBlendModePreserveSpecularLighting("Enable Blend Mode Preserve Specular Lighting", Float) = 1
 		[HideInInspector] _EmissionColor("Color", Color) = (1, 1, 1)
 
@@ -353,9 +356,6 @@ Shader "Shader_Tile"
 			}
 
 
-			ColorMask [_LightLayersMaskBuffer4] 4
-			ColorMask [_LightLayersMaskBuffer5] 5
-
 			HLSLPROGRAM
             #define ASE_GEOMETRY
             #pragma shader_feature_local _ _DOUBLESIDED_ON
@@ -365,23 +365,24 @@ Shader "Shader_Tile"
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #define ASE_VERSION 19904
-            #define ASE_SRP_VERSION 140011
+            #define ASE_SRP_VERSION 170004
 
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
-			#pragma multi_compile_fragment _ LIGHT_LAYERS
+			#pragma multi_compile_fragment _ RENDERING_LAYERS
             #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
             #pragma multi_compile _ DEBUG_DISPLAY
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile_fragment PROBE_VOLUMES_OFF PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
+            #pragma multi_compile_fragment _ PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
             #pragma multi_compile _ DYNAMICLIGHTMAP_ON
             #pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
             #pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+            #pragma multi_compile _ USE_LEGACY_LIGHTMAPS
 
 			#pragma vertex Vert
 			#pragma fragment Frag
@@ -395,6 +396,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -417,6 +419,10 @@ Shader "Shader_Tile"
 			    #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -433,6 +439,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -447,7 +457,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -459,6 +469,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -488,6 +499,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -513,6 +525,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -641,6 +654,7 @@ Shader "Shader_Tile"
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
 				surfaceData.baseColor =					surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
@@ -716,6 +730,11 @@ Shader "Shader_Tile"
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
 
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
                 #ifdef _MATERIAL_FEATURE_ANISOTROPY
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
                     surfaceData.normalWS = float3(0, 1, 0);
@@ -745,30 +764,15 @@ Shader "Shader_Tile"
 
 				float3 normal = surfaceDescription.Normal;
 
-			#if ( UNITY_VERSION <= 202236 )
-				#if ( ASE_FRAGMENT_NORMAL == 1 )
-					GetNormalWS_SrcOS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#elif ( ASE_FRAGMENT_NORMAL == 2 )
-					GetNormalWS_SrcWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#else
-					GetNormalWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#endif
-
-				#if HAVE_DECALS
-				if (_EnableDecals)
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-			#else
 				#ifdef DECAL_NORMAL_BLENDING
+					#ifndef SURFACE_GRADIENT
 					#if ( ASE_FRAGMENT_NORMAL == 1 )
 						normal = SurfaceGradientFromPerturbedNormal(TransformWorldToObjectNormal(fragInputs.tangentToWorld[2]), normal);
 					#elif ( ASE_FRAGMENT_NORMAL == 2 )
 						normal = SurfaceGradientFromPerturbedNormal(fragInputs.tangentToWorld[2], normal);
 					#else
 						normal = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normal, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+					#endif
 					#endif
 
 					#if HAVE_DECALS
@@ -799,7 +803,6 @@ Shader "Shader_Tile"
 					}
 					#endif
 				#endif
-			#endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
                 surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
@@ -816,10 +819,17 @@ Shader "Shader_Tile"
 				#endif
 
 				#if defined(DEBUG_DISPLAY)
+					#if !defined(SHADER_STAGE_RAY_TRACING)
 					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
 					{
+						#ifdef FRAG_INPUTS_USE_TEXCOORD0
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+						#else
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+						#endif
 						surfaceData.metallic = 0;
 					}
+					#endif
 					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
 				#endif
 
@@ -1083,55 +1093,55 @@ Shader "Shader_Tile"
 				float2 uv_Texture = packedInput.ase_texcoord5.xy * _Texture_ST.xy + _Texture_ST.zw;
 				float4 tex2DNode76 = tex2D( _Texture, uv_Texture );
 				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1164721 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5964752 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
-				float4 temp_cast_2 = (_Min2).xxxx;
-				float4 temp_cast_3 = (_Max2).xxxx;
+				float4 temp_cast_1 = (_Min2).xxxx;
+				float4 temp_cast_2 = (_Max2).xxxx;
 				float2 texCoord16 = packedInput.ase_texcoord5.xy * float2( 0.42,1 ) + float2( 0,0 );
 				float2 panner17 = ( 1.0 * _Time.y * float2( 0.025,0.029 ) + texCoord16);
 				float simplePerlin2D35 = snoise( panner17 );
 				simplePerlin2D35 = simplePerlin2D35*0.5 + 0.5;
 				float2 texCoord19 = packedInput.ase_texcoord5.xy * float2( 0.37,1.18 ) + float2( 0,0 );
 				float2 panner20 = ( 1.0 * _Time.y * float2( -0.017,-0.013 ) + texCoord19);
-				float4 smoothstepResult39 = smoothstep( temp_cast_2 , temp_cast_3 , tex2D( _TextureSample2, ( simplePerlin2D35 + tex2D( _Texture0, panner20 ) ).rg ));
-				float4 temp_cast_5 = (_Min).xxxx;
-				float4 temp_cast_6 = (_Max).xxxx;
+				float4 smoothstepResult39 = smoothstep( temp_cast_1 , temp_cast_2 , tex2D( _TextureSample2, ( simplePerlin2D35 + tex2D( _Texture0, panner20 ) ).rg ));
+				float4 temp_cast_4 = (_Min).xxxx;
+				float4 temp_cast_5 = (_Max).xxxx;
 				float2 texCoord26 = packedInput.ase_texcoord5.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner27 = ( 1.0 * _Time.y * float2( -0.03,0 ) + texCoord26);
-				float4 smoothstepResult36 = smoothstep( temp_cast_5 , temp_cast_6 , tex2D( _TextureSample5, panner27 ));
+				float4 smoothstepResult36 = smoothstep( temp_cast_4 , temp_cast_5 , tex2D( _TextureSample5, panner27 ));
 				float2 texCoord45 = packedInput.ase_texcoord5.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
+				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
+				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _IsLocked);
 				float2 temp_cast_8 = (2.0).xx;
 				float2 texCoord103 = packedInput.ase_texcoord5.xy * temp_cast_8 + float2( -1,0 );
 				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
-				float4 temp_output_43_0 = ( ( SampleGradient( gradient49, ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) ).r ) * tex2DNode10.a ) * _HDR * _Alpha );
-				float4 lerpResult77 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , _Alpha_shader);
-				float4 lerpResult74 = lerp( float4( tex2DNode76.rgb , 0.0 ) , lerpResult77 , tex2DNode10.a);
+				float4 temp_output_43_0 = ( ( lerpResult131 * tex2DNode10.a ) * _HDR * _Alpha );
+				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
+				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
 				
-				float4 color111 = IsGammaSpace() ? float4( 0.5, 0.5, 1, 1 ) : float4( 0.2140411, 0.2140411, 1, 1 );
 				float2 uv_Normal = packedInput.ase_texcoord5.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 lerpResult91 = lerp( color111.rgb , tex2D( _Normal, uv_Normal ).rgb , _Alpha_shader);
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord5.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
-				float lerpResult108 = lerp( 0.5 , tex2DNode96.b , _Alpha_shader);
 				
-				float lerpResult94 = lerp( 0.0 , tex2DNode96.g , _Alpha_shader);
+				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
 				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
-				surfaceDescription.BaseColor = lerpResult74.rgb;
-				surfaceDescription.Normal = lerpResult91;
+				surfaceDescription.BaseColor = lerpResult143.rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
-				surfaceDescription.Metallic = lerpResult108;
+				surfaceDescription.Metallic = tex2DNode96.b;
 
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = lerpResult94;
+				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Occlusion = 1;
-				surfaceDescription.Emission = ( temp_output_43_0 * _Alpha_shader ).rgb;
+				surfaceDescription.Emission = lerpResult142.rgb;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -1241,13 +1251,13 @@ Shader "Shader_Tile"
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 140011
+			#define ASE_SRP_VERSION 170004
 
 			#pragma shader_feature _ EDITOR_VISUALIZATION
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
@@ -1263,6 +1273,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -1286,6 +1297,10 @@ Shader "Shader_Tile"
 			    #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -1302,6 +1317,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -1316,7 +1335,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -1328,6 +1347,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -1357,6 +1377,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -1382,6 +1403,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -1514,6 +1536,7 @@ Shader "Shader_Tile"
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
 				surfaceData.baseColor =					surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
@@ -1535,6 +1558,11 @@ Shader "Shader_Tile"
 
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.transmissionMask =			surfaceDescription.TransmissionMask;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
 				#endif
 
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
@@ -1589,6 +1617,11 @@ Shader "Shader_Tile"
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
 
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
                 #ifdef _MATERIAL_FEATURE_ANISOTROPY
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
                     surfaceData.normalWS = float3(0, 1, 0);
@@ -1618,30 +1651,15 @@ Shader "Shader_Tile"
 
 				float3 normal = surfaceDescription.Normal;
 
-			#if ( UNITY_VERSION <= 202236 )
-				#if ( ASE_FRAGMENT_NORMAL == 1 )
-					GetNormalWS_SrcOS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#elif ( ASE_FRAGMENT_NORMAL == 2 )
-					GetNormalWS_SrcWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#else
-					GetNormalWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#endif
-
-				#if HAVE_DECALS
-				if (_EnableDecals)
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-			#else
 				#ifdef DECAL_NORMAL_BLENDING
+					#ifndef SURFACE_GRADIENT
 					#if ( ASE_FRAGMENT_NORMAL == 1 )
 						normal = SurfaceGradientFromPerturbedNormal(TransformWorldToObjectNormal(fragInputs.tangentToWorld[2]), normal);
 					#elif ( ASE_FRAGMENT_NORMAL == 2 )
 						normal = SurfaceGradientFromPerturbedNormal(fragInputs.tangentToWorld[2], normal);
 					#else
 						normal = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normal, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+					#endif
 					#endif
 
 					#if HAVE_DECALS
@@ -1672,7 +1690,6 @@ Shader "Shader_Tile"
 					}
 					#endif
 				#endif
-			#endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
                 surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
@@ -1689,10 +1706,17 @@ Shader "Shader_Tile"
 				#endif
 
 				#if defined(DEBUG_DISPLAY)
+					#if !defined(SHADER_STAGE_RAY_TRACING)
 					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
 					{
+						#ifdef FRAG_INPUTS_USE_TEXCOORD0
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+						#else
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+						#endif
 						surfaceData.metallic = 0;
 					}
+					#endif
 					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
 				#endif
 
@@ -1929,55 +1953,55 @@ Shader "Shader_Tile"
 				float2 uv_Texture = packedInput.ase_texcoord2.xy * _Texture_ST.xy + _Texture_ST.zw;
 				float4 tex2DNode76 = tex2D( _Texture, uv_Texture );
 				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1164721 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5964752 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
-				float4 temp_cast_2 = (_Min2).xxxx;
-				float4 temp_cast_3 = (_Max2).xxxx;
+				float4 temp_cast_1 = (_Min2).xxxx;
+				float4 temp_cast_2 = (_Max2).xxxx;
 				float2 texCoord16 = packedInput.ase_texcoord2.xy * float2( 0.42,1 ) + float2( 0,0 );
 				float2 panner17 = ( 1.0 * _Time.y * float2( 0.025,0.029 ) + texCoord16);
 				float simplePerlin2D35 = snoise( panner17 );
 				simplePerlin2D35 = simplePerlin2D35*0.5 + 0.5;
 				float2 texCoord19 = packedInput.ase_texcoord2.xy * float2( 0.37,1.18 ) + float2( 0,0 );
 				float2 panner20 = ( 1.0 * _Time.y * float2( -0.017,-0.013 ) + texCoord19);
-				float4 smoothstepResult39 = smoothstep( temp_cast_2 , temp_cast_3 , tex2D( _TextureSample2, ( simplePerlin2D35 + tex2D( _Texture0, panner20 ) ).rg ));
-				float4 temp_cast_5 = (_Min).xxxx;
-				float4 temp_cast_6 = (_Max).xxxx;
+				float4 smoothstepResult39 = smoothstep( temp_cast_1 , temp_cast_2 , tex2D( _TextureSample2, ( simplePerlin2D35 + tex2D( _Texture0, panner20 ) ).rg ));
+				float4 temp_cast_4 = (_Min).xxxx;
+				float4 temp_cast_5 = (_Max).xxxx;
 				float2 texCoord26 = packedInput.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner27 = ( 1.0 * _Time.y * float2( -0.03,0 ) + texCoord26);
-				float4 smoothstepResult36 = smoothstep( temp_cast_5 , temp_cast_6 , tex2D( _TextureSample5, panner27 ));
+				float4 smoothstepResult36 = smoothstep( temp_cast_4 , temp_cast_5 , tex2D( _TextureSample5, panner27 ));
 				float2 texCoord45 = packedInput.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
+				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
+				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _IsLocked);
 				float2 temp_cast_8 = (2.0).xx;
 				float2 texCoord103 = packedInput.ase_texcoord2.xy * temp_cast_8 + float2( -1,0 );
 				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
-				float4 temp_output_43_0 = ( ( SampleGradient( gradient49, ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) ).r ) * tex2DNode10.a ) * _HDR * _Alpha );
-				float4 lerpResult77 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , _Alpha_shader);
-				float4 lerpResult74 = lerp( float4( tex2DNode76.rgb , 0.0 ) , lerpResult77 , tex2DNode10.a);
+				float4 temp_output_43_0 = ( ( lerpResult131 * tex2DNode10.a ) * _HDR * _Alpha );
+				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
+				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
 				
-				float4 color111 = IsGammaSpace() ? float4( 0.5, 0.5, 1, 1 ) : float4( 0.2140411, 0.2140411, 1, 1 );
 				float2 uv_Normal = packedInput.ase_texcoord2.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 lerpResult91 = lerp( color111.rgb , tex2D( _Normal, uv_Normal ).rgb , _Alpha_shader);
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord2.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
-				float lerpResult108 = lerp( 0.5 , tex2DNode96.b , _Alpha_shader);
 				
-				float lerpResult94 = lerp( 0.0 , tex2DNode96.g , _Alpha_shader);
+				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
 				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
-				surfaceDescription.BaseColor = lerpResult74.rgb;
-				surfaceDescription.Normal = lerpResult91;
+				surfaceDescription.BaseColor = lerpResult143.rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
-				surfaceDescription.Metallic = lerpResult108;
+				surfaceDescription.Metallic = tex2DNode96.b;
 
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = lerpResult94;
+				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Occlusion = 1;
-				surfaceDescription.Emission = ( temp_output_43_0 * _Alpha_shader ).rgb;
+				surfaceDescription.Emission = lerpResult142.rgb;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -2070,12 +2094,12 @@ Shader "Shader_Tile"
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 140011
+			#define ASE_SRP_VERSION 170004
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
@@ -2093,6 +2117,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -2115,6 +2140,10 @@ Shader "Shader_Tile"
 			    #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -2131,6 +2160,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -2145,7 +2178,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -2157,6 +2190,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -2186,6 +2220,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -2211,6 +2246,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -2273,6 +2309,7 @@ Shader "Shader_Tile"
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
 				// refraction ShadowCaster
                 #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
@@ -2306,6 +2343,11 @@ Shader "Shader_Tile"
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
 
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
                 #ifdef _MATERIAL_FEATURE_ANISOTROPY
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
                     surfaceData.normalWS = float3(0, 1, 0);
@@ -2335,30 +2377,15 @@ Shader "Shader_Tile"
 
 				float3 normal = float3(0.0f, 0.0f, 1.0f);
 
-			#if ( UNITY_VERSION <= 202236 )
-				#if ( ASE_FRAGMENT_NORMAL == 1 )
-					GetNormalWS_SrcOS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#elif ( ASE_FRAGMENT_NORMAL == 2 )
-					GetNormalWS_SrcWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#else
-					GetNormalWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#endif
-
-				#if HAVE_DECALS
-				if (_EnableDecals)
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-			#else
 				#ifdef DECAL_NORMAL_BLENDING
+					#ifndef SURFACE_GRADIENT
 					#if ( ASE_FRAGMENT_NORMAL == 1 )
 						normal = SurfaceGradientFromPerturbedNormal(TransformWorldToObjectNormal(fragInputs.tangentToWorld[2]), normal);
 					#elif ( ASE_FRAGMENT_NORMAL == 2 )
 						normal = SurfaceGradientFromPerturbedNormal(fragInputs.tangentToWorld[2], normal);
 					#else
 						normal = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normal, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+					#endif
 					#endif
 
 					#if HAVE_DECALS
@@ -2389,7 +2416,6 @@ Shader "Shader_Tile"
 					}
 					#endif
 				#endif
-			#endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
                 surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
@@ -2398,10 +2424,17 @@ Shader "Shader_Tile"
 				bentNormalWS = surfaceData.normalWS;
 
 				#if defined(DEBUG_DISPLAY)
+					#if !defined(SHADER_STAGE_RAY_TRACING)
 					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
 					{
+						#ifdef FRAG_INPUTS_USE_TEXCOORD0
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+						#else
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+						#endif
 						surfaceData.metallic = 0;
 					}
+					#endif
 					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
 				#endif
 
@@ -2618,7 +2651,7 @@ Shader "Shader_Tile"
 								#endif
 							#endif
 
-							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 							, out float4 outDecalBuffer : SV_TARGET_DECAL
 							#endif
 						#endif
@@ -2702,10 +2735,14 @@ Shader "Shader_Tile"
 				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
 				#endif
 
-				#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+				#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 					DecalPrepassData decalPrepassData;
+					#ifdef _DISABLE_DECALS
+					ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+					#else
 					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-					decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
+					#endif
+					decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
 					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
 				#endif
 			}
@@ -2730,13 +2767,13 @@ Shader "Shader_Tile"
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 140011
+			#define ASE_SRP_VERSION 170004
 
 			#pragma editor_sync_compilation
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
@@ -2752,6 +2789,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -2774,6 +2812,10 @@ Shader "Shader_Tile"
 			    #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -2790,6 +2832,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -2804,7 +2850,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -2816,6 +2862,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -2845,6 +2892,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -2870,6 +2918,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -2933,6 +2982,7 @@ Shader "Shader_Tile"
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
 				//refraction SceneSelectionPass
                 #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
@@ -2969,6 +3019,11 @@ Shader "Shader_Tile"
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
 
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
                 #ifdef _MATERIAL_FEATURE_ANISOTROPY
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
                     surfaceData.normalWS = float3(0, 1, 0);
@@ -2998,30 +3053,15 @@ Shader "Shader_Tile"
 
 				float3 normal = float3(0.0f, 0.0f, 1.0f);
 
-			#if ( UNITY_VERSION <= 202236 )
-				#if ( ASE_FRAGMENT_NORMAL == 1 )
-					GetNormalWS_SrcOS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#elif ( ASE_FRAGMENT_NORMAL == 2 )
-					GetNormalWS_SrcWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#else
-					GetNormalWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#endif
-
-				#if HAVE_DECALS
-				if (_EnableDecals)
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-			#else
 				#ifdef DECAL_NORMAL_BLENDING
+					#ifndef SURFACE_GRADIENT
 					#if ( ASE_FRAGMENT_NORMAL == 1 )
 						normal = SurfaceGradientFromPerturbedNormal(TransformWorldToObjectNormal(fragInputs.tangentToWorld[2]), normal);
 					#elif ( ASE_FRAGMENT_NORMAL == 2 )
 						normal = SurfaceGradientFromPerturbedNormal(fragInputs.tangentToWorld[2], normal);
 					#else
 						normal = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normal, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+					#endif
 					#endif
 
 					#if HAVE_DECALS
@@ -3052,7 +3092,6 @@ Shader "Shader_Tile"
 					}
 					#endif
 				#endif
-			#endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
                 surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
@@ -3061,10 +3100,17 @@ Shader "Shader_Tile"
 				bentNormalWS = surfaceData.normalWS;
 
 				#if defined(DEBUG_DISPLAY)
+					#if !defined(SHADER_STAGE_RAY_TRACING)
 					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
 					{
+						#ifdef FRAG_INPUTS_USE_TEXCOORD0
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+						#else
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+						#endif
 						surfaceData.metallic = 0;
 					}
+					#endif
 					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
 				#endif
 
@@ -3366,17 +3412,17 @@ Shader "Shader_Tile"
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 140011
+			#define ASE_SRP_VERSION 170004
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
             #pragma multi_compile _ WRITE_NORMAL_BUFFER
             #pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
-            #pragma multi_compile _ WRITE_DECAL_BUFFER
+            #pragma multi_compile_fragment _ WRITE_DECAL_BUFFER WRITE_RENDERING_LAYER
 
 			#pragma vertex Vert
 			#pragma fragment Frag
@@ -3390,6 +3436,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -3412,6 +3459,10 @@ Shader "Shader_Tile"
 			    #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -3428,6 +3479,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -3442,7 +3497,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -3454,6 +3509,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -3483,6 +3539,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -3508,6 +3565,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -3579,6 +3637,8 @@ Shader "Shader_Tile"
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
+
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 
 				// refraction
@@ -3616,6 +3676,11 @@ Shader "Shader_Tile"
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
 
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
                 #ifdef _MATERIAL_FEATURE_ANISOTROPY
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
                     surfaceData.normalWS = float3(0, 1, 0);
@@ -3645,30 +3710,15 @@ Shader "Shader_Tile"
 
 				float3 normal = surfaceDescription.Normal;
 
-			#if ( UNITY_VERSION <= 202236 )
-				#if ( ASE_FRAGMENT_NORMAL == 1 )
-					GetNormalWS_SrcOS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#elif ( ASE_FRAGMENT_NORMAL == 2 )
-					GetNormalWS_SrcWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#else
-					GetNormalWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#endif
-
-				#if HAVE_DECALS
-				if (_EnableDecals)
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-			#else
 				#ifdef DECAL_NORMAL_BLENDING
+					#ifndef SURFACE_GRADIENT
 					#if ( ASE_FRAGMENT_NORMAL == 1 )
 						normal = SurfaceGradientFromPerturbedNormal(TransformWorldToObjectNormal(fragInputs.tangentToWorld[2]), normal);
 					#elif ( ASE_FRAGMENT_NORMAL == 2 )
 						normal = SurfaceGradientFromPerturbedNormal(fragInputs.tangentToWorld[2], normal);
 					#else
 						normal = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normal, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+					#endif
 					#endif
 
 					#if HAVE_DECALS
@@ -3699,7 +3749,6 @@ Shader "Shader_Tile"
 					}
 					#endif
 				#endif
-			#endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
                 surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
@@ -3708,10 +3757,17 @@ Shader "Shader_Tile"
 				bentNormalWS = surfaceData.normalWS;
 
 				#if defined(DEBUG_DISPLAY)
+					#if !defined(SHADER_STAGE_RAY_TRACING)
 					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
 					{
+						#ifdef FRAG_INPUTS_USE_TEXCOORD0
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+						#else
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+						#endif
 						surfaceData.metallic = 0;
 					}
+					#endif
 					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
 				#endif
 
@@ -3782,8 +3838,8 @@ Shader "Shader_Tile"
                 PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
 
-			#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
+			#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
 			#endif
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh )
@@ -3944,7 +4000,7 @@ Shader "Shader_Tile"
 								#endif
 							#endif
 
-							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 							, out float4 outDecalBuffer : SV_TARGET_DECAL
 							#endif
 						#endif
@@ -3991,19 +4047,16 @@ Shader "Shader_Tile"
 					BitangentWS = input.tangentToWorld[ 1 ];
 				#endif
 
-				float4 color111 = IsGammaSpace() ? float4( 0.5, 0.5, 1, 1 ) : float4( 0.2140411, 0.2140411, 1, 1 );
 				float2 uv_Normal = packedInput.ase_texcoord3.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 lerpResult91 = lerp( color111.rgb , tex2D( _Normal, uv_Normal ).rgb , _Alpha_shader);
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord3.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
-				float lerpResult94 = lerp( 0.0 , tex2DNode96.g , _Alpha_shader);
 				
 
 				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
 
-				surfaceDescription.Normal = lerpResult91;
-				surfaceDescription.Smoothness = lerpResult94;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -4049,10 +4102,14 @@ Shader "Shader_Tile"
     				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
     				#endif
 
-    				#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+    				#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
     				DecalPrepassData decalPrepassData;
+                    #ifdef _DISABLE_DECALS
+				    ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+                    #else
     				decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-    				decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
+                    #endif
+    				decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
     				EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
     				#endif
 				#endif // SCENESELECTIONPASS
@@ -4090,17 +4147,21 @@ Shader "Shader_Tile"
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 140011
+			#define ASE_SRP_VERSION 170004
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
             #pragma multi_compile _ WRITE_NORMAL_BUFFER
             #pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
-            #pragma multi_compile _ WRITE_DECAL_BUFFER
+            #pragma multi_compile_fragment _ WRITE_DECAL_BUFFER_AND_RENDERING_LAYER
+
+			#ifdef WRITE_DECAL_BUFFER_AND_RENDERING_LAYER
+			#define WRITE_DECAL_BUFFER
+			#endif
 
 			#pragma vertex Vert
 			#pragma fragment Frag
@@ -4114,6 +4175,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -4136,6 +4198,10 @@ Shader "Shader_Tile"
 			     #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -4152,6 +4218,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -4166,7 +4236,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -4178,6 +4248,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -4207,6 +4278,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -4232,6 +4304,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -4300,6 +4373,7 @@ Shader "Shader_Tile"
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 
 				// refraction
@@ -4337,6 +4411,11 @@ Shader "Shader_Tile"
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
 
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
                 #ifdef _MATERIAL_FEATURE_ANISOTROPY
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
                     surfaceData.normalWS = float3(0, 1, 0);
@@ -4366,30 +4445,15 @@ Shader "Shader_Tile"
 
 				float3 normal = surfaceDescription.Normal;
 
-			#if ( UNITY_VERSION <= 202236 )
-				#if ( ASE_FRAGMENT_NORMAL == 1 )
-					GetNormalWS_SrcOS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#elif ( ASE_FRAGMENT_NORMAL == 2 )
-					GetNormalWS_SrcWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#else
-					GetNormalWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#endif
-
-				#if HAVE_DECALS
-				if (_EnableDecals)
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-			#else
 				#ifdef DECAL_NORMAL_BLENDING
+					#ifndef SURFACE_GRADIENT
 					#if ( ASE_FRAGMENT_NORMAL == 1 )
 						normal = SurfaceGradientFromPerturbedNormal(TransformWorldToObjectNormal(fragInputs.tangentToWorld[2]), normal);
 					#elif ( ASE_FRAGMENT_NORMAL == 2 )
 						normal = SurfaceGradientFromPerturbedNormal(fragInputs.tangentToWorld[2], normal);
 					#else
 						normal = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normal, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+					#endif
 					#endif
 
 					#if HAVE_DECALS
@@ -4420,7 +4484,6 @@ Shader "Shader_Tile"
 					}
 					#endif
 				#endif
-			#endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
                 surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
@@ -4429,10 +4492,17 @@ Shader "Shader_Tile"
 				bentNormalWS = surfaceData.normalWS;
 
 				#if defined(DEBUG_DISPLAY)
+					#if !defined(SHADER_STAGE_RAY_TRACING)
 					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
 					{
+						#ifdef FRAG_INPUTS_USE_TEXCOORD0
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+						#else
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+						#endif
 						surfaceData.metallic = 0;
 					}
+					#endif
 					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
 				#endif
 
@@ -4606,7 +4676,7 @@ Shader "Shader_Tile"
 				return output;
 			}
 
-			#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+			#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
 			#endif
 
@@ -4760,17 +4830,14 @@ Shader "Shader_Tile"
 
 				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
 
-				float4 color111 = IsGammaSpace() ? float4( 0.5, 0.5, 1, 1 ) : float4( 0.2140411, 0.2140411, 1, 1 );
 				float2 uv_Normal = packedInput.ase_texcoord3.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 lerpResult91 = lerp( color111.rgb , tex2D( _Normal, uv_Normal ).rgb , _Alpha_shader);
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord3.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
-				float lerpResult94 = lerp( 0.0 , tex2DNode96.g , _Alpha_shader);
 				
 
-				surfaceDescription.Normal = lerpResult91;
-				surfaceDescription.Smoothness = lerpResult94;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -4825,10 +4892,9 @@ Shader "Shader_Tile"
 					ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
 					#else
 					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-					decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
 					#endif
+					decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
 					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
-					outDecalBuffer.w = (GetMeshRenderingLightLayer() & 0x000000FF) / 255.0;
 				#endif
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -4848,6 +4914,9 @@ Shader "Shader_Tile"
 
 			Blend [_SrcBlend] [_DstBlend], [_AlphaSrcBlend] [_AlphaDstBlend]
 			Blend 1 SrcAlpha OneMinusSrcAlpha
+			Blend 2 One [_DstBlend2]
+			Blend 3 One [_DstBlend2]
+			Blend 4 One OneMinusSrcAlpha
 
 			Cull [_CullModeForward]
 			ZTest [_ZTestDepthEqualForOpaque]
@@ -4874,18 +4943,19 @@ Shader "Shader_Tile"
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 140011
+			#define ASE_SRP_VERSION 170004
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
             #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
-			#pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
+            #pragma multi_compile_fragment PUNCTUAL_SHADOW_LOW PUNCTUAL_SHADOW_MEDIUM PUNCTUAL_SHADOW_HIGH
+            #pragma multi_compile_fragment DIRECTIONAL_SHADOW_LOW DIRECTIONAL_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH
             #pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
-            #pragma multi_compile_fragment PROBE_VOLUMES_OFF PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
+            #pragma multi_compile_fragment _ PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
             #pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
             #pragma multi_compile_fragment USE_FPTL_LIGHTLIST USE_CLUSTERED_LIGHTLIST
 
@@ -4895,10 +4965,13 @@ Shader "Shader_Tile"
             #pragma multi_compile _ DYNAMICLIGHTMAP_ON
             #pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
             #pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+            #pragma multi_compile _ USE_LEGACY_LIGHTMAPS
 
 			#ifndef SHADER_STAGE_FRAGMENT
 			#define SHADOW_LOW
+			#ifndef USE_FPTL_LIGHTLIST
 			#define USE_FPTL_LIGHTLIST
+			#endif
 			#endif
 
 			#pragma vertex Vert
@@ -4914,6 +4987,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -4936,6 +5010,10 @@ Shader "Shader_Tile"
 			    #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -4952,6 +5030,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -4966,7 +5048,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -4978,6 +5060,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -5007,6 +5090,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -5032,6 +5116,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -5171,6 +5256,7 @@ Shader "Shader_Tile"
 			{
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
 				surfaceData.baseColor =                 surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
@@ -5246,6 +5332,11 @@ Shader "Shader_Tile"
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
 
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
                 #ifdef _MATERIAL_FEATURE_ANISOTROPY
                     surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
                     surfaceData.normalWS = float3(0, 1, 0);
@@ -5275,30 +5366,15 @@ Shader "Shader_Tile"
 
 				float3 normal = surfaceDescription.Normal;
 
-			#if ( UNITY_VERSION <= 202236 )
-				#if ( ASE_FRAGMENT_NORMAL == 1 )
-					GetNormalWS_SrcOS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#elif ( ASE_FRAGMENT_NORMAL == 2 )
-					GetNormalWS_SrcWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#else
-					GetNormalWS(fragInputs, normal, surfaceData.normalWS, doubleSidedConstants);
-				#endif
-
-				#if HAVE_DECALS
-				if (_EnableDecals)
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-			#else
 				#ifdef DECAL_NORMAL_BLENDING
+					#ifndef SURFACE_GRADIENT
 					#if ( ASE_FRAGMENT_NORMAL == 1 )
 						normal = SurfaceGradientFromPerturbedNormal(TransformWorldToObjectNormal(fragInputs.tangentToWorld[2]), normal);
 					#elif ( ASE_FRAGMENT_NORMAL == 2 )
 						normal = SurfaceGradientFromPerturbedNormal(fragInputs.tangentToWorld[2], normal);
 					#else
 						normal = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normal, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+					#endif
 					#endif
 
 					#if HAVE_DECALS
@@ -5329,7 +5405,6 @@ Shader "Shader_Tile"
 					}
 					#endif
 				#endif
-			#endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
                 surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
@@ -5346,10 +5421,17 @@ Shader "Shader_Tile"
 				#endif
 
 				#if defined(DEBUG_DISPLAY)
+					#if !defined(SHADER_STAGE_RAY_TRACING)
 					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
 					{
+						#ifdef FRAG_INPUTS_USE_TEXCOORD0
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+						#else
+							surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+						#endif
 						surfaceData.metallic = 0;
 					}
+					#endif
 					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
 				#endif
 
@@ -5622,12 +5704,20 @@ Shader "Shader_Tile"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplayMaterial.hlsl"
 
+            #if defined(_TRANSPARENT_REFRACTIVE_SORT) || defined(_ENABLE_FOG_ON_TRANSPARENT)
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Water/Shaders/UnderWaterUtilities.hlsl"
+            #endif
+
             #ifdef UNITY_VIRTUAL_TEXTURING
                 #ifdef OUTPUT_SPLIT_LIGHTING
                    #define DIFFUSE_LIGHTING_TARGET SV_Target2
                    #define SSS_BUFFER_TARGET SV_Target3
                 #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
                    #define MOTION_VECTOR_TARGET SV_Target2
+                    #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                        #define BEFORE_REFRACTION_TARGET SV_Target3
+                        #define BEFORE_REFRACTION_ALPHA_TARGET SV_Target4
+                #endif
             	#endif
             #if defined(SHADER_API_PSSL)
             	#pragma PSSL_target_output_format(target 1 FMT_32_ABGR)
@@ -5638,7 +5728,11 @@ Shader "Shader_Tile"
                 #define SSS_BUFFER_TARGET SV_Target2
                 #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
                 #define MOTION_VECTOR_TARGET SV_Target1
+                #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                     #define BEFORE_REFRACTION_TARGET SV_Target2
+                     #define BEFORE_REFRACTION_ALPHA_TARGET SV_Target3
                 #endif
+            #endif
             #endif
 
 			void Frag(PackedVaryingsMeshToPS packedInput
@@ -5651,6 +5745,10 @@ Shader "Shader_Tile"
 						, OUTPUT_SSSBUFFER(outSSSBuffer) : SSS_BUFFER_TARGET
 					#elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
 						, out float4 outMotionVec : MOTION_VECTOR_TARGET
+						#ifdef _TRANSPARENT_REFRACTIVE_SORT
+							, out float4 outBeforeRefractionColor : BEFORE_REFRACTION_TARGET
+							, out float4 outBeforeRefractionAlpha : BEFORE_REFRACTION_ALPHA_TARGET
+						#endif
 					#endif
 					#if defined( ASE_DEPTH_WRITE_ON )
 						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
@@ -5672,14 +5770,7 @@ Shader "Shader_Tile"
 				input.texCoord1 = packedInput.uv1.xyzw;
 				input.texCoord2 = packedInput.uv2.xyzw;
 
-				
-
-				
-				#if ( ASE_SRP_VERSION >= 100000 ) && ( ASE_SRP_VERSION >= 140007 )
 				AdjustFragInputsToOffScreenRendering(input, _OffScreenRendering > 0, _OffScreenDownsampleFactor);
-				#endif
-			
-
 				uint2 tileIndex = uint2(input.positionSS.xy) / GetTileSize ();
 
 				PositionInputs posInput = GetPositionInput( input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS.xyz, tileIndex );
@@ -5714,55 +5805,55 @@ Shader "Shader_Tile"
 				float2 uv_Texture = packedInput.ase_texcoord7.xy * _Texture_ST.xy + _Texture_ST.zw;
 				float4 tex2DNode76 = tex2D( _Texture, uv_Texture );
 				Gradient gradient49 = NewGradient( 0, 4, 2, float4( 0.3762475, 0, 0.5169811, 0 ), float4( 0.6824901, 0.2734567, 0.7283019, 0.1164721 ), float4( 0.9245283, 0.1796724, 0.6323621, 0.5964752 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
-				float4 temp_cast_2 = (_Min2).xxxx;
-				float4 temp_cast_3 = (_Max2).xxxx;
+				float4 temp_cast_1 = (_Min2).xxxx;
+				float4 temp_cast_2 = (_Max2).xxxx;
 				float2 texCoord16 = packedInput.ase_texcoord7.xy * float2( 0.42,1 ) + float2( 0,0 );
 				float2 panner17 = ( 1.0 * _Time.y * float2( 0.025,0.029 ) + texCoord16);
 				float simplePerlin2D35 = snoise( panner17 );
 				simplePerlin2D35 = simplePerlin2D35*0.5 + 0.5;
 				float2 texCoord19 = packedInput.ase_texcoord7.xy * float2( 0.37,1.18 ) + float2( 0,0 );
 				float2 panner20 = ( 1.0 * _Time.y * float2( -0.017,-0.013 ) + texCoord19);
-				float4 smoothstepResult39 = smoothstep( temp_cast_2 , temp_cast_3 , tex2D( _TextureSample2, ( simplePerlin2D35 + tex2D( _Texture0, panner20 ) ).rg ));
-				float4 temp_cast_5 = (_Min).xxxx;
-				float4 temp_cast_6 = (_Max).xxxx;
+				float4 smoothstepResult39 = smoothstep( temp_cast_1 , temp_cast_2 , tex2D( _TextureSample2, ( simplePerlin2D35 + tex2D( _Texture0, panner20 ) ).rg ));
+				float4 temp_cast_4 = (_Min).xxxx;
+				float4 temp_cast_5 = (_Max).xxxx;
 				float2 texCoord26 = packedInput.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner27 = ( 1.0 * _Time.y * float2( -0.03,0 ) + texCoord26);
-				float4 smoothstepResult36 = smoothstep( temp_cast_5 , temp_cast_6 , tex2D( _TextureSample5, panner27 ));
+				float4 smoothstepResult36 = smoothstep( temp_cast_4 , temp_cast_5 , tex2D( _TextureSample5, panner27 ));
 				float2 texCoord45 = packedInput.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
+				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
+				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _IsLocked);
 				float2 temp_cast_8 = (2.0).xx;
 				float2 texCoord103 = packedInput.ase_texcoord7.xy * temp_cast_8 + float2( -1,0 );
 				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
-				float4 temp_output_43_0 = ( ( SampleGradient( gradient49, ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) ).r ) * tex2DNode10.a ) * _HDR * _Alpha );
-				float4 lerpResult77 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , _Alpha_shader);
-				float4 lerpResult74 = lerp( float4( tex2DNode76.rgb , 0.0 ) , lerpResult77 , tex2DNode10.a);
+				float4 temp_output_43_0 = ( ( lerpResult131 * tex2DNode10.a ) * _HDR * _Alpha );
+				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
+				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
 				
-				float4 color111 = IsGammaSpace() ? float4( 0.5, 0.5, 1, 1 ) : float4( 0.2140411, 0.2140411, 1, 1 );
 				float2 uv_Normal = packedInput.ase_texcoord7.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 lerpResult91 = lerp( color111.rgb , tex2D( _Normal, uv_Normal ).rgb , _Alpha_shader);
 				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord7.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
-				float lerpResult108 = lerp( 0.5 , tex2DNode96.b , _Alpha_shader);
 				
-				float lerpResult94 = lerp( 0.0 , tex2DNode96.g , _Alpha_shader);
+				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
 				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
-				surfaceDescription.BaseColor = lerpResult74.rgb;
-				surfaceDescription.Normal = lerpResult91;
+				surfaceDescription.BaseColor = lerpResult143.rgb;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
-				surfaceDescription.Metallic = lerpResult108;
+				surfaceDescription.Metallic = tex2DNode96.b;
 
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = lerpResult94;
+				surfaceDescription.Smoothness = tex2DNode96.g;
 				surfaceDescription.Occlusion = 1;
-				surfaceDescription.Emission = ( temp_output_43_0 * _Alpha_shader ).rgb;
+				surfaceDescription.Emission = lerpResult142.rgb;
 				surfaceDescription.Alpha = 1;
 
 				#ifdef _ALPHATEST_ON
@@ -5903,7 +5994,14 @@ Shader "Shader_Tile"
 						ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
                 #else
 						outColor = ApplyBlendMode(diffuseLighting, specularLighting, builtinData.opacity);
-						outColor = EvaluateAtmosphericScattering(posInput, V, outColor);
+
+						#ifdef _ENABLE_FOG_ON_TRANSPARENT
+                        outColor = EvaluateAtmosphericScattering(posInput, V, outColor);
+                        #endif
+
+                        #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                        ComputeRefractionSplitColor(posInput, outColor, outBeforeRefractionColor, outBeforeRefractionAlpha);
+                        #endif
                 #endif
 
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
@@ -5936,6 +6034,7 @@ Shader "Shader_Tile"
 					vtAlphaValue = 1.0f - bsdfData.transmittanceMask;
                 #endif
 				outVTFeedback = PackVTFeedbackWithAlpha(builtinData.vtPackedFeedback, input.positionSS.xy, vtAlphaValue);
+				outVTFeedback.rgb *= outVTFeedback.a; // premuliplied alpha
                 #endif
 
 			}
@@ -5960,13 +6059,13 @@ Shader "Shader_Tile"
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 140011
+			#define ASE_SRP_VERSION 170004
 
 			#pragma editor_sync_compilation
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
@@ -5986,6 +6085,7 @@ Shader "Shader_Tile"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -6008,6 +6108,10 @@ Shader "Shader_Tile"
 			    #define ASE_NEED_CULLFACE 1
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
@@ -6024,6 +6128,10 @@ Shader "Shader_Tile"
             #endif
             #endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
             #ifndef DEBUG_DISPLAY
                 #if !defined(_SURFACE_TYPE_TRANSPARENT)
                     #if SHADERPASS == SHADERPASS_FORWARD
@@ -6038,7 +6146,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -6050,6 +6158,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			float _IsLocked;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -6079,6 +6188,7 @@ Shader "Shader_Tile"
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -6104,6 +6214,7 @@ Shader "Shader_Tile"
 			    float _TessEdgeLength;
 			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
             #ifdef SCENEPICKINGPASS
@@ -6170,6 +6281,13 @@ Shader "Shader_Tile"
                     float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
                 #endif
                 ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
+
+                #ifdef DEBUG_DISPLAY
+                if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+                {
+                    surfaceDescription.Alpha = 1.0f;
+                }
+                #endif
 
 				#ifdef _ALPHATEST_ON
                     DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
@@ -6359,7 +6477,7 @@ Shader "Shader_Tile"
 								#endif
 							#endif
 
-							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 							, out float4 outDecalBuffer : SV_TARGET_DECAL
 							#endif
 						#endif
@@ -6446,7 +6564,7 @@ Shader "Shader_Tile"
 			#pragma fragment Frag
 
             #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
             #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#define SHADERPASS SHADERPASS_FULL_SCREEN_DEBUG
@@ -6461,6 +6579,7 @@ Shader "Shader_Tile"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
@@ -6470,6 +6589,10 @@ Shader "Shader_Tile"
 			#define VARYINGS_NEED_CULLFACE
 			#endif
 			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 		    #define OUTPUT_SPLIT_LIGHTING
@@ -6487,6 +6610,10 @@ Shader "Shader_Tile"
 			#endif
 			#endif
 
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
 			#ifndef DEBUG_DISPLAY
 				#if !defined(_SURFACE_TYPE_TRANSPARENT)
 					#if SHADERPASS == SHADERPASS_FORWARD
@@ -6501,7 +6628,7 @@ Shader "Shader_Tile"
                 #define _DEFERRED_CAPABLE_MATERIAL
             #endif
 
-            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
                 #define _WRITE_TRANSPARENT_MOTION_VECTOR
             #endif
 
@@ -6521,7 +6648,7 @@ Shader "Shader_Tile"
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 tangentOS : TANGENT;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 					uint instanceID : INSTANCEID_SEMANTIC;
 				#endif
 			};
@@ -6529,7 +6656,7 @@ Shader "Shader_Tile"
 			struct VaryingsMeshToPS
 			{
 				SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 					uint instanceID : CUSTOM_INSTANCE_ID;
 				#endif
 			};
@@ -6549,7 +6676,7 @@ Shader "Shader_Tile"
 			struct PackedVaryingsMeshToPS
 			{
 				SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 					uint instanceID : CUSTOM_INSTANCE_ID;
 				#endif
 			};
@@ -6559,7 +6686,7 @@ Shader "Shader_Tile"
 				PackedVaryingsMeshToPS output;
 				ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
 				output.positionCS = input.positionCS;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 				output.instanceID = input.instanceID;
 				#endif
 				return output;
@@ -6569,7 +6696,7 @@ Shader "Shader_Tile"
 			{
 				VaryingsMeshToPS output;
 				output.positionCS = input.positionCS;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 				output.instanceID = input.instanceID;
 				#endif
 				return output;
@@ -6704,64 +6831,58 @@ Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;13;-2544,-608;Inherit;True;Property;_TextureSample3;Texture Sample 3;2;0;Create;True;0;0;0;False;0;False;-1;None;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;21;-2176,-816;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;45;-2048,416;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;38;-1600,288;Inherit;False;Property;_Max;Max;5;0;Create;True;0;0;0;False;0;False;0;0.34;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;38;-1600,288;Inherit;False;Property;_Max;Max;4;0;Create;True;0;0;0;False;0;False;0;0.34;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;12;-1888,-736;Inherit;True;Property;_TextureSample2;Texture Sample 2;1;0;Create;True;0;0;0;False;0;False;-1;None;e5b234c8823b14d469d368b1938e96ac;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;41;-1584,-432;Inherit;False;Property;_Max2;Max2;7;0;Create;True;0;0;0;False;0;False;0;0.2;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;40;-1616,-544;Inherit;False;Property;_Min2;Min2;6;0;Create;True;0;0;0;False;0;False;0;0.01;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;40;-1616,-544;Inherit;False;Property;_Min2;Min2;5;0;Create;True;0;0;0;False;0;False;0;0.01;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;39;-1376,-672;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;1,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;25;-896,-480;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;22;-1184,-1056;Inherit;True;Property;_TextureSample4;Texture Sample 4;2;0;Create;True;0;0;0;False;0;False;-1;None;e5b234c8823b14d469d368b1938e96ac;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;31;-1120,-256;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;36;-1440,-176;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;1,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;24;-1808,-240;Inherit;True;Property;_TextureSample5;Texture Sample 5;3;0;Create;True;0;0;0;False;0;False;-1;None;a1df82c5c992a5143bbbb2ba6030c4e7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;37;-1728,128;Inherit;False;Property;_Min;Min;4;0;Create;True;0;0;0;False;0;False;0;0.07;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;24;-1808,-240;Inherit;True;Property;_TextureSample5;Texture Sample 5;2;0;Create;True;0;0;0;False;0;False;-1;None;a1df82c5c992a5143bbbb2ba6030c4e7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;37;-1728,128;Inherit;False;Property;_Min;Min;3;0;Create;True;0;0;0;False;0;False;0;0.07;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;26;-2384,-208;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;44;-256,-32;Inherit;False;Property;_HDR;HDR;8;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;16;-3024,-960;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;0.42,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.NoiseGeneratorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;35;-2512,-944;Inherit;False;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;17;-2768,-944;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0.025,0.029;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;20;-2784,-624;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-0.017,-0.013;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;49;-1024,-736;Inherit;False;0;4;2;0.3762475,0,0.5169811,0;0.6824901,0.2734567,0.7283019,0.1164721;0.9245283,0.1796724,0.6323621,0.5964752;1,1,1,0.798825;1,0;1,1;0;1;OBJECT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;90;-368,48;Inherit;False;Property;_Alpha;Alpha;11;0;Create;True;0;0;0;False;0;False;0;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;47;-1488,384;Inherit;True;Property;_TextureSample6;Texture Sample 5;5;0;Create;True;0;0;0;False;0;False;-1;None;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;27;-2096,-176;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-0.03,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;46;-1760,448;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0.05,0;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;76;-48,96;Inherit;True;Property;_Texture;Texture;10;0;Create;True;0;0;0;False;0;False;-1;None;d7291e8f96c39d34d89f1ebc69fbb3cc;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;92;272,240;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;43;48,-144;Inherit;True;3;3;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;75;-400,-336;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;-896,80;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;None;87251aa1ca7216948b371ca795bcce83;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;-896,80;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;None;c2d591c55e414bf49ab1cd6f06d4ecdb;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;103;-960,336;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;107;-1120,512;Inherit;False;Constant;_Vector0;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;106;-1152,400;Inherit;False;Constant;_Float0;Float 0;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;77;320,-144;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;74;512,-96;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;96;64,864;Inherit;True;Property;_MetallicRoughness;Metallic Roughness;13;0;Create;True;0;0;0;False;0;False;-1;None;871ef3ce332b4484fbb8465f0cb8ad44;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;111;128,672;Inherit;False;Constant;_Color0;Color 0;16;0;Create;True;0;0;0;False;0;False;0.5,0.5,1,1;0,0,0,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;108;544,944;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;109;400,944;Inherit;False;Constant;_Float1;Float 1;16;0;Create;True;0;0;0;False;0;False;0.5;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;94;544,720;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;91;544,496;Inherit;True;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;89;512,112;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;115;368,480;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;113;368,416;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;114;368,352;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TexturePropertyNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;116;-2784,-192;Inherit;True;Property;_Texture0;Texture 0;14;0;Create;True;0;0;0;False;0;False;None;27b0238e9024c404faee6a91fd52a034;False;white;Auto;Texture2D;False;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
-Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;48;-688,-624;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;69;-560,-112;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;70;-48,352;Inherit;False;Property;_Alpha_shader;Alpha_shader;9;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;93;80,496;Inherit;True;Property;_Normal;Normal;12;0;Create;True;0;0;0;False;0;False;-1;None;46ab138737c6f2b4d9577d12a92100ad;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;117;816,32;Float;False;True;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;Shader_Tile;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;35;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;True;True;True;True;0;True;_LightLayersMaskBuffer4;False;False;False;False;False;False;False;True;True;0;True;_StencilRefGBuffer;255;False;;255;True;_StencilWriteMaskGBuffer;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;False;True;0;True;_ZTestGBuffer;False;True;1;LightMode=GBuffer;False;False;0;;0;0;Standard;42;Category;0;0;  Instanced Terrain Normals;1;0;Surface Type;0;0;  Rendering Pass;1;0;  Refraction Model;0;0;    Blending Mode;0;0;    Blend Preserves Specular;1;0;  Back Then Front Rendering;0;0;  Transparent Depth Prepass;0;0;  Transparent Depth Postpass;0;0;  ZWrite;0;0;  Z Test;4;0;Double-Sided;0;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Material Type;0;0;  Energy Conserving Specular;1;0;  Transmission;0;0;Normal Space;0;0;Receive Decals;1;0;Receive SSR;1;0;Receive SSR Transparent;0;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;Specular AA;0;0;Specular Occlusion Mode;1;0;Override Baked GI;0;0;Write Depth;0;0;  Depth Offset;0;0;  Conservative;0;0;GPU Instancing;1;0;LOD CrossFade;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position;1;0;0;11;True;True;True;True;True;True;False;False;False;True;True;False;;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;118;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;119;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;120;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;121;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;DepthOnly;0;4;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDepth;255;False;;255;True;_StencilWriteMaskDepth;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;122;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;MotionVectors;0;5;MotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefMV;255;False;;255;True;_StencilWriteMaskMV;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;1;False;;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;123;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentBackface;0;6;TransparentBackface;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;True;2;5;False;;10;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelOne;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelTwo;False;False;False;False;False;True;0;True;_ZWrite;True;0;True;_ZTestTransparent;False;True;1;LightMode=TransparentBackface;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;124;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPrepass;0;7;TransparentDepthPrepass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDepth;255;False;;255;True;_StencilWriteMaskDepth;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;1;False;;False;False;True;1;LightMode=TransparentDepthPrepass;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;125;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPostpass;0;8;TransparentDepthPostpass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=TransparentDepthPostpass;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;126;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Forward;0;9;Forward;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;True;2;5;False;;10;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;True;_CullModeForward;False;False;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelOne;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelTwo;False;False;False;True;True;0;True;_StencilRef;255;False;;255;True;_StencilWriteMask;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;0;True;_ZWrite;True;0;True;_ZTestDepthEqualForOpaque;False;True;1;LightMode=Forward;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;127;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ScenePickingPass;0;10;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;True;3;False;;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TexturePropertyNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;116;-2784,-192;Inherit;True;Property;_Texture0;Texture 0;13;0;Create;True;0;0;0;False;0;False;None;27b0238e9024c404faee6a91fd52a034;False;white;Auto;Texture2D;False;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;41;-1584,-432;Inherit;False;Property;_Max2;Max2;6;0;Create;True;0;0;0;False;0;False;0;0.2;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;31;-1248,-176;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;25;-1024,-512;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;137;-816,-304;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;48;-816,-592;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;131;-480,-448;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;75;-304,-336;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;76;-32,64;Inherit;True;Property;_Texture;Texture;9;0;Create;True;0;0;0;False;0;False;-1;None;e23c2db2f53f3a14793c19e2627a7fc3;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;70;-32,448;Inherit;False;Property;_Alpha_shader;Alpha_shader;8;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;96;-32,528;Inherit;True;Property;_MetallicRoughness;Metallic Roughness;12;0;Create;True;0;0;0;False;0;False;-1;None;420472abb5daa07449a61ee5805dd11d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;136;-672,-400;Inherit;False;Property;_IsLocked;IsLocked;14;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;44;-256,-112;Inherit;False;Property;_HDR;HDR;7;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;90;-384,-32;Inherit;False;Property;_Alpha;Alpha;10;0;Create;True;0;0;0;False;0;False;0;1;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;49;-1024,-592;Inherit;False;0;4;2;0.3762475,0,0.5169811,0;0.6824901,0.2734567,0.7283019,0.1164721;0.9245283,0.1796724,0.6323621,0.5964752;1,1,1,0.798825;1,0;1,1;0;1;OBJECT;0
+Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;140;-1024,-304;Inherit;False;0;4;2;0.3962264,0.02097896,0.02018509,0;0.8792453,0.1177857,0.1341067,0.4011749;0.9490196,0.2196078,0.2528196,0.6082399;1,1,1,0.798825;1,0;1,1;0;1;OBJECT;0
+Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;141;314.2709,306.6747;Inherit;False;Constant;_Color0;Color 0;15;0;Create;True;0;0;0;False;0;False;0.5,0.5,1,1;0,0,0,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;142;448,0;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;93;-32,256;Inherit;True;Property;_Normal;Normal;11;0;Create;True;0;0;0;False;0;False;-1;None;ba4d366b1decf3f4e8d7d132dc42c649;True;0;True;white;Auto;True;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;138;320,-160;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;143;512,-160;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;118;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;119;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;120;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;121;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;DepthOnly;0;4;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDepth;255;False;;255;True;_StencilWriteMaskDepth;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;122;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;MotionVectors;0;5;MotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefMV;255;False;;255;True;_StencilWriteMaskMV;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;1;False;;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;123;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentBackface;0;6;TransparentBackface;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;True;2;5;False;;10;False;;0;1;False;;0;False;;False;False;True;3;1;False;;10;False;;0;1;False;;0;False;;False;False;True;3;1;False;;10;False;;0;1;False;;0;False;;False;False;False;True;1;False;;False;False;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelOne;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelTwo;False;False;False;False;False;True;0;True;_ZWrite;True;0;True;_ZTestTransparent;False;True;1;LightMode=TransparentBackface;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;124;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPrepass;0;7;TransparentDepthPrepass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDepth;255;False;;255;True;_StencilWriteMaskDepth;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;1;False;;False;False;True;1;LightMode=TransparentDepthPrepass;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;125;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPostpass;0;8;TransparentDepthPostpass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=TransparentDepthPostpass;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;126;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Forward;0;9;Forward;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;True;2;5;False;;10;False;;0;1;False;;0;False;;False;False;True;1;1;False;;0;True;_DstBlend2;0;1;False;;0;False;;False;False;True;1;1;False;;0;True;_DstBlend2;0;1;False;;0;False;;False;False;False;True;0;True;_CullModeForward;False;False;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelOne;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelTwo;False;False;False;True;True;0;True;_StencilRef;255;False;;255;True;_StencilWriteMask;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;0;True;_ZWrite;True;0;True;_ZTestDepthEqualForOpaque;False;True;1;LightMode=Forward;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;127;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ScenePickingPass;0;10;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;True;3;False;;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;117;704,-160;Float;False;True;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;Shader_Tile;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;35;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefGBuffer;255;False;;255;True;_StencilWriteMaskGBuffer;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;False;True;0;True;_ZTestGBuffer;False;True;1;LightMode=GBuffer;False;False;0;;0;0;Standard;42;Category;0;0;  Instanced Terrain Normals;1;0;Surface Type;0;0;  Rendering Pass;1;0;  Refraction Model;0;0;    Blending Mode;0;0;    Blend Preserves Specular;1;0;  Back Then Front Rendering;0;0;  Transparent Depth Prepass;0;0;  Transparent Depth Postpass;0;0;  ZWrite;0;0;  Z Test;4;0;Double-Sided;0;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Material Type;0;0;  Energy Conserving Specular;1;0;  Transmission;0;0;Normal Space;0;0;Receive Decals;1;0;Receive SSR;1;0;Receive SSR Transparent;0;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;Specular AA;0;0;Specular Occlusion Mode;1;0;Override Baked GI;0;0;Write Depth;0;0;  Depth Offset;0;0;  Conservative;0;0;GPU Instancing;1;0;LOD CrossFade;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position;1;0;0;11;True;True;True;True;True;True;False;False;False;True;True;False;;False;0
 WireConnection;13;0;116;0
 WireConnection;13;1;20;0
 WireConnection;21;0;35;0
@@ -6770,10 +6891,6 @@ WireConnection;12;1;21;0
 WireConnection;39;0;12;0
 WireConnection;39;1;40;0
 WireConnection;39;2;41;0
-WireConnection;25;0;39;0
-WireConnection;25;1;31;0
-WireConnection;31;0;36;0
-WireConnection;31;1;47;0
 WireConnection;36;0;24;0
 WireConnection;36;1;37;0
 WireConnection;36;2;38;0
@@ -6785,40 +6902,37 @@ WireConnection;47;0;116;0
 WireConnection;47;1;46;0
 WireConnection;27;0;26;0
 WireConnection;46;0;45;0
-WireConnection;92;0;10;4
 WireConnection;43;0;75;0
 WireConnection;43;1;44;0
 WireConnection;43;2;90;0
-WireConnection;75;0;48;0
-WireConnection;75;1;10;4
 WireConnection;10;1;103;0
 WireConnection;103;0;106;0
 WireConnection;103;1;107;0
-WireConnection;77;0;76;5
-WireConnection;77;1;43;0
-WireConnection;77;2;70;0
-WireConnection;74;0;76;5
-WireConnection;74;1;77;0
-WireConnection;74;2;92;0
-WireConnection;108;0;109;0
-WireConnection;108;1;96;3
-WireConnection;108;2;115;0
-WireConnection;94;1;96;2
-WireConnection;94;2;115;0
-WireConnection;91;0;111;5
-WireConnection;91;1;93;5
-WireConnection;91;2;113;0
-WireConnection;89;0;43;0
-WireConnection;89;1;114;0
-WireConnection;115;0;70;0
-WireConnection;113;0;70;0
-WireConnection;114;0;70;0
+WireConnection;31;0;36;0
+WireConnection;31;1;47;0
+WireConnection;25;0;39;0
+WireConnection;25;1;31;0
+WireConnection;137;0;140;0
+WireConnection;137;1;25;0
 WireConnection;48;0;49;0
 WireConnection;48;1;25;0
-WireConnection;117;0;74;0
-WireConnection;117;1;91;0
-WireConnection;117;4;108;0
-WireConnection;117;7;94;0
-WireConnection;117;6;89;0
+WireConnection;131;0;48;0
+WireConnection;131;1;137;0
+WireConnection;131;2;136;0
+WireConnection;75;0;131;0
+WireConnection;75;1;10;4
+WireConnection;142;1;43;0
+WireConnection;142;2;70;0
+WireConnection;138;0;76;5
+WireConnection;138;1;43;0
+WireConnection;138;2;10;4
+WireConnection;143;0;76;0
+WireConnection;143;1;138;0
+WireConnection;143;2;70;0
+WireConnection;117;0;143;0
+WireConnection;117;1;93;0
+WireConnection;117;4;96;3
+WireConnection;117;7;96;2
+WireConnection;117;6;142;0
 ASEEND*/
-//CHKSM=7ED1781FA759F207AC41E0A2BAA51F0BB1D0064D
+//CHKSM=2D3F61DA9CE6D78BD5675B1927543C1DCD382473

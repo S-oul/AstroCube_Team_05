@@ -86,7 +86,7 @@ public class Reseter : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
             InputHandler.Instance.CanMove = false;
-            //GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
+            GetComponent<CharacterController>().excludeLayers = Physics.AllLayers;
         }
 
         float elapsedTime = 0f;
@@ -103,7 +103,7 @@ public class Reseter : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
             InputHandler.Instance.CanMove = true;
-            //GetComponent<CharacterController>().excludeLayers = 0;
+            GetComponent<CharacterController>().excludeLayers = 0;
         }
     }
 
