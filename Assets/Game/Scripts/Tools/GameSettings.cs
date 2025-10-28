@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [CreateAssetMenu(fileName = "GameSettings", menuName = "ScriptableObjects/GameSettings", order = 1)]
@@ -12,7 +13,8 @@ public class GameSettings : ScriptableObject
     public float PlayerMoveSpeed => _playerMoveSpeed;
     public float StepHeightMax => _stepHeightMax;
     public float Gravity => _gravity;
-    public float JumpHeight => _jumpHeight;
+    public float MaxJumpHeight => _maxJumpHeight;
+    public float AirControl => _airControl;
     public float CrouchSpeed => _crouchSpeed;
     public float CrouchHeight => _crouchHeight;
     public float SlippingMovementControl => _slippingMovementControl;
@@ -58,8 +60,10 @@ public class GameSettings : ScriptableObject
     [SerializeField] float _stepHeightMax = 12f;
     [SerializeField] float _gravity = -20.0f;
 
+    [FormerlySerializedAs("_jumpHeight")]
     [Header("- Jump")]
-    [SerializeField] float _jumpHeight = 1.0f;
+    [SerializeField] float _maxJumpHeight = 1.0f;
+    [SerializeField, Range(0f, 1f)] float _airControl = 1.0f;
 
     [Header("- Crouch")]
     [SerializeField, Range(0.0f, 1.0f)] float _crouchSpeed = 0.5f;
