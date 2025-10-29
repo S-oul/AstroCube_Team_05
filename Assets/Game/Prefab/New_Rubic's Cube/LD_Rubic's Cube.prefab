@@ -45,14 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 0
-  _axisSelectionRenderingLayerMask: 0
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
 --- !u!1 &1265017607081402230
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,25 +746,27 @@ MonoBehaviour:
   - {fileID: 4689508686173805562}
   - {fileID: 2804972333132497928}
   _doScramble: 0
+  _frontCenterCube: {fileID: 6873100981997790536}
+  _backCenterCube: {fileID: 2814859612472288434}
+  _rightCenterCube: {fileID: 1424108025093280315}
+  _leftCenterCube: {fileID: 2615222656986942929}
+  _topCenterCube: {fileID: 4689508686173805562}
+  _bottomCenterCube: {fileID: 2804972333132497928}
   _isLockXAxis: 0
   _isLockYAxis: 0
   _isLockZAxis: 0
-  _DoAutoMoves: 0
+  _DoAutoMoves: 1
   _PlayAtStart: 0
-  _PlayOnEvent: 0
-  ExecuteSequenceXTime: 3
-  TimeToRotate: 2
+  _PlayOnEvent: 1
+  ExecuteSequenceXTime: 1
+  TimeToRotate: 1
   TimeBetweenMoves: 0.5
   TimeBetweenSequence: 1
   AutoMovesSequence:
   - axis: {fileID: 0}
-    cube: {fileID: 0}
-    orientation: 0
+    cube: {fileID: 4689508686173805562}
+    orientation: 2
     clockWise: 1
-  - axis: {fileID: 0}
-    cube: {fileID: 0}
-    orientation: 0
-    clockWise: 0
   _DustParticleAfterRotate: {fileID: 0}
   OnCorrectAction:
     m_PersistentCalls:
