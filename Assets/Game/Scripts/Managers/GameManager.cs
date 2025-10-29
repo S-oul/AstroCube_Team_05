@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public CustomisedSettings CustomSettings => CutomizeSettings;
     [SerializeField] private CustomisedSettings CutomizeSettings;
         
-    [SerializeField][Scene] string nextScene;
+    //[SerializeField][Scene] string nextScene;
 
     [Header("Entity Sequence")]
     [SerializeField] EntitySequenceManager _entitySequenceManager;
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
     }
     void ChangeScene()
     {
-        SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCount);
+        SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
     }
 
     void StopDeltaTime()
