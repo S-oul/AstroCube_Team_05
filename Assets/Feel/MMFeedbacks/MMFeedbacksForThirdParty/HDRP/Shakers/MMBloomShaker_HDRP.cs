@@ -14,7 +14,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_HDRP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMBloomShaker_HDRP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Bloom Shaker HDRP")]
 	public class MMBloomShaker_HDRP : MMShaker
 	{
 		/// whether or not to add to the initial value
@@ -133,16 +133,19 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRemapThresholdOne = RemapThresholdOne;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeIntensity = intensity;
-			RemapIntensityZero = remapMin * attenuation;
-			RemapIntensityOne = remapMax * attenuation;
-			RelativeValues = relativeIntensity;
-			ShakeThreshold = threshold;
-			RemapThresholdZero = remapThresholdMin;
-			RemapThresholdOne = remapThresholdMax;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeIntensity = intensity;
+				RemapIntensityZero = remapMin * attenuation;
+				RemapIntensityOne = remapMax * attenuation;
+				RelativeValues = relativeIntensity;
+				ShakeThreshold = threshold;
+				RemapThresholdZero = remapThresholdMin;
+				RemapThresholdOne = remapThresholdMax;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

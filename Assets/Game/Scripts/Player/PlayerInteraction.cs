@@ -16,7 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Update()
     {
         Debug.DrawLine(_mainCamera.transform.position,
-            _mainCamera.transform.position + _mainCamera.transform.forward * _interactionDistance, Color.red,
+            _mainCamera.transform.position + _mainCamera.transform.forward * _interactionDistance, Color.magenta,
             Time.deltaTime);
         
         if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward, out RaycastHit hit, _interactionDistance))

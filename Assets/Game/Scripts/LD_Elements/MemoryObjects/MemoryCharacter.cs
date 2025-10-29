@@ -3,7 +3,7 @@ using UnityEngine;
 public class MemoryCharacter : MonoBehaviour
 {
 
-    [SerializeField] private MemoryObjectController _controller;
+    //[SerializeField] private MemoryObjectController _controller;
     [SerializeField] private Transform _originTransform;
     [SerializeField] private Transform _meshTransform;
 
@@ -13,7 +13,7 @@ public class MemoryCharacter : MonoBehaviour
         _meshTransform.position = meshPosition;
         
         gameObject.SetActive(true);
-        _controller.LinkOriginToVFX();
+        //_controller.LinkOriginToVFX();
     }
 
 }

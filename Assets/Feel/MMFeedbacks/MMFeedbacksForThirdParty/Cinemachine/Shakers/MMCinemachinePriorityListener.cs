@@ -1,8 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 #if MM_CINEMACHINE
 using Cinemachine;
+#elif MM_CINEMACHINE3
+using Unity.Cinemachine;
 #endif
 using MoreMountains.Feedbacks;
 
@@ -11,8 +12,8 @@ namespace MoreMountains.FeedbacksForThirdParty
 	/// <summary>
 	/// Add this to a Cinemachine virtual camera and it'll be able to listen to MMCinemachinePriorityEvent, usually triggered by a MMFeedbackCinemachineTransition
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Cinemachine/MMCinemachinePriorityListener")]
-	#if MM_CINEMACHINE
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Cinemachine/MM Cinemachine Priority Listener")]
+	#if MM_CINEMACHINE || MM_CINEMACHINE3
 	[RequireComponent(typeof(CinemachineVirtualCameraBase))]
 	#endif
 	public class MMCinemachinePriorityListener : MonoBehaviour
@@ -40,19 +41,27 @@ namespace MoreMountains.FeedbacksForThirdParty
 		[MMFEnumCondition("ChannelMode", (int)MMChannelModes.MMChannel)]
 		public MMChannel MMChannelDefinition = null;
 
-		#if MM_CINEMACHINE
+		#if MM_CINEMACHINE || MM_CINEMACHINE3
 		protected CinemachineVirtualCameraBase _camera;
 		protected int _initialPriority;
+		#endif
         
 		/// <summary>
 		/// On Awake we store our virtual camera
 		/// </summary>
 		protected virtual void Awake()
 		{
+			#if MM_CINEMACHINE || MM_CINEMACHINE3
 			_camera = this.gameObject.GetComponent<CinemachineVirtualCameraBase>();
+			#endif
+			#if MM_CINEMACHINE 
 			_initialPriority = _camera.Priority;
+			#elif MM_CINEMACHINE3
+			_initialPriority = _camera.Priority.Value; 
+			#endif
 		}
 
+		#if MM_CINEMACHINE || MM_CINEMACHINE3
 		/// <summary>
 		/// When we get an event we change our priorities if needed
 		/// </summary>
@@ -64,15 +73,22 @@ namespace MoreMountains.FeedbacksForThirdParty
 		/// <param name="resetValuesAfterTransition"></param>
 		public virtual void OnMMCinemachinePriorityEvent(MMChannelData channelData, bool forceMaxPriority, int newPriority, bool forceTransition, CinemachineBlendDefinition blendDefinition, bool resetValuesAfterTransition, TimescaleModes timescaleMode, bool restore = false)
 		{
+			StartCoroutine(OnMMCinemachinePriorityEventCo(channelData, forceMaxPriority, newPriority, forceTransition,
+				blendDefinition, resetValuesAfterTransition, timescaleMode, restore));
+		}
+
+		protected virtual IEnumerator OnMMCinemachinePriorityEventCo(MMChannelData channelData, bool forceMaxPriority, int newPriority, bool forceTransition, CinemachineBlendDefinition blendDefinition, bool resetValuesAfterTransition, TimescaleModes timescaleMode, bool restore = false)
+		{
+			yield return null;
 			TimescaleMode = timescaleMode;
 			if (MMChannel.Match(channelData, ChannelMode, Channel, MMChannelDefinition))
 			{
 				if (restore)
 				{
-					_camera.Priority = _initialPriority;	
-					return;
+					SetPriority(_initialPriority);	
+					yield break;
 				}
-				_camera.Priority = newPriority;
+				SetPriority(newPriority);
 			}
 			else
 			{
@@ -80,12 +96,24 @@ namespace MoreMountains.FeedbacksForThirdParty
 				{
 					if (restore)
 					{
-						_camera.Priority = _initialPriority;	
-						return;
+						SetPriority(_initialPriority);	
+						yield break;;
 					}
-					_camera.Priority = 0;
+					SetPriority(0);
 				}
 			}
+		}
+		#endif
+
+		protected virtual void SetPriority(int newPriority)
+		{
+			#if MM_CINEMACHINE 
+			_camera.Priority = newPriority;
+			#elif MM_CINEMACHINE3
+			PrioritySettings prioritySettings = _camera.Priority;
+			prioritySettings.Value = newPriority;
+			_camera.Priority = prioritySettings;
+			#endif
 		}
 
 		/// <summary>
@@ -93,7 +121,9 @@ namespace MoreMountains.FeedbacksForThirdParty
 		/// </summary>
 		protected virtual void OnEnable()
 		{
+			#if MM_CINEMACHINE || MM_CINEMACHINE3
 			MMCinemachinePriorityEvent.Register(OnMMCinemachinePriorityEvent);
+			#endif
 		}
 
 		/// <summary>
@@ -101,9 +131,10 @@ namespace MoreMountains.FeedbacksForThirdParty
 		/// </summary>
 		protected virtual void OnDisable()
 		{
+			#if MM_CINEMACHINE || MM_CINEMACHINE3
 			MMCinemachinePriorityEvent.Unregister(OnMMCinemachinePriorityEvent);
+			#endif
 		}
-		#endif
 	}
 
 	/// <summary>
@@ -111,7 +142,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	/// </summary>
 	public struct MMCinemachinePriorityEvent
 	{
-		#if MM_CINEMACHINE
+		#if MM_CINEMACHINE || MM_CINEMACHINE3
 		static private event Delegate OnEvent;
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] private static void RuntimeInitialization() { OnEvent = null; }
 		static public void Register(Delegate callback) { OnEvent += callback; }

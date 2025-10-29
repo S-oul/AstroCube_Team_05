@@ -8,6 +8,7 @@ namespace MoreMountains.Feel
 	/// This class acts as a character controller for the Duck in the FeelDuck demo scene
 	/// It looks for input, and jumps when instructed to
 	/// </summary>
+	[AddComponentMenu("")]
 	public class Duck : MonoBehaviour
 	{
 		[Header("Cooldown")]

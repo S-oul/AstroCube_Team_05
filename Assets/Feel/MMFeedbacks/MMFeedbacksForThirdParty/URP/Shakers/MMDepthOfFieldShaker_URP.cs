@@ -16,7 +16,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_URP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMDepthOfFieldShaker_URP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Depth Of Field Shaker URP")]
 	public class MMDepthOfFieldShaker_URP : MMShaker
 	{
 		/// whether or not to add to the initial value
@@ -169,19 +169,22 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRemapFocalLengthOne = RemapFocalLengthOne;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			RelativeValues = relativeValues;
-			ShakeFocusDistance = focusDistance;
-			RemapFocusDistanceZero = remapFocusDistanceMin;
-			RemapFocusDistanceOne = remapFocusDistanceMax;
-			ShakeAperture = aperture;
-			RemapApertureZero = remapApertureMin;
-			RemapApertureOne = remapApertureMax;
-			ShakeFocalLength = focalLength;
-			RemapFocalLengthZero = remapFocalLengthMin;
-			RemapFocalLengthOne = remapFocalLengthMax;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				RelativeValues = relativeValues;
+				ShakeFocusDistance = focusDistance;
+				RemapFocusDistanceZero = remapFocusDistanceMin;
+				RemapFocusDistanceOne = remapFocusDistanceMax;
+				ShakeAperture = aperture;
+				RemapApertureZero = remapApertureMin;
+				RemapApertureOne = remapApertureMax;
+				ShakeFocalLength = focalLength;
+				RemapFocalLengthZero = remapFocalLengthMin;
+				RemapFocalLengthOne = remapFocalLengthMax;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

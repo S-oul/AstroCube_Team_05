@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace  MoreMountains.Feel
 {
+	[AddComponentMenu("")]
 	public class Falcon : MonoBehaviour
 	{
 		[Header("Input")]

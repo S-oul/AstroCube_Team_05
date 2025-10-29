@@ -10,6 +10,7 @@ namespace MoreMountains.Feel
 	/// A manager used to pilot Feel's Letters demo scene
 	/// It detects input, and plays corresponding feedbacks when needed
 	/// </summary>
+	[AddComponentMenu("")]
 	public class LettersDemoManager : MonoBehaviour
 	{
 		[Header("Feedbacks")]
@@ -82,7 +83,7 @@ namespace MoreMountains.Feel
 		/// <summary>
 		/// Activates the letter F
 		/// </summary>
-		protected virtual void PlayF()
+		public virtual void PlayF()
 		{
 			FeedbackF?.PlayFeedbacks();
 		}
@@ -90,7 +91,7 @@ namespace MoreMountains.Feel
 		/// <summary>
 		/// Activates the first E letter
 		/// </summary>
-		protected virtual void PlayE1()
+		public virtual void PlayE1()
 		{
 			FeedbackE1?.PlayFeedbacks();
 		}
@@ -98,7 +99,7 @@ namespace MoreMountains.Feel
 		/// <summary>
 		/// Activates the second E letter
 		/// </summary>
-		protected virtual void PlayE2()
+		public virtual void PlayE2()
 		{
 			FeedbackE2?.PlayFeedbacks();
 		}
@@ -106,7 +107,7 @@ namespace MoreMountains.Feel
 		/// <summary>
 		/// Activates the letter L
 		/// </summary>
-		protected virtual void PlayL()
+		public virtual void PlayL()
 		{
 			FeedbackL?.PlayFeedbacks();
 		}

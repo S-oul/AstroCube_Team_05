@@ -14,18 +14,23 @@ namespace Lofelt.NiceVibrations
         public MMUIShaker LogoShaker;
         public AudioSource EmphasisAudioSource;
 
+        #if MM_PHYSICS2D
         protected Rigidbody2D _rigidBody;
+		#endif
         protected float _lastRaycastTimestamp = 0f;
         protected Animator _ballAnimator;
         protected int _hitAnimationParameter;
 
         protected virtual void Awake()
         {
+			#if MM_PHYSICS2D
             _rigidBody = this.gameObject.GetComponent<Rigidbody2D>();
+			#endif
             _ballAnimator = this.gameObject.GetComponent<Animator>();
             _hitAnimationParameter = Animator.StringToHash("Hit");
         }
 
+		#if MM_PHYSICS2D
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
             if (WallMask == (WallMask | (1 << collision.gameObject.layer)))
@@ -56,15 +61,18 @@ namespace Lofelt.NiceVibrations
             _rigidBody.AddForce(Vector2.up * 2500f);
             StartCoroutine(LogoShaker.Shake(0.2f));
         }
+		#endif
 
         protected virtual void HitWall()
         {
+			#if MM_PHYSICS2D
             float amplitude = _rigidBody.linearVelocity.magnitude / 100f;
             HapticPatterns.PlayEmphasis(amplitude, 0.7f);
             EmphasisAudioSource.volume = amplitude;
             StartCoroutine(LogoShaker.Shake(0.2f));
             EmphasisAudioSource.Play();
             _ballAnimator.SetTrigger(_hitAnimationParameter);
+			#endif
         }
 
         public virtual void HitPusher()

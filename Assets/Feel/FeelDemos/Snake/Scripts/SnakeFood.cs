@@ -10,6 +10,7 @@ namespace MoreMountains.Feel
 	/// <summary>
 	/// This class handles Feel's Snake demo's food objects, that the snake has to eat to score points
 	/// </summary>
+	[AddComponentMenu("")]
 	public class SnakeFood : MonoBehaviour
 	{
 		/// a duration (in seconds) during which the food is inactive before moving it to another position
@@ -25,6 +26,7 @@ namespace MoreMountains.Feel
         
 		protected Snake _snake;
         
+		#if MM_PHYSICS2D
 		/// <summary>
 		/// When this food gets eaten, we play its eat feedback, and start moving it somewhere else in the scene
 		/// </summary>
@@ -40,6 +42,7 @@ namespace MoreMountains.Feel
 				StartCoroutine(MoveFood());
 			}
 		}
+		#endif
 
 		/// <summary>
 		/// Moves the food to another spot
