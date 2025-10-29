@@ -9,6 +9,7 @@ namespace MoreMountains.Feel
 	/// <summary>
 	/// A simple class used to handle enemies in Feel's Barbarian demo scene
 	/// </summary>
+	[AddComponentMenu("")]
 	public class BarbarianEnemy : MonoBehaviour
 	{
 		/// a feedback to play when getting damage 

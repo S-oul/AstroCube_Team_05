@@ -8,6 +8,7 @@ namespace MoreMountains.Feel
 	/// <summary>
 	/// A class used in Feel's Bounce demo scene to push a bunch of tiny cubes in the air
 	/// </summary>
+	[AddComponentMenu("")]
 	public class BounceRocks : MonoBehaviour
 	{
 		public List<Rigidbody> Rocks;

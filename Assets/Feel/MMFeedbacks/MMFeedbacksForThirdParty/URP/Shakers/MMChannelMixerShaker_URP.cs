@@ -16,7 +16,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_URP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMChannelMixerShaker_URP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Channel Mixer Shaker URP")]
 	public class MMChannelMixerShaker_URP : MMShaker
 	{
 		/// whether or not to add to the initial value
@@ -174,19 +174,22 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRemapBlueOne = RemapBlueOne;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			RelativeValues = relativeValues;
-			ShakeRed = shakeRed;
-			RemapRedZero = remapRedZero;
-			RemapRedOne = remapRedOne;
-			ShakeGreen = shakeGreen;
-			RemapGreenZero = remapGreenZero;
-			RemapGreenOne = remapGreenOne;
-			ShakeBlue = shakeBlue;
-			RemapBlueZero = remapBlueZero;
-			RemapBlueOne = remapBlueOne;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				RelativeValues = relativeValues;
+				ShakeRed = shakeRed;
+				RemapRedZero = remapRedZero;
+				RemapRedOne = remapRedOne;
+				ShakeGreen = shakeGreen;
+				RemapGreenZero = remapGreenZero;
+				RemapGreenOne = remapGreenOne;
+				ShakeBlue = shakeBlue;
+				RemapBlueZero = remapBlueZero;
+				RemapBlueOne = remapBlueOne;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

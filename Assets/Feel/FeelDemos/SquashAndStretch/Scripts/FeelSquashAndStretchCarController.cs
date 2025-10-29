@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace MoreMountains.Feel
 {
+	[AddComponentMenu("")]
 	public class FeelSquashAndStretchCarController : MonoBehaviour
 	{
 		[Header("Car Settings")]

@@ -10,7 +10,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	/// <summary>
 	/// Add this class to a Camera with a depth of field post processing and it'll be able to "shake" its values by getting events
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMDepthOfFieldShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Depth Of Field Shaker")]
 	#if MM_POSTPROCESSING
 	[RequireComponent(typeof(PostProcessVolume))]
 	#endif
@@ -171,24 +171,22 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRemapFocalLengthOne = RemapFocalLengthOne;
 			}
 
-			TimescaleMode = timescaleMode;
-            
-			ShakeDuration = duration;
-			RelativeValues = relativeValues;
-
-			ShakeFocusDistance = focusDistance;
-			RemapFocusDistanceZero = remapFocusDistanceMin;
-			RemapFocusDistanceOne = remapFocusDistanceMax;
-
-			ShakeAperture = aperture;
-			RemapApertureZero = remapApertureMin;
-			RemapApertureOne = remapApertureMax;
-
-			ShakeFocalLength = focalLength;
-			RemapFocalLengthZero = remapFocalLengthMin;
-			RemapFocalLengthOne = remapFocalLengthMax;
-
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				RelativeValues = relativeValues;
+				ShakeFocusDistance = focusDistance;
+				RemapFocusDistanceZero = remapFocusDistanceMin;
+				RemapFocusDistanceOne = remapFocusDistanceMax;
+				ShakeAperture = aperture;
+				RemapApertureZero = remapApertureMin;
+				RemapApertureOne = remapApertureMax;
+				ShakeFocalLength = focalLength;
+				RemapFocalLengthZero = remapFocalLengthMin;
+				RemapFocalLengthOne = remapFocalLengthMax;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

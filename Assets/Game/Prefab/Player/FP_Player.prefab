@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 79100317669079735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -158,8 +158,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1537851944306892503}
   - component: {fileID: 700580131499637484}
-  - component: {fileID: 3346178413430330620}
-  - component: {fileID: 8708569820521048632}
+  - component: {fileID: 3123279762399017136}
+  - component: {fileID: 591256995339595692}
   - component: {fileID: 8895847318250023099}
   - component: {fileID: 4747696836999268114}
   - component: {fileID: 390007284634587234}
@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 8271240141020365605}
   - component: {fileID: 2516385824039960158}
   - component: {fileID: 7104265957856665}
+  - component: {fileID: 1727229095393519118}
   m_Layer: 10
   m_Name: FP_Player
   m_TagString: Player
@@ -205,48 +206,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68aaab3c2dd3bd240afbe69cd9b69d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rb: {fileID: 3346178413430330620}
+  _controller: {fileID: 591256995339595692}
   _camera: {fileID: 2682455399166526803}
   _floorCheck: {fileID: 7652035074635611970}
   _floorLayer:
     serializedVersion: 2
     m_Bits: 449
+  _speedMultiplier: 1
   _canJump: 1
   _canCrouch: 0
-  _slippingMovementControl: 0.01
+  _slippingMovementControl: 0.03
   _enableGravityRotation: 0
   _resetRotationWhenNoClip: 0
   isOnDefaultGround: 0
   _timerTNextStep: 1
---- !u!54 &3346178413430330620
-Rigidbody:
+--- !u!114 &3123279762399017136
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5789224619367204211}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 10
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 2
---- !u!136 &8708569820521048632
-CapsuleCollider:
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b6d5eac8da8ef41a54539a6bacd036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionDistance: 7
+--- !u!143 &591256995339595692
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -260,13 +248,15 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
+  serializedVersion: 3
   m_Height: 2
-  m_Direction: 1
+  m_Radius: 0.7
+  m_SlopeLimit: 100
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8895847318250023099
 MonoBehaviour:
@@ -413,6 +403,36 @@ MonoBehaviour:
   eventIdInternal: 0
   valueGuidInternal: 
   m_callbackDataInternal: {fileID: 0}
+--- !u!114 &1727229095393519118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8dc960f5e88a1f4d9483cd2a32efeff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 5b8879f3013bdbe458d2369b92d37116,
+      type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 1
+  Callbacks: []
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
 --- !u!1 &6164784850869254152
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,11 +501,6 @@ PrefabInstance:
       propertyPath: _playerTransform
       value: 
       objectReference: {fileID: 1537851944306892503}
-    - target: {fileID: 2124071964418576275, guid: b08a9a73207a57142b35500a818b6765,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_HDR

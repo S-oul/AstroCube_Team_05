@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.WSA;
-using System.Data;
-using TMPro;
 
 [ExecuteInEditMode]
 public class MakeTileInvisible : MonoBehaviour
 {
+#if UNITY_EDITOR
     [SerializeField] bool activated = true;
     [SerializeField] GameObject tileParent;
     [SerializeField] float updateInterval = 1f;
@@ -52,6 +50,11 @@ public class MakeTileInvisible : MonoBehaviour
 
         float dot = Vector3.Dot(forwardDirect, viewDirection);
 
+        if (tileParent == null) 
+        {
+            return;
+        }
+
         if (dot > 0)
         {
             SceneVisibilityManager.instance.Show(tileParent, true);
@@ -61,4 +64,5 @@ public class MakeTileInvisible : MonoBehaviour
             SceneVisibilityManager.instance.Hide(tileParent, true);
         }
     }
+#endif
 }
