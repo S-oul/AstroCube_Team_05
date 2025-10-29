@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace MoreMountains.Feel
 {
+	[AddComponentMenu("")]
 	public class FeelCardsUIStackButton : MonoBehaviour
 	{
 		/// the MMFeedback to play when pressing the stack button

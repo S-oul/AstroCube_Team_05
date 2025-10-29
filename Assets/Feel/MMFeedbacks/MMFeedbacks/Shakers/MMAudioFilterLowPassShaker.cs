@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to an audio distortion low pass to shake its values remapped along a curve 
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MMAudioFilterLowPassShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MM Audio Filter Low Pass Shaker")]
 	[RequireComponent(typeof(AudioLowPassFilter))]
 	public class MMAudioFilterLowPassShaker : MMShaker
 	{
@@ -113,13 +113,16 @@ namespace MoreMountains.Feedbacks
 				_originalRelativeLowPass = RelativeLowPass;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeLowPass = lowPassCurve;
-			RemapLowPassZero = remapMin * feedbacksIntensity;
-			RemapLowPassOne = remapMax * feedbacksIntensity;
-			RelativeLowPass = relativeLowPass;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeLowPass = lowPassCurve;
+				RemapLowPassZero = remapMin * feedbacksIntensity;
+				RemapLowPassOne = remapMax * feedbacksIntensity;
+				RelativeLowPass = relativeLowPass;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

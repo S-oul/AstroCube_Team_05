@@ -14,7 +14,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_HDRP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMExposureShaker_HDRP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Exposure Shaker HDRP")]
 	public class MMExposureShaker_HDRP : MMShaker
 	{
 		[MMInspectorGroup("Exposure Intensity", true, 46)]
@@ -110,13 +110,16 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRelativeFixedExposure = RelativeIntensity;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeFixedExposure = intensity;
-			RemapFixedExposureZero = remapMin * attenuation;
-			RemapFixedExposureOne = remapMax * attenuation;
-			RelativeIntensity = relativeIntensity;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeFixedExposure = intensity;
+				RemapFixedExposureZero = remapMin * attenuation;
+				RemapFixedExposureOne = remapMax * attenuation;
+				RelativeIntensity = relativeIntensity;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}
