@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using System;
+﻿using MoreMountains.Tools;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -55,12 +53,7 @@ namespace MoreMountains.Feedbacks
 			}
 			else
 			{
-				/*int multiplier = 1; // this multiplier fixes issues in differing property spacing between MMFeedbacks and MMF_Player
-				if (property.depth > 0)
-				{
-					multiplier = property.depth;
-				}*/
-				return -EditorGUIUtility.standardVerticalSpacing /** multiplier*/;
+				return -EditorGUIUtility.standardVerticalSpacing;
 			}
 		}
 	}
@@ -167,7 +160,7 @@ namespace MoreMountains.Feedbacks
 		/// <param name="label">Label.</param>
 		public override void OnGUI(Rect rect, SerializedProperty prop, GUIContent label)
 		{
-			if (HelpEnabled())
+			if (MMMenuHelp.HelpEnabled)
 			{
 				EditorStyles.helpBox.richText = true;
 				Rect helpPosition = rect;
@@ -210,7 +203,7 @@ namespace MoreMountains.Feedbacks
 		/// <param name="label">Label.</param>
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			if (HelpEnabled())
+			if (MMMenuHelp.HelpEnabled)
 			{
 				return EditorGUI.GetPropertyHeight(property) + DetermineTextboxHeight(informationAttribute.Message) + spaceAfterTheTextBox + spaceBeforeTheTextBox;
 			}
@@ -218,23 +211,6 @@ namespace MoreMountains.Feedbacks
 			{
 				return EditorGUI.GetPropertyHeight(property);
 			}
-		}
-
-		/// <summary>
-		/// Checks the editor prefs to see if help is enabled or not
-		/// </summary>
-		/// <returns><c>true</c>, if enabled was helped, <c>false</c> otherwise.</returns>
-		protected virtual bool HelpEnabled()
-		{
-			bool helpEnabled = false;
-			if (EditorPrefs.HasKey("MMShowHelpInInspectors"))
-			{
-				if (EditorPrefs.GetBool("MMShowHelpInInspectors"))
-				{
-					helpEnabled = true;
-				}
-			}
-			return helpEnabled;
 		}
 
 		/// <summary>

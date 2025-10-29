@@ -1,6 +1,7 @@
 ﻿using MoreMountains.Tools;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -13,6 +14,7 @@ namespace MoreMountains.Feedbacks
 	[FeedbackHelp("This feedback will let you target (almost) any property, on any object in your scene. " +
 	              "It also works on scriptable objects. Drag an object, select a property, and setup your feedback " +
 	              "to update that property over time.")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks.MMTools")]
 	[FeedbackPath("GameObject/Property")]
 	public class MMF_Property : MMF_Feedback
 	{
@@ -24,9 +26,12 @@ namespace MoreMountains.Feedbacks
 		#if UNITY_EDITOR
 		public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.GameObjectColor; } }
 		public override bool EvaluateRequiresSetup() { return (Target == null); }
+		public override string RequiredTargetText { get { return Target != null ? Target.TargetObject.name+" - "+Target.TargetPropertyName : "";  } }
 		public override string RequiresSetupText { get { return "This feedback requires that a Target be set to be able to work properly. You can set one below."; } }
 		#endif
 		public override bool HasRandomness => true;
+		public override bool CanForceInitialValue => true;
+		public override bool ForceInitialValueDelayed => true;
 		public override bool HasCustomInspectors => true;
         
 		/// the possible modes for this feedback
@@ -61,8 +66,7 @@ namespace MoreMountains.Feedbacks
 		[MMFInspectorGroup("Level", true, 30)]
 		/// the curve to tween the intensity on
 		[Tooltip("the curve to tween the intensity on")]
-		[MMFEnumCondition("Mode", (int)Modes.OverTime, (int)Modes.ToDestination)]
-		public MMTweenType LevelCurve = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)));
+		public MMTweenType LevelCurve = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(1, 0)), "", "Mode", (int)Modes.OverTime, (int)Modes.ToDestination);
 		/// the value to remap the intensity curve's 0 to
 		[Tooltip("the value to remap the intensity curve's 0 to")]
 		[MMFEnumCondition("Mode", (int)Modes.OverTime)]
@@ -90,6 +94,12 @@ namespace MoreMountains.Feedbacks
 		protected override void CustomInitialization(MMF_Player owner)
 		{
 			base.CustomInitialization(owner);
+			
+			if (Target == null)
+			{
+				Debug.LogWarning("[Property Feedback] The property feedback on "+Owner.name+" doesn't have a Target, it won't work. You need to specify one in its inspector.");
+				return;
+			}
 
 			Target.Initialization(Owner.gameObject);
 			GetInitialIntensity(); 
@@ -108,7 +118,7 @@ namespace MoreMountains.Feedbacks
 		/// </summary>
 		protected virtual void GetInitialIntensity()
 		{
-			_initialIntensity = Target.Level;
+			_initialIntensity = Target.GetLevel();
 		}
 
 		/// <summary>
@@ -118,7 +128,7 @@ namespace MoreMountains.Feedbacks
 		/// <param name="feedbacksIntensity"></param>
 		protected override void CustomPlayFeedback(Vector3 position, float feedbacksIntensity = 1.0f)
 		{
-			if (!Active || !FeedbackTypeAuthorized)
+			if (!Active || !FeedbackTypeAuthorized || (Target == null))
 			{
 				return;
 			}
@@ -135,16 +145,19 @@ namespace MoreMountains.Feedbacks
 			switch (Mode)
 			{
 				case Modes.Instant:
-					Target.SetLevel(InstantLevel);
+					float newLevel = NormalPlayDirection ? InstantLevel : _initialIntensity;
+					Target.SetLevel(newLevel);
 					break;
 				case Modes.OverTime:
 					if (!AllowAdditivePlays && (_coroutine != null))
 					{
 						return;
 					}
+					if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 					_coroutine = Owner.StartCoroutine(UpdateValueSequence(intensityMultiplier));
 					break;
 				case Modes.ToDestination:
+					if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 					_coroutine = Owner.StartCoroutine(ToDestinationSequence(intensityMultiplier));
 					break;
 			}
@@ -158,7 +171,7 @@ namespace MoreMountains.Feedbacks
 		protected virtual IEnumerator ToDestinationSequence(float intensityMultiplier)
 		{
 			float journey = NormalPlayDirection ? 0f : FeedbackDuration;
-			float initialValue = Target.Level;
+			float initialValue = Target.GetLevel();
 			float destinationValue = ToDestinationLevel;
 
 			if (RelativeValues)
@@ -282,6 +295,21 @@ namespace MoreMountains.Feedbacks
 			}
 			
 			Target.SetLevel(_initialIntensity);
+		}
+		
+		/// <summary>
+		/// On Validate, we init our curves conditions if needed
+		/// </summary>
+		public override void OnValidate()
+		{
+			base.OnValidate();
+			if (string.IsNullOrEmpty(LevelCurve.EnumConditionPropertyName))
+			{
+				LevelCurve.EnumConditionPropertyName = "Mode";
+				LevelCurve.EnumConditions = new bool[32];
+				LevelCurve.EnumConditions[(int)Modes.OverTime] = true;
+				LevelCurve.EnumConditions[(int)Modes.ToDestination] = true;
+			}
 		}
 	}
 }

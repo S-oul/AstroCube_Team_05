@@ -10,7 +10,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	/// <summary>
 	/// Add this class to a Camera with a color grading post processing and it'll be able to "shake" its values by getting events
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMColorGradingShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Color Grading Shaker")]
 	#if MM_POSTPROCESSING
 	[RequireComponent(typeof(PostProcessVolume))]
 	#endif
@@ -68,6 +68,15 @@ namespace MoreMountains.FeedbacksForThirdParty
 		[Tooltip("the value to remap the curve's 1 to")]
 		[Range(-100f, 100f)]
 		public float RemapContrastOne = 100f;
+
+		[MMFInspectorGroup("Color Filter", true, 50)]
+		/// if this is true, the color filter will be animated over the gradient below
+		[Tooltip("if this is true, the color filter will be animated over the gradient below")]
+		public bool ShakeColorFilter = false;
+		/// the gradient to use to animate the color filter over time
+		[Tooltip("the gradient to use to animate the color filter over time")]
+		[GradientUsage(true)]
+		public Gradient ColorFilterGradient;
         
 		#if MM_POSTPROCESSING
 		protected PostProcessVolume _volume;
@@ -76,6 +85,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 		protected float _initialHueShift;
 		protected float _initialSaturation;
 		protected float _initialContrast;
+		protected Color _initialColorFilter;
 		protected float _originalShakeDuration;
 		protected bool _originalRelativeValues;
 		protected AnimationCurve _originalShakePostExposure;
@@ -90,6 +100,9 @@ namespace MoreMountains.FeedbacksForThirdParty
 		protected AnimationCurve _originalShakeContrast;
 		protected float _originalRemapContrastZero;
 		protected float _originalRemapContrastOne;
+		protected bool _originalShakeColorFilter;
+		protected Gradient _originalColorFilter;
+		protected Color _newColorFilter;
 
 		/// <summary>
 		/// On init we initialize our values
@@ -122,6 +135,12 @@ namespace MoreMountains.FeedbacksForThirdParty
 			_colorGrading.saturation.Override(newSaturation);
 			float newContrast = ShakeFloat(ShakeContrast, RemapContrastZero, RemapContrastOne, RelativeValues, _initialContrast);
 			_colorGrading.contrast.Override(newContrast);
+
+			if (ShakeColorFilter)
+			{
+				_newColorFilter = ShakeGradient(ColorFilterGradient);
+				_colorGrading.colorFilter.Override(_newColorFilter);	
+			}
 		}
 
 		/// <summary>
@@ -133,6 +152,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 			_initialHueShift = _colorGrading.hueShift;
 			_initialSaturation = _colorGrading.saturation;
 			_initialContrast = _colorGrading.contrast;
+			_initialColorFilter = _colorGrading.colorFilter;
 		}
 
 		/// <summary>
@@ -148,6 +168,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 			AnimationCurve shakeHueShift, float remapHueShiftZero, float remapHueShiftOne,
 			AnimationCurve shakeSaturation, float remapSaturationZero, float remapSaturationOne,
 			AnimationCurve shakeContrast, float remapContrastZero, float remapContrastOne,
+			bool shakeColorFilter, Gradient colorFilterGradient,
 			float duration, bool relativeValues = false,
 			float feedbacksIntensity = 1.0f, MMChannelData channelData = null, bool resetShakerValuesAfterShake = true, bool resetTargetValuesAfterShake = true, 
 			bool forwardDirection = true, TimescaleModes timescaleMode = TimescaleModes.Scaled, bool stop = false, bool restore = false)
@@ -188,24 +209,31 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalShakeContrast = ShakeContrast;
 				_originalRemapContrastZero = RemapContrastZero;
 				_originalRemapContrastOne = RemapContrastOne;
+				_originalShakeColorFilter = ShakeColorFilter;
+				_originalColorFilter = ColorFilterGradient;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			RelativeValues = relativeValues;
-			ShakePostExposure = shakePostExposure;
-			RemapPostExposureZero = remapPostExposureZero;
-			RemapPostExposureOne = remapPostExposureOne;
-			ShakeHueShift = shakeHueShift;
-			RemapHueShiftZero = remapHueShiftZero;
-			RemapHueShiftOne  = remapHueShiftOne;
-			ShakeSaturation = shakeSaturation;
-			RemapSaturationZero = remapSaturationZero;
-			RemapSaturationOne = remapSaturationOne;
-			ShakeContrast = shakeContrast;
-			RemapContrastZero = remapContrastZero;
-			RemapContrastOne = remapContrastOne;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				RelativeValues = relativeValues;
+				ShakePostExposure = shakePostExposure;
+				RemapPostExposureZero = remapPostExposureZero;
+				RemapPostExposureOne = remapPostExposureOne;
+				ShakeHueShift = shakeHueShift;
+				RemapHueShiftZero = remapHueShiftZero;
+				RemapHueShiftOne = remapHueShiftOne;
+				ShakeSaturation = shakeSaturation;
+				RemapSaturationZero = remapSaturationZero;
+				RemapSaturationOne = remapSaturationOne;
+				ShakeContrast = shakeContrast;
+				RemapContrastZero = remapContrastZero;
+				RemapContrastOne = remapContrastOne;
+				ForwardDirection = forwardDirection;
+				ShakeColorFilter = shakeColorFilter;
+				ColorFilterGradient = colorFilterGradient;
+			}
 
 			Play();
 		}
@@ -220,6 +248,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 			_colorGrading.hueShift.Override(_initialHueShift);
 			_colorGrading.saturation.Override(_initialSaturation);
 			_colorGrading.contrast.Override(_initialContrast);
+			_colorGrading.colorFilter.Override(_initialColorFilter);
 		}
 
 		/// <summary>
@@ -242,6 +271,8 @@ namespace MoreMountains.FeedbacksForThirdParty
 			ShakeContrast = _originalShakeContrast;
 			RemapContrastZero = _originalRemapContrastZero;
 			RemapContrastOne = _originalRemapContrastOne;
+			ShakeColorFilter = _originalShakeColorFilter;
+			ColorFilterGradient = _originalColorFilter;
 		}
 
 		/// <summary>
@@ -278,6 +309,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 			AnimationCurve shakeHueShift, float remapHueShiftZero, float remapHueShiftOne,
 			AnimationCurve shakeSaturation, float remapSaturationZero, float remapSaturationOne,
 			AnimationCurve shakeContrast, float remapContrastZero, float remapContrastOne,
+			bool shakeColorFilter, Gradient colorFilterGradient,
 			float duration, bool relativeValues = false,
 			float feedbacksIntensity = 1.0f, MMChannelData channelData = null, bool resetShakerValuesAfterShake = true, bool resetTargetValuesAfterShake = true, 
 			bool forwardDirection = true, TimescaleModes timescaleMode = TimescaleModes.Scaled, bool stop = false, bool restore = false);
@@ -286,6 +318,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 			AnimationCurve shakeHueShift, float remapHueShiftZero, float remapHueShiftOne,
 			AnimationCurve shakeSaturation, float remapSaturationZero, float remapSaturationOne,
 			AnimationCurve shakeContrast, float remapContrastZero, float remapContrastOne,
+			bool shakeColorFilter, Gradient colorFilterGradient,
 			float duration, bool relativeValues = false,
 			float feedbacksIntensity = 1.0f, MMChannelData channelData = null, bool resetShakerValuesAfterShake = true, bool resetTargetValuesAfterShake = true, 
 			bool forwardDirection = true, TimescaleModes timescaleMode = TimescaleModes.Scaled, bool stop = false, bool restore = false)
@@ -294,6 +327,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 				shakeHueShift, remapHueShiftZero, remapHueShiftOne,
 				shakeSaturation, remapSaturationZero, remapSaturationOne,
 				shakeContrast, remapContrastZero, remapContrastOne,
+				shakeColorFilter, colorFilterGradient,
 				duration, relativeValues, feedbacksIntensity, channelData, resetShakerValuesAfterShake, resetTargetValuesAfterShake, forwardDirection, timescaleMode, stop, restore);
 		}
 	}

@@ -7,6 +7,7 @@ using static InputSystemManager;
 public class InputHandler : MonoBehaviour
 {
     [SerializeField] PlayerHold _playerHold;
+    [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] PlayerMovement _playerMovement;
     [SerializeField] MouseCamControl _mouseCam;
     [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
@@ -187,7 +188,10 @@ public class InputHandler : MonoBehaviour
     {
         if (!IsInputEnabled(EInputType.INTERACT)) return;
         if (ctx.performed)
+        {
             _playerHold.TryHold();
+            _playerInteraction.Interact();
+        }
     }
 
     public void OnGamePause(InputAction.CallbackContext ctx)
@@ -252,7 +256,7 @@ public class InputHandler : MonoBehaviour
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.MOVEMENT)) return;
-        if (!ctx.performed && !_controller.ControlledScript.IsReversing)
+        if (ctx.started && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionJump();
     }
     

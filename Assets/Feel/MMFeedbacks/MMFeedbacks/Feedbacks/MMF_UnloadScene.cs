@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -10,6 +10,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback lets you unload a scene by name or build index")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("Scene/Unload Scene")]
 	public class MMF_UnloadScene : MMF_Feedback
 	{
@@ -35,12 +36,12 @@ namespace MoreMountains.Feedbacks
 			return false;
 		}
 		public override string RequiredTargetText { get { return SceneName;  } }
-		public override string RequiresSetupText { get { return "This feedback requires that you specify a DestinationSceneName below. Make sure you also add that destination scene to your Build Settings."; } }
+		public override string RequiresSetupText { get { return "This feedback requires that you specify a SceneName below. Make sure you also add that destination scene to your Build Settings."; } }
 		#endif
         
 		public enum Methods { BuildIndex, SceneName }
 
-		[Header("Unload Scene")] 
+		[MMFInspectorGroup("Unload Scene", true, 43, false)]
         
 		/// whether to unload a scene by build index or by name
 		[Tooltip("whether to unload a scene by build index or by name")]
@@ -92,7 +93,7 @@ namespace MoreMountains.Feedbacks
 			{
 				if (OutputWarningsIfNeeded)
 				{
-					Debug.LogWarning("Unload Scene Feedback : you're trying to unload a scene that hasn't been loaded.");    
+					Debug.LogWarning("[Unload Scene Feedback] The unload scene feedback on "+Owner.name+" is trying to unload a scene that hasn't been loaded.");   
 				}
 			}
 		}
