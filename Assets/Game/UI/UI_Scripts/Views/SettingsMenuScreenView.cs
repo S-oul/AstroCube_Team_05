@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System;
 
 public class SettingsMenuScreenView : UIView
 {
@@ -127,12 +128,23 @@ public class SettingsMenuScreenView : UIView
         voiceSoundSlider.maxValue = _customisedSettings.maxVoiceVolume;
         voiceSoundSlider.value = _customisedSettings.customVoiceVolume;
 
+ 
+
         _isInitializing = false;
 
         Debug.Log($"[Init Settings] MotionBlur={_customisedSettings.customMotionBlur}, Rumble={_customisedSettings.customVibration}, Preview={_customisedSettings.customPreview}, fov value = {_customisedSettings.customFov},  senssitivity value : {_customisedSettings.customMouse}");
     }
 
     #region Button Methods
+
+
+
+    public override void Show()
+    {
+        base.Show();
+        titleText.text = "";
+        descriptionText.text = "";
+    }
 
     private void OnQuitClicked()
     {
@@ -144,18 +156,22 @@ public class SettingsMenuScreenView : UIView
     {
         Debug.Log("Motion Blur Toggled : " + state);
         _customisedSettings.customMotionBlur = state;
+        _customisedSettings.SaveRuntimeValues();
     }
 
     private void OnRumbleToggled(bool state)
     {
         Debug.Log("Rumble toggled");
         _customisedSettings.customVibration = state;
+
+        _customisedSettings.SaveRuntimeValues();
     }
 
     private void OnPreviewToggled(bool state)
     {
         Debug.Log("Preview toggled");
         _customisedSettings.customPreview = state;
+        _customisedSettings.SaveRuntimeValues();
 
     }
 
