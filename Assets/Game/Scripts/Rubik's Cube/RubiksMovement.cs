@@ -7,6 +7,7 @@ using NaughtyAttributes;
 using System;
 using UnityEditor;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 [ExecuteAlways]
 public class RubiksMovement : MonoBehaviour
@@ -19,8 +20,9 @@ public class RubiksMovement : MonoBehaviour
     [SerializeField] Transform middleGameObject;
 
 
-    [SerializeField] List<Transform> Axis = new List<Transform>();
+    [FormerlySerializedAs("Axis")] [SerializeField] List<Transform> _axis = new List<Transform>();
     [SerializeField] List<Transform> _allBlocks = new List<Transform>();
+    public IReadOnlyList<Transform> Axis => _axis.AsReadOnly();
 
     [SerializeField] bool _doScramble = true;
 
@@ -31,7 +33,14 @@ public class RubiksMovement : MonoBehaviour
 
     [Header("Center Cubes")]
     [SerializeField] private Transform _frontCenterCube;
-    [SerializeField] private Transform _backCenterCube, _rightCenterCube, _leftCenterCube,  _topCenterCube, _bottomCenterCube;
+    [SerializeField] private Transform _backCenterCube, _rightCenterCube, _leftCenterCube,  _topCenterCube, _bottomCenterCube, _middleCenterCube;
+    public Transform FrontCenterCube => _frontCenterCube;
+    public Transform BackCenterCube => _backCenterCube;
+    public Transform RightCenterCube => _rightCenterCube;
+    public Transform LeftCenterCube => _leftCenterCube;
+    public Transform TopCenterCube => _topCenterCube;
+    public Transform BottomCenterCube => _bottomCenterCube;
+    public Transform MiddleCenterCube => _middleCenterCube;
 
     [Header("LOCKINGS")]
 
@@ -516,9 +525,9 @@ public class RubiksMovement : MonoBehaviour
 
         float OldDistance = float.MaxValue;
         Transform closestAxis = null;
-        foreach (Transform t in Axis)
+        foreach (Transform t in _axis)
         {
-            if (t != Axis[0])
+            if (t != _axis[0])
             {
                 if (t.name.Contains("X") && sliceAxis == SliceAxis.X
                 || t.name.Contains("Y") && sliceAxis == SliceAxis.Y

@@ -4,12 +4,10 @@ using UnityEngine;
 public class RotateCubeInEditor : MonoBehaviour
 {
 
-    private RubiksMovement _rubiksMovement;
+    public RubiksMovement rubiksMovement;
 
     private void Reset()
     {
-        _rubiksMovement = FindAnyObjectByType<RubiksMovement>();
+        rubiksMovement = GameObject.Find("Main Rubik's Cube ").GetComponentInChildren<RubiksMovement>();
     }
-    
-    //AXIS 
 }
