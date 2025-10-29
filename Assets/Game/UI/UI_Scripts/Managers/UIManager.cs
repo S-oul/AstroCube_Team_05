@@ -45,6 +45,18 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public T ShowAndReturn<T>() where T : UIView
+    {
+        var view = GetView<T>();
+        if (view == null)
+        {
+            Debug.LogWarning($"UIManager: view of type {typeof(T)} not found.");
+            return null;
+        }
+
+        view.Show(); 
+        return view;
+    }
 
 
     public void Hide<T>() where T : UIView

@@ -68,7 +68,30 @@ public class MainMenuView : UIView
 
     private void OnQuitClicked()
     {
-        Debug.Log("Quit Game");
+        var popup = _uiManager.ShowAndReturn<PopUpView>();
+        if (popup==null)
+        {
+            return; 
+        }
+
+        popup.ShowPopup(new PopUpData(
+            title :"Quit Game",
+            message: "Are you sure you want to quit the game?",
+            type : PopUpType.QuitGamePopUp,
+            confirm: "Yes",
+            cancel : "No",
+            onConfirm: () => { Application.Quit(); },
+            onCancel: () => 
+            {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
+
+            }
+            ));
+
     }
 
 }
