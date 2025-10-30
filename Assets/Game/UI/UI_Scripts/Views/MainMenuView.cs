@@ -14,6 +14,7 @@ public class MainMenuView : UIView
     [SerializeField] private Button LevelsButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button titleButton;
 
     private UIManager _uiManager;
 
@@ -35,6 +36,9 @@ public class MainMenuView : UIView
             settingsButton.onClick.AddListener(OnSettingsClicked);
         if (quitButton != null)
             quitButton.onClick.AddListener(OnQuitClicked);
+        if (titleButton != null)
+            titleButton.onClick.AddListener(OnTitleClicked);
+
     }
 
 
@@ -64,6 +68,20 @@ public class MainMenuView : UIView
         Hide();
         var uiManager = FindObjectOfType<UIManager>();
         uiManager?.Show<SettingsMenuScreenView>();
+    }
+
+    private int c = 0;
+    private void OnTitleClicked()
+    {
+        if (c > 1)
+        {
+            Hide();
+            _uiManager.Show<AlternateScreenView>();
+        }
+        else
+        {
+            c++;
+        }
     }
 
     private void OnQuitClicked()
