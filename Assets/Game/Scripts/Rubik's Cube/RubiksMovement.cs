@@ -76,14 +76,13 @@ public class RubiksMovement : MonoBehaviour
         _allBlocks.Clear();
         foreach (Transform t in transform.parent)
         {
-            //print("aaa");
             if (t.tag == "Movable") _allBlocks.Add(t);
         }
 
         if (_doScramble) StartCoroutine(Scramble());
         else if (_PlayAtStart && AutoMovesSequence.Count > 0)
         {
-            StartSequenceCoroutine();
+            StartAutoMoves();
         }
 
     }
@@ -93,7 +92,7 @@ public class RubiksMovement : MonoBehaviour
         EventManager.OnPlayerUndo += UndoMove;
         if (_PlayOnEvent && AutoMovesSequence.Count > 0)
         {
-            EventManager.OnActivateSequence += StartSequenceCoroutine;
+            EventManager.OnActivateSequence += StartAutoMoves;
         }
     }
 
@@ -101,10 +100,10 @@ public class RubiksMovement : MonoBehaviour
     {
         EventManager.OnPlayerReset -= ReverseMoves;
         EventManager.OnPlayerUndo -= UndoMove;
-        EventManager.OnActivateSequence -= StartSequenceCoroutine;
+        EventManager.OnActivateSequence -= StartAutoMoves;
     }
 
-    void StartSequenceCoroutine()
+    public void StartAutoMoves()
     {
         _DoAutoMoves = true;
         StartCoroutine(FollowSequence());

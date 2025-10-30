@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿#if MM_UI
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -11,6 +13,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback will let you change the color of a target Image over time. You can also use it to command one or many MMImageShakers.")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("UI/Image")]
 	public class MMF_Image : MMF_Feedback
 	{
@@ -67,13 +70,14 @@ namespace MoreMountains.Feedbacks
 		public bool EnableOnPlay = true;
 		/// if this is true, the target disabled after the color over time change ends
 		[Tooltip("if this is true, the target disabled after the color over time change ends")]
-		public bool DisableOnSequenceEnd = true;
+		public bool DisableOnSequenceEnd = false;
 		/// if this is true, the target will be disabled when this feedbacks is stopped
 		[Tooltip("if this is true, the target will be disabled when this feedbacks is stopped")] 
-		public bool DisableOnStop = true;
+		public bool DisableOnStop = false;
 
 		protected Coroutine _coroutine;
 		protected Color _initialColor;
+		protected Color _initialInstantColor;
 
 		/// <summary>
 		/// On init we turn the Image off if needed
@@ -89,6 +93,15 @@ namespace MoreMountains.Feedbacks
 				{
 					Turn(false);
 				}
+
+				if (BoundImage == null)
+				{
+					Debug.LogWarning("[Image Feedback] The image feedback on "+Owner.name+" doesn't have a BoundImage, it won't work. You need to specify an Image in its inspector.");
+				}
+				else
+				{
+					_initialInstantColor = BoundImage.color;
+				}
 			}
 		}
 
@@ -99,7 +112,7 @@ namespace MoreMountains.Feedbacks
 		/// <param name="feedbacksIntensity"></param>
 		protected override void CustomPlayFeedback(Vector3 position, float feedbacksIntensity = 1.0f)
 		{
-			if (!Active || !FeedbackTypeAuthorized)
+			if (!Active || !FeedbackTypeAuthorized || (BoundImage == null))
 			{
 				return;
 			}
@@ -114,7 +127,7 @@ namespace MoreMountains.Feedbacks
 				case Modes.Instant:
 					if (ModifyColor)
 					{
-						BoundImage.color = InstantColor;
+						BoundImage.color = NormalPlayDirection ? InstantColor : _initialInstantColor;
 					}
 					break;
 				case Modes.OverTime:
@@ -122,6 +135,7 @@ namespace MoreMountains.Feedbacks
 					{
 						return;
 					}
+					if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 					_coroutine = Owner.StartCoroutine(ImageSequence());
 					break;
 			}
@@ -184,6 +198,12 @@ namespace MoreMountains.Feedbacks
 			{
 				Turn(false);    
 			}
+
+			if (_coroutine != null)
+			{
+				Owner.StopCoroutine(_coroutine);	
+			}
+			
 			_coroutine = null;
 		}
 
@@ -210,3 +230,4 @@ namespace MoreMountains.Feedbacks
 		}
 	}
 }
+#endif

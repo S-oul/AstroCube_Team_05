@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -9,6 +10,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback allows you to destroy a target gameobject, either via Destroy, DestroyImmediate, or SetActive:False")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("GameObject/Destroy")]
 	public class MMF_Destroy : MMF_Feedback
 	{
@@ -31,6 +33,10 @@ namespace MoreMountains.Feedbacks
 		/// the gameobject we want to change the active state of
 		[Tooltip("the game object we want to destroy")]
 		public GameObject TargetGameObject;
+		/// the optional list of extra gameobjects we want to change the active state of
+		[Tooltip("the optional list of extra gameobjects we want to change the active state of")]
+		public List<GameObject> ExtraTargetGameObjects;
+		
 		/// the selected destruction mode 
 		[Tooltip("the selected destruction mode")]
 		public Modes Mode;
@@ -49,6 +55,10 @@ namespace MoreMountains.Feedbacks
 				return;
 			}
 			ProceedWithDestruction(TargetGameObject);
+			foreach (GameObject go in ExtraTargetGameObjects)
+			{
+				ProceedWithDestruction(go);
+			}
 		}
         
 		/// <summary>

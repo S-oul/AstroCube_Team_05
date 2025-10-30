@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to an audio distortion filter to shake its values remapped along a curve 
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MMAudioFilterDistortionShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MM Audio Filter Distortion Shaker")]
 	[RequireComponent(typeof(AudioDistortionFilter))]
 	public class MMAudioFilterDistortionShaker : MMShaker
 	{
@@ -113,13 +113,16 @@ namespace MoreMountains.Feedbacks
 				_originalRelativeDistortion = RelativeDistortion;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeDistortion = distortionCurve;
-			RemapDistortionZero = remapMin * feedbacksIntensity;
-			RemapDistortionOne = remapMax * feedbacksIntensity;
-			RelativeDistortion = relativeDistortion;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeDistortion = distortionCurve;
+				RemapDistortionZero = remapMin * feedbacksIntensity;
+				RemapDistortionOne = remapMax * feedbacksIntensity;
+				RelativeDistortion = relativeDistortion;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

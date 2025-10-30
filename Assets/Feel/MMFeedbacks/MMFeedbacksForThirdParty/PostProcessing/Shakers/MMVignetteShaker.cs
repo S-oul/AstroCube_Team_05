@@ -10,7 +10,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	/// <summary>
 	/// Add this class to a Camera with a vignette post processing and it'll be able to "shake" its values by getting events
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMVignetteShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Vignette Shaker")]
 	#if MM_POSTPROCESSING
 	[RequireComponent(typeof(PostProcessVolume))]
 	#endif
@@ -156,18 +156,21 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalTargetColor = TargetColor;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeIntensity = intensity;
-			RemapIntensityZero = remapMin * feedbacksIntensity;
-			RemapIntensityOne = remapMax * feedbacksIntensity;
-			RelativeIntensity = relativeIntensity;
-			ForwardDirection = forwardDirection;
-			InterpolateColor = interpolateColor;
-			ColorCurve = colorCurve;
-			RemapColorZero = remapColorZero;
-			RemapColorOne = remapColorOne;
-			TargetColor = targetColor;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeIntensity = intensity;
+				RemapIntensityZero = remapMin * feedbacksIntensity;
+				RemapIntensityOne = remapMax * feedbacksIntensity;
+				RelativeIntensity = relativeIntensity;
+				ForwardDirection = forwardDirection;
+				InterpolateColor = interpolateColor;
+				ColorCurve = colorCurve;
+				RemapColorZero = remapColorZero;
+				RemapColorOne = remapColorOne;
+				TargetColor = targetColor;
+			}
 
 			Play();
 		}

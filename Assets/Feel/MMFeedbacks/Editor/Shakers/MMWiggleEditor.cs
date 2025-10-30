@@ -6,7 +6,7 @@ using UnityEngine;
 namespace MoreMountains.Feedbacks
 {
 	[CanEditMultipleObjects]
-	[CustomEditor(typeof(MMWiggle))]
+	[CustomEditor(typeof(MMWiggle), true)]
 	public class MMWiggleEditor : Editor
 	{
 		public struct WiggleEditorProperties
@@ -15,8 +15,11 @@ namespace MoreMountains.Feedbacks
 
 			public SerializedProperty WiggleType;
 			public SerializedProperty UseUnscaledTime;
+			public SerializedProperty TimeMultiplier;
 			public SerializedProperty RelativeAmplitude;
 			public SerializedProperty UniformValues;
+			public SerializedProperty ForceVectorLength;
+			public SerializedProperty ForcedVectorLength;
 			public SerializedProperty StartWigglingAutomatically;
 
 			public SerializedProperty SmoothPingPong;
@@ -97,8 +100,11 @@ namespace MoreMountains.Feedbacks
 			editorProperties.WigglePermitted = targetProperty.FindPropertyRelative("WigglePermitted");
 			editorProperties.WiggleType = targetProperty.FindPropertyRelative("WiggleType");
 			editorProperties.UseUnscaledTime = targetProperty.FindPropertyRelative("UseUnscaledTime");
+			editorProperties.TimeMultiplier = targetProperty.FindPropertyRelative("TimeMultiplier");
 			editorProperties.RelativeAmplitude = targetProperty.FindPropertyRelative("RelativeAmplitude");
 			editorProperties.UniformValues = targetProperty.FindPropertyRelative("UniformValues");
+			editorProperties.ForceVectorLength = targetProperty.FindPropertyRelative("ForceVectorLength");
+			editorProperties.ForcedVectorLength = targetProperty.FindPropertyRelative("ForcedVectorLength");
 			editorProperties.StartWigglingAutomatically = targetProperty.FindPropertyRelative("StartWigglingAutomatically");
 			editorProperties.SmoothPingPong = targetProperty.FindPropertyRelative("SmoothPingPong");
 			editorProperties.UseSpeedCurve = targetProperty.FindPropertyRelative("UseSpeedCurve");
@@ -185,6 +191,7 @@ namespace MoreMountains.Feedbacks
 				EditorGUILayout.PropertyField(editorProperties.WigglePermitted);
 				EditorGUILayout.PropertyField(editorProperties.WiggleType);
 				EditorGUILayout.PropertyField(editorProperties.UseUnscaledTime);
+				EditorGUILayout.PropertyField(editorProperties.TimeMultiplier);
 
 				if ((wiggleType == WiggleTypes.PingPong) || (wiggleType == WiggleTypes.Random))
 				{
@@ -201,6 +208,8 @@ namespace MoreMountains.Feedbacks
 					EditorGUILayout.PropertyField(editorProperties.AmplitudeMax);
 					EditorGUILayout.PropertyField(editorProperties.RelativeAmplitude);
 					EditorGUILayout.PropertyField(editorProperties.UniformValues);
+					EditorGUILayout.PropertyField(editorProperties.ForceVectorLength);
+					EditorGUILayout.PropertyField(editorProperties.ForcedVectorLength);
 					EditorGUILayout.PropertyField(editorProperties.FrequencyMin);
 					EditorGUILayout.PropertyField(editorProperties.FrequencyMax);
 					EditorGUILayout.PropertyField(editorProperties.PauseMin);
@@ -213,6 +222,8 @@ namespace MoreMountains.Feedbacks
 					EditorGUILayout.PropertyField(editorProperties.AmplitudeMax);
 					EditorGUILayout.PropertyField(editorProperties.RelativeAmplitude);
 					EditorGUILayout.PropertyField(editorProperties.UniformValues);
+					EditorGUILayout.PropertyField(editorProperties.ForceVectorLength);
+					EditorGUILayout.PropertyField(editorProperties.ForcedVectorLength);
 					EditorGUILayout.PropertyField(editorProperties.NoiseFrequencyMin);
 					EditorGUILayout.PropertyField(editorProperties.NoiseFrequencyMax);
 					EditorGUILayout.PropertyField(editorProperties.NoiseShiftMin);
@@ -228,6 +239,8 @@ namespace MoreMountains.Feedbacks
 					EditorGUILayout.PropertyField(editorProperties.RemapCurveOneMax);
 					EditorGUILayout.PropertyField(editorProperties.RelativeCurveAmplitude);
 					EditorGUILayout.PropertyField(editorProperties.UniformValues);
+					EditorGUILayout.PropertyField(editorProperties.ForceVectorLength);
+					EditorGUILayout.PropertyField(editorProperties.ForcedVectorLength);
 					EditorGUILayout.PropertyField(editorProperties.CurvePingPong);
 					EditorGUILayout.PropertyField(editorProperties.FrequencyMin);
 					EditorGUILayout.PropertyField(editorProperties.FrequencyMax);

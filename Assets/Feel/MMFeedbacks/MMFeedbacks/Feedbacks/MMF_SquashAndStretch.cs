@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Serialization;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -11,8 +12,9 @@ namespace MoreMountains.Feedbacks
 	/// This feedback will let you modify the scale of an object on an axis while the other two axis (or only one) get automatically modified to conserve mass
 	/// </summary>
 	[AddComponentMenu("")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("Transform/Squash and Stretch")]
-	[FeedbackHelp("This feedback will let you modify the scale of an object on an axis while the other two axis (or only one) get automatically modified to conserve mass.")]
+	[FeedbackHelp("This feedback will let you modify the scale of an object on an axis while the other two axis (or only one) get automatically modified to conserve mass. Careful, the object you'll target with this needs to have a normalized scale.")]
 	public class MMF_SquashAndStretch : MMF_Feedback
 	{
 		/// sets the inspector color for this feedback
@@ -30,7 +32,7 @@ namespace MoreMountains.Feedbacks
 		/// the possible modes this feedback can operate on
 		public enum Modes { Absolute, Additive, ToDestination }
 		/// the various axis on which to apply the squash and stretch
-		public enum PossibleAxis { XtoYZ, XtoY, XtoZ, YtoXZ, YtoX, YtoZ, ZtoXZ, ZtoX, ZtoY }
+		public enum PossibleAxis { XtoYZ, XtoY, XtoZ, YtoXZ, YtoX, YtoZ, ZtoXY, ZtoX, ZtoY }
 		/// the possible timescales for the animation of the scale
 		public enum TimeScales { Scaled, Unscaled }
 
@@ -128,7 +130,7 @@ namespace MoreMountains.Feedbacks
 				case PossibleAxis.YtoZ:
 					_initialAxisScale = SquashAndStretchTarget.localScale.y;
 					break;
-				case PossibleAxis.ZtoXZ:
+				case PossibleAxis.ZtoXY:
 					_initialAxisScale = SquashAndStretchTarget.localScale.z;
 					break;
 				case PossibleAxis.ZtoX:
@@ -168,6 +170,7 @@ namespace MoreMountains.Feedbacks
 					{
 						return;
 					}
+					if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 					_coroutine = Owner.StartCoroutine(AnimateScale(SquashAndStretchTarget, FeedbackDuration, AnimateCurve, Axis, RemapCurveZero, RemapCurveOne * intensityMultiplier));
 				}
 				if (Mode == Modes.ToDestination)
@@ -176,6 +179,7 @@ namespace MoreMountains.Feedbacks
 					{
 						return;
 					}
+					if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 					_coroutine = Owner.StartCoroutine(ScaleToDestination());
 				}                   
 			}
@@ -262,7 +266,8 @@ namespace MoreMountains.Feedbacks
 				yield return null;
 			}
 
-			ComputeAndApplyScale(1f, curve, remapCurveZero, remapCurveOne, targetTransform);
+			float endTime = NormalPlayDirection ? 1f : 0f;
+			ComputeAndApplyScale(endTime, curve, remapCurveZero, remapCurveOne, targetTransform);
 			_coroutine = null;
 			IsPlaying = false;
 			yield return null;
@@ -295,53 +300,54 @@ namespace MoreMountains.Feedbacks
 		/// <param name="newScale"></param>
 		protected virtual void ApplyScale(float newScale)
 		{
+			_newScale = _initialScale;
 			float invertScale = 1 / Mathf.Sqrt(newScale);
 			switch (Axis)
 			{
 				case PossibleAxis.XtoYZ:
-					_newScale.x = newScale;
-					_newScale.y = invertScale;
-					_newScale.z = invertScale;
+					_newScale.x = _initialScale.x * newScale;
+					_newScale.y = _initialScale.y * invertScale;
+					_newScale.z = _initialScale.z * invertScale;
 					break;
 				case PossibleAxis.XtoY:
-					_newScale.x = newScale;
-					_newScale.y = invertScale;
+					_newScale.x = _initialScale.x * newScale;
+					_newScale.y = _initialScale.y * invertScale;
 					_newScale.z = _initialScale.z;
 					break;
 				case PossibleAxis.XtoZ:
-					_newScale.x = newScale;
+					_newScale.x = _initialScale.x * newScale;
 					_newScale.y = _initialScale.y;
-					_newScale.z = invertScale;
+					_newScale.z = _initialScale.z * invertScale;
 					break;
 				case PossibleAxis.YtoXZ:
-					_newScale.x = invertScale;
-					_newScale.y = newScale;
-					_newScale.z = invertScale;
+					_newScale.x = _initialScale.x * invertScale;
+					_newScale.y = _initialScale.y * newScale;
+					_newScale.z = _initialScale.z * invertScale;
 					break;
 				case PossibleAxis.YtoX:
-					_newScale.x = invertScale;
-					_newScale.y = newScale;
+					_newScale.x = _initialScale.x * invertScale;
+					_newScale.y = _initialScale.y * newScale;
 					_newScale.z = _initialScale.z;
 					break;
 				case PossibleAxis.YtoZ:
-					_newScale.x = newScale;
+					_newScale.x = _initialScale.x * newScale;
 					_newScale.y = _initialScale.y;
-					_newScale.z = invertScale;
+					_newScale.z = _initialScale.z * invertScale;
 					break;
-				case PossibleAxis.ZtoXZ:
-					_newScale.x = invertScale;
-					_newScale.y = invertScale;
-					_newScale.z = newScale;
+				case PossibleAxis.ZtoXY:
+					_newScale.x = _initialScale.x * invertScale;
+					_newScale.y = _initialScale.y * invertScale;
+					_newScale.z = _initialScale.z * newScale;
 					break;
 				case PossibleAxis.ZtoX:
-					_newScale.x = invertScale;
+					_newScale.x = _initialScale.x * invertScale;
 					_newScale.y = _initialScale.y;
-					_newScale.z = newScale;
+					_newScale.z = _initialScale.z * newScale;
 					break;
 				case PossibleAxis.ZtoY:
 					_newScale.x = _initialScale.x;
-					_newScale.y = invertScale;
-					_newScale.z = newScale;
+					_newScale.y = _initialScale.y * invertScale;
+					_newScale.z = _initialScale.z * newScale;
 					break;
 			}
 		}

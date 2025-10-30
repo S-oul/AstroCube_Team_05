@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to a camera and it'll let you control its field of view over time, can be piloted by a MMFeedbackCameraFieldOfView
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Camera/MMCameraFieldOfViewShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Camera/MM Camera Field Of View Shaker")]
 	[RequireComponent(typeof(Camera))]
 	public class MMCameraFieldOfViewShaker : MMShaker
 	{
@@ -117,13 +117,16 @@ namespace MoreMountains.Feedbacks
 				_originalRelativeFieldOfView = RelativeFieldOfView;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeFieldOfView = distortionCurve;
-			RemapFieldOfViewZero = remapMin * feedbacksIntensity;
-			RemapFieldOfViewOne = remapMax * feedbacksIntensity;
-			RelativeFieldOfView = relativeDistortion;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeFieldOfView = distortionCurve;
+				RemapFieldOfViewZero = remapMin * feedbacksIntensity;
+				RemapFieldOfViewOne = remapMax * feedbacksIntensity;
+				RelativeFieldOfView = relativeDistortion;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

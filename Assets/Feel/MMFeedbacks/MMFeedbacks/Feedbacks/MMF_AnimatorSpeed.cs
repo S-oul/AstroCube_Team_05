@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -10,6 +11,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback will let you change the speed of a target animator, either once, or instantly and then reset it, or interpolate it over time")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("Animation/Animator Speed")]
 	public class MMF_AnimatorSpeed : MMF_Feedback 
 	{
@@ -24,6 +26,7 @@ namespace MoreMountains.Feedbacks
 		public override string RequiresSetupText { get { return "This feedback requires that a BoundAnimator be set to be able to work properly. You can set one below."; } }
 		#endif
 		public override bool HasRandomness => true;
+		public override bool CanForceInitialValue => true;
 		public override bool HasAutomatedTargetAcquisition => true;
 		protected override void AutomateTargetAcquisition() => BoundAnimator = FindAutomatedTarget<Animator>();
 
@@ -71,7 +74,7 @@ namespace MoreMountains.Feedbacks
 
 			if (BoundAnimator == null)
 			{
-				Debug.LogWarning("No animator was set for " + Owner.name);
+				Debug.LogWarning("[Animator Speed Feedback] The animator speed feedback on "+Owner.name+" doesn't have a BoundAnimator, it won't work. You need to specify one in its inspector.");
 				return;
 			}
 
@@ -86,6 +89,7 @@ namespace MoreMountains.Feedbacks
 			}
 			else
 			{
+				if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 				_coroutine = Owner.StartCoroutine(ChangeSpeedCo());
 			}
 		}
@@ -100,7 +104,7 @@ namespace MoreMountains.Feedbacks
 			{
 				IsPlaying = true;
 				BoundAnimator.speed = DetermineNewSpeed();
-				yield return MMCoroutine.WaitFor(Duration);
+				yield return WaitFor(Duration);
 				BoundAnimator.speed = _initialSpeed;	
 				IsPlaying = false;
 			}

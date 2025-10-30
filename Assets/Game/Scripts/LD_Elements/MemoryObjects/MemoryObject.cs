@@ -6,15 +6,19 @@ using UnityEngine;
 
 public class MemoryObject : MonoBehaviour, IInteractable
 {
-    [SerializeField] private MemoryCharacter _memoryCharacterPrefab;
-    [SerializeField] private List<Vector3> _characterPositions = new();
+    //[SerializeField] private MemoryCharacter _memoryCharacterPrefab;
+    //[SerializeField] private List<Vector3> _characterPositions = new();
+    [SerializeField] private List<MemoryVFXController> _memories = new();
     [SerializeField] private List<string> _subtitles = new();
     [SerializeField] float _subtitleDurationByLetter;
     
-    private List<MemoryCharacter> _characters = new();
+    //private List<MemoryCharacter> _characters = new();
+
+    private bool _wasPlayed;
 
     private void Awake()
     {
+        /*
         foreach (Vector3 position in _characterPositions)
         {
             MemoryCharacter memChar = Instantiate(_memoryCharacterPrefab, transform.position + position, Quaternion.identity);
@@ -22,13 +26,16 @@ public class MemoryObject : MonoBehaviour, IInteractable
             memChar.gameObject.SetActive(false);
             _characters.Add(memChar);
         }
+        */
     }
 
     private IEnumerator StartMemory()
     {
-        foreach (MemoryCharacter memChar in _characters)
+        _wasPlayed = true;
+        foreach (MemoryVFXController mem in _memories)
         {
-            memChar.gameObject.SetActive(true);
+            mem.StartVFX();
+            //memChar.gameObject.SetActive(true);
         }
         TMP_Text text = GameObject.Find("Subtitles").GetComponent<TMP_Text>();
         foreach (string subtitle in _subtitles)
@@ -42,15 +49,18 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
     private void OnDrawGizmos()
     {
+        /*
         foreach (Vector3 characterPosition in _characterPositions)
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position + characterPosition, 0.1f);
         }
+        */
     }
 
     public void OnInteract()
     {
-        StartCoroutine(StartMemory());
+        if(!_wasPlayed)
+            StartCoroutine(StartMemory());
     }
 }

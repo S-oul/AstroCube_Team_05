@@ -9,6 +9,7 @@ namespace Lofelt.NiceVibrations
     public class BallDemoWall : MonoBehaviour
     {
         protected RectTransform _rectTransform;
+		#if MM_PHYSICS2D
         protected BoxCollider2D _boxCollider2D;
 
         protected virtual void OnEnable()
@@ -18,5 +19,6 @@ namespace Lofelt.NiceVibrations
 
             _boxCollider2D.size = new Vector2(_rectTransform.rect.size.x, _rectTransform.rect.size.y);
         }
+		#endif
     }
 }

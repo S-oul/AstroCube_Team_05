@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to a camera and it'll let you control its near and far clipping planes
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Camera/MMCameraClippingPlanesShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Camera/MM Camera Clipping Planes Shaker")]
 	[RequireComponent(typeof(Camera))]
 	public class MMCameraClippingPlanesShaker : MMShaker
 	{
@@ -141,16 +141,19 @@ namespace MoreMountains.Feedbacks
 				_originalRelativeClippingPlanes = RelativeClippingPlanes;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeNear = animNearCurve;
-			RemapNearZero = remapNearMin * feedbacksIntensity;
-			RemapNearOne = remapNearMax * feedbacksIntensity;
-			ShakeFar = animFarCurve;
-			RemapFarZero = remapFarMin * feedbacksIntensity;
-			RemapFarOne = remapFarMax * feedbacksIntensity;
-			RelativeClippingPlanes = relativeValues;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeNear = animNearCurve;
+				RemapNearZero = remapNearMin * feedbacksIntensity;
+				RemapNearOne = remapNearMax * feedbacksIntensity;
+				ShakeFar = animFarCurve;
+				RemapFarZero = remapFarMin * feedbacksIntensity;
+				RemapFarOne = remapFarMax * feedbacksIntensity;
+				RelativeClippingPlanes = relativeValues;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}
