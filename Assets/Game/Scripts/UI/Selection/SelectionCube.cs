@@ -75,8 +75,6 @@ public class SelectionCube : MonoBehaviour
                 renderer.material = Instantiate(renderer.material);
                 _selectionCurrentValues.Add(renderer, new SelectionTweens());
                 _selectionCurrentValues[renderer] = new SelectionTweens();
-                if(_isTileLocked)
-                    renderer.material.SetFloat("_IsLocked", _isTileLocked ? 1f : 0f);
             }
         }
 
@@ -115,12 +113,14 @@ public class SelectionCube : MonoBehaviour
                 case SelectionMode.CUBE:
                     if (renderer.transform.CompareTag("Floor"))
                     {
+                        renderer.material.SetFloat("_IsLocked", 0f);
                         _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     }
                     break;
                 case SelectionMode.LOCKED:
                     if (renderer.transform.CompareTag("Floor"))
                     {
+                        renderer.material.SetFloat("_IsLocked", 1f);
                         _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     } 
                     break;
