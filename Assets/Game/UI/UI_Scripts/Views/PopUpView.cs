@@ -1,29 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Unity.PlasticSCM.Editor.WebApi;
 
 public class PopUpView : UIView
 {
     [Header("PopUp View Elements")]
-    [SerializeField] TMP_Text titleText;
-    [SerializeField] TMP_Text messageText;
-    [SerializeField] Button confirmButton;
-    [SerializeField] Button cancelButton;
-    [SerializeField] TMP_Text confirmButtonText;
-    [SerializeField] TMP_Text cancelButtonText;
+    [SerializeField] private TMP_Text titleText;
+    [SerializeField] private TMP_Text messageText;
+    [SerializeField] private Button confirmButton;
+    [SerializeField] private Button cancelButton;
+    [SerializeField] private TMP_Text confirmButtonText;
+    [SerializeField] private TMP_Text cancelButtonText;
 
     private PopUpData currentData;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         gameObject.SetActive(false);
 
-        confirmButton.onClick.AddListener(OnConfirm);
-        cancelButton.onClick.AddListener(OnCancel);
+        if (confirmButton != null)
+            confirmButton.onClick.AddListener(OnConfirm);
+
+        if (cancelButton != null)
+            cancelButton.onClick.AddListener(OnCancel);
     }
 
     public void ShowPopup(PopUpData popUpData)
@@ -31,43 +31,35 @@ public class PopUpView : UIView
         currentData = popUpData;
         UpdateContent();
         Show();
-
-        Time.timeScale = 0f;
-    }
-
-    public override void Show()
-    {
-        base.Show();
-        gameObject.SetActive(true);
-    }
-
-    public override void Hide()
-    {
-        base.Hide();
-        Time.timeScale = 1f;
-        gameObject.SetActive(false);
     }
 
     private void UpdateContent()
     {
-        titleText.text = currentData.title;
-        messageText.text = currentData.message;
-        confirmButtonText.text = currentData.confirmText;
-        cancelButtonText.text = currentData.cancelText;
-        // !!!!!!!!!!!! penser a rajouter type de popup
-        cancelButton.gameObject.SetActive(currentData.popUpType == PopUpType.Info || currentData.popUpType == PopUpType.LevelConfirmationPopUp || currentData.popUpType == PopUpType.SaveErasePopUp);
+        if (titleText != null)
+            titleText.text = currentData.title;
+
+        if (messageText != null)
+            messageText.text = currentData.message;
+
+        if (confirmButtonText != null)
+            confirmButtonText.text = currentData.confirmText;
+
+        if (cancelButtonText != null)
+            cancelButtonText.text = currentData.cancelText;
+
+        bool showCancel = currentData.popUpType != PopUpType.Info;
+        cancelButton.gameObject.SetActive(showCancel);
     }
 
     private void OnConfirm()
     {
-        currentData.onConfirm?.Invoke();
+        currentData?.onConfirm?.Invoke();
         Hide();
     }
 
     private void OnCancel()
     {
-        currentData.onCancel?.Invoke();
+        currentData?.onCancel?.Invoke();
         Hide();
     }
-
 }

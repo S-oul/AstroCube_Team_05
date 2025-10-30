@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
 public abstract class UIView : MonoBehaviour
 {
     [SerializeField] protected CanvasGroup canvasGroup;
@@ -19,37 +18,42 @@ public abstract class UIView : MonoBehaviour
 
     private Coroutine fadeCoroutine;
 
-
     protected virtual void Awake()
     {
         if (canvasGroup == null)
             canvasGroup = GetComponent<CanvasGroup>();
     }
 
-
     public virtual void Show()
     {
-        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
 
         gameObject.SetActive(true);
 
-        fadeCoroutine = StartCoroutine(FadeCanvas(0f, 1f, onComplete: ()=>
+        fadeCoroutine = StartCoroutine(FadeCanvas(0f, 1f, onComplete: () =>
         {
             if (firstSelected != null)
                 StartCoroutine(SelectAfterFrame());
-        
         }));
     }
 
     public virtual void Hide()
     {
-        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
-        fadeCoroutine = StartCoroutine(FadeCanvas(1f, 0f, () => gameObject.SetActive(false)));
+        if (!gameObject.activeInHierarchy)
+            return;
+
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeCanvas(1f, 0f));
     }
 
     public void HideImmediate()
     {
-        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
@@ -58,6 +62,17 @@ public abstract class UIView : MonoBehaviour
 
     private IEnumerator FadeCanvas(float from, float to, System.Action onComplete = null)
     {
+        if (viewFadeDuration <= 0f)
+        {
+            canvasGroup.alpha = to;
+            canvasGroup.interactable = to > 0.99f;
+            canvasGroup.blocksRaycasts = to > 0.99f;
+            if (to < 0.01f)
+                gameObject.SetActive(false);
+            onComplete?.Invoke();
+            yield break;
+        }
+
         float elapsed = 0f;
         canvasGroup.alpha = from;
         canvasGroup.interactable = false;
@@ -65,23 +80,20 @@ public abstract class UIView : MonoBehaviour
 
         while (elapsed < viewFadeDuration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime; 
             float t = Mathf.Clamp01(elapsed / viewFadeDuration);
             canvasGroup.alpha = Mathf.Lerp(from, to, t);
             yield return null;
         }
 
         canvasGroup.alpha = to;
-        if (to > 0.99f)
-        {
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-        }
-        else
-        {
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
+
+        bool visible = to > 0.99f;
+        canvasGroup.interactable = visible;
+        canvasGroup.blocksRaycasts = visible;
+
+        if (!visible)
+            gameObject.SetActive(false);
 
         onComplete?.Invoke();
     }
@@ -89,7 +101,7 @@ public abstract class UIView : MonoBehaviour
     private IEnumerator SelectAfterFrame()
     {
         yield return null;
-        EventSystem.current?.SetSelectedGameObject(firstSelected.gameObject);
+        if (EventSystem.current != null && firstSelected != null)
+            EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
     }
 }
-

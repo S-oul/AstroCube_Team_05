@@ -73,7 +73,7 @@ public class MainMenuView : UIView
     private int c = 0;
     private void OnTitleClicked()
     {
-        if (c > 1)
+        if (c > 19)
         {
             Hide();
             _uiManager.Show<AlternateScreenView>();
