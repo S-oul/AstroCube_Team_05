@@ -23,7 +23,10 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
     private void CreateGUI()
     {
         _baseCube = GameObject.Find("Main Rubik's Cube ");
+        _positionSaver = _baseCube.GetComponent<CubePositionSaver>();
+        
         GameObject copyCube = Instantiate(_baseCube, _baseCube.transform.position, _baseCube.transform.rotation);
+        DestroyImmediate(copyCube.GetComponent<CubePositionSaver>());
         copyCube.name = "Temporary CopyCube";
         
         _rubiksMovement = copyCube.GetComponentInChildren<RubiksMovement>();
@@ -39,23 +42,16 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
                     _baseCube.transform.GetChild(i).GetChild(j);
             }
         }
+        
+        if(_positionSaver.CompletedPositionSavedCount <= 0)
+            SavePosition(false);
 
         CenterCamera();
     }
 
     private void OnDestroy()
     {
-        GameObject copyCube = GameObject.Find("Temporary CopyCube");
-        for (int i = 0; i < copyCube.transform.childCount; i++)
-        {
-            _copyToOriginalObjects[copyCube.transform.GetChild(i)].localPosition = copyCube.transform.GetChild(i).localPosition;
-            _copyToOriginalObjects[copyCube.transform.GetChild(i)].localRotation = copyCube.transform.GetChild(i).localRotation;
-            for (int j = 0; j < copyCube.transform.GetChild(i).childCount; j++)
-            {
-                _copyToOriginalObjects[copyCube.transform.GetChild(i).GetChild(j)].localPosition = copyCube.transform.GetChild(i).GetChild(j).localPosition;
-                _copyToOriginalObjects[copyCube.transform.GetChild(i).GetChild(j)].localRotation = copyCube.transform.GetChild(i).GetChild(j).localRotation;
-            }
-        }
+        ApplyPositionsOnRealCube();
         
         DestroyImmediate(GameObject.Find("Temporary CopyCube"));
         
@@ -209,28 +205,48 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
         GUILayout.Space(10);
         GUILayout.Label("Start Position", new GUIStyle(GUI.skin.label){fontSize = 20, fontStyle = FontStyle.Bold});
         GUILayout.Space(5);
+        bool startPositionsExists = _positionSaver.StartPositionSavedCount > 0;
         EditorGUILayout.BeginHorizontal();
         {
             GUI.backgroundColor = Color.blue;
-            if (GUILayout.Button("Save", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}));
+            if (GUILayout.Button("Save", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}))
+                SavePosition(true);
             GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("Apply", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}));
             
+            GUI.enabled = startPositionsExists;
+            if (GUILayout.Button("Apply", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}))
+                ApplyPosition(true);
+            GUI.enabled = true;
         }
         EditorGUILayout.EndHorizontal();
+        GUI.color = Color.red;
+        if(!startPositionsExists)
+            GUILayout.Label("No positions detected");
+        GUI.color = Color.white;
         
         GUILayout.Space(10);
         GUILayout.Label("Completed Position", new GUIStyle(GUI.skin.label){fontSize = 20, fontStyle = FontStyle.Bold});
+        GUILayout.Label("Saved automatically at first start, can be overwritten", new GUIStyle(GUI.skin.label){fontSize = 10});
         GUILayout.Space(5);
+        bool completedPositionsExists = _positionSaver.CompletedPositionSavedCount > 0;
         EditorGUILayout.BeginHorizontal();
         {
             GUI.backgroundColor = Color.blue;
-            if (GUILayout.Button("Save", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}));
+            if (GUILayout.Button("Save", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}))
+                SavePosition(false);
             GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("Apply", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}));
-            
+
+            GUI.enabled = completedPositionsExists;
+            if (GUILayout.Button("Apply", new GUIStyle(GUI.skin.button){fontSize = 15, fixedHeight = 30}))
+                ApplyPosition(false);
+            GUI.enabled = true;
+
         }
         EditorGUILayout.EndHorizontal();
+        GUI.color = Color.red;
+        if(!completedPositionsExists)
+            GUILayout.Label("No positions detected");
+        GUI.color = Color.white;
     }
 
     private void CenterCamera()
@@ -302,6 +318,62 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
                         break;
                 }
                 break;
+        }
+    }
+
+    private void ApplyPositionsOnRealCube()
+    {
+        GameObject copyCube = GameObject.Find("Temporary CopyCube");
+        for (int i = 0; i < copyCube.transform.childCount; i++)
+        {
+            _copyToOriginalObjects[copyCube.transform.GetChild(i)].localPosition = copyCube.transform.GetChild(i).localPosition;
+            _copyToOriginalObjects[copyCube.transform.GetChild(i)].localRotation = copyCube.transform.GetChild(i).localRotation;
+            EditorUtility.SetDirty(_copyToOriginalObjects[copyCube.transform.GetChild(i)].gameObject);
+        
+            for (int j = 0; j < copyCube.transform.GetChild(i).childCount; j++)
+            {
+                _copyToOriginalObjects[copyCube.transform.GetChild(i).GetChild(j)].localPosition = copyCube.transform.GetChild(i).GetChild(j).localPosition;
+                _copyToOriginalObjects[copyCube.transform.GetChild(i).GetChild(j)].localRotation = copyCube.transform.GetChild(i).GetChild(j).localRotation;
+                EditorUtility.SetDirty(_copyToOriginalObjects[copyCube.transform.GetChild(i).GetChild(j)].gameObject);
+            }
+        }
+    }
+    
+    private void SavePosition(bool isStartPosition)
+    {
+        ApplyPositionsOnRealCube();
+        if (isStartPosition)
+        {
+            _positionSaver.SaveStartCubeState();
+        }
+        else
+        {
+            _positionSaver.SaveCompletedCubeState();
+        }
+    }
+
+    private void ApplyPosition(bool isStartPosition)
+    {
+        Dictionary<GameObject, TransformState> positions;
+        if (isStartPosition)
+        {
+            positions = _positionSaver.GetStartCubeState();
+        }
+        else
+        {
+            positions = _positionSaver.GetCompletedCubeState();
+        }
+    
+        foreach(GameObject key in positions.Keys)
+        {
+            key.transform.localPosition = positions[key].localPosition;
+            key.transform.localRotation = positions[key].localRotation;
+        }
+
+        foreach (Transform copyTransform in _copyToOriginalObjects.Keys)
+        {
+            copyTransform.localPosition = _copyToOriginalObjects[copyTransform].localPosition;
+            copyTransform.localRotation = _copyToOriginalObjects[copyTransform].localRotation;
         }
     }
 }
