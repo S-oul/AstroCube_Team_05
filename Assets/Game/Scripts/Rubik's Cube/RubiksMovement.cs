@@ -5,9 +5,13 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
-using UnityEditor;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 [ExecuteAlways]
 public class RubiksMovement : MonoBehaviour
@@ -674,7 +678,7 @@ public class RubiksMovement : MonoBehaviour
             }
         }
 
-        if (isMiddle) middleGameObject.parent = axis;
+        if (isMiddle) middleGameObject.SetParent(axis);
         int direction = clockWise ? 1 : -1;
 
         Quaternion startRotation = axis.localRotation;
@@ -696,7 +700,7 @@ public class RubiksMovement : MonoBehaviour
 
         if (isMiddle)
         {
-            middleGameObject.parent = transform.parent;
+            middleGameObject.SetParent(transform.parent);
         }
 
         _isRotating = false;
