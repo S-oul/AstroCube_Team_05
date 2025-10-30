@@ -1,66 +1,65 @@
 using NaughtyAttributes;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class AlphaGameObject : MonoBehaviour
 {
-    [SerializeField] GameObject ToDisappearObj;
-    [SerializeField] GameObject ToAppearObj;
-
-    [SerializeField] float TimeToTransi = 3f;
-
-    MeshRenderer ToDisappear;
-    MeshRenderer ToAppear;
-
-    Collider ToDisappearCol;
-    Collider ToAppearCol;
+    [SerializeField] GameObject _obj;
+    [SerializeField] float timeToTransi = 3f;
+    [SerializeField] float treshHoldForCollider = .2f;
+    [SerializeField] bool MakeAppear = true;
+    MeshRenderer objMat;
+    Collider objCol;
 
     void Start()
     {
-        ToDisappear = ToDisappearObj.GetComponent<MeshRenderer>();
-        ToAppear = ToAppearObj.GetComponent<MeshRenderer>();
-
-        ToDisappearCol = ToDisappearObj.GetComponent<Collider>();
-        ToAppearCol = ToAppearObj.GetComponent<Collider>();
-
-        ToAppear.materials[0].color = new Color(1, 1, 1, 0);
-        ToAppearCol.isTrigger = false;
+        objMat = _obj.GetComponent<MeshRenderer>();
+        objCol = _obj.GetComponent<Collider>();
+        
+        
+        objMat.materials[0].color = new Color(1, 1, 1, MakeAppear? 0:1);
+        
+        objCol.enabled = !MakeAppear;
+        
     }
 
+
+    Coroutine cor;
     [Button]
-    void FadeOut()
+    public void FadeOut()
     {
-        StartCoroutine(FadeOutObject());
+        if (cor != null) return;
+        objCol.enabled = false;
+
+        cor = StartCoroutine(FadeOutObject());
     }
 
     public IEnumerator FadeOutObject()
     {
         float timeSinceStart = 0;
         float percent = 0;
+        bool doOnce = false; // puisqu'on est sur unreal;
 
-
-        while (timeSinceStart < TimeToTransi)
+        while (timeSinceStart < timeToTransi)
         {
             timeSinceStart += Time.deltaTime;
-            percent = timeSinceStart / TimeToTransi;
+            percent = timeSinceStart / timeToTransi;
 
-            print(timeSinceStart + " / " + percent + "%");
-
-            if (percent > 0.75f && ToDisappearCol.isTrigger)
+            if (percent > treshHoldForCollider && !doOnce)
             {
-                ToAppearCol.isTrigger = true;
-                ToDisappearCol.isTrigger = false;
+                doOnce = true;
+                objCol.enabled = MakeAppear;
             } 
 
-            
-            ToDisappear.materials[0].color = new Color(1, 1, 1, 1 - percent);
-            ToAppear.materials[0].color = new Color(1, 1, 1, percent);
+            objMat.materials[0].color = new Color(1, 1, 1, MakeAppear? percent : 1 - percent);
 
             yield return new WaitForEndOfFrame();
         }
+        
+        objMat.materials[0].color = new Color(1, 1, 1, MakeAppear? 1:0);
 
-        ToAppear.materials[0].color = new Color(1, 1, 1, 1);
-        ToDisappear.materials[0].color = new Color(1, 1, 1, 0);
-
+        MakeAppear = !MakeAppear;   
+        cor = null;
     }
 }
