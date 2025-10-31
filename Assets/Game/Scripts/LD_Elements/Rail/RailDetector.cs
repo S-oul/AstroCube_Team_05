@@ -24,19 +24,6 @@ public class RailDetector : MonoBehaviour
     {
         baseLayer = gameObject.layer;
     }
-
-    private void Awake()
-    {
-        EventManager.OnEndCubeRotation += CheckForRails;
-        EventManager.OnStartCubeRotation += LaunchDelay;
-    }
-    private void OnDisable()
-    {
-        EventManager.OnEndCubeRotation -= CheckForRails;
-        EventManager.OnStartCubeRotation -= LaunchDelay;
-
-    }
-
     void LaunchDelay()
     {
         StartCoroutine(DelayCheck());

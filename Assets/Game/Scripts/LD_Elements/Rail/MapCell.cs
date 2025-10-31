@@ -1,3 +1,5 @@
+using AmplifyShaderEditor;
+using Mono.Cecil.Cil;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +8,17 @@ public class MapCell : MonoBehaviour
 {
     Vector2 localPosOnFace;
 
+
+    public bool startRail;
+
     //Local
     public bool Up;
     public bool Left;
     public bool Down;
     public bool Right;
 
-    public Vector2 LocalPosOnFace { get => localPosOnFace; set => localPosOnFace = value; }
+    public Vector2 LocalPosOnFace { get => localPosOnFace; set => localPosOnFace = value; } // On Set Create 3x3Matrix?
+
 
     [Button]
     public void DoSomething()
@@ -26,10 +32,4 @@ public class MapCell : MonoBehaviour
         all[3].gameObject.SetActive(Right);
 
     }
-
-    MapCell()
-    {
-
-    }
-
 }
