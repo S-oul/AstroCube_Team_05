@@ -167,6 +167,32 @@ public class CustomisedSettings : ScriptableObject
         }
     }
 
+    public bool defaultOneHandMode => _defaultOneHandMode;
+    public bool customOneHandMode
+    {
+        get => _customOneHandMode ?? defaultOneHandMode;
+        set
+        {
+            _customOneHandMode = value;
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+    }
+
+    public bool defaultCorrectActions => _defaultCorrectActions;
+    public bool customCorrectActions
+    {
+        get => _customCorrectActions ?? defaultCorrectActions;
+        set
+        {
+            _customCorrectActions = value;
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+    }
+
     public bool defaultPreview => _defaultPreview;
     public bool customPreview
     {
@@ -247,6 +273,14 @@ public class CustomisedSettings : ScriptableObject
     [SerializeField, Label("Default")] bool _defaultSubtitles;
     bool? _customSubtitles;
 
+    [Header("One Hand Mode")]
+    [SerializeField, Label("Default")] bool _defaultOneHandMode;
+    bool? _customOneHandMode;
+
+    [Header("Correct Actions")]
+    [SerializeField, Label("Default")] bool _defaultCorrectActions;
+    bool? _customCorrectActions;
+
 
     public void SaveRuntimeValues()
     {
@@ -258,6 +292,9 @@ public class CustomisedSettings : ScriptableObject
         PlayerPrefs.SetInt("Setting_MotionBlur", customMotionBlur ? 1 : 0);
         PlayerPrefs.SetInt("Setting_Vibration", customVibration ? 1 : 0);
         PlayerPrefs.SetInt("Setting_Preview", customPreview ? 1 : 0);
+        PlayerPrefs.SetInt("Setting_Subtitles", customSubtitles ? 1 : 0);
+        PlayerPrefs.SetInt("Setting_OneHandMode", customOneHandMode ? 1 : 0);
+        PlayerPrefs.SetInt("Setting_CorrectActions", customCorrectActions ? 1 : 0);
 
         PlayerPrefs.SetFloat("Setting_FOV", customFov);
         PlayerPrefs.SetFloat("Setting_MouseSensitivity", customMouse);
@@ -320,6 +357,25 @@ public class CustomisedSettings : ScriptableObject
         else
         {
             _customFov = defaultFOV;
+        }
+
+      
+        if(PlayerPrefs.HasKey("OneHandMode"))
+        {
+            customOneHandMode = PlayerPrefs.GetInt("OneHandMode") == 1;
+        }
+        else
+        {
+            customOneHandMode = defaultOneHandMode;
+        }
+
+        if (PlayerPrefs.HasKey("CorrectActions"))
+        {
+            customCorrectActions = PlayerPrefs.GetInt("CorrectActions") == 1;
+        }
+        else
+        {
+            customCorrectActions = defaultCorrectActions;
         }
 
         if (PlayerPrefs.HasKey("Setting_MouseSensitivity"))

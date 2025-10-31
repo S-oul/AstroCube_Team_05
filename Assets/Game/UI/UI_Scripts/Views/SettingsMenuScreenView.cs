@@ -39,6 +39,8 @@ public class SettingsMenuScreenView : UIView
 
     [SerializeField] private UIToggleButton rumbleButton;
     [SerializeField] private UIToggleButton previewButton;
+    [SerializeField] private UIToggleButton oneHandedButton;
+    [SerializeField] private UIToggleButton correctActionButton;
 
 
     [Header("Others")]
@@ -47,6 +49,7 @@ public class SettingsMenuScreenView : UIView
 
     [Header("Settings Referendes")]
     [SerializeField] private CustomisedSettings _customisedSettings;
+    
 
 
 
@@ -73,6 +76,8 @@ public class SettingsMenuScreenView : UIView
 
             { "Rumble :", "Enables/disables the controller rumble"},
             { "Preview Hints :", "Enables/disables the preview feature"},
+            { "One Handed Mode :", "Enables/disables the one handed mode"},
+            { "Correct Action Feedback :", "Enables/disables the correct action feedback"}
         };
 
 
@@ -96,12 +101,16 @@ public class SettingsMenuScreenView : UIView
         motionBlurButton.onToggleChanged.AddListener(OnMotionBlurToggled);
         rumbleButton.onToggleChanged.AddListener(OnRumbleToggled);
         previewButton.onToggleChanged.AddListener(OnPreviewToggled);
+        oneHandedButton.onToggleChanged.AddListener(OnOneHandToggled);
+        correctActionButton.onToggleChanged.AddListener(OnCorrectActionToggled);
 
         backButton.onClick.AddListener(OnQuitClicked);
 
         motionBlurButton.SetState(_customisedSettings.customMotionBlur, false);
         rumbleButton.SetState(_customisedSettings.customVibration, false);
         previewButton.SetState(_customisedSettings.customPreview, false);
+        oneHandedButton.SetState(_customisedSettings.customOneHandMode, false);
+        correctActionButton.SetState(_customisedSettings.customCorrectActions, false);
 
         fovSlider.minValue = _customisedSettings.minFOV;
         fovSlider.maxValue = _customisedSettings.maxFOV;
@@ -173,6 +182,23 @@ public class SettingsMenuScreenView : UIView
         _customisedSettings.customPreview = state;
         _customisedSettings.SaveRuntimeValues();
 
+    }
+
+    private void OnOneHandToggled(bool state)
+    {
+        Debug.Log("One Handed toggled");
+        _customisedSettings.customOneHandMode = state;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.LogError("Not implemented yet");
+
+    }
+
+    private void OnCorrectActionToggled(bool state)
+    {
+        Debug.Log("Correct Action toggled");
+        _customisedSettings.customCorrectActions = state;
+        _customisedSettings.SaveRuntimeValues();
+        Debug.LogError("Not implemented yet");
     }
 
     public void OnGeneralSoundSliderValueChanged(float value)
@@ -263,6 +289,8 @@ public class SettingsMenuScreenView : UIView
 
         AddHover(rumbleButton.gameObject, "Rumble :");
         AddHover(previewButton.gameObject, "Preview Hints :");
+        AddHover(oneHandedButton.gameObject, "One Handed Mode :");
+        AddHover(correctActionButton.gameObject, "Correct Action Feedback :");  
 
     }
 
