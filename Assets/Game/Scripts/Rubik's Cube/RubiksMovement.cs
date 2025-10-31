@@ -111,6 +111,14 @@ public class RubiksMovement : MonoBehaviour
         {
             EventManager.OnActivateSequence += StartAutoMoves;
         }
+        
+        #if UNITY_EDITOR
+        _axis.Clear();
+        for (int i = 1; i < transform.childCount; i++)
+        {
+            _axis.Add(transform.GetChild(i));
+        }
+        #endif
     }
 
     void OnDisable()

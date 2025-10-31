@@ -22,7 +22,30 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
 
     private void CreateGUI()
     {
-        _baseCube = GameObject.Find("Main Rubik's Cube ");
+        var cubeList = FindObjectsByType<RubicsCube>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+        if (cubeList.Length == 1)
+        {
+            GenerateCube(cubeList[0].gameObject);
+        }
+        
+    }
+
+    private void GenerateCube(GameObject newBaseCube)
+    {
+        foreach (RubicsCube cubes in FindObjectsByType<RubicsCube>(FindObjectsInactive.Include,
+                     FindObjectsSortMode.InstanceID))
+        {
+            if (cubes.gameObject.name == "Temporary CopyCube")
+            {
+                DestroyImmediate(cubes.gameObject);
+            }
+            else
+            {
+                cubes.gameObject.SetActive(true);
+            }
+        }
+
+        _baseCube = newBaseCube;
         _positionSaver = _baseCube.GetComponent<CubePositionSaver>();
         
         GameObject copyCube = Instantiate(_baseCube, _baseCube.transform.position, _baseCube.transform.rotation);
@@ -79,23 +102,33 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(20);
+        
+        _baseCube = (GameObject) EditorGUILayout.ObjectField("Base Cube", _baseCube, typeof(GameObject), true);
+        if (GUILayout.Button("Update Cube", new GUIStyle(GUI.skin.button) { fixedHeight = 40, margin = new RectOffset(10, 10, 10, 10), fontSize = 20 }))
+        {
+            GenerateCube(_baseCube);
+        }
+        EditorGUILayout.Space(20);
 
+        if (!_baseCube || !GameObject.Find("Temporary CopyCube"))
+            return;
+        
         EditorGUILayout.BeginHorizontal();
         {
             GUILayout.Space(35);
             if (GUILayout.Button("↙", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 3, true);
+                ExecuteRotation(EditorCubeAxis.Depth, 1, true);
             if (GUILayout.Button("↙", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
                 ExecuteRotation(EditorCubeAxis.Depth, 2, true);
             if (GUILayout.Button("↙", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 1, true);
+                ExecuteRotation(EditorCubeAxis.Depth, 3, true);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("↘", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 1, false);
+                ExecuteRotation(EditorCubeAxis.Depth, 3, false);
             if (GUILayout.Button("↘", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
                 ExecuteRotation(EditorCubeAxis.Depth, 2, false);
             if (GUILayout.Button("↘", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 3, false);
+                ExecuteRotation(EditorCubeAxis.Depth, 1, false);
             GUILayout.Space(35);
             
         }
@@ -175,18 +208,18 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
         {
             GUILayout.Space(35);
             if (GUILayout.Button("↖", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 3, false);
+                ExecuteRotation(EditorCubeAxis.Depth, 1, false);
             if (GUILayout.Button("↖", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
                 ExecuteRotation(EditorCubeAxis.Depth, 2, false);
             if (GUILayout.Button("↖", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 1, false);
+                ExecuteRotation(EditorCubeAxis.Depth, 3, false);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("↗", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 1, true);
+                ExecuteRotation(EditorCubeAxis.Depth, 3, true);
             if (GUILayout.Button("↗", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
                 ExecuteRotation(EditorCubeAxis.Depth, 2, true);
             if (GUILayout.Button("↗", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                ExecuteRotation(EditorCubeAxis.Depth, 3, true);
+                ExecuteRotation(EditorCubeAxis.Depth, 1, true);
             GUILayout.Space(35);
             
         }
