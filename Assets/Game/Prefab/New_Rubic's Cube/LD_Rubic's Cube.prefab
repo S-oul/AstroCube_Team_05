@@ -45,14 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 0
-  _axisSelectionRenderingLayerMask: 0
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
 --- !u!1 &1265017607081402230
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,6 +461,7 @@ GameObject:
   - component: {fileID: 617781273306479756}
   - component: {fileID: 255084293859545946}
   - component: {fileID: 1318165684732922708}
+  - component: {fileID: 5439396935576162556}
   m_Layer: 0
   m_Name: LD_Rubic's Cube
   m_TagString: Rubiks
@@ -605,6 +598,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa293cf308f50641a66d8c6866c2a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5439396935576162556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572829294728235433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e106b7972b0bf684181d7673fa35d16d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cube: {fileID: 5572829294728235433}
 --- !u!1 &8624392756091635968
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +725,7 @@ MonoBehaviour:
   _isArtCube: 0
   middle: {fileID: 5279238479075063523}
   middleGameObject: {fileID: 2643478692873961536}
-  Axis:
+  _axis:
   - {fileID: 1494674226617449104}
   - {fileID: 360264404136433981}
   - {fileID: 290945280105697955}
@@ -754,25 +760,28 @@ MonoBehaviour:
   - {fileID: 4689508686173805562}
   - {fileID: 2804972333132497928}
   _doScramble: 0
+  _frontCenterCube: {fileID: 6873100981997790536}
+  _backCenterCube: {fileID: 2814859612472288434}
+  _rightCenterCube: {fileID: 1424108025093280315}
+  _leftCenterCube: {fileID: 2615222656986942929}
+  _topCenterCube: {fileID: 4689508686173805562}
+  _bottomCenterCube: {fileID: 2804972333132497928}
+  _middleCenterCube: {fileID: 2643478692873961536}
   _isLockXAxis: 0
   _isLockYAxis: 0
   _isLockZAxis: 0
-  _DoAutoMoves: 0
+  _DoAutoMoves: 1
   _PlayAtStart: 0
-  _PlayOnEvent: 0
-  ExecuteSequenceXTime: 3
-  TimeToRotate: 2
+  _PlayOnEvent: 1
+  ExecuteSequenceXTime: 1
+  TimeToRotate: 1
   TimeBetweenMoves: 0.5
   TimeBetweenSequence: 1
   AutoMovesSequence:
   - axis: {fileID: 0}
-    cube: {fileID: 0}
-    orientation: 0
+    cube: {fileID: 4689508686173805562}
+    orientation: 2
     clockWise: 1
-  - axis: {fileID: 0}
-    cube: {fileID: 0}
-    orientation: 0
-    clockWise: 0
   _DustParticleAfterRotate: {fileID: 0}
   OnCorrectAction:
     m_PersistentCalls:

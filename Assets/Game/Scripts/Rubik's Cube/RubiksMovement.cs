@@ -5,8 +5,13 @@ using RubiksStatic;
 using System.Linq;
 using NaughtyAttributes;
 using System;
-using UnityEditor;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 [ExecuteAlways]
 public class RubiksMovement : MonoBehaviour
@@ -19,8 +24,9 @@ public class RubiksMovement : MonoBehaviour
     [SerializeField] Transform middleGameObject;
 
 
-    [SerializeField] List<Transform> Axis = new List<Transform>();
+    [FormerlySerializedAs("Axis")] [SerializeField] List<Transform> _axis = new List<Transform>();
     [SerializeField] List<Transform> _allBlocks = new List<Transform>();
+    public IReadOnlyList<Transform> Axis => _axis.AsReadOnly();
 
     [SerializeField] bool _doScramble = true;
 
@@ -28,6 +34,17 @@ public class RubiksMovement : MonoBehaviour
     private bool _isRotating = false;
     private bool _isReversing = false;
     List<RubiksMove> _moves = new List<RubiksMove>();
+
+    [Header("Center Cubes")]
+    [SerializeField] private Transform _frontCenterCube;
+    [SerializeField] private Transform _backCenterCube, _rightCenterCube, _leftCenterCube,  _topCenterCube, _bottomCenterCube, _middleCenterCube;
+    public Transform FrontCenterCube => _frontCenterCube;
+    public Transform BackCenterCube => _backCenterCube;
+    public Transform RightCenterCube => _rightCenterCube;
+    public Transform LeftCenterCube => _leftCenterCube;
+    public Transform TopCenterCube => _topCenterCube;
+    public Transform BottomCenterCube => _bottomCenterCube;
+    public Transform MiddleCenterCube => _middleCenterCube;
 
     [Header("LOCKINGS")]
 
@@ -94,6 +111,14 @@ public class RubiksMovement : MonoBehaviour
         {
             EventManager.OnActivateSequence += StartAutoMoves;
         }
+        
+        #if UNITY_EDITOR
+        _axis.Clear();
+        for (int i = 1; i < transform.childCount; i++)
+        {
+            _axis.Add(transform.GetChild(i));
+        }
+        #endif
     }
 
     void OnDisable()
@@ -512,9 +537,9 @@ public class RubiksMovement : MonoBehaviour
 
         float OldDistance = float.MaxValue;
         Transform closestAxis = null;
-        foreach (Transform t in Axis)
+        foreach (Transform t in _axis)
         {
-            if (t != Axis[0])
+            if (t != _axis[0])
             {
                 if (t.name.Contains("X") && sliceAxis == SliceAxis.X
                 || t.name.Contains("Y") && sliceAxis == SliceAxis.Y
@@ -620,9 +645,85 @@ public class RubiksMovement : MonoBehaviour
         {
             tile.GetComponent<MeshRenderer>().material = matSol;
         }
+    }
+    
+    public void RotateInEditor(Transform axis, Transform selectedCube, bool clockWise, SliceAxis sliceAxis = SliceAxis.Useless)
+    {
+        Vector3 rotationAxis = Vector3.zero;
+        {
+            if (Mathf.Abs(axis.localPosition.x) > 0.5f)
+                rotationAxis = Vector3.right;
+            else if (Mathf.Abs(axis.localPosition.y) > 0.5f)
+                rotationAxis = Vector3.up;
+            else if (Mathf.Abs(axis.localPosition.z) > 0.5f)
+                rotationAxis = Vector3.forward;
+        }
 
+        bool isMiddle = true;
+        
+        Vector3 localRefPos = selectedCube.localPosition;
 
+        List<int> blockIndexs = new List<int>();
+        foreach (var block in _allBlocks)
+        {
+            Vector3 localBlockPos = block.transform.localPosition;
 
+            bool isOnSamePlane =
+                          (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.5f)
+                       || (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.5f)
+                       || (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.5f);
+
+            if (isOnSamePlane)
+            {
+                if (_isArtCube)
+                {
+                    block.GetComponentInChildren<ArtRubiksAnimator>()?.StartAnimRota();
+                }
+
+                if (block.name == "Corner") isMiddle = false;
+                block.transform.SetParent(axis, true);
+                blockIndexs.Add(_allBlocks.IndexOf(block));
+            }
+        }
+
+        if (isMiddle) middleGameObject.SetParent(axis);
+        int direction = clockWise ? 1 : -1;
+
+        Quaternion startRotation = axis.localRotation;
+        Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) * startRotation;
+        
+        axis.localRotation = targetRotation;
+
+        foreach (int i in blockIndexs)
+        {
+            Transform block = _allBlocks[i];
+            
+            Vector3 pos = block.transform.localPosition;
+            pos.x = Mathf.Round(pos.x);
+            pos.y = Mathf.Round(pos.y);
+            pos.z = Mathf.Round(pos.z);
+            block.transform.localPosition = pos;
+            block.transform.SetParent(this.transform.parent, true);
+        }
+
+        if (isMiddle)
+        {
+            middleGameObject.SetParent(transform.parent);
+        }
+
+        _isRotating = false;
+
+        //if (!_isReversing)
+        //{
+        //    RubiksMove move = new()
+        //    {
+        //        Axis = axis,
+        //        cube = selectedCube,
+        //        orientation = sliceAxis,
+        //        clockWise = clockWise
+        //    };
+        //    _moves.Add(move);
+        //}
     }
 }
 
@@ -667,6 +768,7 @@ namespace RubiksStatic
             return !(x == y);
         }
     }
+    
     public enum SliceAxis { X, Y, Z, Useless }
 
 }

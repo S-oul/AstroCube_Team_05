@@ -146,6 +146,9 @@ public class LevelSelection : Editor
 
         _serializedObj.ApplyModifiedProperties();
         EditorUtility.SetDirty(target);
+
+        GUI.color = Color.white;
+        GUI.backgroundColor = Color.white;
     }
 
     static void InitStyles()
