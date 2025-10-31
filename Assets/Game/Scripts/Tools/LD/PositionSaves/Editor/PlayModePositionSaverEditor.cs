@@ -68,6 +68,9 @@ public class PlayModePositionSaverEditor : Editor
         PlayModePositionSaver.PositionsSave = EditorGUILayout.ObjectField(PlayModePositionSaver.PositionsSave, typeof(PositionSaveFile), true) as PositionSaveFile;
 
         GUILayout.EndHorizontal();
+        
+        GUI.color = Color.white;
+        GUI.backgroundColor = Color.white;
     }
 
 
