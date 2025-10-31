@@ -76,6 +76,7 @@ public class MainMenuView : UIView
         if (c > 19)
         {
             Hide();
+            c = 0;
             _uiManager.Show<AlternateScreenView>();
         }
         else
