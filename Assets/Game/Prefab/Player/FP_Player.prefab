@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 591256995339595692}
   - component: {fileID: 8895847318250023099}
   - component: {fileID: 4747696836999268114}
+  - component: {fileID: 5680504955134229669}
   - component: {fileID: 390007284634587234}
   - component: {fileID: 2128463034130162547}
   - component: {fileID: 2867457531972925666}
@@ -214,6 +215,7 @@ MonoBehaviour:
     m_Bits: 449
   _speedMultiplier: 1
   _canJump: 1
+  _floorDistance: 0.2
   _canCrouch: 0
   _slippingMovementControl: 0.03
   _enableGravityRotation: 0
@@ -295,6 +297,33 @@ MonoBehaviour:
   vol: {fileID: 11400000, guid: 8fc96a36ce7ef8e42879f49d57343e14, type: 2}
   portailInt_Material: {fileID: 2100000, guid: c2eb9909707397447a1507cee0f30f0a, type: 2}
   fovMultiplier: 1
+--- !u!114 &5680504955134229669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3977277b06bea1c42b96eb16adb488d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepWwiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  jumpWwiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  landWwiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  terrainSwitch: 
+  footstepInterval: 0.5
+  playFootsteps: 1
 --- !u!114 &390007284634587234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,6 +530,12 @@ PrefabInstance:
       propertyPath: _playerTransform
       value: 
       objectReference: {fileID: 1537851944306892503}
+    - target: {fileID: 2124071964418576275, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
+      propertyPath: sharedProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 8fc96a36ce7ef8e42879f49d57343e14,
+        type: 2}
     - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_HDR
