@@ -118,6 +118,7 @@ public class RubiksMovement : MonoBehaviour
         {
             _axis.Add(transform.GetChild(i));
         }
+        UpdateCenterCubes();
         #endif
     }
 
@@ -724,6 +725,52 @@ public class RubiksMovement : MonoBehaviour
         //    };
         //    _moves.Add(move);
         //}
+        
+        UpdateCenterCubes();
+    }
+
+    private void UpdateCenterCubes()
+    {
+        Dictionary<string, Vector3> unitVectors = new()
+        {
+            { "Front", Vector3.forward },
+            { "Back", Vector3.back },
+            { "Right", Vector3.right },
+            { "Left", Vector3.left },
+            { "Top", Vector3.up },
+            { "Bottom", Vector3.down }
+        };
+
+        foreach(var pair in unitVectors)
+        {
+            string faceName = pair.Key;
+            Vector3 direction = pair.Value;
+            
+            if (Physics.Raycast(transform.position, direction,  out RaycastHit hitInfo, float.MaxValue, LayerMask.GetMask("Cube")))
+            {
+                switch (faceName)
+                {
+                    case "Front":
+                        _frontCenterCube = hitInfo.collider.transform;
+                        break;
+                    case "Back":
+                        _backCenterCube = hitInfo.collider.transform;
+                        break;
+                    case "Right":
+                        _rightCenterCube = hitInfo.collider.transform;
+                        break;
+                    case "Left":
+                        _leftCenterCube = hitInfo.collider.transform;
+                        break;
+                    case "Top":
+                        _topCenterCube = hitInfo.collider.transform;
+                        break;
+                    case "Bottom":
+                        _bottomCenterCube = hitInfo.collider.transform;
+                        break;
+                }
+            }
+        }
     }
 }
 
