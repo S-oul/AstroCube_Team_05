@@ -15,9 +15,8 @@ namespace AK
     {
         static const AkUniqueID AMB_PAD_GLOBAL_LP = 2515429708U;
         static const AkUniqueID AMB_PAD_MAINMENU_LP = 2186918097U;
-        static const AkUniqueID AMB_RFX_DRONE = 37494993U;
+        static const AkUniqueID AMB_RFX_MANAGER = 4036686450U;
         static const AkUniqueID AMB_RFX_NAR_PULSE = 750298598U;
-        static const AkUniqueID AMB_RFX_ROCKFALL = 2877702425U;
         static const AkUniqueID AMB_SP_PORTAL_LP = 3061115295U;
         static const AkUniqueID AMB_SP_PORTAL_OPEN = 1481211399U;
         static const AkUniqueID AMB_SP_RC_PULSESHARD = 3134303699U;
@@ -106,6 +105,22 @@ namespace AK
         static const AkUniqueID UI_BUTTON_PRESS = 12010446U;
         static const AkUniqueID UI_MAINMENU_BUTTON_PRESS = 3217026771U;
     } // namespace EVENTS
+
+    namespace STATES
+    {
+        namespace ST_PORTAL
+        {
+            static const AkUniqueID GROUP = 1414354033U;
+
+            namespace STATE
+            {
+                static const AkUniqueID IN = 1752637612U;
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID OUT = 645492555U;
+            } // namespace STATE
+        } // namespace ST_PORTAL
+
+    } // namespace STATES
 
     namespace SWITCHES
     {

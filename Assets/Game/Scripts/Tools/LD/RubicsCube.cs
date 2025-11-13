@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -137,4 +138,15 @@ public class RubicsCube : MonoBehaviour
     }
 
 
+}
+
+[Flags]
+public enum ECubeFace
+{
+    FRONT = 1 << 1,
+    RIGHT = 1 << 2,
+    UP = 1 << 3,
+    DOWN = 1 << 4,
+    LEFT = 1 << 5,
+    BACK = 1 << 6
 }

@@ -120,6 +120,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -165,7 +168,6 @@ GameObject:
   - component: {fileID: 8271240141020365605}
   - component: {fileID: 2516385824039960158}
   - component: {fileID: 7104265957856665}
-  - component: {fileID: 1727229095393519118}
   m_Layer: 10
   m_Name: FP_Player
   m_TagString: Player
@@ -209,8 +211,6 @@ MonoBehaviour:
   _floorLayer:
     serializedVersion: 2
     m_Bits: 449
-  _movementSpeed: 50
-  _stepHeightMax: 0.4
   _canJump: 1
   _canCrouch: 0
   _slippingMovementControl: 0.01
@@ -413,36 +413,6 @@ MonoBehaviour:
   eventIdInternal: 0
   valueGuidInternal: 
   m_callbackDataInternal: {fileID: 0}
---- !u!114 &1727229095393519118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5789224619367204211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8dc960f5e88a1f4d9483cd2a32efeff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerList: f7e1664c
-  useOtherObject: 0
-  actionOnEventType: 0
-  curveInterpolation: 4
-  enableActionOnEvent: 0
-  data:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 5b8879f3013bdbe458d2369b92d37116,
-      type: 2}
-  useCallbacks: 0
-  stopSoundOnDestroy: 1
-  Callbacks: []
-  soundEmitterObject: {fileID: 0}
-  transitionDuration: 0
-  eventIdInternal: 0
-  valueGuidInternal: 
-  m_callbackDataInternal: {fileID: 0}
 --- !u!1 &6164784850869254152
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +448,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &69331644203279850
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -492,6 +462,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -510,6 +481,11 @@ PrefabInstance:
       propertyPath: _playerTransform
       value: 
       objectReference: {fileID: 1537851944306892503}
+    - target: {fileID: 2124071964418576275, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_HDR
@@ -660,6 +636,8 @@ MonoBehaviour:
   stopNaNs: 0
   taaSharpenStrength: 0.5
   TAAQuality: 1
+  taaSharpenMode: 0
+  taaRingingReduction: 0
   taaHistorySharpening: 0.35
   taaAntiFlicker: 0.5
   taaMotionVectorRejection: 0
@@ -693,6 +671,13 @@ MonoBehaviour:
   deepLearningSuperSamplingUseCustomAttributes: 0
   deepLearningSuperSamplingUseOptimalSettings: 1
   deepLearningSuperSamplingSharpening: 0
+  allowFidelityFX2SuperResolution: 1
+  fidelityFX2SuperResolutionUseCustomQualitySettings: 0
+  fidelityFX2SuperResolutionQuality: 0
+  fidelityFX2SuperResolutionUseCustomAttributes: 0
+  fidelityFX2SuperResolutionUseOptimalSettings: 1
+  fidelityFX2SuperResolutionEnableSharpening: 0
+  fidelityFX2SuperResolutionSharpening: 0
   fsrOverrideSharpness: 0
   fsrSharpness: 0.92
   exposureTarget: {fileID: 0}
@@ -710,6 +695,7 @@ MonoBehaviour:
     sssQualityMode: 0
     sssQualityLevel: 0
     sssCustomSampleBudget: 20
+    sssCustomDownsampleSteps: 0
     msaaMode: 1
     materialQuality: 0
   renderingPathCustomFrameSettingsOverrideMask:
