@@ -16,7 +16,7 @@ public class TransiTrigger : MonoBehaviour
     {
         if (!_isActivable) return;
 
-        _objectToFade.FadeIn();
+        _objectToFade.FadeFonction();
 
         if (_activateOnlyOnce) _isActivable = false;
     }
