@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -11,6 +12,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback will animate the target object's position over time, for the specified duration, from the chosen initial position to the chosen destination. These can either be relative Vector3 offsets from the Feedback's position, or Transforms. If you specify transforms, the Vector3 values will be ignored.")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("Transform/Position")]
 	public class MMF_Position : MMF_Feedback
 	{
@@ -25,12 +27,15 @@ namespace MoreMountains.Feedbacks
 		public override bool HasCustomInspectors => true; 
 		#endif
 		public override bool HasRandomness => true;
+		public override bool CanForceInitialValue => true;
 		public override bool HasAutomatedTargetAcquisition => true;
 		protected override void AutomateTargetAcquisition() => AnimatePositionTarget = FindAutomatedTargetGameObject();
 		
 		public enum Spaces { World, Local, RectTransform, Self }
 		public enum Modes { AtoB, AlongCurve, ToDestination }
-		public enum TimeScales { Scaled, Unscaled }
+		
+		/// whether to animate the scale over time or at a fixed speed
+		public enum MovementModes { Duration, Speed }
 
 		[MMFInspectorGroup("Position Target", true, 61, true)]
 		/// the object this feedback will animate the position for
@@ -49,14 +54,24 @@ namespace MoreMountains.Feedbacks
 		[Tooltip("whether or not to randomize remap values between their base and alt values on play, useful to add some variety every time you play this feedback")]
 		[MMFEnumCondition("Mode", (int)Modes.AlongCurve)]
 		public bool RandomizeRemap = false;
-		/// the duration of the animation on play
+
+		/// whether movement should occur over a fixed duration, or at a certain speed. Note that speed mode will only apply in AtoB and ToDestination modes
+		[Tooltip("whether movement should occur over a fixed duration, or at a certain speed. Note that speed mode will only apply in AtoB and ToDestination modes")]
+		[MMFEnumCondition("Mode", (int)Modes.AtoB, (int)Modes.ToDestination)]
+		public MovementModes MovementMode = MovementModes.Duration;
+			
+		/// the duration of the animation on play 
 		[Tooltip("the duration of the animation on play")]
+		[MMFEnumCondition("MovementMode", (int)MovementModes.Duration)]
 		public float AnimatePositionDuration = 0.2f;
+		/// in speed mode, the speed at which we should animate the position
+		[Tooltip("in speed mode, the speed at which we should animate the position")]
+		[MMFEnumCondition("MovementMode", (int)MovementModes.Speed)]
+		public float AnimatePositionSpeed = 1f;
 		
 		/// the MMTween curve definition to use instead of the animation curve to define the acceleration of the movement
 		[Tooltip("the MMTween curve definition to use instead of the animation curve to define the acceleration of the movement")]
-		[MMFEnumCondition("Mode", (int)Modes.AtoB, (int)Modes.ToDestination)]
-		public MMTweenType AnimatePositionTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1)));
+		public MMTweenType AnimatePositionTween = new MMTweenType( new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1)), "", "Mode", (int)Modes.AtoB, (int)Modes.ToDestination);
 		
 		/// the value to remap the curve's 0 value to
 		[MMFEnumCondition("Mode", (int)Modes.AlongCurve)]
@@ -83,24 +98,21 @@ namespace MoreMountains.Feedbacks
 		public bool AnimateX;
 		/// the acceleration of the movement
 		[Tooltip("the acceleration of the movement")]
-		[MMFCondition("AnimateX", true)]
-		public MMTweenType AnimatePositionTweenX = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(0.6f, -1f), new Keyframe(1, 0f)));
+		public MMTweenType AnimatePositionTweenX = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(0.6f, -1f), new Keyframe(1, 0f)), "AnimateX");
 		/// if this is true, the y position will be animated
 		[Tooltip("if this is true, the y position will be animated")]
 		[MMFEnumCondition("Mode", (int)Modes.AlongCurve)]
 		public bool AnimateY;
 		/// the acceleration of the movement
 		[Tooltip("the acceleration of the movement")]
-		[MMFCondition("AnimateY", true)]
-		public MMTweenType AnimatePositionTweenY = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(0.6f, -1f), new Keyframe(1, 0f)));
+		public MMTweenType AnimatePositionTweenY = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(0.6f, -1f), new Keyframe(1, 0f)), "AnimateY");
 		/// if this is true, the z position will be animated
 		[Tooltip("if this is true, the z position will be animated")]
 		[MMFEnumCondition("Mode", (int)Modes.AlongCurve)]
 		public bool AnimateZ;
 		/// the acceleration of the movement
 		[Tooltip("the acceleration of the movement")]
-		[MMFCondition("AnimateZ", true)]
-		public MMTweenType AnimatePositionTweenZ = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(0.6f, -1f), new Keyframe(1, 0f)));
+		public MMTweenType AnimatePositionTweenZ = new MMTweenType(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.3f, 1f), new Keyframe(0.6f, -1f), new Keyframe(1, 0f)), "AnimateZ");
 		/// if this is true, calling that feedback will trigger it, even if it's in progress. If it's false, it'll prevent any new Play until the current one is over
 		[Tooltip("if this is true, calling that feedback will trigger it, even if it's in progress. If it's false, it'll prevent any new Play until the current one is over")] 
 		public bool AllowAdditivePlays = false;
@@ -161,7 +173,7 @@ namespace MoreMountains.Feedbacks
 			{
 				if (AnimatePositionTarget == null)
 				{
-					Debug.LogWarning("The animate position target for " + this + " is null, you have to define it in the inspector");
+					Debug.LogWarning("[Position Feedback] The position feedback on "+Owner.name+" doesn't have an AnimatePositionTarget, it won't work. You need to specify one in its inspector.");
 					return;
 				}
 
@@ -207,6 +219,22 @@ namespace MoreMountains.Feedbacks
 		}
 
 		/// <summary>
+		/// In speed mode, computes the duration the feedback should last based on the distance between the two points and the speed
+		/// </summary>
+		/// <param name="pointA"></param>
+		/// <param name="pointB"></param>
+		/// <param name="duration"></param>
+		/// <returns></returns>
+		protected virtual float HandleSpeedMode(Vector3 pointA, Vector3 pointB, float duration)
+		{
+			if (MovementMode != MovementModes.Speed)
+			{
+				return duration;
+			}
+			return Vector3.Distance(pointA, pointB) / AnimatePositionSpeed;
+		}
+
+		/// <summary>
 		/// On Play, we move our object from A to B
 		/// </summary>
 		/// <param name="position"></param>
@@ -234,6 +262,7 @@ namespace MoreMountains.Feedbacks
 						{
 							_destinationPosition = GetPosition(DestinationPositionTransform);
 						}
+						if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 						_coroutine = Owner.StartCoroutine(MoveFromTo(AnimatePositionTarget, _initialPosition, _destinationPosition, FeedbackDuration, AnimatePositionTween));
 						break;
 					case Modes.AtoB:
@@ -241,6 +270,7 @@ namespace MoreMountains.Feedbacks
 						{
 							return;
 						}
+						if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 						_coroutine = Owner.StartCoroutine(MoveFromTo(AnimatePositionTarget, _workInitialPosition, _workDestinationPosition, FeedbackDuration, AnimatePositionTween));
 						break;
 					case Modes.AlongCurve:
@@ -253,6 +283,7 @@ namespace MoreMountains.Feedbacks
 						_remapCurveZero = RandomizeRemap ? Random.Range(RemapCurveZero, RemapCurveZeroAlt) : RemapCurveZero;
 						_remapCurveOne = RandomizeRemap ? Random.Range(RemapCurveOne, RemapCurveOneAlt) : RemapCurveOne;
 						
+						if (_coroutine != null) { Owner.StopCoroutine(_coroutine); }
 						_coroutine = Owner.StartCoroutine(MoveAlongCurve(AnimatePositionTarget, _workInitialPosition, FeedbackDuration, intensityMultiplier));
 						break;
 				}                    
@@ -334,6 +365,8 @@ namespace MoreMountains.Feedbacks
 		/// <param name="duration">Time.</param>
 		protected virtual IEnumerator MoveFromTo(GameObject movingObject, Vector3 pointA, Vector3 pointB, float duration, MMTweenType tweenType)
 		{
+			duration = HandleSpeedMode(pointA, pointB, duration);
+			
 			IsPlaying = true;
 			float journey = NormalPlayDirection ? 0f : duration;
 			while ((journey >= 0) && (journey <= duration) && (duration > 0))
@@ -348,14 +381,10 @@ namespace MoreMountains.Feedbacks
 			}
 
 			// set final position
-			if (NormalPlayDirection)
-			{
-				SetPosition(movingObject.transform, pointB);    
-			}
-			else
-			{
-				SetPosition(movingObject.transform, pointA);
-			}
+			float finalTime = NormalPlayDirection ? 1f : 0f;
+			float finalCurveValue = MMTween.Tween(finalTime, 0f, 1f, 0f, 1f, tweenType);
+			SetPosition(movingObject.transform, Vector3.LerpUnclamped(pointA, pointB, finalCurveValue));
+			
 			_coroutine = null;
 			IsPlaying = false;
 			yield break;
@@ -458,6 +487,17 @@ namespace MoreMountains.Feedbacks
 			MMFeedbacksHelpers.MigrateCurve(AnimatePositionCurveX, AnimatePositionTweenX, Owner);
 			MMFeedbacksHelpers.MigrateCurve(AnimatePositionCurveY, AnimatePositionTweenY, Owner);
 			MMFeedbacksHelpers.MigrateCurve(AnimatePositionCurveZ, AnimatePositionTweenZ, Owner);
+			
+			if (string.IsNullOrEmpty(AnimatePositionTweenX.ConditionPropertyName))
+			{
+				AnimatePositionTween.EnumConditionPropertyName = "Mode";
+				AnimatePositionTween.EnumConditions = new bool[32];
+				AnimatePositionTween.EnumConditions[(int)Modes.AtoB] = true;
+				AnimatePositionTween.EnumConditions[(int)Modes.ToDestination] = true;
+				AnimatePositionTweenX.ConditionPropertyName = "AnimateX";
+				AnimatePositionTweenY.ConditionPropertyName = "AnimateY";
+				AnimatePositionTweenZ.ConditionPropertyName = "AnimateZ";
+			}
 		}
 	}
 }

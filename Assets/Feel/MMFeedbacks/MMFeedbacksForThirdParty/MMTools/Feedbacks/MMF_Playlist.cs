@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace MoreMountains.Feedbacks
 {
@@ -11,6 +12,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback will let you pilot a MMPlaylist")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks.MMTools")]
 	[FeedbackPath("Audio/MMPlaylist")]
 	public class MMF_Playlist : MMF_Feedback
 	{
@@ -23,7 +25,7 @@ namespace MoreMountains.Feedbacks
 		public override bool HasChannel => true;
 		#endif
 		
-		public enum Modes { Play, PlayNext, PlayPrevious, Stop, Pause, PlaySongAt }
+		public enum Modes { Play, PlayNext, PlayPrevious, Stop, Pause, PlaySongAt, SetVolumeMultiplier, ChangePlaylist }
  
 		[MMFInspectorGroup("MMPlaylist", true, 13)]
 		/// the action to call on the playlist
@@ -33,6 +35,22 @@ namespace MoreMountains.Feedbacks
 		[Tooltip("the index of the song to play")]
 		[MMEnumCondition("Mode", (int)Modes.PlaySongAt)]
 		public int SongIndex = 0;
+		/// the volume multiplier to apply
+		[Tooltip("the volume multiplier to apply")]
+		[MMEnumCondition("Mode", (int)Modes.SetVolumeMultiplier)]
+		public float VolumeMultiplier = 1f;
+		/// whether to apply the volume multiplier instantly (true) or only when the next song starts playing (false)
+		[Tooltip("whether to apply the volume multiplier instantly (true) or only when the next song starts playing (false)")]
+		[MMEnumCondition("Mode", (int)Modes.SetVolumeMultiplier)]
+		public bool ApplyVolumeMultiplierInstantly = false;
+		/// in change playlist mode, the playlist to which to switch to. Only works with MMSMPlaylistManager
+		[Tooltip("in change playlist mode, the playlist to which to switch to. Only works with MMSMPlaylistManager")]
+		[MMEnumCondition("Mode", (int)Modes.ChangePlaylist)]
+		public MMSMPlaylist NewPlaylist;
+		/// in change playlist mode, whether or not to play the new playlist after the switch. Only works with MMSMPlaylistManager
+		[Tooltip("in change playlist mode, whether or not to play the new playlist after the switch. Only works with MMSMPlaylistManager")]
+		[MMEnumCondition("Mode", (int)Modes.ChangePlaylist)]
+		public bool ChangePlaylistAndPlay = true;
         
 		protected Coroutine _coroutine;
 
@@ -67,6 +85,12 @@ namespace MoreMountains.Feedbacks
 					break;
 				case Modes.PlaySongAt:
 					MMPlaylistPlayIndexEvent.Trigger(Channel, SongIndex);
+					break;
+				case Modes.SetVolumeMultiplier:
+					MMPlaylistVolumeMultiplierEvent.Trigger(Channel, VolumeMultiplier, ApplyVolumeMultiplierInstantly);
+					break;
+				case Modes.ChangePlaylist:
+					MMPlaylistChangeEvent.Trigger(Channel, NewPlaylist, ChangePlaylistAndPlay);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

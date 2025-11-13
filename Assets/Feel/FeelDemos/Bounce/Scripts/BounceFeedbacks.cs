@@ -9,6 +9,7 @@ namespace  MoreMountains.Feel
 	/// A simple class used in Feel's Bounce demo scene.
 	/// It's meant to be piloted by an animator, that calls animator events at certain points of its "cube jumps" animation 
 	/// </summary>
+	[AddComponentMenu("")]
 	public class BounceFeedbacks : MonoBehaviour
 	{
 		/// a feedback to be played when the cube starts "charging"

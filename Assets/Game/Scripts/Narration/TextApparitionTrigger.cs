@@ -17,19 +17,15 @@ public class TextApparitionTrigger : MonoBehaviour
     {
         gameObject.layer = LayerMask.NameToLayer("TextTrigger");
 
-#if UNITY_EDITOR
         _narraActivationTool = Object.FindAnyObjectByType<NarraActivationTool>();
-#endif
     }
 
     private void OnTriggerEnter(Collider other)
     {
-#if UNITY_EDITOR
         if (_narraActivationTool != null)
         {
             if (_narraActivationTool.IsNarraActiveTool == false) return;
         }
-#endif
 
         if (!other.CompareTag("Player") || _triggered || _texts == null) return;
 
