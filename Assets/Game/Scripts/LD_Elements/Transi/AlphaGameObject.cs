@@ -12,30 +12,51 @@ public class AlphaGameObject : MonoBehaviour
     MeshRenderer objMat;
     Collider objCol;
 
-    void Start()
+    void OnEnable()
     {
         objMat = _obj.GetComponent<MeshRenderer>();
         objCol = _obj.GetComponent<Collider>();
-        
-        
-        objMat.materials[0].color = new Color(1, 1, 1, MakeAppear? 0:1);
-        
+
+        objMat.materials[0].color = new Color(1, 1, 1, MakeAppear ? 0 : 1);
         objCol.enabled = !MakeAppear;
-        
     }
 
 
     Coroutine cor;
+
+    /// <summary>
+    /// This function, Make Appear or disapear object base on MakeAppear, It switch it like  a flip flop
+    /// </summary>
     [Button]
-    public void FadeOut()
+    public void FadeFonction()
     {
         if (cor != null) return;
         objCol.enabled = false;
 
-        cor = StartCoroutine(FadeOutObject());
+        cor = StartCoroutine(FadeSwitch());
     }
 
-    public IEnumerator FadeOutObject()
+    public void FadeOut()
+    {
+        if(cor != null) StopCoroutine(cor);
+        cor = null;
+
+        MakeAppear = false;
+        objMat.materials[0].color = new Color(1, 1, 1, 1);
+        FadeFonction();
+    }
+    public void FadeIn()
+    {
+        if (cor != null) StopCoroutine(cor);
+        cor = null;
+
+        MakeAppear = true;
+        objMat.materials[0].color = new Color(1, 1, 1, 0);
+        FadeFonction();
+    }
+
+
+    public IEnumerator FadeSwitch()
     {
         float timeSinceStart = 0;
         float percent = 0;
@@ -50,16 +71,16 @@ public class AlphaGameObject : MonoBehaviour
             {
                 doOnce = true;
                 objCol.enabled = MakeAppear;
-            } 
+            }
 
-            objMat.materials[0].color = new Color(1, 1, 1, MakeAppear? percent : 1 - percent);
+            objMat.materials[0].color = new Color(1, 1, 1, MakeAppear ? percent : 1 - percent);
 
             yield return new WaitForEndOfFrame();
         }
-        
-        objMat.materials[0].color = new Color(1, 1, 1, MakeAppear? 1:0);
 
-        MakeAppear = !MakeAppear;   
+        objMat.materials[0].color = new Color(1, 1, 1, MakeAppear ? 1 : 0);
+
+        MakeAppear = !MakeAppear;
         cor = null;
     }
 }
