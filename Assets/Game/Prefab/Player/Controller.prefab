@@ -46,6 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previewChangeEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 4b2bd40a6ba7ef14088db79b9aaee636,
+      type: 2}
   _controlledCube: {fileID: 0}
   _previewControlledScript: {fileID: 0}
   _overlayTransform: {fileID: 0}
@@ -69,7 +74,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerHold: {fileID: 0}
   _playerMovement: {fileID: 0}
-  _parentChanger: {fileID: 0}
+  _mouseCam: {fileID: 0}
+  _cameraFocusAttractor: {fileID: 0}
   _canMove: 0
 --- !u!1001 &5652325772714741600
 PrefabInstance:
@@ -79,11 +85,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 660084835029549841}
     m_Modifications:
-    - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 16
-      objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_ActionId
@@ -112,22 +113,22 @@ PrefabInstance:
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_ActionName
-      value: OtherActions/PauseGame[/Keyboard/escape,/XInputControllerWindows/start]
+      value: 'OtherActions/PauseGame[/Keyboard/escape,/XInputControllerWindows/start]'
       objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[12].m_ActionName
-      value: PlayerMovement/Camera[/XInputControllerWindows/rightStick,/Mouse/delta]
+      value: 'PlayerMovement/Camera[/XInputControllerWindows/rightStick,/Mouse/delta]'
       objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_ActionName
-      value: OtherActions/SeeExit[/Keyboard/l]
+      value: 'OtherActions/SeeExit[/Keyboard/l]'
       objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[14].m_ActionName
-      value: RubiksCube/PreviewCancel[/Keyboard/t]
+      value: 'RubiksCube/PreviewCancel[/Keyboard/t]'
       objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
@@ -231,6 +232,11 @@ PrefabInstance:
       objectReference: {fileID: 3706481031665168761}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3706481031665168761}
+    - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
+        type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -268,6 +274,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnPreviewCancel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnJump
       objectReference: {fileID: 0}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}

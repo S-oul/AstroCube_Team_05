@@ -206,18 +206,21 @@ namespace MoreMountains.Feedbacks
 				_originalLookAtDirection = LookAtDirection;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			LookAtTween = lookAtTween;
-			LockXAxis = lockXAxis;
-			LockYAxis = lockYAxis;
-			LockZAxis = lockZAxis;
-			UpwardVector = upwardVector;
-			LookAtTargetMode = lookAtTargetMode;
-			LookAtTarget = lookAtTarget;
-			LookAtTargetWorldPosition = lookAtTargetWorldPosition;
-			LookAtDirection = lookAtDirection;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				LookAtTween = lookAtTween;
+				LockXAxis = lockXAxis;
+				LockYAxis = lockYAxis;
+				LockZAxis = lockZAxis;
+				UpwardVector = upwardVector;
+				LookAtTargetMode = lookAtTargetMode;
+				LookAtTarget = lookAtTarget;
+				LookAtTargetWorldPosition = lookAtTargetWorldPosition;
+				LookAtDirection = lookAtDirection;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}
