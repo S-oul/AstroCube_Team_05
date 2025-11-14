@@ -28,6 +28,8 @@ public class EventManager : MonoBehaviour
 
     public UnityEvent Interact;
 
+    public static event Action<int> OnLevelSelected;
+
 
     private void Awake()
     {
@@ -50,6 +52,8 @@ public class EventManager : MonoBehaviour
         OnPlayerUndo += Undo.Invoke;
 
         OnPlayerInteract += Interact.Invoke;
+
+
     }
 
     private void OnDisable()
@@ -84,13 +88,16 @@ public class EventManager : MonoBehaviour
 
     //Rubik's Cube Events
     public static event Action OnStartCubeRotation;
-    public static event Action OnStartCubeSequenceRotation;
 
     public static event Action OnEndCubeRotation;
     public static event Action OnEndCubeSequenceRotation;
 
     public static event Action OnCubeSwitchFace;
     public static event Action OnCubeSwitchAxe;
+
+    //UI Events
+    public static event Action<UIView> OnViewShow;
+    public static event Action<UIView> OnViewHide;
 
 
     //Object Events
@@ -126,6 +133,15 @@ public class EventManager : MonoBehaviour
     public static event Action<bool> OnMotionBlurChange;
     public static event Action<bool> OnPreviewChange;
 
+    public static void TriggerViewShow(UIView uiView)
+    {
+        OnViewShow?.Invoke(uiView);
+    }
+
+    public static void TriggerViewHide(UIView uiView)
+    {
+        OnViewHide?.Invoke(uiView);
+    }
 
     public void DebugTest()
     {
@@ -187,6 +203,11 @@ public class EventManager : MonoBehaviour
         OnButtonReleased?.Invoke();
     }
 
+    public static void TriggerLevelSelected(int levelIndex)
+    {
+        OnLevelSelected?.Invoke(levelIndex);
+    }
+
     public static void TriggerPlayerChangeParent()
     {
         OnPlayerChangeParent?.Invoke();
@@ -240,10 +261,6 @@ public class EventManager : MonoBehaviour
         OnStartCubeRotation?.Invoke();
     }
 
-    public static void TriggerStartCubeSequenceRotation()
-    {
-        OnStartCubeSequenceRotation?.Invoke();
-    }
     public static void TriggerEndCubeSequenceRotation()
     {
         OnEndCubeSequenceRotation?.Invoke();
