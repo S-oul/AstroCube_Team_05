@@ -53,6 +53,7 @@ public class GlobalManager : MonoBehaviour
         var asyncLoadLevel = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         while (!asyncLoadLevel.isDone)
         {
+            print("Percent : " + asyncLoadLevel.progress + "%");
             yield return null;
         }
     }
