@@ -9,7 +9,6 @@ public class MemoryVFXController : MonoBehaviour
     [SerializeField] private VisualEffect _vfx;
     [SerializeField] private float _animationDuration;
     [SerializeField] private float _stayDuration;
-    [SerializeField] private bool _spawnsLDElement;
     
     private Transform _origin;
     private GameObject _LDElement;
@@ -24,13 +23,15 @@ public class MemoryVFXController : MonoBehaviour
     void Start()
     {
         LinkOriginToVFX();
-        _LDElement.SetActive(false);
+        if(_LDElement)
+            _LDElement.SetActive(false);
     }
 
     public void StartVFX(GameObject objectToActivate)
     {
         if (_vfx)
         {
+            StartCoroutine(PlayAnimation());
             _vfx.Play();
         }
     }
@@ -43,6 +44,7 @@ public class MemoryVFXController : MonoBehaviour
         _vfx.SetVector3("Origin", _origin.transform.localPosition);
         if (_LDElement)
         {
+            _vfx.SetMesh("LD_Element", _LDElement.GetComponent<MeshFilter>().sharedMesh);
             _vfx.SetVector3("Origin_LD_Element_Position", _LDElement.transform.localPosition);
             _vfx.SetVector3("Origin_LD_Element_Rotation", _LDElement.transform.rotation.eulerAngles);
             _vfx.SetVector3("Origin_LD_Element_Scale", _LDElement.transform.localScale);
@@ -56,10 +58,6 @@ public class MemoryVFXController : MonoBehaviour
         
         //Il faut que les models 3D soient READABLE
 
-        if (Application.isPlaying)
-        {
-            StartCoroutine(PlayAnimation());
-        }
     }
 
     private IEnumerator PlayAnimation()
@@ -69,13 +67,16 @@ public class MemoryVFXController : MonoBehaviour
             .SetEase(Ease.InOutCubic).WaitForCompletion();
         
         yield return new WaitForSeconds(_stayDuration);
-        
-        yield return DOTween
+
+        if (_LDElement)
+        {
+            yield return DOTween
             .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
             .SetEase(Ease.InOutCubic).WaitForCompletion();
-        
-        _LDElement.GetComponent<MeshRenderer>().enabled = false;
-        _LDElement.SetActive(true);
+            _LDElement.GetComponent<MeshRenderer>().enabled = false;
+            _LDElement.SetActive(true);
+        }
+        _vfx.Stop();
     }
 
     private void OnDrawGizmos()
