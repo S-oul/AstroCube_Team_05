@@ -393,14 +393,14 @@ public class RubiksCubeController : MonoBehaviour
 
         foreach (SelectionCube selection in selectionCubes)
         {
-            if (isOneTileLocked)
-            {
-                selection.Select(SelectionCube.SelectionMode.LOCKED);
-            }
-            else if (isPlayerOnATile)
+            if (isPlayerOnATile)
             {
                 selection.Select(SelectionCube.SelectionMode.PLAYERONTILE);
             }
+            else if (isOneTileLocked)
+            {
+                selection.Select(SelectionCube.SelectionMode.LOCKED);
+            }     
             else
             {
                 selection.Select(mode);
