@@ -231,6 +231,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd06771c1dd944c802c1904b27a722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _restartControlTipPopUp: {fileID: 8745067228901795392}
+  _numOfRotationsBeforPopUp: 5
+  SuggestRestartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6024446248586733952}
+        m_TargetAssemblyTypeName: ActivateControlTips, Assembly-CSharp
+        m_MethodName: SetPlaceHolderPopUpActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8007253303930833509
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +536,7 @@ GameObject:
   - component: {fileID: 6297713853982752296}
   - component: {fileID: 8318960000820529618}
   m_Layer: 5
-  m_Name: ResetLevelPop-up
+  m_Name: ResetPlaceHolderPop-up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
