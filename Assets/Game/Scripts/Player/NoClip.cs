@@ -46,7 +46,8 @@ public class NoClip : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.N))
+        // no clip mose is currenlty broken and disabed. 
+        if (Input.GetKeyDown(KeyCode.N) && false) 
         {
             _noClipEnabled = !_noClipEnabled;
 

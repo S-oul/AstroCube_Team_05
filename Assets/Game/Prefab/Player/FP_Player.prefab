@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 79100317669079735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -158,9 +158,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1537851944306892503}
   - component: {fileID: 700580131499637484}
+  - component: {fileID: 3123279762399017136}
   - component: {fileID: 591256995339595692}
   - component: {fileID: 8895847318250023099}
   - component: {fileID: 4747696836999268114}
+  - component: {fileID: 5680504955134229669}
   - component: {fileID: 390007284634587234}
   - component: {fileID: 2128463034130162547}
   - component: {fileID: 2867457531972925666}
@@ -213,12 +215,26 @@ MonoBehaviour:
     m_Bits: 449
   _speedMultiplier: 1
   _canJump: 1
+  _floorDistance: 0.2
   _canCrouch: 0
   _slippingMovementControl: 0.03
   _enableGravityRotation: 0
   _resetRotationWhenNoClip: 0
   isOnDefaultGround: 0
   _timerTNextStep: 1
+--- !u!114 &3123279762399017136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b6d5eac8da8ef41a54539a6bacd036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionDistance: 7
 --- !u!143 &591256995339595692
 CharacterController:
   m_ObjectHideFlags: 0
@@ -281,6 +297,36 @@ MonoBehaviour:
   vol: {fileID: 11400000, guid: 8fc96a36ce7ef8e42879f49d57343e14, type: 2}
   portailInt_Material: {fileID: 2100000, guid: c2eb9909707397447a1507cee0f30f0a, type: 2}
   fovMultiplier: 1
+--- !u!114 &5680504955134229669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3977277b06bea1c42b96eb16adb488d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepWwiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
+      type: 2}
+  jumpWwiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
+      type: 2}
+  landWwiseEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
+      type: 2}
+  terrainSwitch: 
+  footstepInterval: 0.5
+  playFootsteps: 1
 --- !u!114 &390007284634587234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,6 +533,12 @@ PrefabInstance:
       propertyPath: _playerTransform
       value: 
       objectReference: {fileID: 1537851944306892503}
+    - target: {fileID: 2124071964418576275, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
+      propertyPath: sharedProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 8fc96a36ce7ef8e42879f49d57343e14,
+        type: 2}
     - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_HDR

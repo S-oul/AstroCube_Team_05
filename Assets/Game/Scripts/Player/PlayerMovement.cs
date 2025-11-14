@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
+    [SerializeField] float _floorDistance = 0.5f;
 
     [Header("Crouch")]
     [SerializeField] bool _canCrouch = true;
@@ -33,9 +35,6 @@ public class PlayerMovement : MonoBehaviour
     Vector3 _gravityDirection;
 
     private GroundTypePlayerIsWalkingOn _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
-
-
-    float _floorDistance = 0.1f;
 
     float _currentMoveSpeed;
     float _currentMoveSpeedFactor = 1f;
@@ -77,18 +76,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnStartCubeRotation += DisableMovement;
-        EventManager.OnEndCubeRotation += EnableMovement;
         EventManager.OnEndCubeRotation += UnParentPlayer;
-
     }
 
     private void OnDisable()
     {
-        EventManager.OnStartCubeRotation -= DisableMovement;
-        EventManager.OnEndCubeRotation -= EnableMovement;
         EventManager.OnEndCubeRotation -= UnParentPlayer;
-
     }
 
     public void EnableMovement() => _canMove = true;
@@ -126,7 +119,8 @@ public class PlayerMovement : MonoBehaviour
         //apply gravity
         if (_hasGravity) {
             _gravityDirection = transform.up;
-            _verticalVelocity += _gravityDirection * _gameSettings.Gravity * Time.deltaTime;
+            _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
+            
             if (_isGrounded) {
                 _verticalVelocity = Vector3.zero;
             }
@@ -182,8 +176,7 @@ public class PlayerMovement : MonoBehaviour
             _controller.Move(_verticalVelocity * Time.deltaTime);
         } else // no clip
         {
-            _controller.Move(_horizontalVelocity *
-                             (moveSpeed / 10) * Time.deltaTime
+            _controller.Move(_horizontalVelocity * ((moveSpeed / 10) * Time.deltaTime)
                              + _externallyAppliedMovement);
         }
 
@@ -280,7 +273,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        _camera.transform.localPosition = newCameraHeight;
+        float cameraHightModifyer = newCameraHeight.y - _camera.transform.localPosition.y;
+        _camera.transform.localPosition += cameraHightModifyer * Vector3.up;
     }
 
     //NoClip
@@ -338,4 +332,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(_floorCheck.position, _floorDistance);
+    }
 }

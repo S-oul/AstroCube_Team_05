@@ -15,7 +15,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_URP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMAutoFocus_URP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Auto Focus URP")]
 	public class MMAutoFocus_URP : MonoBehaviour
 	{
 		[Header("Bindings")]
@@ -55,6 +55,10 @@ namespace MoreMountains.FeedbacksForThirdParty
 		/// </summary>
 		void Update()
 		{
+			if (FocusTargetID < 0 || FocusTargetID >= FocusTargets.Length)
+			{
+				return;
+			}
 			float distance = Vector3.Distance(CameraTransform.position, FocusTargets[Mathf.FloorToInt(FocusTargetID)].position);
 			_depthOfField.focusDistance.Override(distance);
 			_depthOfField.aperture.Override(Aperture);

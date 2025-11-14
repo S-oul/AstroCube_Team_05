@@ -8,7 +8,7 @@ namespace MoreMountains.Feedbacks
 	/// <summary>
 	/// Add this to an AudioSource to shake its pitch remapped along a curve 
 	/// </summary>
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MMAudioSourcePitchShaker")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/Audio/MM Audio Source Pitch Shaker")]
 	[RequireComponent(typeof(AudioSource))]
 	public class MMAudioSourcePitchShaker : MMShaker
 	{
@@ -113,13 +113,16 @@ namespace MoreMountains.Feedbacks
 				_originalRelativePitch = RelativePitch;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakePitch = pitchCurve;
-			RemapPitchZero = remapMin * feedbacksIntensity;
-			RemapPitchOne = remapMax * feedbacksIntensity;
-			RelativePitch = relativePitch;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakePitch = pitchCurve;
+				RemapPitchZero = remapMin * feedbacksIntensity;
+				RemapPitchOne = remapMax * feedbacksIntensity;
+				RelativePitch = relativePitch;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

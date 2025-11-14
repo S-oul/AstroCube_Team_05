@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using MoreMountains.Tools;
+using UnityEngine;using UnityEngine.Scripting.APIUpdating;
+
 namespace MoreMountains.Feedbacks
 {
 	/// <summary>
@@ -8,6 +10,7 @@ namespace MoreMountains.Feedbacks
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackHelp("This feedback will cause a pause when met, preventing any other feedback lower in the sequence to run until it's complete.")]
+	[MovedFrom(false, null, "MoreMountains.Feedbacks")]
 	[FeedbackPath("Pause/Pause")]
 	public class MMF_Pause : MMF_Feedback
 	{
@@ -15,6 +18,7 @@ namespace MoreMountains.Feedbacks
 		public static bool FeedbackTypeAuthorized = true;
 		#if UNITY_EDITOR
 		public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PauseColor; } }
+		public override Color DisplayColor { get { return MMFeedbacksInspectorColors.PauseColor.MMDarken(0.25f); } }
 		public override bool DisplayFullHeaderColor => true;
 		#endif
 		public override IEnumerator Pause { get { return PauseWait(); } }
@@ -33,8 +37,8 @@ namespace MoreMountains.Feedbacks
 		[MMFCondition("RandomizePauseDuration", true)]
 		public bool RandomizeOnEachPlay = true;
         
-		/// if this is true, you'll need to call the Resume() method on the host MMFeedbacks for this pause to stop, and the rest of the sequence to play
-		[Tooltip("if this is true, you'll need to call the Resume() method on the host MMFeedbacks for this pause to stop, and the rest of the sequence to play")]
+		/// if this is true, you'll need to call the ResumeFeedbacks() method on the host MMF_Player for this pause to stop, and the rest of the sequence to play
+		[Tooltip("if this is true, you'll need to call the ResumeFeedbacks() method on the host MMF_Player for this pause to stop, and the rest of the sequence to play")]
 		public bool ScriptDriven = false;
 		/// if this is true, a script driven pause will resume after its AutoResumeAfter delay, whether it has been manually resumed or not 
 		[Tooltip("if this is true, a script driven pause will resume after its AutoResumeAfter delay, whether it has been manually resumed or not")] 
@@ -44,6 +48,8 @@ namespace MoreMountains.Feedbacks
 		[Tooltip("the duration after which to auto resume, regardless of manual resume calls beforehand")] 
 		[MMFCondition("AutoResume", true)]
 		public float AutoResumeAfter = 0.25f;
+		
+		protected Coroutine _pauseCoroutine;
         
 		/// the duration of this feedback is the duration of the pause
 		public override float FeedbackDuration { get { return ApplyTimeMultiplier(PauseDuration); } set { PauseDuration = value; } }
@@ -54,7 +60,7 @@ namespace MoreMountains.Feedbacks
 		/// <returns></returns>
 		protected virtual IEnumerator PauseWait()
 		{
-			yield return WaitFor(PauseDuration);
+			yield return WaitFor(ApplyTimeMultiplier(PauseDuration));
 		}
 
 		/// <summary>
@@ -83,12 +89,38 @@ namespace MoreMountains.Feedbacks
 			{
 				return;
 			}
+
+			ProcessNewPauseDuration();
+			_pauseCoroutine = Owner.StartCoroutine(PlayPause());
+		}
+
+		/// <summary>
+		/// On Stop, we stop our pause
+		/// </summary>
+		/// <param name="position"></param>
+		/// <param name="feedbacksIntensity"></param>
+		protected override void CustomStopFeedback(Vector3 position, float feedbacksIntensity = 1)
+		{
+			if (!Active || !FeedbackTypeAuthorized)
+			{
+				return;
+			}
             
+			if (_pauseCoroutine != null)
+			{
+				Owner.StopCoroutine(_pauseCoroutine);
+			}
+		}
+
+		/// <summary>
+		/// Computes a new pause duration if needed
+		/// </summary>
+		protected virtual void ProcessNewPauseDuration()
+		{
 			if (RandomizePauseDuration && RandomizeOnEachPlay)
 			{
 				PauseDuration = Random.Range(MinPauseDuration, MaxPauseDuration);
 			}
-			Owner.StartCoroutine(PlayPause());
 		}
 
 		/// <summary>
