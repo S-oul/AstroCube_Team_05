@@ -28,6 +28,8 @@ public class EventManager : MonoBehaviour
 
     public UnityEvent Interact;
 
+    public static event Action<int> OnLevelSelected;
+
 
     private void Awake()
     {
@@ -200,6 +202,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerButtonReleased()
     {
         OnButtonReleased?.Invoke();
+    }
+
+    public static void TriggerLevelSelected(int levelIndex)
+    {
+        OnLevelSelected?.Invoke(levelIndex);
     }
 
     public static void TriggerPlayerChangeParent()

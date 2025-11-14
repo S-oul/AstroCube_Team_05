@@ -9,7 +9,7 @@ public class ActivateControlTips : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnEndCubeRotation += Add1ToRotationCount;
-        EventManager.OnPlayerReset += ResetRotationCound;
+     //   EventManager.OnPlayerReset += ResetRotationCound;
     }
 
     void Add1ToRotationCount()

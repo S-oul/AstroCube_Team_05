@@ -60,7 +60,9 @@ public class MainMenuView : UIView
 
     private void OnLevelsClicked()
     {
-        throw new NotImplementedException();
+        Hide();
+        var uiManager = FindObjectOfType<UIManager>();
+        uiManager?.Show<LevelSelectionPlaceHolderView>();
     }
 
     private void OnSettingsClicked()
