@@ -113,16 +113,23 @@ public class SelectionCube : MonoBehaviour
                 case SelectionMode.CUBE:
                     if (renderer.transform.CompareTag("Floor"))
                     {
-                        renderer.material.SetFloat("_IsLocked", 0f);
+                        renderer.material.SetFloat("_State", 0f);
                         _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     }
                     break;
                 case SelectionMode.LOCKED:
                     if (renderer.transform.CompareTag("Floor"))
                     {
-                        renderer.material.SetFloat("_IsLocked", 1f);
+                        renderer.material.SetFloat("_State", 1f);
                         _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     } 
+                    break;
+                case SelectionMode.PLAYERONTILE:
+                    if (renderer.transform.CompareTag("Floor"))
+                    {
+                        renderer.material.SetFloat("_State", 2f);
+                        _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
+                    }
                     break;
                 case SelectionMode.ENABLE:
                     renderer.enabled = true;
@@ -141,7 +148,7 @@ public class SelectionCube : MonoBehaviour
             return;
         foreach (var renderer in _renderers)
         {
-            if((CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE || CurrentSelectionMode == SelectionMode.LOCKED)
+            if((CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE || CurrentSelectionMode == SelectionMode.LOCKED || CurrentSelectionMode == SelectionMode.PLAYERONTILE)
                 && (renderer.transform.CompareTag("Floor")))
             {
                 _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);

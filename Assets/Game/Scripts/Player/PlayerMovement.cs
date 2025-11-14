@@ -273,7 +273,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        _camera.transform.localPosition = newCameraHeight;
+        float cameraHightModifyer = newCameraHeight.y - _camera.transform.localPosition.y;
+        _camera.transform.localPosition += cameraHightModifyer * Vector3.up;
     }
 
     //NoClip
