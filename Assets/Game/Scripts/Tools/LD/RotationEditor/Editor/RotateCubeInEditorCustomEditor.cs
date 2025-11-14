@@ -16,7 +16,7 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
     [MenuItem("Tools/Cube/Modifier")]
     public static void Init()
     {
-        RotateCubeInEditorEditorWindow window = GetWindowWithRect<RotateCubeInEditorEditorWindow>(new Rect(0, 0, 500, 700), true);
+        RotateCubeInEditorEditorWindow window = GetWindowWithRect<RotateCubeInEditorEditorWindow>(new Rect(0, 0, 500, 750), true);
         window.Show();
     }
 
@@ -193,11 +193,11 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
             {
                 GUILayout.Space(35);
                 if (GUILayout.Button("→", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                    ExecuteRotation(EditorCubeAxis.Vertical, 1, false);
+                    ExecuteRotation(EditorCubeAxis.Vertical, 3, false);
                 if (GUILayout.Button("→", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
                     ExecuteRotation(EditorCubeAxis.Vertical, 2, false);
                 if (GUILayout.Button("→", new GUIStyle(GUI.skin.button){fixedWidth = 32, fixedHeight = 32}))
-                    ExecuteRotation(EditorCubeAxis.Vertical, 3, false);
+                    ExecuteRotation(EditorCubeAxis.Vertical, 1, false);
             }
             EditorGUILayout.EndVertical();
         }
@@ -235,10 +235,24 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
             CenterCamera();
         }
         
+        bool startPositionsExists = _positionSaver.StartPositionSavedCount > 0;
+        bool completedPositionsExists = _positionSaver.CompletedPositionSavedCount > 0;
+        
         GUILayout.Space(10);
         GUILayout.Label("Start Position", new GUIStyle(GUI.skin.label){fontSize = 20, fontStyle = FontStyle.Bold});
+        if (startPositionsExists)
+        {
+            GUI.color = Color.green;
+            GUILayout.Label($"{_positionSaver.StartPositionSavedCount} positions saved", new GUIStyle(GUI.skin.label){fontSize = 10});
+            GUI.color = Color.white;
+        }
+        else
+        {
+            GUI.color = Color.red;
+            GUILayout.Label("No positions in memory...", new GUIStyle(GUI.skin.label){fontSize = 10});
+            GUI.color = Color.white;
+        }
         GUILayout.Space(5);
-        bool startPositionsExists = _positionSaver.StartPositionSavedCount > 0;
         EditorGUILayout.BeginHorizontal();
         {
             GUI.backgroundColor = Color.blue;
@@ -252,16 +266,23 @@ public class RotateCubeInEditorEditorWindow : EditorWindow
             GUI.enabled = true;
         }
         EditorGUILayout.EndHorizontal();
-        GUI.color = Color.red;
-        if(!startPositionsExists)
-            GUILayout.Label("No positions detected");
-        GUI.color = Color.white;
         
         GUILayout.Space(10);
         GUILayout.Label("Completed Position", new GUIStyle(GUI.skin.label){fontSize = 20, fontStyle = FontStyle.Bold});
         GUILayout.Label("Saved automatically at first start, can be overwritten", new GUIStyle(GUI.skin.label){fontSize = 10});
+        if (completedPositionsExists)
+        {
+            GUI.color = Color.green;
+            GUILayout.Label($"{_positionSaver.CompletedPositionSavedCount} positions saved", new GUIStyle(GUI.skin.label){fontSize = 10});
+            GUI.color = Color.white;
+        }
+        else
+        {
+            GUI.color = Color.red;
+            GUILayout.Label("No positions in memory...", new GUIStyle(GUI.skin.label){fontSize = 10});
+            GUI.color = Color.white;
+        }
         GUILayout.Space(5);
-        bool completedPositionsExists = _positionSaver.CompletedPositionSavedCount > 0;
         EditorGUILayout.BeginHorizontal();
         {
             GUI.backgroundColor = Color.blue;
