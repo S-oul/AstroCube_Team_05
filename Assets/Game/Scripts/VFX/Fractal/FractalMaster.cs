@@ -95,7 +95,6 @@ public class FractalMaster : MonoBehaviour
 
     Matrix4x4 cameraToWorldMatrix;
     Matrix4x4 projectionMatrixInverse;
-    private Material _mat;
 
     void Start()
     {
@@ -116,8 +115,6 @@ public class FractalMaster : MonoBehaviour
             enabled = false;
             return;
         }
-
-        _mat = GetComponent<Renderer>().sharedMaterial;
     }
 
     void Init()
@@ -129,10 +126,6 @@ public class FractalMaster : MonoBehaviour
             Debug.LogError("No main camera found!");
             return;
         }
-        cam.fieldOfView = cam.fieldOfView;
-        //cam.fieldOfView = cam.fieldOfView;
-        cameraToWorldMatrix = cam.cameraToWorldMatrix;
-        projectionMatrixInverse = cam.projectionMatrix.inverse;
 
         threadGroupsX = Mathf.CeilToInt(cam.pixelWidth / 64.0f);
         threadGroupsY = Mathf.CeilToInt(cam.pixelHeight / 1.0f);
@@ -149,7 +142,7 @@ public class FractalMaster : MonoBehaviour
         groupMinData = new float[threadGroupsX * 3];
     }
 
-    void Update()
+    void LateUpdate()
     {
         UpdateValues();
         UpdateTexture();
@@ -214,8 +207,16 @@ public class FractalMaster : MonoBehaviour
 
     void SetParameters()
     {
-        if (_mat)
-            _mat.SetColor("_BaseColor", new Color(1, 1, 1, _currentMandelbulbParameters.Alpha));
+        cam.fieldOfView = cam.fieldOfView;
+        //cam.fieldOfView = cam.fieldOfView;
+        cameraToWorldMatrix = cam.cameraToWorldMatrix;
+        projectionMatrixInverse = cam.projectionMatrix.inverse;
+
+
+        if (Application.isPlaying)
+        { //animation
+            _fractalPower += Time.deltaTime * 0.2f;
+        }
 
         fractalShader.SetTexture(handleCSMain, "Destination", target);
         fractalShader.SetFloat("alpha", _extAlpha);
