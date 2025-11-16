@@ -54,7 +54,10 @@ public class PlayerStepDetection : MonoBehaviour
         
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 10, LayerMask.GetMask("Floor")))
         {
-            string detectedTag = hit.collider.GetComponent<FloorType>().FloorTypeTag;
+            FloorType floorType;
+            hit.collider.TryGetComponent<FloorType>(out floorType);
+            if (floorType == null) return;
+            string detectedTag = floorType.FloorTypeTag;
             AkSoundEngine.SetSwitch(terrainSwitch, detectedTag, gameObject);
             footstepWwiseEvent.Post(gameObject);
         }

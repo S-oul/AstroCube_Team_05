@@ -1722,6 +1722,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9036194045410193636, guid: bcfa5196b9b652143a5f918f78782b36,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 517245058}
+    - targetCorrespondingSourceObject: {fileID: 9036194045410193636, guid: bcfa5196b9b652143a5f918f78782b36,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 827909245}
     - targetCorrespondingSourceObject: {fileID: 9036194045410193636, guid: bcfa5196b9b652143a5f918f78782b36,
         type: 3}
@@ -6747,6 +6751,67 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 515410225}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &517245057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 517245058}
+  - component: {fileID: 517245059}
+  m_Layer: 0
+  m_Name: CALL FUNCTIONS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &517245058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517245057}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 24.100222, y: -15.663802, z: -24.731255}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1213674652}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &517245059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517245057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8c1bc3611ee1841b8a1578476843df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationMode: 0
+  waitTime: 1
+  _events:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2070513185}
+        m_TargetAssemblyTypeName: RubiksMovement, Assembly-CSharp
+        m_MethodName: StartAutoMoves
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &525631837
 GameObject:
   m_ObjectHideFlags: 0
@@ -21595,7 +21660,7 @@ GameObject:
   - component: {fileID: 1768024058}
   - component: {fileID: 1768024059}
   m_Layer: 0
-  m_Name: ACTIVATE ResetLevelPop-up
+  m_Name: ACTIVATE ResetPlaceHolderPop-up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25552,6 +25617,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2066813641}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2070513185 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6309475072304813264, guid: e0c85bf540713094da1c4173f8b550de,
+    type: 3}
+  m_PrefabInstance: {fileID: 374357844}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e8103fc0a831f4e9509008bddf2774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2082914099
 PrefabInstance:
   m_ObjectHideFlags: 0
