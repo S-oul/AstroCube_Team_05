@@ -60,5 +60,8 @@ public class ArtRubiksAnimator : MonoBehaviour
         yield return new WaitForSeconds(delay);
         StartAnimIdle();
     }
-
+    public void TriggerIsSelected()
+    {
+        animatorCube.SetTrigger("IsSelected");
+    }
 }

@@ -261,6 +261,8 @@ public class RubiksCubeController : MonoBehaviour
                     // Move it
 
                     cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
+
+
                 }
 
                 _ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS, ActualFace.transform);
@@ -386,9 +388,18 @@ public class RubiksCubeController : MonoBehaviour
                 selectionCubes.Add(selection);
                 if (selection.IsTileLocked) isOneTileLocked = true;
                 if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
+
+
+                if (_replicatedScript[0].IsArtCube && !_controlledScript.IsArtCube && _lastInput != null)
+                {
+                    Transform equivalence = _replicatedScript[0].transform.GetChild(_lastInput.cube.transform.GetComponentIndex());
+                    foreach (Transform t in _replicatedScript[0].GetCubesFromFace(equivalence, _lastInput.orientation))
+                        t.GetComponentInChildren<ArtRubiksAnimator>()?.TriggerIsSelected();
+                }
+
             }
         }
-        if (_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview) 
+        if (_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview)
             return !(isPlayerOnATile || isOneTileLocked);
 
         foreach (SelectionCube selection in selectionCubes)
@@ -400,10 +411,11 @@ public class RubiksCubeController : MonoBehaviour
             else if (isOneTileLocked)
             {
                 selection.Select(SelectionCube.SelectionMode.LOCKED);
-            }     
+            }
             else
             {
                 selection.Select(mode);
+
             }
         }
 
