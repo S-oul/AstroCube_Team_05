@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
@@ -24,13 +25,19 @@ public class MemoryVFXController : MonoBehaviour
     void Start()
     {
         LinkOriginToVFX();
-        _LDElement.SetActive(false);
     }
 
     public void StartVFX(GameObject objectToActivate)
     {
+        _spawnsLDElement = objectToActivate;
+        
+        _LDElement = objectToActivate;
+        _LDElement.SetActive(false);
+        
         if (_vfx)
         {
+            LinkOriginToVFX();
+            StartCoroutine(PlayAnimation());
             _vfx.Play();
         }
     }
@@ -38,7 +45,6 @@ public class MemoryVFXController : MonoBehaviour
     [Button("Link Origin To VFX")]
     public void LinkOriginToVFX()
     {
-        _LDElement = GetComponentInParent<MemoryObject>().GameObjectToActivate;
         _origin = transform.Find("Origin - VFX");
         _vfx.SetVector3("Origin", _origin.transform.localPosition);
         if (_LDElement)
@@ -55,11 +61,6 @@ public class MemoryVFXController : MonoBehaviour
         
         
         //Il faut que les models 3D soient READABLE
-
-        if (Application.isPlaying)
-        {
-            StartCoroutine(PlayAnimation());
-        }
     }
 
     private IEnumerator PlayAnimation()
@@ -73,9 +74,12 @@ public class MemoryVFXController : MonoBehaviour
         yield return DOTween
             .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
             .SetEase(Ease.InOutCubic).WaitForCompletion();
-        
-        _LDElement.GetComponent<MeshRenderer>().enabled = false;
-        _LDElement.SetActive(true);
+
+        if (_LDElement)
+        {
+            _LDElement.GetComponent<MeshRenderer>().enabled = false;
+            _LDElement.SetActive(true);
+        }
     }
 
     private void OnDrawGizmos()
