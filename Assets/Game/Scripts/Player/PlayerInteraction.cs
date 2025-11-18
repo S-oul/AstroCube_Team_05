@@ -19,9 +19,10 @@ public class PlayerInteraction : MonoBehaviour
             _mainCamera.transform.position + _mainCamera.transform.forward * _interactionDistance, Color.magenta,
             Time.deltaTime);
         
-        if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward, out RaycastHit hit, _interactionDistance))
+        if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward, out RaycastHit hit, _interactionDistance, LayerMask.GetMask("Interactable")))
         {
-            _currentInteractable = hit.transform.gameObject.GetComponent<IInteractable>();
+            Debug.Log(hit.collider.gameObject.name);
+            _currentInteractable = hit.collider.GetComponent<IInteractable>();
         }
     }
 
