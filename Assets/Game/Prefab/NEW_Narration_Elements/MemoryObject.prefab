@@ -698,11 +698,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _memories:
   - {fileID: 2376876031157178292}
+  _gameObjectsToActivate: []
   _subtitles:
-  - Subtitle 1
-  - Subtitle 2
-  - Subtitle 3
-  _subtitleDurationByLetter: 0.2
+  - text: 
+    duration: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+  - text: 
+    duration: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+  - text: 
+    duration: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!135 &224217342750856260
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1404,6 +1410,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vfx: {fileID: 5036091211854611782}
+  _animationDuration: 0
+  _stayDuration: 0
+  _spawnsLDElement: 0
 --- !u!2083052967 &5036091211854611782
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -1421,7 +1430,16 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 0
+        m_Name: Lerp_Delta
+        m_Overridden: 1
+      - m_Value: 0.75
+        m_Name: IntervalBetweenParticles
+        m_Overridden: 1
+      - m_Value: 0.15
+        m_Name: ParticleSizeMultiplier
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
