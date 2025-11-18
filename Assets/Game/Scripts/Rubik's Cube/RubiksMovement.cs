@@ -85,6 +85,7 @@ public class RubiksMovement : MonoBehaviour
         get => _allBlocks;
         set => _allBlocks = value;
     }
+    public bool IsArtCube { get => _isArtCube; set => _isArtCube = value; }
 
     #endregion
 
@@ -369,7 +370,7 @@ public class RubiksMovement : MonoBehaviour
             Tile[] tiles = block.GetComponentsInChildren<Tile>();
             foreach (var tile in tiles)
             {
-                if (_DustParticleAfterRotate != null)
+                if (_DustParticleAfterRotate != null && IsPreview != true)
                 {
                     Vector3 normal = (tile.transform.position - block.position).normalized;
                     Vector3 spawnPos = tile.transform.position + normal + Vector3.up;
