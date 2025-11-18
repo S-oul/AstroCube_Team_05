@@ -18,17 +18,16 @@ public class ArtRubiksAnimator : MonoBehaviour
 
     void Start()
     {
-        //EventManager.OnEndCubeRotation += StartAnimIdle;
-
         animatorCube = GetComponent<Animator>();
         StartCoroutine(waitforXToStartIdle(_delay));
     }
 
-    ///Try to Reync da idle anim but failed miserably
-    ///*private void OnDisable()
-    //{
-    //    EventManager.OnEndCubeRotation -= StartAnimIdle;
-    //}*/
+    private void OnEnable()
+    {
+    }
+    private void OnDisable()
+    {
+    }
 
     public void StartAnimRota()
     {
@@ -51,7 +50,7 @@ public class ArtRubiksAnimator : MonoBehaviour
         }
     }
 
-    void StartAnimIdle()
+    public void StartAnimIdle()
     {
         animatorCube.SetTrigger("StartAnim");
     }
@@ -59,6 +58,26 @@ public class ArtRubiksAnimator : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         StartAnimIdle();
+    }
+
+    public void SetSelectedBool(bool isIt)
+    {
+        animatorCube.SetBool("IsSelected2", isIt);
+        if (!isIt) return;
+
+        switch (_type)
+        {
+            case TypeFace.Face:
+                animatorCube.Play("Cube_Face_Selected", 0, 0);
+                break;
+            case TypeFace.Edge:
+                animatorCube.Play("Cube_Cote_Selected", 0, 0);
+                break;
+            case TypeFace.Coin:
+                animatorCube.Play("Cube_Coin_Selected", 0, 0);
+                break;
+
+        }
     }
 
 }

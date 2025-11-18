@@ -22,8 +22,8 @@ using UnityEngine.ProBuilder.MeshOperations;
 [DisallowMultipleComponent]
 public class SelectionCube : MonoBehaviour
 {
-    [SerializeField]
-    bool _isTileLocked;
+    [SerializeField] bool _isTileLocked;
+    [SerializeField] Material _lockedTileMat;
     /*
     [SerializeField]
     int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
@@ -83,7 +83,27 @@ public class SelectionCube : MonoBehaviour
 
         CurrentSelectionMode = SelectionMode.NOT_SELECTED;
 
-        if (_isTileLocked) Select(SelectionMode.LOCKED);
+        if (_isTileLocked)
+        {
+            Select(SelectionMode.LOCKED);
+            foreach (var renderer in _renderers)
+            {
+                if (renderer.transform.CompareTag("Floor"))
+                    renderer.material = _lockedTileMat;
+            }
+        }
+
+        var vfx = GetComponentsInChildren<ParticleSystem>().Where(r => r.tag == "BizmuthFX").ToArray();
+        foreach (var v in vfx)
+        {
+            if (v != null)
+            {
+                if(_isTileLocked)
+                    v.Play();
+                else
+                    v.gameObject.SetActive(false); //Temp ? Idk why editor forces to play VFX sometimes
+            }
+        }
     }
 
     public void ExteriorColiderEnabled(bool isEnabled)
@@ -100,11 +120,12 @@ public class SelectionCube : MonoBehaviour
 
     public void Select(SelectionMode mode)
     {
+        if (_isTileLocked)
+            return;
         if (_renderers == null)
             return;
         if(mode == CurrentSelectionMode)
             return;
-
         foreach (var renderer in _renderers)
         {
             switch (mode)

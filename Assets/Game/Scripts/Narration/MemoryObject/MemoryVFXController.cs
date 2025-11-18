@@ -30,9 +30,12 @@ public class MemoryVFXController : MonoBehaviour
     public void StartVFX(GameObject objectToActivate)
     {
         _spawnsLDElement = objectToActivate;
-        
-        _LDElement = objectToActivate;
-        _LDElement.SetActive(false);
+
+        if (objectToActivate)
+        {
+            _LDElement = objectToActivate;
+            _LDElement.SetActive(false);
+        }
         
         if (_vfx)
         {
@@ -53,14 +56,6 @@ public class MemoryVFXController : MonoBehaviour
             _vfx.SetVector3("Origin_LD_Element_Rotation", _LDElement.transform.rotation.eulerAngles);
             _vfx.SetVector3("Origin_LD_Element_Scale", _LDElement.transform.localScale);
         }
-        
-        //mettre l'objet en enfant pour avoir la bonne position (local ?)
-        
-        
-        // desactiver le mesh renderer et activer le collider apr�s toute l'animation
-        
-        
-        //Il faut que les models 3D soient READABLE
     }
 
     private IEnumerator PlayAnimation()
@@ -70,15 +65,23 @@ public class MemoryVFXController : MonoBehaviour
             .SetEase(Ease.InOutCubic).WaitForCompletion();
         
         yield return new WaitForSeconds(_stayDuration);
-        
-        yield return DOTween
-            .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
-            .SetEase(Ease.InOutCubic).WaitForCompletion();
 
         if (_LDElement)
         {
+            yield return DOTween
+                .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+            
             _LDElement.GetComponent<MeshRenderer>().enabled = false;
             _LDElement.SetActive(true);
+        }
+        else
+        {
+            yield return DOTween
+                .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 0f, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+            
+            Destroy(gameObject);
         }
     }
 
