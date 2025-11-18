@@ -399,8 +399,11 @@ public class RubiksCubeController : MonoBehaviour
                 //Should Always be artCube
                 var i = go.GetComponentIndex();
 
-                    Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
-                    equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(true);
+                Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
+                if (equivalence == null) continue;
+                var e = equivalence.GetComponentInChildren<ArtRubiksAnimator>();
+                if(e!= null)
+                    e.SetSelectedBool(true);
 
             }
         }
