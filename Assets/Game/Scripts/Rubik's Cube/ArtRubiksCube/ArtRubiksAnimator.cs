@@ -50,7 +50,7 @@ public class ArtRubiksAnimator : MonoBehaviour
         }
     }
 
-    void StartAnimIdle()
+    public void StartAnimIdle()
     {
         animatorCube.SetTrigger("StartAnim");
     }
@@ -60,9 +60,24 @@ public class ArtRubiksAnimator : MonoBehaviour
         StartAnimIdle();
     }
 
-    public void SetSelectedTrigger()
+    public void SetSelectedBool(bool isIt)
     {
-        animatorCube.SetTrigger("IsSelected");
+        animatorCube.SetBool("IsSelected2", isIt);
+        if (!isIt) return;
+
+        switch (_type)
+        {
+            case TypeFace.Face:
+                animatorCube.Play("Cube_Face_Selected", 0, 0);
+                break;
+            case TypeFace.Edge:
+                animatorCube.Play("Cube_Cote_Selected", 0, 0);
+                break;
+            case TypeFace.Coin:
+                animatorCube.Play("Cube_Coin_Selected", 0, 0);
+                break;
+
+        }
     }
 
 }

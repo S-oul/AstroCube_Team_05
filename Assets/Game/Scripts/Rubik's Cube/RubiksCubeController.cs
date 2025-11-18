@@ -376,6 +376,12 @@ public class RubiksCubeController : MonoBehaviour
         bool isPlayerOnATile = false;
         if (_controlledScript != null)
         {
+            if (_controlledScript.IsRotating || _controlledScript.IsReversing) return false;
+
+            foreach (Transform go in _replicatedScript[0].AllBlocks)
+            {
+                go.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(false);
+            }
             var AllBlocksInFace = _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis);
             foreach (Transform go in AllBlocksInFace)
             {
@@ -393,13 +399,8 @@ public class RubiksCubeController : MonoBehaviour
                 //Should Always be artCube
                 var i = go.GetComponentIndex();
 
-                if (_lastInput != null)
-                {
-                    //Transform equivalence = _replicatedScript[0].transform.GetChild(_lastInput.cube.transform.GetComponentIndex());
-
                     Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
-                    equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedTrigger();
-                }
+                    equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(true);
 
             }
         }
