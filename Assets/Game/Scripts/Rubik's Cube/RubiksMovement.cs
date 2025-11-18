@@ -85,6 +85,7 @@ public class RubiksMovement : MonoBehaviour
         get => _allBlocks;
         set => _allBlocks = value;
     }
+    public bool IsArtCube { get => _isArtCube; set => _isArtCube = value; }
 
     #endregion
 
