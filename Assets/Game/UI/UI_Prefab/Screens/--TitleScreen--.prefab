@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 753995881855981003}
   - component: {fileID: 4471954402046229103}
   - component: {fileID: 7973244564700294114}
+  - component: {fileID: 1921687984786022981}
   m_Layer: 5
   m_Name: Press any key to start
   m_TagString: Untagged
@@ -180,8 +181,8 @@ RectTransform:
   m_GameObject: {fileID: 4352269999195903536}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.69512886, y: 0.69512886, z: 0.69512886}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7442163184127947149}
   m_Father: {fileID: 6516015260255802095}
@@ -248,7 +249,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9622642, g: 0.8021533, b: 0.33134568, a: 1}
@@ -374,6 +375,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e2c0ae6441ef949895d82f5cb13012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1921687984786022981
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4352269999195903536}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c41aaead04248cf4cba22db22b043cd7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4651536889834690260
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +493,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press any key to start
+  m_text: Press anywhere to start
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c6c0540423c62a44d82688d4da699dc1, type: 2}
   m_sharedMaterial: {fileID: 6882863792981379998, guid: c6c0540423c62a44d82688d4da699dc1,
@@ -560,7 +583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6516015260255802095
 RectTransform:
   m_ObjectHideFlags: 0
@@ -568,7 +591,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6219248669938497280}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -650,6 +673,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ScreenHeader
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634780723062778693, guid: 3b9eb653d3460d7488c298075618c276,
+        type: 3}
+      propertyPath: m_text
+      value: Alula
       objectReference: {fileID: 0}
     - target: {fileID: 4634780723062778693, guid: 3b9eb653d3460d7488c298075618c276,
         type: 3}
