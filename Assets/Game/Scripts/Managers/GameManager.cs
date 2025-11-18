@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
     {
         EventManager.TriggerSceneStart();
     }
-    void ChangeScene()
+    public void ChangeScene()
     {
         SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
     }
