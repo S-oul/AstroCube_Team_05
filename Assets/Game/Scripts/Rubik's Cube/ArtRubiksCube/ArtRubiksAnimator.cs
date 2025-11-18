@@ -18,17 +18,16 @@ public class ArtRubiksAnimator : MonoBehaviour
 
     void Start()
     {
-        //EventManager.OnEndCubeRotation += StartAnimIdle;
-
         animatorCube = GetComponent<Animator>();
         StartCoroutine(waitforXToStartIdle(_delay));
     }
 
-    ///Try to Reync da idle anim but failed miserably
-    ///*private void OnDisable()
-    //{
-    //    EventManager.OnEndCubeRotation -= StartAnimIdle;
-    //}*/
+    private void OnEnable()
+    {
+    }
+    private void OnDisable()
+    {
+    }
 
     public void StartAnimRota()
     {
@@ -59,6 +58,11 @@ public class ArtRubiksAnimator : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         StartAnimIdle();
+    }
+
+    public void SetSelectedTrigger()
+    {
+        animatorCube.SetTrigger("IsSelected");
     }
 
 }
