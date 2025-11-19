@@ -19,7 +19,7 @@ public class ArtRubiksAnimator : MonoBehaviour
     void Start()
     {
         animatorCube = GetComponent<Animator>();
-        StartCoroutine(waitforXToStartIdle(_delay));
+        //StartCoroutine(waitforXToStartIdle(_delay));
     }
 
     private void OnEnable()
@@ -31,8 +31,8 @@ public class ArtRubiksAnimator : MonoBehaviour
 
     public void StartAnimRota()
     {
-        animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
-        animatorFx.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
+        //animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
+        //animatorFx.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
         animatorCube.SetTrigger("DoRotation");
 
         switch (_type)
@@ -60,11 +60,24 @@ public class ArtRubiksAnimator : MonoBehaviour
         StartAnimIdle();
     }
 
+    public void launchWaitForSelected(bool IsSelected)
+    {
+        StartCoroutine(waitforXToStartSelected(IsSelected));
+    }
+    IEnumerator waitforXToStartSelected(bool IsSelected)
+    {
+        print(1 - animatorCube.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        yield return new WaitForSeconds(1-animatorCube.GetCurrentAnimatorStateInfo(0).length);
+        SetSelectedBool(IsSelected);
+    }
+
     public void SetSelectedBool(bool isIt)
     {
         animatorCube.SetBool("IsSelected2", isIt);
         if (!isIt) return;
 
+        if (animatorCube.GetCurrentAnimatorStateInfo(0).IsTag("Select")) return;
+        
         switch (_type)
         {
             case TypeFace.Face:
