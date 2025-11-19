@@ -3146,7 +3146,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7372454358547415752, guid: 3ca506478dcd3f642a904ecd269c31f6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8530984543771952087}
   m_SourcePrefab: {fileID: 100100000, guid: 3ca506478dcd3f642a904ecd269c31f6, type: 3}
 --- !u!4 &478247958473798082 stripped
 Transform:
@@ -3154,6 +3158,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4842442132274643438}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2694268972720866086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7372454358547415752, guid: 3ca506478dcd3f642a904ecd269c31f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4842442132274643438}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8530984543771952087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2694268972720866086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  fadeRadius: 0
+  priority: 100
+  customPasses:
+  - rid: 1681012981905752146
+  injectionPoint: 2
+  m_TargetCamera: {fileID: 0}
+  useTargetCamera: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1681012981905752146
+      type: {class: FullScreenCustomPass, ns: UnityEngine.Rendering.HighDefinition,
+        asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Name: Distortion
+        enabled: 1
+        targetColorBuffer: 0
+        targetDepthBuffer: 0
+        clearFlags: 0
+        passFoldout: 0
+        m_Version: 0
+        fullscreenPassMaterial: {fileID: 2100000, guid: 2cdc44759058bfc41beae3ac3a6717e3,
+          type: 2}
+        materialPassIndex: 0
+        materialPassName: DrawProcedural
+        fetchColorBuffer: 0
 --- !u!1001 &4971821994213898450
 PrefabInstance:
   m_ObjectHideFlags: 0
