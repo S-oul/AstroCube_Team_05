@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2124071964418576275}
   - component: {fileID: 133413100070924764}
   - component: {fileID: 3652356511851091665}
+  - component: {fileID: 4707785421033032275}
   - component: {fileID: 4790322631721094214}
   - component: {fileID: 8155061999485834491}
   m_Layer: 0
@@ -267,7 +268,7 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 2694766009086799755}
---- !u!114 &4790322631721094214
+--- !u!114 &4707785421033032275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,6 +276,53 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5539844658961126860}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb61c0ba9f74444e9fe151b04835b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 1
+  shakeAmount: 0.7
+  intencityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0069757616
+      value: 0.9116814
+      inSlope: 3.0548806
+      outSlope: 3.0548806
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.096315786
+    - serializedVersion: 3
+      time: 0.24143532
+      value: 0.5194119
+      inSlope: -1.6610032
+      outSlope: -1.6610032
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.03118385
+    - serializedVersion: 3
+      time: 1.0006948
+      value: -0.0023693219
+      inSlope: -0.35050124
+      outSlope: -0.35050124
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.041771952
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4790322631721094214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5539844658961126860}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
   m_Name: 
