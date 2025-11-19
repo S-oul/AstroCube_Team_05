@@ -62,7 +62,7 @@ public class MainMenuView : UIView
     {
         Hide();
         var uiManager = FindObjectOfType<UIManager>();
-        uiManager?.Show<LevelSelectionPlaceHolderView>();
+        uiManager?.Show<LevelSelectionView>();
     }
 
     private void OnSettingsClicked()

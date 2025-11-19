@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class LevelSelectionView : UIView
 {
@@ -8,146 +10,154 @@ public class LevelSelectionView : UIView
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Transform contentRoot;
     [SerializeField] private LevelItemUI itemPrefab;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Image previewImage;
+    [SerializeField] private List<Sprite> previewSprites;
 
     [Header("Levels")]
     [SerializeField] private List<string> levelNames;
 
-    private UIManager _uiManager;
-    private List<LevelItemUI> _spawnedItems = new();
+    [Header("Scrolling")]
+    [SerializeField] private float scrollSpeed = 10f;
 
+    private List<LevelItemUI> items = new();
     private int currentIndex = 0;
+    private float targetScrollPos = 1f;
+
+    private UIManager uiManager;
 
     protected override void Awake()
     {
         base.Awake();
-        _uiManager = FindObjectOfType<UIManager>();
+        uiManager = FindObjectOfType<UIManager>();
     }
 
     private void Start()
     {
         GenerateList();
+        backButton.onClick.AddListener(OnBackClicked);
     }
 
-    // -------------------------------
-    //      GENERATION DE LA LISTE
-    // -------------------------------
+public void unlockAllLevels(){
+LevelProgressionSystem.UnlockAllLevels(12);
+}
+
     private void GenerateList()
     {
         foreach (Transform child in contentRoot)
             Destroy(child.gameObject);
 
-        _spawnedItems.Clear();
+        items.Clear();
 
         for (int i = 0; i < levelNames.Count; i++)
         {
             var item = Instantiate(itemPrefab, contentRoot);
-
             bool unlocked = LevelProgressionSystem.IsUnlocked(i);
 
             item.Setup(i, levelNames[i], unlocked, OnLevelClicked);
-            _spawnedItems.Add(item);
+            items.Add(item);
         }
+    }
 
-        // Sélectionne le 1er niveau débloqué
-        for (int i = 0; i < _spawnedItems.Count; i++)
+    public override void Show()
+    {
+        base.Show();
+        GenerateList();
+        StartCoroutine(SelectFirstNextFrame());
+    }
+
+    private System.Collections.IEnumerator SelectFirstNextFrame()
+    {
+        yield return null;
+
+        currentIndex = 0;
+
+        items[0].Button.Select();
+        ScrollTo(0);
+        UpdatePreview(0);
+    }
+
+    private void Update()
+    {
+        if (!gameObject.activeInHierarchy)
+            return;
+
+        UpdateIndexFromUnityNavigation();
+        SmoothScroll();
+        AutoFocusIfLost();
+    }
+
+    private void UpdateIndexFromUnityNavigation()
+    {
+        var sel = EventSystem.current.currentSelectedGameObject;
+        if (sel == null)
+            return;
+
+        for (int i = 0; i < items.Count; i++)
         {
-            if (_spawnedItems[i].Button.interactable)
+            if (items[i].Button.gameObject == sel)
             {
-                currentIndex = i;
-                SelectItem(currentIndex);
-                break;
+                if (currentIndex != i)
+                {
+                    currentIndex = i;
+                    ScrollTo(i);
+                    UpdatePreview(i);
+                }
+                return;
             }
         }
     }
 
-    // -------------------------------
-    //      NAVIGATION CLAVIER/MOLETTE
-    // -------------------------------
-    private void Update()
+    private void AutoFocusIfLost()
     {
-        if (!gameObject.activeInHierarchy) return;
+        var sel = EventSystem.current.currentSelectedGameObject;
 
-        // Navigation flèches
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            MoveSelection(+1);
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            MoveSelection(-1);
-
-        // Molette souris
-        if (Input.mouseScrollDelta.y < 0)
-            MoveSelection(+1);
-
-        if (Input.mouseScrollDelta.y > 0)
-            MoveSelection(-1);
-    }
-
-    private void MoveSelection(int direction)
-    {
-        int newIndex = currentIndex + direction;
-
-        // Clamp = impossible de sortir de la liste
-        newIndex = Mathf.Clamp(newIndex, 0, _spawnedItems.Count - 1);
-
-        if (newIndex == currentIndex)
+        if (sel != null)
             return;
 
-        // Level lock ? on ignore
-        if (!_spawnedItems[newIndex].Button.interactable)
-            return;
-
-        currentIndex = newIndex;
-        SelectItem(currentIndex);
+        items[currentIndex].Button.Select();
     }
 
-    private void SelectItem(int index)
+    private void SmoothScroll()
     {
-        var item = _spawnedItems[index];
-
-        // Focus UI
-        item.Button.Select();
-
-        // Auto-scroll
-        ScrollTo(index);
+        scrollRect.verticalNormalizedPosition =
+            Mathf.Lerp(scrollRect.verticalNormalizedPosition, targetScrollPos, Time.deltaTime * scrollSpeed);
     }
 
-    // -------------------------------
-    //      AUTO SCROLL SUR SELECTION
-    // -------------------------------
     private void ScrollTo(int index)
     {
         Canvas.ForceUpdateCanvases();
 
-        RectTransform item = _spawnedItems[index].GetComponent<RectTransform>();
+        RectTransform item = items[index].GetComponent<RectTransform>();
         RectTransform content = contentRoot.GetComponent<RectTransform>();
 
-        float viewportHeight = scrollRect.viewport.rect.height;
+        float viewport = scrollRect.viewport.rect.height;
         float contentHeight = content.rect.height;
+        float itemY = Mathf.Abs(item.anchoredPosition.y);
 
-        float itemPosY = Mathf.Abs(item.anchoredPosition.y);
+        float target = 1f - ((itemY - (viewport * 0.5f) + (item.rect.height * 0.5f))
+                             / (contentHeight - viewport));
 
-        float normalizedPos = Mathf.Clamp01(1f - (itemPosY / (contentHeight - viewportHeight)));
-
-        scrollRect.verticalNormalizedPosition = normalizedPos;
+        targetScrollPos = Mathf.Clamp01(target);
     }
 
-    // -------------------------------
-    //      ON CLICK LEVEL
-    // -------------------------------
-    private void OnLevelClicked(int levelIndex)
+    private void UpdatePreview(int index)
     {
-        Debug.Log("Level selected: " + levelIndex);
+        if (index < 0 || index >= previewSprites.Count)
+            return;
 
-        EventManager.TriggerLevelSelected(levelIndex);
+        previewImage.sprite = previewSprites[index];
     }
 
-    // -------------------------------
-    //      OVERRIDE SHOW : refresh
-    // -------------------------------
-    public override void Show()
+    private void OnLevelClicked(int index)
     {
-        base.Show();
+        if (index >= 0 && index < SceneManager.sceneCountInBuildSettings)
+            SceneManager.LoadScene(index);
+    }
 
-        GenerateList(); // refresh si progression change
+    private void OnBackClicked()
+    {
+        Hide();
+        uiManager.Show<MainMenuView>();
     }
 }
