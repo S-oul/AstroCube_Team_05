@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class LevelSelectionView : UIView
 {
@@ -9,6 +10,9 @@ public class LevelSelectionView : UIView
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Transform contentRoot;
     [SerializeField] private LevelItemUI itemPrefab;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Image previewImage;
+    [SerializeField] private List<Sprite> previewSprites;
 
     [Header("Levels")]
     [SerializeField] private List<string> levelNames;
@@ -16,18 +20,22 @@ public class LevelSelectionView : UIView
     [Header("Scrolling")]
     [SerializeField] private float scrollSpeed = 10f;
 
-    private List<LevelItemUI> _spawnedItems = new();
+    private List<LevelItemUI> items = new();
     private int currentIndex = 0;
     private float targetScrollPos = 1f;
+
+    private UIManager uiManager;
 
     protected override void Awake()
     {
         base.Awake();
+        uiManager = FindObjectOfType<UIManager>();
     }
 
     private void Start()
     {
         GenerateList();
+        backButton.onClick.AddListener(OnBackClicked);
     }
 
     private void GenerateList()
@@ -35,7 +43,7 @@ public class LevelSelectionView : UIView
         foreach (Transform child in contentRoot)
             Destroy(child.gameObject);
 
-        _spawnedItems.Clear();
+        items.Clear();
 
         for (int i = 0; i < levelNames.Count; i++)
         {
@@ -43,8 +51,7 @@ public class LevelSelectionView : UIView
             bool unlocked = LevelProgressionSystem.IsUnlocked(i);
 
             item.Setup(i, levelNames[i], unlocked, OnLevelClicked);
-
-            _spawnedItems.Add(item);
+            items.Add(item);
         }
     }
 
@@ -59,98 +66,94 @@ public class LevelSelectionView : UIView
     {
         yield return null;
 
-        if (_spawnedItems.Count > 0)
-        {
-            currentIndex = 0;
+        currentIndex = 0;
 
-            _spawnedItems[0].Button.Select();
-            _spawnedItems[0].Button.OnSelect(null);
-
-            ScrollTo(0);
-        }
+        items[0].Button.Select();
+        ScrollTo(0);
+        UpdatePreview(0);
     }
 
     private void Update()
     {
-        if (!gameObject.activeInHierarchy) return;
+        if (!gameObject.activeInHierarchy)
+            return;
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            MoveSelection(+1);
+        UpdateIndexFromUnityNavigation();
+        SmoothScroll();
+        AutoFocusIfLost();
+    }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            MoveSelection(-1);
+    private void UpdateIndexFromUnityNavigation()
+    {
+        var sel = EventSystem.current.currentSelectedGameObject;
+        if (sel == null)
+            return;
 
-        if (Input.mouseScrollDelta.y < 0)
-            MoveSelection(+1);
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].Button.gameObject == sel)
+            {
+                if (currentIndex != i)
+                {
+                    currentIndex = i;
+                    ScrollTo(i);
+                    UpdatePreview(i);
+                }
+                return;
+            }
+        }
+    }
 
-        if (Input.mouseScrollDelta.y > 0)
-            MoveSelection(-1);
+    private void AutoFocusIfLost()
+    {
+        var sel = EventSystem.current.currentSelectedGameObject;
 
+        if (sel != null)
+            return;
+
+        items[currentIndex].Button.Select();
+    }
+
+    private void SmoothScroll()
+    {
         scrollRect.verticalNormalizedPosition =
             Mathf.Lerp(scrollRect.verticalNormalizedPosition, targetScrollPos, Time.deltaTime * scrollSpeed);
-    }
-
-    private void MoveSelection(int direction)
-    {
-        if (_spawnedItems.Count == 0) return;
-
-        int newIndex = Mathf.Clamp(currentIndex + direction, 0, _spawnedItems.Count - 1);
-
-        if (newIndex == currentIndex)
-            return;
-
-        if (!_spawnedItems[newIndex].Button.interactable)
-            return;
-
-        currentIndex = newIndex;
-        SelectItem(currentIndex);
-    }
-
-    private void SelectItem(int index)
-    {
-        var item = _spawnedItems[index];
-
-        item.Button.Select();
-        ScrollTo(index);
     }
 
     private void ScrollTo(int index)
     {
         Canvas.ForceUpdateCanvases();
 
-        RectTransform item = _spawnedItems[index].GetComponent<RectTransform>();
+        RectTransform item = items[index].GetComponent<RectTransform>();
         RectTransform content = contentRoot.GetComponent<RectTransform>();
 
-        float viewportHeight = scrollRect.viewport.rect.height;
+        float viewport = scrollRect.viewport.rect.height;
         float contentHeight = content.rect.height;
-
         float itemY = Mathf.Abs(item.anchoredPosition.y);
 
-        float target =
-            1f - ((itemY - (viewportHeight * 0.5f) + (item.rect.height * 0.5f))
-            / (contentHeight - viewportHeight));
+        float target = 1f - ((itemY - (viewport * 0.5f) + (item.rect.height * 0.5f))
+                             / (contentHeight - viewport));
 
         targetScrollPos = Mathf.Clamp01(target);
     }
 
-    private void OnLevelClicked(int levelIndex)
+    private void UpdatePreview(int index)
     {
-        if (levelIndex < 0 || levelIndex >= levelNames.Count)
-        {
-            Debug.LogError("Invalid level index: " + levelIndex);
+        if (index < 0 || index >= previewSprites.Count)
             return;
-        }
 
-        string sceneName = levelNames[levelIndex];
-
-        if (string.IsNullOrWhiteSpace(sceneName))
-        {
-            Debug.LogError("Scene name is null or empty for index " + levelIndex);
-            return;
-        }
-
-        Debug.Log("Loading level: " + sceneName);
-        SceneManager.LoadScene(sceneName);
+        previewImage.sprite = previewSprites[index];
     }
 
+    private void OnLevelClicked(int index)
+    {
+        if (index >= 0 && index < SceneManager.sceneCountInBuildSettings)
+            SceneManager.LoadScene(index);
+    }
+
+    private void OnBackClicked()
+    {
+        Hide();
+        uiManager.Show<MainMenuView>();
+    }
 }
