@@ -38,6 +38,10 @@ public class LevelSelectionView : UIView
         backButton.onClick.AddListener(OnBackClicked);
     }
 
+public void unlockAllLevels(){
+LevelProgressionSystem.UnlockAllLevels(12);
+}
+
     private void GenerateList()
     {
         foreach (Transform child in contentRoot)
