@@ -363,6 +363,8 @@ public class RubiksCubeController : MonoBehaviour
         }
     */
 
+    List<Transform> OldBlocksInFace = new List<Transform>();
+
     /// <summary>
     /// return True if Player Can Move Axis;
     /// </summary>
@@ -378,11 +380,17 @@ public class RubiksCubeController : MonoBehaviour
         {
             if (_controlledScript.IsRotating || _controlledScript.IsReversing) return false;
 
+       
+            var AllBlocksInFace = _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis);
+            bool isSameBlock = OldBlocksInFace == AllBlocksInFace;
+            OldBlocksInFace = AllBlocksInFace;
+
             foreach (Transform go in _replicatedScript[0].AllBlocks)
             {
+                if (isSameBlock) break;
                 go.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(false);
             }
-            var AllBlocksInFace = _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis);
+
             foreach (Transform go in AllBlocksInFace)
             {
                 SelectionCube selection = go.GetComponent<SelectionCube>();
@@ -395,15 +403,16 @@ public class RubiksCubeController : MonoBehaviour
             }
             foreach (Transform go in AllBlocksInFace)
             {
+                if (isPlayerOnATile) break;
+                if (isOneTileLocked) break;
+                if (isSameBlock) break;
+
                 //equivalence;
                 //Should Always be artCube
                 var i = go.GetComponentIndex();
 
                 Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
-                if (equivalence == null) continue;
-                var e = equivalence.GetComponentInChildren<ArtRubiksAnimator>();
-                if(e!= null)
-                    e.SetSelectedBool(true);
+                if (equivalence) equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.launchWaitForSelected(true);
 
             }
         }
