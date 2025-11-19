@@ -14,6 +14,7 @@ public class MemoryVFXController : MonoBehaviour
     
     private Transform _origin;
     private GameObject _LDElement;
+    private MemoryObject _memoryObject;
 
     /*
      Lerp_Delta:
@@ -25,6 +26,7 @@ public class MemoryVFXController : MonoBehaviour
     void Start()
     {
         LinkOriginToVFX();
+        _memoryObject = GetComponentInParent<MemoryObject>();
     }
 
     public void StartVFX(GameObject objectToActivate)
@@ -68,6 +70,8 @@ public class MemoryVFXController : MonoBehaviour
         yield return DOTween
             .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 0.5f, _animationDuration)
             .SetEase(Ease.InOutCubic).WaitForCompletion();
+
+        _memoryObject.OnCharacterAnimationFinished?.Invoke();
         
         yield return new WaitForSeconds(_stayDuration);
         
@@ -77,6 +81,7 @@ public class MemoryVFXController : MonoBehaviour
 
         if (_LDElement)
         {
+            _memoryObject.OnAnimationFinished?.Invoke();
             _LDElement.GetComponent<MeshRenderer>().enabled = false;
             _LDElement.SetActive(true);
         }

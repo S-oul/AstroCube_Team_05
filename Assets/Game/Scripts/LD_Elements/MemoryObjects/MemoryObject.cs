@@ -7,6 +7,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Path = DG.Tweening.Plugins.Core.PathCore.Path;
 
@@ -17,6 +18,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
     [SerializeField] private List<MemoryVFXController> _memories = new();
     [SerializeField] private List<GameObject> _gameObjectsToActivate;
     [SerializeField] private List<SubtitleData> _subtitles = new();
+
+    [SerializeField] public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
 
@@ -88,9 +91,11 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        Debug.Log("orh samuel");
-        if(!_wasPlayed)
+        if (!_wasPlayed)
+        {
             StartCoroutine(StartMemory());
+            OnMemoryInteracted?.Invoke();
+        }
     }
 }
 

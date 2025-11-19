@@ -1,12 +1,22 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-[EditorWindowTitle(title = "CSV Editor", icon = "Assets/Game/Scripts/Tools/LD/Editor/CubeSpreader/rubik.png")]
+[EditorWindowTitle(title = "CSV Editor", icon = "Assets/Game/Scripts/Tools/Editor/papier.png")]
 public class CSVEditor : EditorWindow
 {
+    private List<TextAsset> _csvFiles = new();
+    private Dictionary<TextAsset, List<List<string>>> _csvFileToList = new();
+    private int _currentModifyingCSVId = 0;
+
+    private MultiColumnHeaderState _multiColumnHeaderState;
+    private CSVTreeView _treeView;
+    private Vector2 _scrollPosition;
+
     [MenuItem("Tools/Localization")]
     public static void Init()
     {
@@ -14,55 +24,293 @@ public class CSVEditor : EditorWindow
         window.Show();
     }
 
-    private void CreateGUI()
+    private void OnEnable()
     {
-        var textAssets = Resources.LoadAll<TextAsset>("Localization");
-        foreach (TextAsset textAsset in textAssets)
+        LoadCSVFiles();
+    }
+
+    private void LoadCSVFiles()
+    {
+        _csvFileToList.Clear();
+        _csvFiles = Resources.LoadAll<TextAsset>("Localization").ToList();
+        
+        foreach (TextAsset textAsset in _csvFiles)
         {
+            List<List<string>> csvAsList = new();
             string text = textAsset.text;
             string[] lines = text.Split('\n');
-            foreach (string str in lines)
+            
+            foreach (string line in lines)
             {
-                Debug.Log(str);
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                csvAsList.Add(line.Trim().Split(';').ToList());
             }
+            
+            _csvFileToList[textAsset] = csvAsList;
         }
+
+        if (_csvFiles.Count > 0)
+        {
+            InitializeTreeView();
+        }
+    }
+
+    private void InitializeTreeView()
+    {
+        if (_csvFiles.Count == 0) return;
+
+        TextAsset currentCSV = _csvFiles[_currentModifyingCSVId];
+        var csvData = _csvFileToList[currentCSV];
+
+        if (csvData.Count == 0) return;
+
+        var headerRow = csvData[0];
+        var columns = new List<MultiColumnHeaderState.Column>();
+
+        columns.Add(new MultiColumnHeaderState.Column
+        {
+            headerContent = new GUIContent(""),
+            headerTextAlignment = TextAlignment.Center,
+            canSort = false,
+            width = 30,
+            minWidth = 30,
+            maxWidth = 30,
+            autoResize = false,
+            allowToggleVisibility = false
+        });
+
+        for (int i = 0; i < headerRow.Count; i++)
+        {
+            columns.Add(new MultiColumnHeaderState.Column
+            {
+                headerContent = new GUIContent(headerRow[i]),
+                headerTextAlignment = TextAlignment.Left,
+                canSort = false,
+                width = 200,
+                minWidth = 100,
+                autoResize = true,
+                allowToggleVisibility = false
+            });
+        }
+
+        _multiColumnHeaderState = new MultiColumnHeaderState(columns.ToArray());
+        var multiColumnHeader = new MultiColumnHeader(_multiColumnHeaderState);
+        multiColumnHeader.ResizeToFit();
+
+        _treeView = new CSVTreeView(new TreeViewState(), multiColumnHeader, csvData, OnDeleteRow);
+    }
+
+    private void OnDeleteRow(int rowIndex)
+    {
+        if (_csvFiles.Count == 0) return;
+
+        TextAsset currentCSV = _csvFiles[_currentModifyingCSVId];
+        var csvData = _csvFileToList[currentCSV];
+
+        int actualIndex = rowIndex;
+        if (actualIndex > 0 && actualIndex < csvData.Count)
+        {
+            csvData.RemoveAt(actualIndex);
+            InitializeTreeView();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SaveAllCSV();
     }
 
     private void OnGUI()
     {
-        EditorGUILayout.Space(20);
+        DrawHeader();
+        GUILayout.Space(20);
+        DrawToolbar();
+        DrawTreeView();
+        DrawButtons();
+    }
+
+    private void DrawHeader()
+    {
+        GUILayout.Space(20);
         
         EditorGUILayout.BeginHorizontal();
         {
             GUILayout.FlexibleSpace();
-            GUILayout.Label(AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Game/Scripts/Tools/LD/Editor/CubeSpreader/rubik.png"), new GUIStyle(GUI.skin.label){fixedHeight = 64, fixedWidth = 64});
-            GUILayout.Label("CSV Editor", new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter, fontSize = 30, fontStyle = FontStyle.Bold, fixedHeight = 64});
+            GUILayout.Label(
+                AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Game/Scripts/Tools/Editor/papier.png"),
+                new GUIStyle(GUI.skin.label) { fixedHeight = 64, fixedWidth = 64 }
+            );
+            GUILayout.Space(20);
+            GUILayout.Label(
+                "CSV Editor",
+                new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fontSize = 30,
+                    fontStyle = FontStyle.Bold,
+                    fixedHeight = 64
+                }
+            );
             GUILayout.FlexibleSpace();
         }
         EditorGUILayout.EndHorizontal();
     }
-    
-    private static T[] GetAtPath<T> (string path) {
-		
-        ArrayList al = new ArrayList();
-        string [] fileEntries = Directory.GetFiles(Application.dataPath+"/"+path);
-        foreach(string fileName in fileEntries)
-        {
-            int index = fileName.LastIndexOf("/");
-            string localPath = "Assets/" + path;
-			
-            if (index > 0)
-                localPath += fileName.Substring(index);
-				
-            Object t = AssetDatabase.LoadAssetAtPath(localPath, typeof(T));
 
-            if(t != null)
-                al.Add(t);
+    private void DrawToolbar()
+    {
+        List<string> csvNames = _csvFiles.Select(file => file.name).ToList();
+        int newSelection = GUILayout.Toolbar(_currentModifyingCSVId, csvNames.ToArray());
+
+        if (newSelection != _currentModifyingCSVId)
+        {
+            _currentModifyingCSVId = newSelection;
+            InitializeTreeView();
         }
-        T[] result = new T[al.Count];
-        for(int i=0;i<al.Count;i++)
-            result[i] = (T)al[i];
-			
-        return result;
+    }
+
+    private void DrawTreeView()
+    {
+        if (_treeView != null && _csvFiles.Count > 0)
+        {
+            Rect rect = GUILayoutUtility.GetRect(0, position.height - 200, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            _treeView.OnGUI(rect);
+        }
+    }
+
+    private void DrawButtons()
+    {
+        EditorGUILayout.BeginHorizontal();
+        {
+            if (GUILayout.Button("Add Line", GUILayout.Height(30)))
+            {
+                AddNewLine();
+            }
+
+            if (GUILayout.Button("Save All", GUILayout.Height(30)))
+            {
+                SaveAllCSV();
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void AddNewLine()
+    {
+        if (_csvFiles.Count == 0) return;
+
+        TextAsset currentCSV = _csvFiles[_currentModifyingCSVId];
+        var csvData = _csvFileToList[currentCSV];
+
+        if (csvData.Count == 0) return;
+
+        int columnCount = csvData[0].Count;
+        List<string> newRow = new List<string>();
+        for (int i = 0; i < columnCount; i++)
+        {
+            newRow.Add("");
+        }
+
+        csvData.Add(newRow);
+        InitializeTreeView();
+    }
+
+    private void SaveAllCSV()
+    {
+        foreach (TextAsset csvFile in _csvFiles)
+        {
+            EditorUtility.SetDirty(csvFile);
+
+            string newCSV = "";
+            var currentCSV = _csvFileToList[csvFile];
+            
+            foreach (var lines in currentCSV)
+            {
+                newCSV += string.Join(";", lines) + "\n";
+            }
+
+            string path = AssetDatabase.GetAssetPath(csvFile);
+            File.WriteAllText(path, newCSV);
+
+            AssetDatabase.SaveAssetIfDirty(csvFile);
+        }
+        
+        AssetDatabase.Refresh();
+    }
+}
+
+public class CSVTreeView : TreeView
+{
+    private List<List<string>> _csvData;
+    private Action<int> _onDeleteRow;
+
+    public CSVTreeView(TreeViewState state, MultiColumnHeader multiColumnHeader, List<List<string>> csvData, Action<int> onDeleteRow)
+        : base(state, multiColumnHeader)
+    {
+        _csvData = csvData;
+        _onDeleteRow = onDeleteRow;
+        rowHeight = 20;
+        showAlternatingRowBackgrounds = true;
+        showBorder = true;
+        Reload();
+    }
+
+    protected override TreeViewItem BuildRoot()
+    {
+        var root = new TreeViewItem { id = -1, depth = -1, displayName = "Root" };
+        var allItems = new List<TreeViewItem>();
+
+        for (int i = 1; i < _csvData.Count; i++)
+        {
+            var item = new CSVTreeViewItem(i, 0, i.ToString(), _csvData[i]);
+            allItems.Add(item);
+        }
+
+        SetupParentsAndChildrenFromDepths(root, allItems);
+        return root;
+    }
+
+    protected override void RowGUI(RowGUIArgs args)
+    {
+        var item = args.item as CSVTreeViewItem;
+        if (item == null) return;
+
+        for (int i = 0; i < args.GetNumVisibleColumns(); i++)
+        {
+            CellGUI(args.GetCellRect(i), item, args.GetColumn(i), ref args);
+        }
+    }
+
+    private void CellGUI(Rect cellRect, CSVTreeViewItem item, int columnIndex, ref RowGUIArgs args)
+    {
+        if (columnIndex == 0)
+        {
+            GUI.backgroundColor = Color.red;
+            if (GUI.Button(cellRect, "×", new GUIStyle(GUI.skin.button) { fontSize = 16, fontStyle = FontStyle.Bold }))
+            {
+                _onDeleteRow?.Invoke(item.id);
+            }
+            GUI.backgroundColor = Color.white;
+            return;
+        }
+
+        int dataColumnIndex = columnIndex - 1;
+        if (dataColumnIndex >= item.Values.Count) return;
+
+        EditorGUI.BeginChangeCheck();
+        string newValue = EditorGUI.TextField(cellRect, item.Values[dataColumnIndex]);
+        if (EditorGUI.EndChangeCheck())
+        {
+            item.Values[dataColumnIndex] = newValue;
+        }
+    }
+}
+
+public class CSVTreeViewItem : TreeViewItem
+{
+    public List<string> Values { get; set; }
+
+    public CSVTreeViewItem(int id, int depth, string displayName, List<string> values) : base(id, depth, displayName)
+    {
+        Values = values;
     }
 }
