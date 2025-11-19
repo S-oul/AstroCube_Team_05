@@ -66,8 +66,7 @@ public class ArtRubiksAnimator : MonoBehaviour
     }
     IEnumerator waitforXToStartSelected(bool IsSelected)
     {
-        print(1 - animatorCube.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        yield return new WaitForSeconds(1-animatorCube.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(0);
         SetSelectedBool(IsSelected);
     }
 
