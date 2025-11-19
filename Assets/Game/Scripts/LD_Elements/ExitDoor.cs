@@ -1,4 +1,5 @@
 using DG.Tweening;
+using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class ExitDoor : MonoBehaviour
     public static ExitDoor _instance;
 
     [SerializeField] private GameObject _door;
+    [SerializeField] private Animator _VFXAnimator;
     [SerializeField] private GameObject _stencil;
     [SerializeField] private float _endScaleStencil = 5.0f;
 
@@ -17,17 +19,21 @@ public class ExitDoor : MonoBehaviour
     [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
     [SerializeField] private CameraFocusAttractor.CameraFocusParameters _cameraFocusParams = new(1f, 2f, .7f);
 
-    private GameSettings _gameSettings;
-    private bool _isShowing = false;
-
     [Header("FOV")]
     [SerializeField] private float _MaxFOV_END = 150.0f;
+
+    private GameSettings _gameSettings;
+    private bool _isShowing = false;
+    private Collider _collider;
+
 
 
     private void Awake()
     {
         if (_instance) Destroy(this);
         else _instance = this;
+
+        _collider = GetComponent<Collider>();
 
         if (_isDoorOpenAtStart)
             OpenDoor();
@@ -59,14 +65,18 @@ public class ExitDoor : MonoBehaviour
         EventManager.OnSeeExit -= FocusCameraToExit;
     }
 
+    [Button("Open Door")]
     public void OpenDoor()
     {
-        _door.SetActive(true);
+        _collider.enabled = true;
+        _VFXAnimator.SetTrigger("Open");
     }
 
+    [Button("Close Door")]
     public void CloseDoor()
     {
-        _door.SetActive(false);
+        _collider.enabled = false;
+        _VFXAnimator.SetTrigger("Close");
     }
 
     public void SeeExitThroughWalls()
