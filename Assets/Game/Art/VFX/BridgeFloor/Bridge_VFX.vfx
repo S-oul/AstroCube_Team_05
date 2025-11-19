@@ -151,7 +151,7 @@ MonoBehaviour:
     x: -3215
     y: -1084
     width: 2655
-    height: 1752
+    height: 1790
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: Bridge_VFX_1
+  m_Name: Bridge_VFX
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
@@ -370,7 +370,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bridge_VFX_1
+  m_Name: Bridge_VFX
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:
@@ -1505,7 +1505,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661618266}
       inputSlot: {fileID: 8926484042661617894}
-    position: {x: -1195.2001, y: -881.6}
+    position: {x: -1195.2, y: -881.6}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -1566,6 +1566,8 @@ MonoBehaviour:
   - {fileID: 8926484042661618268}
   - {fileID: 8926484042661618269}
   - {fileID: 8926484042661618270}
+  - {fileID: 8926484042661619285}
+  - {fileID: 8926484042661619286}
   - {fileID: 8926484042661618271}
   - {fileID: 8926484042661618272}
   m_OutputSlots: []
@@ -1614,11 +1616,11 @@ MonoBehaviour:
     renderQueue: -1
   useBaseColorMap: 3
   useMaskMap: 0
-  useNormalMap: 0
+  useNormalMap: 1
   useEmissiveMap: 0
   colorMode: 1
   useEmissive: 0
-  materialType: 0
+  materialType: 3
   onlyAmbientLighting: 0
   diffusionProfileAsset: {fileID: 0}
   multiplyThicknessWithAlpha: 0
@@ -1763,7 +1765,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Mesh, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":10202,"guid":"0000000000000000e000000000000000","type":0}}'
+      m_SerializableObject: '{"obj":{"fileID":-5268455217944809245,"guid":"0d92f671248119449ad40d4b213f51dc","type":3}}'
     m_Space: -1
   m_Property:
     name: mesh
@@ -8144,7 +8146,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661619150}
       inputSlot: {fileID: 8926484042661618551}
-    position: {x: -1191.2001, y: -303.19998}
+    position: {x: -1191.2, y: -303.19998}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -10900,7 +10902,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661619249}
       inputSlot: {fileID: 8926484042661619252}
-    position: {x: -2642.4001, y: -106.399994}
+    position: {x: -2642.4, y: -106.399994}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -11076,3 +11078,71 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 8926484042661619167}
+--- !u!114 &8926484042661619285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a331b1d86cc8d4aa106ccbe0da5852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661619285}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661618267}
+    m_Value:
+      m_Type:
+        m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"90417d678bd842c43a8b61f02b69c3cd","type":3}}'
+    m_Space: -1
+  m_Property:
+    name: normalMap
+    m_serializedType:
+      m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  m_Direction: 0
+  m_LinkedSlots: []
+--- !u!114 &8926484042661619286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661619286}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661618267}
+    m_Value:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 1
+    m_Space: -1
+  m_Property:
+    name: normalScale
+    m_serializedType:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+  m_Direction: 0
+  m_LinkedSlots: []
