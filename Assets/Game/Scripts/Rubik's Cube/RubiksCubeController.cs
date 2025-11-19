@@ -432,11 +432,8 @@ public class RubiksCubeController : MonoBehaviour
             else
             {
                 selection.Select(mode);
-
             }
         }
-
-
         return !(isPlayerOnATile || isOneTileLocked);
     }
 
