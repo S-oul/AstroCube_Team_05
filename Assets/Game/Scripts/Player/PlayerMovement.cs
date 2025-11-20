@@ -101,6 +101,26 @@ public class PlayerMovement : MonoBehaviour
         _currentMoveSpeed = defaultSpeed;
     }
 
+    private void FixedUpdate()
+    {
+        if (!_canMove) return;
+
+        //check player state
+        _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
+
+        //apply gravity
+        if (_hasGravity)
+        {
+            _gravityDirection = transform.up;
+            _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
+
+            if (_isGrounded && _verticalVelocity.y <= 0)
+            {
+                _verticalVelocity = Vector3.zero;
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -112,22 +132,6 @@ public class PlayerMovement : MonoBehaviour
         if (_canJump) _jumpInput = Input.GetButtonDown("Jump");
         if (_canCrouch) _crouchInput = Input.GetKey(KeyCode.LeftShift);
         */
-
-        //check player state
-        _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
-
-        //apply gravity
-        if (_hasGravity) {
-            _gravityDirection = transform.up;
-            _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
-            
-            if (_isGrounded) {
-                _verticalVelocity = Vector3.zero;
-            }
-        }
-
-        //_gravityDirection = transform.up;
-        //_verticalVelocity = _gravityDirection * _gameSettings.Gravity * Time.deltaTime;
 
         // movePlayer (walking around)
         if (_isSlipping) _pastHorizontalVelocity = _horizontalVelocity;
