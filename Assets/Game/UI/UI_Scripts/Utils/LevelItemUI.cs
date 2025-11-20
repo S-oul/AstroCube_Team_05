@@ -7,14 +7,10 @@ public class LevelItemUI : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_Text levelNameText;
     [SerializeField] private Button button;
-    [SerializeField] private GameObject lockIcon;
 
     private int levelIndex;
     private System.Action<int> onClicked;
 
-    /// <summary>
-    /// Initialise l’item avec son index, son nom et son état (lock/unlock)
-    /// </summary>
     public void Setup(int index, string levelName, bool unlocked, System.Action<int> callback)
     {
         levelIndex = index;
@@ -22,7 +18,6 @@ public class LevelItemUI : MonoBehaviour
 
         levelNameText.text = levelName;
 
-        lockIcon.SetActive(!unlocked);
         button.interactable = unlocked;
 
         button.onClick.RemoveAllListeners();
