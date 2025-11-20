@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -234,6 +235,20 @@ public class CSVEditor : EditorWindow
             AssetDatabase.SaveAssetIfDirty(csvFile);
         }
         
+        AssetDatabase.Refresh();
+    }
+
+    [MenuItem("Assets/Create/Localization/Generate new CSV")]
+    private static void GenerateNewCSVFile()
+    {
+        string currentPathFolder = typeof(ProjectWindowUtil)
+            .GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic)?.Invoke(null, new object[0])
+            .ToString();
+
+        using (StreamWriter sw = new StreamWriter(currentPathFolder + "/New CSV.csv"))
+        {
+            
+        }
         AssetDatabase.Refresh();
     }
 }

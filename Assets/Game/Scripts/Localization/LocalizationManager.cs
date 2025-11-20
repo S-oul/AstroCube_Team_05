@@ -6,7 +6,7 @@ public class LocalizationManager : MonoBehaviour
 {
     public static LocalizationManager Instance { get; private set; }
 
-    private Dictionary<(string id, ELanguage language), string> _idToDialog = new();
+    private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
 
     private void Awake()
     {
@@ -22,9 +22,23 @@ public class LocalizationManager : MonoBehaviour
         var csvFiles = Resources.LoadAll<TextAsset>("Localization");
         foreach (TextAsset csv in csvFiles)
         {
-            string fullText = csv.text;
-            string[] lines = fullText.Split('\n')[1..];
-            
+            UnparseCSV(csv);
+        }
+    }
+    
+    private void UnparseCSV(TextAsset csv)
+    {
+        string csvName = csv.name;
+        string[] lines = csv.text.Split('\n');
+        string[] ids = lines[0].Split(';');
+
+        for (var line = 1; line < lines.Length; line++)
+        {
+            string[] values = lines[line].Split(';');
+            for (var value = 0; value < values.Length; value++)
+            {
+                
+            }
         }
     }
 }
