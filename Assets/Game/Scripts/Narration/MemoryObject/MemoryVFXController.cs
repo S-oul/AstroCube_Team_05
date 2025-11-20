@@ -53,7 +53,7 @@ public class MemoryVFXController : MonoBehaviour
         if (_LDElement)
         {
             _vfx.SetVector3("Origin_LD_Element_Position", _LDElement.transform.localPosition);
-            _vfx.SetVector3("Origin_LD_Element_Rotation", _LDElement.transform.rotation.eulerAngles);
+            _vfx.SetVector3("Origin_LD_Element_Rotation", _LDElement.transform.localRotation.eulerAngles);
             _vfx.SetVector3("Origin_LD_Element_Scale", _LDElement.transform.localScale);
         }
     }
