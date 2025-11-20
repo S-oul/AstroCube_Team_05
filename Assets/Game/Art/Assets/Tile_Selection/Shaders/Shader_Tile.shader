@@ -1122,7 +1122,7 @@ Shader "Shader_Tile"
 				float2 texCoord45 = packedInput.ase_texcoord5.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
 				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
-				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient140 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _State);
 				Gradient gradient145 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float2 temp_cast_9 = (2.0).xx;
@@ -2026,7 +2026,7 @@ Shader "Shader_Tile"
 				float2 texCoord45 = packedInput.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
 				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
-				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient140 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _State);
 				Gradient gradient145 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float2 temp_cast_9 = (2.0).xx;
@@ -6056,7 +6056,7 @@ Shader "Shader_Tile"
 				float2 texCoord45 = packedInput.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
 				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
-				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient140 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _State);
 				Gradient gradient145 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float2 temp_cast_9 = (2.0).xx;
@@ -7213,7 +7213,7 @@ Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Cult
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;93;-32,256;Inherit;True;Property;_Normal;Normal;11;0;Create;True;0;0;0;False;0;False;-1;None;ba4d366b1decf3f4e8d7d132dc42c649;True;0;True;white;Auto;True;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;48;-832,-1056;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;137;-832,-880;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;140;-1040,-880;Inherit;False;0;4;2;0.3962264,0.02097896,0.02018509,0;0.8792453,0.1177857,0.1341067,0.4011749;0.9490196,0.2196078,0.2528196,0.6082399;1,1,1,0.798825;1,0;1,1;0;1;OBJECT;0
+Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;140;-1040,-880;Inherit;False;0;3;2;0.2150944,0.2150944,0.2150944,0;0.4505348,0.4505348,0.4505348,0.5447013;1,1,1,0.8976425;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;145;-1040,-704;Inherit;False;0;3;2;0.2150944,0.2150944,0.2150944,0;0.4505348,0.4505348,0.4505348,0.5447013;1,1,1,0.8976425;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;131;-384,-896;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.Compare, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;152;-208,-784;Inherit;False;5;4;0;FLOAT;0;False;1;FLOAT;0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
@@ -7479,4 +7479,4 @@ WireConnection;117;7;96;2
 WireConnection;117;6;328;0
 WireConnection;117;9;334;0
 ASEEND*/
-//CHKSM=B1096131532BB4444CA61C9EBEE3819B935F7E27
+//CHKSM=DAD206578F786E2E0F3E12D026E994E4CB974585
