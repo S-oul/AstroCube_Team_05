@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
             _gravityDirection = transform.up;
             _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
 
-            if (_isGrounded)
+            if (_isGrounded && _verticalVelocity.y <= 0)
             {
                 _verticalVelocity = Vector3.zero;
             }
