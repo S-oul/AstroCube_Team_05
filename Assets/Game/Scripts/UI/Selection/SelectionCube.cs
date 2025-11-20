@@ -30,6 +30,7 @@ public class SelectionCube : MonoBehaviour
     */
     private Renderer[] _renderers;
     private BoxCollider[] _colliders;
+    private Material _instancedLockedTileMat;
 
     public SelectionMode CurrentSelectionMode { get; private set; }
 
@@ -89,7 +90,17 @@ public class SelectionCube : MonoBehaviour
             foreach (var renderer in _renderers)
             {
                 if (renderer.transform.CompareTag("Floor"))
-                    renderer.material = _lockedTileMat;
+                {
+                    Material baseMat = renderer.material;
+                    _instancedLockedTileMat = new Material(_lockedTileMat);
+
+                    _instancedLockedTileMat.SetTexture("_BaseMap", baseMat.GetTexture("_Texture"));
+                    _instancedLockedTileMat.SetTexture("_NormalMap", baseMat.GetTexture("_Normal"));
+                    _instancedLockedTileMat.SetTexture("_MetallicRoughnessMap", baseMat.GetTexture("_MetallicRoughness"));
+                    _instancedLockedTileMat.SetFloat("_RandomValue", UnityEngine.Random.Range(0.0f,1.0f));
+
+                    renderer.material = _instancedLockedTileMat;
+                }
             }
         }
 
