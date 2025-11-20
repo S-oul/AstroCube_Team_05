@@ -245,11 +245,25 @@ public class CSVEditor : EditorWindow
             .GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic)?.Invoke(null, new object[0])
             .ToString();
 
+
+        string toWrite = "ID;";
+        foreach (ELanguage lang in Enum.GetValues(typeof(ELanguage)))
+        {
+            toWrite += lang.ToString() + ';';
+        }
+
+        toWrite.TrimEnd(';');
+        
         using (StreamWriter sw = new StreamWriter(currentPathFolder + "/New CSV.csv"))
         {
-            
+            sw.WriteLine(toWrite);
         }
+        
         AssetDatabase.Refresh();
+
+        UnityEngine.Object obj = AssetDatabase.LoadMainAssetAtPath(currentPathFolder + "/New CSV.csv");
+        Selection.activeObject = obj;
+        EditorGUIUtility.PingObject(obj);
     }
 }
 
