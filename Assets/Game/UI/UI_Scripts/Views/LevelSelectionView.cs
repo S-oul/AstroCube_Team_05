@@ -11,8 +11,8 @@ public class LevelSelectionView : UIView
     [SerializeField] private Transform contentRoot;
     [SerializeField] private LevelItemUI itemPrefab;
     [SerializeField] private Button backButton;
-    [SerializeField] private Image previewImage;
-    [SerializeField] private List<Sprite> previewSprites;
+    [SerializeField] private RawImage previewImage;
+    [SerializeField] private List<Material> previewMaterials;
 
     [Header("Levels")]
     [SerializeField] private List<string> levelNames;
@@ -176,10 +176,10 @@ public class LevelSelectionView : UIView
 
     private void UpdatePreview(int index)
     {
-        if (index < 0 || index >= previewSprites.Count)
+        if (index < 0 || index >= previewMaterials.Count)
             return;
 
-        previewImage.sprite = previewSprites[index];
+        previewImage.material = previewMaterials[index];
     }
 
     private void OnLevelClicked(int index)
