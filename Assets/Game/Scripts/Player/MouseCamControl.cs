@@ -70,7 +70,7 @@ public class MouseCamControl : MonoBehaviour
                                rawInput.y * pitchSensitivity * Time.deltaTime);
     }
 
-    void LateUpdate()
+    void Update()
     {
         UpdateSelection(false);
     }
