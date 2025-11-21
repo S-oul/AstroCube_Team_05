@@ -38,10 +38,6 @@ public class LevelSelectionView : UIView
         backButton.onClick.AddListener(OnBackClicked);
     }
 
-public void unlockAllLevels(){
-LevelProgressionSystem.UnlockAllLevels(12);
-}
-
     private void GenerateList()
     {
         foreach (Transform child in contentRoot)
@@ -83,6 +79,7 @@ LevelProgressionSystem.UnlockAllLevels(12);
             return;
 
         UpdateIndexFromUnityNavigation();
+        HandleMouseWheelScroll();
         SmoothScroll();
         AutoFocusIfLost();
     }
@@ -92,6 +89,12 @@ LevelProgressionSystem.UnlockAllLevels(12);
         var sel = EventSystem.current.currentSelectedGameObject;
         if (sel == null)
             return;
+
+        if (sel == backButton.gameObject)
+        {
+            currentIndex = -1;
+            return;
+        }
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -108,6 +111,33 @@ LevelProgressionSystem.UnlockAllLevels(12);
         }
     }
 
+    private void HandleMouseWheelScroll()
+    {
+        if (Input.mouseScrollDelta.y < 0f)
+        {
+            int newIndex = Mathf.Clamp(currentIndex + 1, 0, items.Count - 1);
+            if (newIndex != currentIndex)
+            {
+                currentIndex = newIndex;
+                items[currentIndex].Button.Select();
+                ScrollTo(currentIndex);
+                UpdatePreview(currentIndex);
+            }
+        }
+
+        if (Input.mouseScrollDelta.y > 0f)
+        {
+            int newIndex = Mathf.Clamp(currentIndex - 1, 0, items.Count - 1);
+            if (newIndex != currentIndex)
+            {
+                currentIndex = newIndex;
+                items[currentIndex].Button.Select();
+                ScrollTo(currentIndex);
+                UpdatePreview(currentIndex);
+            }
+        }
+    }
+
     private void AutoFocusIfLost()
     {
         var sel = EventSystem.current.currentSelectedGameObject;
@@ -115,7 +145,10 @@ LevelProgressionSystem.UnlockAllLevels(12);
         if (sel != null)
             return;
 
-        items[currentIndex].Button.Select();
+        if (currentIndex == -1)
+            backButton.Select();
+        else
+            items[currentIndex].Button.Select();
     }
 
     private void SmoothScroll()
