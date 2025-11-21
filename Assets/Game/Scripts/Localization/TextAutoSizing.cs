@@ -7,7 +7,7 @@ public class TextAutoSizing : MonoBehaviour
 {
 
     [SerializeField] private Vector2 _margin;
-    private TMP_Text _text;
+    [SerializeField] private TMP_Text _text;
 
     private void Reset()
     {
@@ -18,5 +18,14 @@ public class TextAutoSizing : MonoBehaviour
     public void AutoResize()
     {
         _text.rectTransform.sizeDelta = _text.GetPreferredValues(_text.text) + _margin;
+    }
+
+    public void SetText(string value, Color? color)
+    {
+        _text.text = value;
+        _text.color = color ?? Color.white;
+        _text.gameObject.SetActive(value != "");
+
+        AutoResize();
     }
 }

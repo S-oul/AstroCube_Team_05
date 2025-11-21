@@ -34,7 +34,7 @@ public class MemoryVFXController : MonoBehaviour
         _spawnsLDElement = objectToActivate;
         
         _LDElement = objectToActivate;
-        _LDElement.SetActive(false);
+        _LDElement?.SetActive(false);
         
         if (_vfx)
         {

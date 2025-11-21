@@ -8,22 +8,15 @@ public class LocalizationManager : MonoBehaviour
     public static LocalizationManager Instance { get; private set; }
 
     [SerializeField] private ELanguage _currentLanguage = ELanguage.ENGLISH;
-    
     private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
     
-    private TextAutoSizing _textAutoSizing;
-    private TMP_Text _text;
+    [SerializeField] private TextAutoSizing _textAutoSizing;
 
     private void Awake()
     {
         if (Instance != null)
             Destroy(gameObject);
-
         Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        _textAutoSizing = GetComponentInChildren<TextAutoSizing>();
-        _text = GetComponentInChildren<TMP_Text>();
     }
 
     private void Start()
@@ -63,9 +56,9 @@ public class LocalizationManager : MonoBehaviour
 
     public string GetString(string csvName, string id)
     {
-        if (Instance._idToDialog.ContainsKey((csvName, id, Instance._currentLanguage)))
+        if (_idToDialog.ContainsKey((csvName, id, _currentLanguage)))
         {
-            return Instance._idToDialog[(csvName, id, Instance._currentLanguage)];
+            return _idToDialog[(csvName, id, _currentLanguage)];
         }
         else
         {
@@ -76,9 +69,7 @@ public class LocalizationManager : MonoBehaviour
 
     public void PrintString(string value, Color? color = null)
     {
-        Instance._text.text = value;
-        Instance._text.color = color ?? Color.white;
-        Instance._text.gameObject.SetActive(value != "");
+        _textAutoSizing.SetText(value, color);
     }
 
     public void PrintStringFromID(string csvName, string id, Color? color = null)

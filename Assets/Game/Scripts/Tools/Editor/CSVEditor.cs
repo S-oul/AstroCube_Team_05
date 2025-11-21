@@ -277,11 +277,7 @@ public class CSVEditor : EditorWindow
     [MenuItem("Assets/Create/Localization/Generate new CSV")]
     private static void GenerateNewCSVFile()
     {
-        string currentPathFolder = typeof(ProjectWindowUtil)
-            .GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic)?.Invoke(null, new object[0])
-            .ToString();
-
-
+        string pathFolder = "Assets/Game/Resources/Localization/";
         string toWrite = "ID;";
         foreach (ELanguage lang in Enum.GetValues(typeof(ELanguage)))
         {
@@ -290,14 +286,14 @@ public class CSVEditor : EditorWindow
 
         toWrite.TrimEnd(';');
         
-        using (StreamWriter sw = new StreamWriter(currentPathFolder + "/New CSV.csv"))
+        using (StreamWriter sw = new StreamWriter(pathFolder + "/New CSV.csv"))
         {
             sw.WriteLine(toWrite);
         }
         
         AssetDatabase.Refresh();
 
-        UnityEngine.Object obj = AssetDatabase.LoadMainAssetAtPath(currentPathFolder + "/New CSV.csv");
+        UnityEngine.Object obj = AssetDatabase.LoadMainAssetAtPath(pathFolder + "/New CSV.csv");
         Selection.activeObject = obj;
         EditorGUIUtility.PingObject(obj);
     }
