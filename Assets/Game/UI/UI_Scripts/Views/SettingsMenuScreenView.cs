@@ -40,7 +40,6 @@ public class SettingsMenuScreenView : UIView
     [SerializeField] private UIToggleButton rumbleButton;
     [SerializeField] private UIToggleButton previewButton;
     [SerializeField] private UIToggleButton oneHandedButton;
-    [SerializeField] private UIToggleButton correctActionButton;
 
 
     [Header("Others")]
@@ -102,7 +101,6 @@ public class SettingsMenuScreenView : UIView
         rumbleButton.onToggleChanged.AddListener(OnRumbleToggled);
         previewButton.onToggleChanged.AddListener(OnPreviewToggled);
         oneHandedButton.onToggleChanged.AddListener(OnOneHandToggled);
-        correctActionButton.onToggleChanged.AddListener(OnCorrectActionToggled);
 
         backButton.onClick.AddListener(OnQuitClicked);
 
@@ -110,7 +108,6 @@ public class SettingsMenuScreenView : UIView
         rumbleButton.SetState(_customisedSettings.customVibration, false);
         previewButton.SetState(_customisedSettings.customPreview, false);
         oneHandedButton.SetState(_customisedSettings.customOneHandMode, false);
-        correctActionButton.SetState(_customisedSettings.customCorrectActions, false);
 
         fovSlider.minValue = _customisedSettings.minFOV;
         fovSlider.maxValue = _customisedSettings.maxFOV;
@@ -290,7 +287,6 @@ public class SettingsMenuScreenView : UIView
         AddHover(rumbleButton.gameObject, "Rumble :");
         AddHover(previewButton.gameObject, "Preview Hints :");
         AddHover(oneHandedButton.gameObject, "One Handed Mode :");
-        AddHover(correctActionButton.gameObject, "Correct Action Feedback :");  
 
     }
 

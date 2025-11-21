@@ -94,7 +94,7 @@ public class PlayerTrigger : MonoBehaviour
             var belt = other.GetComponent<ConveyerBeltManager>();
             _playerMovement.SetExternallyAppliedMovement(belt.direction, belt.speed);
         }
-
+        /*
         if (other.CompareTag("Portal"))
         {
             float toEvaluate = Vector3.Distance(transform.position, other.transform.position) / 4f;
@@ -125,6 +125,7 @@ public class PlayerTrigger : MonoBehaviour
             if (Camera.allCameras.Length > 1)
                 overlayCamera.fieldOfView = overlayFOV;
         }
+        */
     }
 
     private void OnTriggerExit(Collider other)
@@ -144,6 +145,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("ConveyerBelt"))
             _playerMovement.SetExternallyAppliedMovement(Vector3.zero);
 
+        /*
         if (other.CompareTag("Portal"))
         {
             SmoothCameraTransition(GameManager.Instance.CustomSettings.customFov, 1f);
@@ -155,7 +157,7 @@ public class PlayerTrigger : MonoBehaviour
 
             cameraFocusAttractor.StopAllFocus();
             isInExitFocusState = false;
-        }
+        }*/
     }
 
     void SmoothCameraTransition(float targetFOV, float duration)

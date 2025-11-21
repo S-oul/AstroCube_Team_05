@@ -18,22 +18,21 @@ public class ArtRubiksAnimator : MonoBehaviour
 
     void Start()
     {
-        //EventManager.OnEndCubeRotation += StartAnimIdle;
-
         animatorCube = GetComponent<Animator>();
-        StartCoroutine(waitforXToStartIdle(_delay));
+        //StartCoroutine(waitforXToStartIdle(_delay));
     }
 
-    ///Try to Reync da idle anim but failed miserably
-    ///*private void OnDisable()
-    //{
-    //    EventManager.OnEndCubeRotation -= StartAnimIdle;
-    //}*/
+    private void OnEnable()
+    {
+    }
+    private void OnDisable()
+    {
+    }
 
     public void StartAnimRota()
     {
-        animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
-        animatorFx.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
+        //animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
+        //animatorFx.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
         animatorCube.SetTrigger("DoRotation");
 
         switch (_type)
@@ -51,7 +50,7 @@ public class ArtRubiksAnimator : MonoBehaviour
         }
     }
 
-    void StartAnimIdle()
+    public void StartAnimIdle()
     {
         animatorCube.SetTrigger("StartAnim");
     }
@@ -59,6 +58,38 @@ public class ArtRubiksAnimator : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         StartAnimIdle();
+    }
+
+    public void launchWaitForSelected(bool IsSelected)
+    {
+        StartCoroutine(waitforXToStartSelected(IsSelected));
+    }
+    IEnumerator waitforXToStartSelected(bool IsSelected)
+    {
+        yield return new WaitForSeconds(0);
+        SetSelectedBool(IsSelected);
+    }
+
+    public void SetSelectedBool(bool isIt)
+    {
+        animatorCube.SetBool("IsSelected2", isIt);
+        if (!isIt) return;
+
+        if (animatorCube.GetCurrentAnimatorStateInfo(0).IsTag("Select")) return;
+        
+        switch (_type)
+        {
+            case TypeFace.Face:
+                animatorCube.Play("Cube_Face_Selected", 0, 0);
+                break;
+            case TypeFace.Edge:
+                animatorCube.Play("Cube_Cote_Selected", 0, 0);
+                break;
+            case TypeFace.Coin:
+                animatorCube.Play("Cube_Coin_Selected", 0, 0);
+                break;
+
+        }
     }
 
 }
