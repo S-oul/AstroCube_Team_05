@@ -13,6 +13,7 @@ public class LevelSelectionView : UIView
     [SerializeField] private Button backButton;
     [SerializeField] private RawImage previewImage;
     [SerializeField] private List<Material> previewMaterials;
+    [SerializeField] private Material lockedPreviewMaterial;
 
     [Header("Levels")]
     [SerializeField] private List<string> levelNames;
@@ -111,11 +112,27 @@ public class LevelSelectionView : UIView
         }
     }
 
+    private int GetNextUnlocked(int start, int direction)
+    {
+        int i = start;
+
+        while (true)
+        {
+            i += direction;
+
+            if (i < 0 || i >= items.Count)
+                return start;
+
+            if (LevelProgressionSystem.IsUnlocked(i))
+                return i;
+        }
+    }
+
     private void HandleMouseWheelScroll()
     {
         if (Input.mouseScrollDelta.y < 0f)
         {
-            int newIndex = Mathf.Clamp(currentIndex + 1, 0, items.Count - 1);
+            int newIndex = GetNextUnlocked(currentIndex, +1);
             if (newIndex != currentIndex)
             {
                 currentIndex = newIndex;
@@ -127,7 +144,7 @@ public class LevelSelectionView : UIView
 
         if (Input.mouseScrollDelta.y > 0f)
         {
-            int newIndex = Mathf.Clamp(currentIndex - 1, 0, items.Count - 1);
+            int newIndex = GetNextUnlocked(currentIndex, -1);
             if (newIndex != currentIndex)
             {
                 currentIndex = newIndex;
@@ -179,13 +196,22 @@ public class LevelSelectionView : UIView
         if (index < 0 || index >= previewMaterials.Count)
             return;
 
+        bool unlocked = LevelProgressionSystem.IsUnlocked(index);
+
+        if (!unlocked)
+        {
+            previewImage.material = lockedPreviewMaterial;
+            return;
+        }
+
         previewImage.material = previewMaterials[index];
     }
 
     private void OnLevelClicked(int index)
     {
-        if (index >= 0 && index < SceneManager.sceneCountInBuildSettings)
-            SceneManager.LoadScene(index);
+        LevelProgressionSystem.Unlock(index);
+        LevelProgressionSystem.SetLastLevel(index);
+        SceneManager.LoadScene(index);
     }
 
     private void OnBackClicked()
