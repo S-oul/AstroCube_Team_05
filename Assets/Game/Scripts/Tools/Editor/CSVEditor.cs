@@ -17,6 +17,9 @@ public class CSVEditor : EditorWindow
     private MultiColumnHeaderState _multiColumnHeaderState;
     private CSVTreeView _treeView;
     private Vector2 _scrollPosition;
+    
+    // Barre de recherche
+    private string _searchText = "";
 
     [MenuItem("Tools/Localization")]
     public static void Init()
@@ -98,7 +101,7 @@ public class CSVEditor : EditorWindow
         var multiColumnHeader = new MultiColumnHeader(_multiColumnHeaderState);
         multiColumnHeader.ResizeToFit();
 
-        _treeView = new CSVTreeView(new TreeViewState(), multiColumnHeader, csvData, OnDeleteRow);
+        _treeView = new CSVTreeView(new TreeViewState(), multiColumnHeader, csvData, OnDeleteRow, _searchText);
     }
 
     private void OnDeleteRow(int rowIndex)
@@ -125,6 +128,8 @@ public class CSVEditor : EditorWindow
     {
         DrawHeader();
         GUILayout.Space(20);
+        DrawSearchBar();
+        GUILayout.Space(10);
         DrawToolbar();
         DrawTreeView();
         DrawButtons();
@@ -157,6 +162,37 @@ public class CSVEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
     }
 
+    private void DrawSearchBar()
+    {
+        EditorGUILayout.BeginHorizontal();
+        {
+            GUILayout.Label("Rechercher ID:", GUILayout.Width(100));
+            
+            EditorGUI.BeginChangeCheck();
+            _searchText = EditorGUILayout.TextField(_searchText, EditorStyles.toolbarSearchField);
+            if (EditorGUI.EndChangeCheck())
+            {
+                if (_treeView != null)
+                {
+                    _treeView.UpdateSearchFilter(_searchText);
+                }
+            }
+
+            if (GUILayout.Button("X", GUILayout.Width(25)))
+            {
+                _searchText = "";
+                if (_treeView != null)
+                {
+                    _treeView.UpdateSearchFilter(_searchText);
+                }
+                GUI.FocusControl(null);
+            }
+            
+            GUILayout.FlexibleSpace();
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
     private void DrawToolbar()
     {
         List<string> csvNames = _csvFiles.Select(file => file.name).ToList();
@@ -173,7 +209,7 @@ public class CSVEditor : EditorWindow
     {
         if (_treeView != null && _csvFiles.Count > 0)
         {
-            Rect rect = GUILayoutUtility.GetRect(0, position.height - 200, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            Rect rect = GUILayoutUtility.GetRect(0, position.height - 250, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             _treeView.OnGUI(rect);
         }
     }
@@ -271,15 +307,23 @@ public class CSVTreeView : TreeView
 {
     private List<List<string>> _csvData;
     private Action<int> _onDeleteRow;
+    private string _searchFilter = "";
 
-    public CSVTreeView(TreeViewState state, MultiColumnHeader multiColumnHeader, List<List<string>> csvData, Action<int> onDeleteRow)
+    public CSVTreeView(TreeViewState state, MultiColumnHeader multiColumnHeader, List<List<string>> csvData, Action<int> onDeleteRow, string searchFilter = "")
         : base(state, multiColumnHeader)
     {
         _csvData = csvData;
         _onDeleteRow = onDeleteRow;
+        _searchFilter = searchFilter;
         rowHeight = 20;
         showAlternatingRowBackgrounds = true;
         showBorder = true;
+        Reload();
+    }
+
+    public void UpdateSearchFilter(string searchText)
+    {
+        _searchFilter = searchText;
         Reload();
     }
 
@@ -290,6 +334,18 @@ public class CSVTreeView : TreeView
 
         for (int i = 1; i < _csvData.Count; i++)
         {
+            if (!string.IsNullOrEmpty(_searchFilter))
+            {
+                if (_csvData[i].Count > 0)
+                {
+                    string id = _csvData[i][0];
+                    if (!id.ToLower().Contains(_searchFilter.ToLower()))
+                    {
+                        continue;
+                    }
+                }
+            }
+
             var item = new CSVTreeViewItem(i, 0, i.ToString(), _csvData[i]);
             allItems.Add(item);
         }

@@ -64,18 +64,14 @@ public class MemoryObject : MonoBehaviour, IInteractable
             {
                 mem.StartVFX(null);
             }
-            //memChar.gameObject.SetActive(true);
         }
-
-        TMP_Text text = GameObject.Find("Subtitles").GetComponent<TMP_Text>();
+        
         foreach (SubtitleData subtitle in _subtitles)
         {
-            text.text = subtitle.text;
-            text.color = subtitle.color;
+            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
-
-        text.text = "";
+        LocalizationManager.Instance.PrintString("", Color.white);
     }
 
     private void OnDrawGizmos()
@@ -102,7 +98,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
 [Serializable]
 public struct SubtitleData
 {
-    public string text;
+    public string csvName;
+    public string localizationID;
     public float duration;
     public Color color;
 }

@@ -1,12 +1,18 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LocalizationManager : MonoBehaviour
 {
     public static LocalizationManager Instance { get; private set; }
 
+    [SerializeField] private ELanguage _currentLanguage = ELanguage.ENGLISH;
+    
     private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
+    
+    private TextAutoSizing _textAutoSizing;
+    private TMP_Text _text;
 
     private void Awake()
     {
@@ -15,6 +21,9 @@ public class LocalizationManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        _textAutoSizing = GetComponentInChildren<TextAutoSizing>();
+        _text = GetComponentInChildren<TMP_Text>();
     }
 
     private void Start()
@@ -28,6 +37,8 @@ public class LocalizationManager : MonoBehaviour
     
     private void UnparseCSV(TextAsset csv)
     {
+
+        _idToDialog = new();
         string csvName = csv.name;
         string[] lines = csv.text.Split('\n');
         string[] ids = lines[0].Split(';');
@@ -35,11 +46,44 @@ public class LocalizationManager : MonoBehaviour
         for (var line = 1; line < lines.Length; line++)
         {
             string[] values = lines[line].Split(';');
-            for (var value = 0; value < values.Length; value++)
+            string id = values[0];
+            for (var value = 1; value < values.Length - 1; value++)
             {
-                
+                if (Enum.TryParse(ids[value], out ELanguage language))
+                {
+                    _idToDialog[(csvName, id, language)] = values[value];
+                }
+                else
+                {
+                    throw new Exception("CSV columns are badly generated.");
+                }
             }
         }
+    }
+
+    public string GetString(string csvName, string id)
+    {
+        if (Instance._idToDialog.ContainsKey((csvName, id, Instance._currentLanguage)))
+        {
+            return Instance._idToDialog[(csvName, id, Instance._currentLanguage)];
+        }
+        else
+        {
+            Debug.LogWarning($"Didn't find any key corresponding to : {csvName}:{id}");
+            return $"<{csvName}:{id}>";
+        }
+    }
+
+    public void PrintString(string value, Color? color = null)
+    {
+        Instance._text.text = value;
+        Instance._text.color = color ?? Color.white;
+        Instance._text.gameObject.SetActive(value != "");
+    }
+
+    public void PrintStringFromID(string csvName, string id, Color? color = null)
+    {
+        PrintString(GetString(csvName, id), color);
     }
 }
 
