@@ -11,8 +11,9 @@ public class LevelSelectionView : UIView
     [SerializeField] private Transform contentRoot;
     [SerializeField] private LevelItemUI itemPrefab;
     [SerializeField] private Button backButton;
-    [SerializeField] private Image previewImage;
-    [SerializeField] private List<Sprite> previewSprites;
+    [SerializeField] private RawImage previewImage;
+    [SerializeField] private List<Material> previewMaterials;
+    [SerializeField] private Material lockedPreviewMaterial;
 
     [Header("Levels")]
     [SerializeField] private List<string> levelNames;
@@ -37,10 +38,6 @@ public class LevelSelectionView : UIView
         GenerateList();
         backButton.onClick.AddListener(OnBackClicked);
     }
-
-public void unlockAllLevels(){
-LevelProgressionSystem.UnlockAllLevels(12);
-}
 
     private void GenerateList()
     {
@@ -83,6 +80,7 @@ LevelProgressionSystem.UnlockAllLevels(12);
             return;
 
         UpdateIndexFromUnityNavigation();
+        HandleMouseWheelScroll();
         SmoothScroll();
         AutoFocusIfLost();
     }
@@ -92,6 +90,12 @@ LevelProgressionSystem.UnlockAllLevels(12);
         var sel = EventSystem.current.currentSelectedGameObject;
         if (sel == null)
             return;
+
+        if (sel == backButton.gameObject)
+        {
+            currentIndex = -1;
+            return;
+        }
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -108,6 +112,49 @@ LevelProgressionSystem.UnlockAllLevels(12);
         }
     }
 
+    private int GetNextUnlocked(int start, int direction)
+    {
+        int i = start;
+
+        while (true)
+        {
+            i += direction;
+
+            if (i < 0 || i >= items.Count)
+                return start;
+
+            if (LevelProgressionSystem.IsUnlocked(i))
+                return i;
+        }
+    }
+
+    private void HandleMouseWheelScroll()
+    {
+        if (Input.mouseScrollDelta.y < 0f)
+        {
+            int newIndex = GetNextUnlocked(currentIndex, +1);
+            if (newIndex != currentIndex)
+            {
+                currentIndex = newIndex;
+                items[currentIndex].Button.Select();
+                ScrollTo(currentIndex);
+                UpdatePreview(currentIndex);
+            }
+        }
+
+        if (Input.mouseScrollDelta.y > 0f)
+        {
+            int newIndex = GetNextUnlocked(currentIndex, -1);
+            if (newIndex != currentIndex)
+            {
+                currentIndex = newIndex;
+                items[currentIndex].Button.Select();
+                ScrollTo(currentIndex);
+                UpdatePreview(currentIndex);
+            }
+        }
+    }
+
     private void AutoFocusIfLost()
     {
         var sel = EventSystem.current.currentSelectedGameObject;
@@ -115,7 +162,10 @@ LevelProgressionSystem.UnlockAllLevels(12);
         if (sel != null)
             return;
 
-        items[currentIndex].Button.Select();
+        if (currentIndex == -1)
+            backButton.Select();
+        else
+            items[currentIndex].Button.Select();
     }
 
     private void SmoothScroll()
@@ -143,16 +193,25 @@ LevelProgressionSystem.UnlockAllLevels(12);
 
     private void UpdatePreview(int index)
     {
-        if (index < 0 || index >= previewSprites.Count)
+        if (index < 0 || index >= previewMaterials.Count)
             return;
 
-        previewImage.sprite = previewSprites[index];
+        bool unlocked = LevelProgressionSystem.IsUnlocked(index);
+
+        if (!unlocked)
+        {
+            previewImage.material = lockedPreviewMaterial;
+            return;
+        }
+
+        previewImage.material = previewMaterials[index];
     }
 
     private void OnLevelClicked(int index)
     {
-        if (index >= 0 && index < SceneManager.sceneCountInBuildSettings)
-            SceneManager.LoadScene(index);
+        LevelProgressionSystem.Unlock(index);
+        LevelProgressionSystem.SetLastLevel(index);
+        SceneManager.LoadScene(index);
     }
 
     private void OnBackClicked()
