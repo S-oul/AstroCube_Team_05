@@ -7,6 +7,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Path = DG.Tweening.Plugins.Core.PathCore.Path;
 
@@ -17,6 +18,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
     [SerializeField] private List<MemoryVFXController> _memories = new();
     [SerializeField] private List<GameObject> _gameObjectsToActivate;
     [SerializeField] private List<SubtitleData> _subtitles = new();
+
+    [SerializeField] public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
 
@@ -61,18 +64,14 @@ public class MemoryObject : MonoBehaviour, IInteractable
             {
                 mem.StartVFX(null);
             }
-            //memChar.gameObject.SetActive(true);
         }
-
-        TMP_Text text = GameObject.Find("Subtitles").GetComponent<TMP_Text>();
+        
         foreach (SubtitleData subtitle in _subtitles)
         {
-            text.text = subtitle.text;
-            text.color = subtitle.color;
+            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
-
-        text.text = "";
+        LocalizationManager.Instance.PrintString("", Color.white);
     }
 
     private void OnDrawGizmos()
@@ -88,16 +87,19 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        Debug.Log("orh samuel");
-        if(!_wasPlayed)
+        if (!_wasPlayed)
+        {
             StartCoroutine(StartMemory());
+            OnMemoryInteracted?.Invoke();
+        }
     }
 }
 
 [Serializable]
 public struct SubtitleData
 {
-    public string text;
+    public string csvName;
+    public string localizationID;
     public float duration;
     public Color color;
 }

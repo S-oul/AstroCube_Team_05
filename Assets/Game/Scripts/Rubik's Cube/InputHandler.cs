@@ -255,7 +255,7 @@ public class InputHandler : MonoBehaviour
     
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (!IsInputEnabled(EInputType.MOVEMENT)) return;
+        if (!IsInputEnabled(EInputType.JUMP)) return;
         if (ctx.started && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionJump();
     }
