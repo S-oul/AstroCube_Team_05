@@ -119,11 +119,7 @@ public class PlayerMovement : MonoBehaviour
                 _verticalVelocity = Vector3.zero;
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+    
         if (!_canMove) return;
         /*
         // collect player inputs
