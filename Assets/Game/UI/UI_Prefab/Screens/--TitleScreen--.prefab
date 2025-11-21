@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &61231691977549256
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5036426896596253421}
-  m_Layer: 0
-  m_Name: CameraPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5036426896596253421
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 61231691977549256}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9005086, z: -0, w: 0.43483827}
-  m_LocalPosition: {x: -666.64, y: -374.91, z: -2.268}
-  m_LocalScale: {x: 0.02382541, y: 0.02382541, z: 0.02382541}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6516015260255802095}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &483848848657086067
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,37 +366,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &4651536889834690260
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7521772638546652015}
-  m_Layer: 0
-  m_Name: CameraLookAt
-  m_TagString: Untagged
-  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7521772638546652015
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651536889834690260}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9005086, z: -0, w: 0.43483827}
-  m_LocalPosition: {x: -666.502, y: -375.10406, z: -2.655}
-  m_LocalScale: {x: 0.02382541, y: 0.02382541, z: 0.02382541}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6516015260255802095}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4656097789464765691
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6516015260255802095
 RectTransform:
   m_ObjectHideFlags: 0
@@ -596,8 +534,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5036426896596253421}
-  - {fileID: 7521772638546652015}
   - {fileID: 6155713084126921021}
   - {fileID: 2572459184797102964}
   - {fileID: 1862655110094706344}
@@ -635,8 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 3881881388960591362}
   viewFadeDuration: 0.2
-  cameraPosition: {fileID: 5036426896596253421}
-  cameraLookAt: {fileID: 7521772638546652015}
+  cameraPosition: {fileID: 0}
   firstSelected: {fileID: 0}
 --- !u!223 &2356098068163169058
 Canvas:
