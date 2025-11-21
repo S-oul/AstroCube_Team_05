@@ -180,8 +180,13 @@ public class PlayerMovement : MonoBehaviour
                              + _externallyAppliedMovement);
         }
 
-        _ApplyCameraHeight(newCamPos.y);
+        
         ExecuteFootStep();
+    }
+
+    private void LateUpdate()
+    {
+        _ApplyCameraHeight(newCamPos.y);
     }
 
     void ExecuteFootStep()
