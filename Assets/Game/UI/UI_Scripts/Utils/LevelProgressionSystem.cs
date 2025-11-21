@@ -52,4 +52,22 @@ public static class LevelProgressionSystem
 
         PlayerPrefs.Save();
     }
+
+    private const string LastLevelKey = "LastLevelPlayed";
+
+    public static void SetLastLevel(int levelIndex)
+    {
+        PlayerPrefs.SetInt(LastLevelKey, levelIndex);
+        PlayerPrefs.Save();
+    }
+
+    public static int GetLastLevel()
+    {
+        return PlayerPrefs.GetInt(LastLevelKey, -1);
+    }
+
+    public static bool HasProgression()
+    {
+        return PlayerPrefs.HasKey(LastLevelKey);
+    }
 }

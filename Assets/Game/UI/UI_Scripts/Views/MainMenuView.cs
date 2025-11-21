@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -26,50 +23,71 @@ public class MainMenuView : UIView
 
     private void Start()
     {
-        if (newGameButton != null)
-            newGameButton.onClick.AddListener(OnNewGameClicked);
-        if (continueButton != null)
-            continueButton.onClick.AddListener(OnContinueClicked);
-        if (LevelsButton != null)
-            LevelsButton.onClick.AddListener(OnLevelsClicked);
-        if (settingsButton != null)
-            settingsButton.onClick.AddListener(OnSettingsClicked);
-        if (quitButton != null)
-            quitButton.onClick.AddListener(OnQuitClicked);
-        if (titleButton != null)
-            titleButton.onClick.AddListener(OnTitleClicked);
-
+        newGameButton.onClick.AddListener(OnNewGameClicked);
+        continueButton.onClick.AddListener(OnContinueClicked);
+        LevelsButton.onClick.AddListener(OnLevelsClicked);
+        settingsButton.onClick.AddListener(OnSettingsClicked);
+        quitButton.onClick.AddListener(OnQuitClicked);
+        titleButton.onClick.AddListener(OnTitleClicked);
     }
 
-
+    public override void Show()
+    {
+        base.Show();
+        continueButton.interactable = LevelProgressionSystem.HasProgression();
+    }
 
     private void OnNewGameClicked()
     {
-        //TODO
-        //Si Save deja présente faire un popup de confirmation pour ecraser la save
-        SceneManager.LoadScene(firstLevelName);
+        if (!LevelProgressionSystem.HasProgression())
+        {
+            SceneManager.LoadScene(firstLevelName);
+            return;
+        }
 
+        var popup = _uiManager.ShowAndReturn<PopUpView>();
+        if (popup == null) return;
+
+        popup.ShowPopup(new PopUpData(
+            title: "Nouvelle Partie",
+            message: "Une sauvegarde existe déjà.\nVoulez-vous recommencer ?",
+            type: PopUpType.Warning,
+            confirm: "Oui",
+            cancel: "Non",
+            onConfirm: () =>
+            {
+                int totalLevels = SceneManager.sceneCountInBuildSettings;
+                LevelProgressionSystem.ResetProgression(totalLevels);
+                PlayerPrefs.DeleteKey("LastLevelPlayed");
+                PlayerPrefs.Save();
+                SceneManager.LoadScene(firstLevelName);
+            }
+        ));
     }
 
     private void OnContinueClicked()
     {
-        //TODO
-        //Charger la scene du dernier atteint
-        SceneManager.LoadScene(firstLevelName);
+        int lastLevel = LevelProgressionSystem.GetLastLevel();
+
+        if (lastLevel == -1)
+        {
+            SceneManager.LoadScene(firstLevelName);
+            return;
+        }
+
+        SceneManager.LoadScene(lastLevel);
     }
 
     private void OnLevelsClicked()
     {
         Hide();
-        var uiManager = FindObjectOfType<UIManager>();
-        uiManager?.Show<LevelSelectionView>();
+        _uiManager.Show<LevelSelectionView>();
     }
 
     private void OnSettingsClicked()
     {
         Hide();
-        var uiManager = FindObjectOfType<UIManager>();
-        uiManager?.Show<SettingsMenuScreenView>();
+        _uiManager.Show<SettingsMenuScreenView>();
     }
 
     private int c = 0;
@@ -81,38 +99,28 @@ public class MainMenuView : UIView
             c = 0;
             _uiManager.Show<AlternateScreenView>();
         }
-        else
-        {
-            c++;
-        }
+        else c++;
     }
 
     private void OnQuitClicked()
     {
         var popup = _uiManager.ShowAndReturn<PopUpView>();
-        if (popup==null)
-        {
-            return; 
-        }
+        if (popup == null) return;
 
         popup.ShowPopup(new PopUpData(
-            title :"Quit Game",
+            title: "Quit Game",
             message: "Are you sure you want to quit the game?",
-            type : PopUpType.QuitGamePopUp,
+            type: PopUpType.QuitGamePopUp,
             confirm: "Yes",
-            cancel : "No",
-            onConfirm: () => { Application.Quit(); },
-            onCancel: () => 
+            cancel: "No",
+            onConfirm: () =>
             {
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #else
                 Application.Quit();
 #endif
-
             }
-            ));
-
+        ));
     }
-
 }
