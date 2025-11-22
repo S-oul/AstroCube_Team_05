@@ -7,5 +7,6 @@ public enum PopUpType
     Info,
     LevelConfirmationPopUp,
     SaveErasePopUp,
-    QuitGamePopUp
+    QuitGamePopUp,
+    Warning
 }

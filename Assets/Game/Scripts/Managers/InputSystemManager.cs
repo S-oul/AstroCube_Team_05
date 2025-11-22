@@ -38,6 +38,7 @@ public class InputSystemManager : MonoBehaviour
         CAMERA = 1 << 11,
         SEE_EXIT = 1 << 12,
         PREVIEW_CANCEL = 1 << 13,
+        JUMP = 1 << 14
     }
 
     private void Awake()
@@ -93,6 +94,8 @@ public class InputSystemManager : MonoBehaviour
                 return("SeeExit");          
             case EInputType.PREVIEW_CANCEL:
                 return("PreviewCancel");
+            case EInputType.JUMP:
+                return ("Jump");
         }
     }
 

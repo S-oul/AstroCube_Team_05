@@ -10,11 +10,9 @@ public abstract class UIView : MonoBehaviour
 
     [Header("(OPTIONAL)")]
     [SerializeField] private Transform cameraPosition;
-    [SerializeField] private Transform cameraLookAt;
     [SerializeField] private Selectable firstSelected;
 
     public Transform CameraPosition => cameraPosition;
-    public Transform CameraLookAt => cameraLookAt;
 
     private Coroutine fadeCoroutine;
 
