@@ -10,15 +10,20 @@ float3 _LightDirection;
 float power;
 float darkness;
 float blackAndWhite;
+float brightness;
+float transparencyAmount;
 float3 colourAMix;
 float3 colourBMix;
 float maxDst;
 float alpha;
+float fractalScale;
 
 int maxStepCount;
 int maxIterations;
 float angle;
 float3 positionOffset;
+float3 fractalRotation;
+float perspectiveCorrection;
 
 static const float epsilon = 0.001f;
 
@@ -41,14 +46,49 @@ Ray CreateCameraRay(float2 uv)
     float3 origin = mul(_CameraToWorld, float4(0, 0, 0, 1)).xyz;
     float3 destination = mul(_CameraInverseProjection, float4(uv, 0, 1)).xyz;
     destination = mul(_CameraToWorld, float4(destination, 1)).xyz;
-    float3 direction = destination - origin;
-    direction = normalize(direction);
+    float3 direction = normalize(destination - origin);
     return CreateRay(origin, direction);
+}
+
+float3x3 RotationMatrix(float3 rotation)
+{
+    float3 rad = rotation * 0.017453292;
+    float cx = cos(rad.x);
+    float sx = sin(rad.x);
+    float cy = cos(rad.y);
+    float sy = sin(rad.y);
+    float cz = cos(rad.z);
+    float sz = sin(rad.z);
+    
+    float3x3 rotX = float3x3(
+        1, 0, 0,
+        0, cx, -sx,
+        0, sx, cx
+    );
+    
+    float3x3 rotY = float3x3(
+        cy, 0, sy,
+        0, 1, 0,
+        -sy, 0, cy
+    );
+    
+    float3x3 rotZ = float3x3(
+        cz, -sz, 0,
+        sz, cz, 0,
+        0, 0, 1
+    );
+    
+    return mul(mul(rotZ, rotY), rotX);
 }
 
 float2 SceneInfo(float3 position)
 {
     float3 localPos = position - positionOffset;
+    
+    float3x3 rotMatrix = RotationMatrix(-fractalRotation);
+    localPos = mul(rotMatrix, localPos);
+    
+    localPos /= fractalScale;
     float3 z = localPos;
     float dr = 1.0;
     float r = 0.0;
@@ -77,7 +117,7 @@ float2 SceneInfo(float3 position)
     }
 
     float dst = 0.5 * log(r) * r / dr;
-    dst = max(dst * 0.99, 0.0001);
+    dst = max(dst * fractalScale * 0.99, 0.0001);
     return float2(iterations, dst);
 }
 
