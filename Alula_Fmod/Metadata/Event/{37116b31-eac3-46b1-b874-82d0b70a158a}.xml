@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{37116b31-eac3-46b1-b874-82d0b70a158a}">
+		<property name="color">
+			<value>Purple Light 1</value>
+		</property>
 		<property name="name">
 			<value>SFX_Cube_Map_Rotation_LP</value>
 		</property>
@@ -33,6 +36,9 @@
 		</relationship>
 		<relationship name="parameters">
 			<destination>{44f54c93-dec5-4a2a-9f70-67f423898ce5}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{c4ded050-7233-4d8d-9b13-ff25a88d5f48}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{e0d12be9-9579-45aa-b07a-33a4aeab011f}">
@@ -188,6 +194,9 @@
 		<property name="color">
 			<value>Purple Light 1</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="volume">
 			<value>-3</value>
 		</property>
@@ -197,6 +206,7 @@
 		<relationship name="modulators">
 			<destination>{d18d86b8-16fa-45a6-b9c3-1aa25649e98a}</destination>
 			<destination>{c3053f41-a6b4-4fd2-b7af-9b3252738205}</destination>
+			<destination>{24419d72-79c5-4809-abfe-3104dad5ec48}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{396995a7-f20f-4b77-aee6-6324582b5287}</destination>
@@ -248,6 +258,14 @@
 		</property>
 		<property name="amount">
 			<value>3</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{24419d72-79c5-4809-abfe-3104dad5ec48}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{396995a7-f20f-4b77-aee6-6324582b5287}">
