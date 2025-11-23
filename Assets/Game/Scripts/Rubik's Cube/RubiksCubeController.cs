@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
+using FMODUnity;
 
 public class RubiksCubeController : MonoBehaviour
 {
-    [Header("Wwise")]
-    [SerializeField] private AK.Wwise.Event previewChangeEvent;
+    [Header("FMOD")]
+    [SerializeField] private EventReference previewChangeFmodEvent;
 
     [SerializeField] GameObject _controlledCube;
     RubiksMovement _controlledScript;
@@ -157,7 +158,7 @@ public class RubiksCubeController : MonoBehaviour
                 break;
         }
         if (ActualFace) SetActualCube(ActualFace.transform);
-        if (playEvent) previewChangeEvent?.Post(gameObject);
+        if (playEvent && !previewChangeFmodEvent.IsNull) RuntimeManager.PlayOneShot(previewChangeFmodEvent, transform.position);
     }
 
     public void ActionMakeTurn(bool clockwise)

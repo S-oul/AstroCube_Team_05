@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using FMODUnity;
 
 public class PlayerStepDetection : MonoBehaviour
 {
-    [Header("Wwise Audio")]
-    [SerializeField] private AK.Wwise.Event footstepWwiseEvent;
-    [SerializeField] private AK.Wwise.Event jumpWwiseEvent;
-    [SerializeField] private AK.Wwise.Event landWwiseEvent;
+    [Header("FMOD Audio")]
+    [SerializeField] private EventReference footstepFmodEvent;
+    [SerializeField] private EventReference jumpFmodEvent;
+    [SerializeField] private EventReference landFmodEvent;
 
     [Header("Footstep Settings")]
     [SerializeField] private string terrainSwitch;
@@ -49,7 +50,7 @@ public class PlayerStepDetection : MonoBehaviour
 
     private void PlayFootstep()
     {
-        if (footstepWwiseEvent == null)
+        if (footstepFmodEvent.IsNull)
             return;
         
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 10, LayerMask.GetMask("Floor")))
@@ -58,18 +59,24 @@ public class PlayerStepDetection : MonoBehaviour
             hit.collider.TryGetComponent<FloorType>(out floorType);
             if (floorType == null) return;
             string detectedTag = floorType.FloorTypeTag;
-            AkSoundEngine.SetSwitch(terrainSwitch, detectedTag, gameObject);
-            footstepWwiseEvent.Post(gameObject);
+            
+            FMOD.Studio.EventInstance instance = RuntimeManager.CreateInstance(footstepFmodEvent);
+            instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+            instance.setParameterByNameWithLabel(terrainSwitch, detectedTag);
+            instance.start();
+            instance.release();
         }
     }
 
     public void Jump()
     {
-        jumpWwiseEvent?.Post(gameObject);
+        if (!jumpFmodEvent.IsNull)
+            RuntimeManager.PlayOneShot(jumpFmodEvent, transform.position);
     }
 
     public void Land()
     {
-        landWwiseEvent?.Post(gameObject);
+        if (!landFmodEvent.IsNull)
+            RuntimeManager.PlayOneShot(landFmodEvent, transform.position);
     }
 }
