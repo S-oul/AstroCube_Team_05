@@ -191,6 +191,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ExecuteFootStep()
     {
+        if (!_isGrounded) return;
+
         if (_isWalking) {
             _timerBeforeNextStep += Time.deltaTime;
             EventManager.TriggerPlayerFootSteps(_currentGroundType);

@@ -50,6 +50,11 @@ public class FractalMaster : MonoBehaviour
     [SerializeField] private Color _colorB = new Color(1f, 0.5f, 0f);
     [SerializeField, Range(0f, 1f)] private float _blackAndWhite = 0.7f;
     [SerializeField] private float _darkness = 26f;
+    [Header("Fractal Transform")]
+    [SerializeField, Range(0.1f, 10f)] private float fractalScale = 1f;
+    [Header("Appearance")]
+    [SerializeField, Range(0f, 3f)] private float brightness = 1f;
+    [SerializeField, Range(0f, 1f)] private float transparencyAmount = 0f;
 
     public MandelbulbParameters CurrentMandelbulbParameters { get => _currentMandelbulbParameters; set => _currentMandelbulbParameters = value; }
     private MandelbulbParameters _currentMandelbulbParameters = new();
@@ -228,6 +233,8 @@ public class FractalMaster : MonoBehaviour
         fractalShader.SetVector("colourBMix", _currentMandelbulbParameters.ColorB);
         //fractalShader.SetVector("positionOffset", positionOffset);
         fractalShader.SetVector("positionOffset", transform.position);
+        fractalShader.SetFloat("fractalScale", fractalScale);
+        fractalShader.SetVector("fractalRotation", transform.eulerAngles);
 
         // Calculer la distance entre la caméra et la fractale
         float distToFractal = Vector3.Distance(cam.transform.position, transform.position);
