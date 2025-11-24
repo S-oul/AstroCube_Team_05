@@ -803,6 +803,7 @@ GameObject:
   - component: {fileID: 5168825579941675567}
   - component: {fileID: 5526392691037791028}
   - component: {fileID: 5844645895199423949}
+  - component: {fileID: 6115944007277459838}
   m_Layer: 15
   m_Name: ExitDoor
   m_TagString: VictoryZone
@@ -881,6 +882,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6115944007277459838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6382823273507354259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1930389454
+      Data2: 1141786648
+      Data3: -2133950548
+      Data4: 1122707138
+    Path: event:/AMB/SP/AMB_SP_ExitDoor_LP
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 30
 --- !u!1 &7314173912867802799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,15 +1374,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5071771528953332141, guid: 995fdf26b693755479df11244feac6d2,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1569322959756708892}
-    - targetCorrespondingSourceObject: {fileID: 5071771528953332141, guid: 995fdf26b693755479df11244feac6d2,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3832602601457936208}
-    - targetCorrespondingSourceObject: {fileID: 5071771528953332141, guid: 995fdf26b693755479df11244feac6d2,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4511603610886933879}
     - targetCorrespondingSourceObject: {fileID: 1033212733540250654, guid: 995fdf26b693755479df11244feac6d2,
         type: 3}
       insertIndex: -1
@@ -1362,30 +1386,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8149431414180772602}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1569322959756708892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3997531688754445143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc25f8b11806d664184260fe9096b7ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_listeners:
-    initialListenerList: []
-    useDefaultListeners: 1
-  isEnvironmentAware: 1
-  isStaticObject: 0
-  usePositionOffsetData: 0
-  m_positionOffsetData:
-    KeepMe: 0
-    positionOffset: {x: 0, y: 0, z: 0}
-  scalingFactor: 1
-  m_posOffsetData: {fileID: 0}
-  listenerMask: 1
 --- !u!54 &3832602601457936208
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1413,41 +1413,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4511603610886933879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3997531688754445143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcfc5d937a7c4014b80e53e711a4f7be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerList: f7e1664c
-  useOtherObject: 0
-  actionOnEventType: 0
-  curveInterpolation: 4
-  enableActionOnEvent: 0
-  data:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 8e6084f6993c2ca42861683e0c47cd3c,
-      type: 2}
-  useCallbacks: 0
-  stopSoundOnDestroy: 1
-  Callbacks: []
-  soundEmitterObject: {fileID: 3997531688754445143}
-  transitionDuration: 0
-  eventIdInternal: 0
-  valueGuidInternal: 
-  m_callbackDataInternal: {fileID: 0}
-  MultiPositionType: 1
-  multiPositionTypeLabel: 0
-  attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
-  LargeModePositions: []
-  multiPositionArray: []
 --- !u!4 &4006471310685864289 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5080413183850511259, guid: 995fdf26b693755479df11244feac6d2,

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{e1dfa7d8-55e0-43ec-a11b-62bc28b06f71}">
+		<property name="color">
+			<value>Yellow Light 1</value>
+		</property>
 		<property name="name">
 			<value>FOL_MC_FT</value>
 		</property>
@@ -53,6 +56,9 @@
 		</relationship>
 	</object>
 	<object class="MixerInput" id="{b0e4c7e5-d966-4c89-9205-f828350eaa79}">
+		<property name="color">
+			<value>Yellow Light 1</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{0cac5aab-330d-4787-81de-c6e99f058fb7}</destination>
 		</relationship>
@@ -60,7 +66,7 @@
 			<destination>{9fadd686-394e-4440-a810-424c04dc6567}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{ecc00a5b-b4d3-4ebd-8922-88df8b9982ef}</destination>
+			<destination>{03260e37-8439-465f-ac34-ff9ff1c736b8}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{56eacd8b-9221-46f7-b106-21532bc97b0a}">
@@ -108,6 +114,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{bf9aad5b-1c2c-45d4-b3b1-3daba939da2f}">
+		<relationship name="modulators">
+			<destination>{bd7b2fe9-aecc-44bb-b6b3-1ae7aa550d7d}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{e871eaae-f595-4299-bf32-7dc333cc6c94}</destination>
 		</relationship>
@@ -196,6 +205,9 @@
 		<property name="color">
 			<value>Purple Light 1</value>
 		</property>
+		<property name="volume">
+			<value>-14.5</value>
+		</property>
 		<property name="name">
 			<value>FT_MC</value>
 		</property>
@@ -209,6 +221,14 @@
 			<destination>{bf9aad5b-1c2c-45d4-b3b1-3daba939da2f}</destination>
 		</relationship>
 	</object>
+	<object class="RandomizerModulator" id="{bd7b2fe9-aecc-44bb-b6b3-1ae7aa550d7d}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="amount">
+			<value>3</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{e871eaae-f595-4299-bf32-7dc333cc6c94}">
 		<relationship name="effects">
 			<destination>{c7d66163-680b-432d-a896-0b6ae526512b}</destination>
@@ -217,7 +237,7 @@
 	<object class="MixerBusPanner" id="{353eeb91-a72b-45fd-b9d5-30d97fcd7f60}" />
 	<object class="MultiSound" id="{2ce46736-3874-4322-af5c-f5eff0944066}">
 		<property name="volume">
-			<value>-9</value>
+			<value>-18</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{cb07859d-b04a-4aad-9cf5-512dc7abe4af}</destination>

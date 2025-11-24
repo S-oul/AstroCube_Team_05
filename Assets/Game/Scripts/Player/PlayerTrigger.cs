@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
 using static CameraFocusAttractor;
+using FMODUnity;
 
 public class PlayerTrigger : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class PlayerTrigger : MonoBehaviour
 
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
+
+    [Header("FMOD Audio")]
+    [SerializeField] EventReference _doorEntryEvent;
 
     [SerializeField] VolumeProfile vol;
 
@@ -62,6 +66,12 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (other.CompareTag("VictoryZone"))
         {
+            // Play FMOD event when entering the door
+            if (!_doorEntryEvent.IsNull)
+            {
+                RuntimeManager.PlayOneShot(_doorEntryEvent, transform.position);
+            }
+
             EventManager.TriggerPlayerWin();
             Destroy(other.gameObject);
         }
