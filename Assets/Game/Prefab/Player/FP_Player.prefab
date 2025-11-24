@@ -167,6 +167,7 @@ GameObject:
   - component: {fileID: 2128463034130162547}
   - component: {fileID: 2867457531972925666}
   - component: {fileID: 8271240141020365605}
+  - component: {fileID: 5922396262004956227}
   m_Layer: 10
   m_Name: FP_Player
   m_TagString: Player
@@ -306,24 +307,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3977277b06bea1c42b96eb16adb488d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepWwiseEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
-      type: 2}
-  jumpWwiseEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
-      type: 2}
-  landWwiseEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
-      type: 2}
+  footstepFmodEvent:
+    Guid:
+      Data1: -505436200
+      Data2: 1139561952
+      Data3: -1134421087
+      Data4: 1903145000
+    Path: event:/FOL/FOL_MC_FT
+  jumpFmodEvent:
+    Guid:
+      Data1: -505436200
+      Data2: 1139561952
+      Data3: -1134421087
+      Data4: 1903145000
+    Path: event:/FOL/FOL_MC_FT
+  landFmodEvent:
+    Guid:
+      Data1: -505436200
+      Data2: 1139561952
+      Data3: -1134421087
+      Data4: 1903145000
+    Path: event:/FOL/FOL_MC_FT
   terrainSwitch: 
-  footstepInterval: 0.5
+  footstepInterval: 0.13
   playFootsteps: 1
+  groundCheckDistance: 3
 --- !u!114 &390007284634587234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +386,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainCameraAnimator: {fileID: 0}
+--- !u!114 &5922396262004956227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 339335465
+      Data2: 1075934433
+      Data3: -877016387
+      Data4: -602003508
+    Path: event:/AMB/PAD/AMB_PAD_Global_LP
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &6227919447832848270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -406,6 +445,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AllowMSAA
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
+      propertyPath: field of view
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
