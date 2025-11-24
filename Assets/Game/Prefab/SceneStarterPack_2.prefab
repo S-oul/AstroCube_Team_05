@@ -227,9 +227,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6614700375089439078}
   - component: {fileID: 7281687720163444837}
+  - component: {fileID: 1702609315718572412}
   - component: {fileID: 9208701851753147717}
   m_Layer: 5
-  m_Name: Milieu
+  m_Name: Crosshair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -262,6 +263,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1833692369952463729}
   m_CullTransparentMesh: 1
+--- !u!114 &1702609315718572412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833692369952463729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd51431f54408114b92526e91e9acaca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ImageX: {fileID: 21300000, guid: 0586585e059876f46a082156a93403ad, type: 3}
+  ImageY: {fileID: 21300000, guid: 2126e3a268de6704aa8bfe167544dece, type: 3}
+  ImageZ: {fileID: 21300000, guid: 21a132600b884c54a82676853ba7153d, type: 3}
+  UiCrossHair: {fileID: 9208701851753147717}
 --- !u!114 &9208701851753147717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +299,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a85077995184da94292beb9dffb28f15, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0586585e059876f46a082156a93403ad, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
