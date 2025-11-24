@@ -1,36 +1,32 @@
+using UnityEditor.Analytics;
 using UnityEngine;
 
 public class SmoothDamping : MonoBehaviour
 {
-    [SerializeField] Transform _targetTransform;
+    [SerializeField] Transform _playerTransform;
     [SerializeField] float _verticalSmoothAmount;
-    [SerializeField] float _horisontalSmoothAmount;
+    [SerializeField] float _intencity;
 
-    Vector3 verticalVelocity;
-    Vector3 horisontalVelocity;
+    Vector3 _artCubeStartLocalPos;
+    float _imaginaryCubePos;
+    float _verticalVelocity;
+
+    private void Start()
+    {
+        _artCubeStartLocalPos = transform.localPosition;
+        _imaginaryCubePos = _playerTransform.position.y;
+    }
 
     private void LateUpdate()
     {
-        Vector3 newVericalPos = Vector3.SmoothDamp(
-            transform.position,
-            _targetTransform.position,
-            ref verticalVelocity,
+        float newImaginaryCubePos = Mathf.SmoothDamp(
+            _imaginaryCubePos,
+            _playerTransform.position.y,
+            ref _verticalVelocity,
             _verticalSmoothAmount
         );
+        _imaginaryCubePos = newImaginaryCubePos;
 
-        Vector3 newHorisontalPos = Vector3.SmoothDamp(
-            transform.position,
-            _targetTransform.position,
-            ref horisontalVelocity,
-            _horisontalSmoothAmount
-        );
-
-        transform.position = new Vector3 (
-            newHorisontalPos.x, 
-            //_targetTransform.position.x,
-            newVericalPos.y,
-            newHorisontalPos.z
-            //_targetTransform.position.z
-        );
+        transform.localPosition = _artCubeStartLocalPos - Vector3.up * _verticalVelocity * _intencity;
     }
 }
