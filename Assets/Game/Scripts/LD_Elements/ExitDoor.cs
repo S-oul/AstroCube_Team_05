@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
@@ -10,10 +11,13 @@ public class ExitDoor : MonoBehaviour
     public static ExitDoor Instance => _instance;
     public static ExitDoor _instance;
 
+    [SerializeField] private Vector2 _distanceAnimationStartEnd;
+
     [SerializeField] private GameObject _door;
     [SerializeField] private Animator _VFXAnimator;
     [SerializeField] private GameObject _stencil;
     [SerializeField] private float _endScaleStencil = 5.0f;
+    [SerializeField] private Transform _playerTransform;
 
     [Header("Camera Focus to end")]
     [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
@@ -25,8 +29,9 @@ public class ExitDoor : MonoBehaviour
     private GameSettings _gameSettings;
     private bool _isShowing = false;
     private Collider _collider;
-
-
+    
+    private bool _isCurrentlyOpened;
+    private float _currentLerp;
 
     private void Awake()
     {
@@ -69,14 +74,33 @@ public class ExitDoor : MonoBehaviour
     public void OpenDoor()
     {
         _collider.enabled = true;
-        _VFXAnimator.SetTrigger("Open");
+        
+        float distance = (transform.position - _playerTransform.position).magnitude;
+        float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
+        
+        DOTween.To(() => _currentLerp, x => _currentLerp = x, lerp, 1.5f).OnComplete(() =>
+        {
+            _isCurrentlyOpened = true;
+        });
+    }
+
+    private void Update()
+    {
+        if (_isCurrentlyOpened)
+        {
+            float distance = (transform.position - _playerTransform.position).magnitude;
+            _currentLerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
+        }
+        _VFXAnimator.PlayInFixedTime("ZelligeDoorAnim_Open", 0, _currentLerp);
     }
 
     [Button("Close Door")]
     public void CloseDoor()
     {
         _collider.enabled = false;
-        _VFXAnimator.SetTrigger("Close");
+        _isCurrentlyOpened = false;
+
+        DOTween.To(() => _currentLerp, x => _currentLerp = x, 0.0f, 1.5f);
     }
 
     public void SeeExitThroughWalls()
@@ -90,7 +114,7 @@ public class ExitDoor : MonoBehaviour
 
         if (_cameraFocusAttractor == null)
         {
-        print(_cameraFocusAttractor.transform.name);
+            print(_cameraFocusAttractor.transform.name);
             return;
         }
         _cameraFocusAttractor.StopFocus();

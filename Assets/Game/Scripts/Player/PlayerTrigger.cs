@@ -63,7 +63,6 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("VictoryZone"))
         {
             EventManager.TriggerPlayerWin();
-            Destroy(other.gameObject);
         }
         else if (other.CompareTag("DeathZone"))
         {
