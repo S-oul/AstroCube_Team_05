@@ -25,7 +25,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         _originalParent = transform.parent;
         LayerMask maskCube = LayerMask.GetMask("Holdable");
         _rb = GetComponent<Rigidbody>();
-        _exitDoor.SetActive(false);
+        if(_exitDoor) _exitDoor.SetActive(false);
     }
 
     public Transform GetOriginalParent()

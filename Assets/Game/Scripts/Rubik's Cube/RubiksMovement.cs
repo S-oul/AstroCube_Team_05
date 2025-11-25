@@ -7,6 +7,7 @@ using NaughtyAttributes;
 using System;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using FMODUnity;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -68,6 +69,10 @@ public class RubiksMovement : MonoBehaviour
 
     [Header("Visuals")]
     [SerializeField] GameObject _DustParticleAfterRotate;
+
+    [Header("FMOD Audio")]
+    [SerializeField] EventReference _cubeRotationStartEvent;
+    [SerializeField] EventReference _cubeRotationEndEvent;
 
     public UnityEvent OnCorrectAction;
 
@@ -272,6 +277,12 @@ public class RubiksMovement : MonoBehaviour
         if (!_isPreview && !_isArtCube)
         {
             EventManager.TriggerStartCubeRotation();
+            
+            // Play FMOD event when cube starts rotating
+            if (!_cubeRotationStartEvent.IsNull)
+            {
+                RuntimeManager.PlayOneShot(_cubeRotationStartEvent, transform.position);
+            }
         }
 
         Vector3 rotationAxis = Vector3.zero;
@@ -421,6 +432,13 @@ public class RubiksMovement : MonoBehaviour
         if (!_isPreview && !_isArtCube)
         {
             EventManager.TriggerEndCubeRotation();
+            
+            // Play FMOD event when cube finishes rotating
+            if (!_cubeRotationEndEvent.IsNull)
+            {
+                RuntimeManager.PlayOneShot(_cubeRotationEndEvent, transform.position);
+            }
+            
             _CheckCorrectActions(blockIndexs);
         }
     }
