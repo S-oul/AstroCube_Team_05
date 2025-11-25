@@ -131,8 +131,6 @@ public class SelectionCube : MonoBehaviour
 
     public void Select(SelectionMode mode)
     {
-        if (_isTileLocked)
-            return;
         if (_renderers == null)
             return;
         if(mode == CurrentSelectionMode)
