@@ -20,6 +20,9 @@ public class PlayerStepDetection : MonoBehaviour
 
     private float timer = 0f;
 
+    //Use this 
+    public bool PlayFootsteps { get => playFootsteps; set => playFootsteps = value; }
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -35,13 +38,18 @@ public class PlayerStepDetection : MonoBehaviour
         if (!playFootsteps || !_characterController)
             return;
         
-        if (velocity < 0.05f)
+        if (velocity < 0.15f)
+        {
+            timer = 0;
             return;
+        }
+        print("GRAAAAA LE GROS CACA");
 
         timer += Time.deltaTime;
 
         if (timer >= footstepInterval)
         {
+            print("GRAAAAA LE GROS CACA");
             PlayFootstep();
             timer = 0f;
         }
@@ -52,13 +60,10 @@ public class PlayerStepDetection : MonoBehaviour
         if (footstepFmodEvent.IsNull)
             return;
 
-        // Include both "Floor" and "Tile" layers
         int layerMask = LayerMask.GetMask("Floor", "Tile");
         
-        // Start the ray slightly above the pivot to ensure we don't start inside the floor collider
         Vector3 startPoint = transform.position + transform.up * 0.5f;
         
-        // Use the raycast itself to check if we're grounded - if we hit something close, we're on the ground
         if (Physics.Raycast(startPoint, -transform.up, out RaycastHit hit, groundCheckDistance, layerMask))
         {
             FloorType floorType;
@@ -66,15 +71,13 @@ public class PlayerStepDetection : MonoBehaviour
             
             if (floorType == null) 
             {
-                // Try looking in parent if not found on the collider itself
                 floorType = hit.collider.GetComponentInParent<FloorType>();
             }
 
-            string detectedTag = "Concrete"; // Default fallback
+            string detectedTag = "Concrete";
             
             if (floorType != null) 
             {
-                // The FloorTypeTag property now returns the Enum string (Carpet, Tiles, Dirt, Concrete)
                 detectedTag = floorType.FloorTypeTag;
             }
 

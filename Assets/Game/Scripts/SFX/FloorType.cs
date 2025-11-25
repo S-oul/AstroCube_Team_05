@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public enum FloorSurface
@@ -16,7 +15,6 @@ public class FloorType : MonoBehaviour
     
     public FloorSurface SurfaceType => _surfaceType;
     
-    // Helper to keep compatibility if needed, but better to use Enum directly
     public string FloorTypeTag => _surfaceType.ToString();
 
     private void Reset()
