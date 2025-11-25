@@ -22,14 +22,15 @@ using UnityEngine.ProBuilder.MeshOperations;
 [DisallowMultipleComponent]
 public class SelectionCube : MonoBehaviour
 {
-    [SerializeField]
-    bool _isTileLocked;
+    [SerializeField] bool _isTileLocked;
+    [SerializeField] Material _lockedTileMat;
     /*
     [SerializeField]
     int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
     */
     private Renderer[] _renderers;
     private BoxCollider[] _colliders;
+    private Material _instancedLockedTileMat;
 
     public SelectionMode CurrentSelectionMode { get; private set; }
 
@@ -83,7 +84,37 @@ public class SelectionCube : MonoBehaviour
 
         CurrentSelectionMode = SelectionMode.NOT_SELECTED;
 
-        if (_isTileLocked) Select(SelectionMode.LOCKED);
+        if (_isTileLocked)
+        {
+            Select(SelectionMode.LOCKED);
+            foreach (var renderer in _renderers)
+            {
+                if (renderer.transform.CompareTag("Floor"))
+                {
+                    Material baseMat = renderer.material;
+                    _instancedLockedTileMat = new Material(_lockedTileMat);
+
+                    _instancedLockedTileMat.SetTexture("_BaseMap", baseMat.GetTexture("_Texture"));
+                    _instancedLockedTileMat.SetTexture("_NormalMap", baseMat.GetTexture("_Normal"));
+                    _instancedLockedTileMat.SetTexture("_MetallicRoughnessMap", baseMat.GetTexture("_MetallicRoughness"));
+                    _instancedLockedTileMat.SetFloat("_RandomValue", UnityEngine.Random.Range(0.0f,1.0f));
+
+                    renderer.material = _instancedLockedTileMat;
+                }
+            }
+        }
+
+        var vfx = GetComponentsInChildren<ParticleSystem>().Where(r => r.tag == "BizmuthFX").ToArray();
+        foreach (var v in vfx)
+        {
+            if (v != null)
+            {
+                if(_isTileLocked)
+                    v.Play();
+                else
+                    v.gameObject.SetActive(false); //Temp ? Idk why editor forces to play VFX sometimes
+            }
+        }
     }
 
     public void ExteriorColiderEnabled(bool isEnabled)
@@ -100,11 +131,12 @@ public class SelectionCube : MonoBehaviour
 
     public void Select(SelectionMode mode)
     {
+        if (_isTileLocked)
+            return;
         if (_renderers == null)
             return;
         if(mode == CurrentSelectionMode)
             return;
-
         foreach (var renderer in _renderers)
         {
             switch (mode)

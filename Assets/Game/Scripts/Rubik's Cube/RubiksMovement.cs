@@ -85,6 +85,7 @@ public class RubiksMovement : MonoBehaviour
         get => _allBlocks;
         set => _allBlocks = value;
     }
+    public bool IsArtCube { get => _isArtCube; set => _isArtCube = value; }
 
     #endregion
 
@@ -270,8 +271,7 @@ public class RubiksMovement : MonoBehaviour
 
         if (!_isPreview && !_isArtCube)
         {
-            if (!_DoAutoMoves) EventManager.TriggerStartCubeRotation();
-            else EventManager.TriggerStartCubeSequenceRotation();
+            EventManager.TriggerStartCubeRotation();
         }
 
         Vector3 rotationAxis = Vector3.zero;
@@ -370,10 +370,10 @@ public class RubiksMovement : MonoBehaviour
             Tile[] tiles = block.GetComponentsInChildren<Tile>();
             foreach (var tile in tiles)
             {
-                if (_DustParticleAfterRotate != null)
+                if (_DustParticleAfterRotate != null && IsPreview != true)
                 {
                     Vector3 normal = (tile.transform.position - block.position).normalized;
-                    Vector3 spawnPos = tile.transform.position + normal  + Vector3.up ;
+                    Vector3 spawnPos = tile.transform.position + normal + Vector3.up;
 
                     Quaternion spawnRot = Quaternion.LookRotation(normal) * Quaternion.Euler(-90f, 0f, 0f);
 
@@ -420,12 +420,8 @@ public class RubiksMovement : MonoBehaviour
         }
         if (!_isPreview && !_isArtCube)
         {
-            if (!_DoAutoMoves)
-            {
-                EventManager.TriggerEndCubeRotation();
-                _CheckCorrectActions(blockIndexs);
-            }
-            else EventManager.TriggerEndCubeSequenceRotation();
+            EventManager.TriggerEndCubeRotation();
+            _CheckCorrectActions(blockIndexs);
         }
     }
 
@@ -439,11 +435,11 @@ public class RubiksMovement : MonoBehaviour
 
             RightActionObject rightActionObject = block.GetComponent<RightActionObject>();
 
-            if(rightActionObject == null || rightActionObject.enabled == false)
+            if (rightActionObject == null || rightActionObject.enabled == false)
                 continue;
 
             axisHasRightAction = true;
-            if(!rightActionObject.IsTheRightPose())
+            if (!rightActionObject.IsTheRightPose())
                 isAxisCorrect = false;
         }
         if (isAxisCorrect && axisHasRightAction)
@@ -611,7 +607,7 @@ public class RubiksMovement : MonoBehaviour
         }
         i = 0;
         sortedTiles.RemoveRange(0, 12);
-        
+
         //Middle
         foreach (var tile in sortedTiles.Take(12))
         {
@@ -637,7 +633,7 @@ public class RubiksMovement : MonoBehaviour
             float snappedAngle = Mathf.Round(angle / 90f) * 90f;
             tile.transform.rotation = Quaternion.Euler(0, snappedAngle, 0);
 
-            tile.GetComponent<MeshRenderer>().material = i <= 7?  matEtage1 : matEtage1Alt;
+            tile.GetComponent<MeshRenderer>().material = i <= 7 ? matEtage1 : matEtage1Alt;
             i++;
         }
 
