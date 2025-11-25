@@ -48,5 +48,6 @@ public class CameraShake : MonoBehaviour
     private void TriggerCameraShake()
     {
         shakeDurationHolder += shakeDuration;
+        shakeDurationHolder = Mathf.Clamp(shakeDurationHolder, 0, 1);
     }
 }

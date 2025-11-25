@@ -802,7 +802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5168825579941675567}
   - component: {fileID: 5526392691037791028}
-  - component: {fileID: 5844645895199423949}
+  - component: {fileID: 1772356346003619934}
   m_Layer: 15
   m_Name: ExitDoor
   m_TagString: VictoryZone
@@ -845,10 +845,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isDoorOpenAtStart: 1
+  _distanceAnimationStartEnd: {x: 10, y: 20}
   _door: {fileID: 3997531688754445143}
   _VFXAnimator: {fileID: 6728399100450661728}
   _stencil: {fileID: 4723087626252950486}
   _endScaleStencil: 6
+  _playerTransform: {fileID: 0}
   _cameraFocusAttractor: {fileID: 0}
   _cameraFocusParams:
     _pointOfInterest: {fileID: 0}
@@ -860,8 +862,8 @@ MonoBehaviour:
     _doStay: 0
     _doOut: 0
   _MaxFOV_END: 150
---- !u!135 &5844645895199423949
-SphereCollider:
+--- !u!65 &1772356346003619934
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -879,7 +881,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3
+  m_Size: {x: 1, y: 7.24, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7314173912867802799
 GameObject:
@@ -946,7 +948,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e8b1479e0ea368d47bd220e80f667917, type: 2}
+  - {fileID: 2100000, guid: 18375ad3b26b7ae40aed9aad14897c6c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
