@@ -25,6 +25,7 @@ Shader "Shader_Tile"
 		_Spokes7512x512( "Spokes 7 - 512x512", 2D ) = "white" {}
 		_FireNoise( "FireNoise", 2D ) = "white" {}
 		_DissolveText( "DissolveText", 2D ) = "white" {}
+		_IsOverlay( "IsOverlay", Int ) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 5
@@ -371,6 +372,8 @@ Shader "Shader_Tile"
             #define _SPECULAR_OCCLUSION_FROM_AO 1
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
+            #define ASE_BENT_NORMAL 1
+            #define _AMBIENT_OCCLUSION 1
             #define ASE_VERSION 19904
             #define ASE_SRP_VERSION 170004
 
@@ -477,6 +480,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -1122,26 +1126,30 @@ Shader "Shader_Tile"
 				float2 texCoord45 = packedInput.ase_texcoord5.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
 				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
-				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient140 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _State);
 				Gradient gradient145 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
-				float2 temp_cast_9 = (2.0).xx;
-				float2 texCoord103 = packedInput.ase_texcoord5.xy * temp_cast_9 + float2( -1,0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_10 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord5.xy * temp_cast_10 + float2( -1,0 );
 				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
 				float4 temp_output_43_0 = ( ( ( _State <= 1.0 ? lerpResult131 : SampleGradient( gradient145, temp_output_25_0.r ) ) * tex2DNode10.a ) * _HDR * _Alpha );
 				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
 				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
-				float2 temp_cast_10 = (2.0).xx;
-				float2 texCoord302 = packedInput.ase_texcoord5.xy * temp_cast_10 + float2( -1,0 );
+				int lerpResult357 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_12 = lerpResult357;
+				float2 texCoord302 = packedInput.ase_texcoord5.xy * temp_cast_12 + float2( -1,0 );
 				float4 tex2DNode303 = tex2D( _DissolveText, texCoord302 );
 				float clampResult308 = clamp( ( 1.0 - ( ( tex2DNode303.r - ( 1.0 - ( _DissolveDelta * 1.5 ) ) ) * tex2DNode303.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_11 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord5.xy * temp_cast_11 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_14 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord5.xy * temp_cast_14 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_12 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord5.xy * temp_cast_12 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_16 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord5.xy * temp_cast_16 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord5.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord5.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -1164,8 +1172,9 @@ Shader "Shader_Tile"
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
 				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
-				float2 temp_cast_14 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord5.xy * temp_cast_14 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_19 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord5.xy * temp_cast_19 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
 				float smoothstepResult191 = smoothstep( 0.0 , 0.35 , ( ( _DissolveDelta * temp_output_268_0 ) * 0.2 ));
@@ -1175,23 +1184,25 @@ Shader "Shader_Tile"
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
 				float4 lerpResult328 = lerp( lerpResult142 , ( ( ( temp_output_323_0 - ( 1.0 - clampResult230 ) ) * SampleGradient( gradient325, temp_output_323_0 ) ) * 5.0 ) , temp_output_323_0);
 				
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
+				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
 				surfaceDescription.BaseColor = lerpResult327.rgb;
-				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
-				surfaceDescription.BentNormal = float3( 0, 0, 1 );
+				surfaceDescription.Normal = float3( 0, 0, 1 );
+				surfaceDescription.BentNormal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.CoatMask = 0;
-				surfaceDescription.Metallic = tex2DNode96.b;
+				surfaceDescription.Metallic = tex2DNode96.r;
 
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = tex2DNode96.g;
-				surfaceDescription.Occlusion = 1;
+				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Occlusion = tex2DNode96.g;
 				surfaceDescription.Emission = lerpResult328.rgb;
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -1301,6 +1312,8 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
+			#define ASE_BENT_NORMAL 1
+			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
 
@@ -1399,6 +1412,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -2026,26 +2040,30 @@ Shader "Shader_Tile"
 				float2 texCoord45 = packedInput.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
 				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
-				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient140 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _State);
 				Gradient gradient145 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
-				float2 temp_cast_9 = (2.0).xx;
-				float2 texCoord103 = packedInput.ase_texcoord2.xy * temp_cast_9 + float2( -1,0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_10 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord2.xy * temp_cast_10 + float2( -1,0 );
 				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
 				float4 temp_output_43_0 = ( ( ( _State <= 1.0 ? lerpResult131 : SampleGradient( gradient145, temp_output_25_0.r ) ) * tex2DNode10.a ) * _HDR * _Alpha );
 				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
 				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
-				float2 temp_cast_10 = (2.0).xx;
-				float2 texCoord302 = packedInput.ase_texcoord2.xy * temp_cast_10 + float2( -1,0 );
+				int lerpResult357 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_12 = lerpResult357;
+				float2 texCoord302 = packedInput.ase_texcoord2.xy * temp_cast_12 + float2( -1,0 );
 				float4 tex2DNode303 = tex2D( _DissolveText, texCoord302 );
 				float clampResult308 = clamp( ( 1.0 - ( ( tex2DNode303.r - ( 1.0 - ( _DissolveDelta * 1.5 ) ) ) * tex2DNode303.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_11 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord2.xy * temp_cast_11 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_14 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord2.xy * temp_cast_14 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_12 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord2.xy * temp_cast_12 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_16 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord2.xy * temp_cast_16 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord2.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -2068,8 +2086,9 @@ Shader "Shader_Tile"
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
 				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
-				float2 temp_cast_14 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord2.xy * temp_cast_14 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_19 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord2.xy * temp_cast_19 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
 				float smoothstepResult191 = smoothstep( 0.0 , 0.35 , ( ( _DissolveDelta * temp_output_268_0 ) * 0.2 ));
@@ -2079,23 +2098,25 @@ Shader "Shader_Tile"
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
 				float4 lerpResult328 = lerp( lerpResult142 , ( ( ( temp_output_323_0 - ( 1.0 - clampResult230 ) ) * SampleGradient( gradient325, temp_output_323_0 ) ) * 5.0 ) , temp_output_323_0);
 				
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
+				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
 				surfaceDescription.BaseColor = lerpResult327.rgb;
-				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
-				surfaceDescription.BentNormal = float3( 0, 0, 1 );
+				surfaceDescription.Normal = float3( 0, 0, 1 );
+				surfaceDescription.BentNormal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.CoatMask = 0;
-				surfaceDescription.Metallic = tex2DNode96.b;
+				surfaceDescription.Metallic = tex2DNode96.r;
 
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = tex2DNode96.g;
-				surfaceDescription.Occlusion = 1;
+				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Occlusion = tex2DNode96.g;
 				surfaceDescription.Emission = lerpResult328.rgb;
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -2188,6 +2209,8 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
+			#define ASE_BENT_NORMAL 1
+			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
 
@@ -2286,6 +2309,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -2358,6 +2382,7 @@ Shader "Shader_Tile"
 			sampler2D _VignetteTexture;
 			sampler2D _Spokes7512x512;
 			sampler2D _FireNoise;
+			sampler2D _TextureSample0;
 
 
             #ifdef DEBUG_DISPLAY
@@ -2796,17 +2821,20 @@ Shader "Shader_Tile"
 				float3 TangentWS = packedInput.tangentWS.xyz;
 				float3 BitangentWS = input.tangentToWorld[ 1 ];
 
-				float2 temp_cast_0 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_0 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_1 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_1 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_3 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_3 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_2 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_2 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_5 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_5 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord3.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -2819,11 +2847,16 @@ Shader "Shader_Tile"
 				float clampResult217 = clamp( ( smoothstepResult191 + ( smoothstepResult269 * 7.02 ) ) , 0.0 , 1.0 );
 				float clampResult219 = clamp( ( clampResult179 - clampResult217 ) , 0.0 , 1.0 );
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_7 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord3.xy * temp_cast_7 + float2( -1,0 );
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
 				
 
 				AlphaSurfaceDescription surfaceDescription = (AlphaSurfaceDescription)0;
 
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -2897,6 +2930,8 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
+			#define ASE_BENT_NORMAL 1
+			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
 
@@ -2994,6 +3029,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -3066,6 +3102,7 @@ Shader "Shader_Tile"
 			sampler2D _VignetteTexture;
 			sampler2D _Spokes7512x512;
 			sampler2D _FireNoise;
+			sampler2D _TextureSample0;
 
 
             #ifdef DEBUG_DISPLAY
@@ -3491,17 +3528,20 @@ Shader "Shader_Tile"
 				float3 TangentWS = packedInput.tangentWS.xyz;
 				float3 BitangentWS = input.tangentToWorld[ 1 ];
 
-				float2 temp_cast_0 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_0 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_1 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_1 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_3 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_3 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_2 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_2 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_5 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_5 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord3.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -3514,11 +3554,16 @@ Shader "Shader_Tile"
 				float clampResult217 = clamp( ( smoothstepResult191 + ( smoothstepResult269 * 7.02 ) ) , 0.0 , 1.0 );
 				float clampResult219 = clamp( ( clampResult179 - clampResult217 ) , 0.0 , 1.0 );
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_7 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord3.xy * temp_cast_7 + float2( -1,0 );
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
 				
 
 				SceneSurfaceDescription surfaceDescription = (SceneSurfaceDescription)0;
 
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -3578,6 +3623,8 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
+			#define ASE_BENT_NORMAL 1
+			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
 
@@ -3677,6 +3724,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -3745,12 +3793,12 @@ Shader "Shader_Tile"
 			int _PassValue;
             #endif
 
-			sampler2D _Normal;
 			sampler2D _MetallicRoughness;
 			sampler2D _DissolveText;
 			sampler2D _VignetteTexture;
 			sampler2D _Spokes7512x512;
 			sampler2D _FireNoise;
+			sampler2D _TextureSample0;
 
 
             #ifdef DEBUG_DISPLAY
@@ -4219,22 +4267,23 @@ Shader "Shader_Tile"
 					BitangentWS = input.tangentToWorld[ 1 ];
 				#endif
 
-				float2 uv_Normal = packedInput.ase_texcoord3.xy * _Normal_ST.xy + _Normal_ST.zw;
-				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord3.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
-				float2 temp_cast_0 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_0 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_1 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_1 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_3 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_3 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_2 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_2 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_5 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_5 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord3.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -4247,13 +4296,18 @@ Shader "Shader_Tile"
 				float clampResult217 = clamp( ( smoothstepResult191 + ( smoothstepResult269 * 7.02 ) ) , 0.0 , 1.0 );
 				float clampResult219 = clamp( ( clampResult179 - clampResult217 ) , 0.0 , 1.0 );
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_7 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord3.xy * temp_cast_7 + float2( -1,0 );
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
 				
 
 				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
 
-				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
-				surfaceDescription.Smoothness = tex2DNode96.g;
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Normal = float3( 0, 0, 1 );
+				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -4344,6 +4398,8 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
+			#define ASE_BENT_NORMAL 1
+			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
 
@@ -4447,6 +4503,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -4515,12 +4572,12 @@ Shader "Shader_Tile"
 			int _PassValue;
             #endif
 
-			sampler2D _Normal;
 			sampler2D _MetallicRoughness;
 			sampler2D _DissolveText;
 			sampler2D _VignetteTexture;
 			sampler2D _Spokes7512x512;
 			sampler2D _FireNoise;
+			sampler2D _TextureSample0;
 
 
             #ifdef DEBUG_DISPLAY
@@ -5033,22 +5090,23 @@ Shader "Shader_Tile"
 
 				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
 
-				float2 uv_Normal = packedInput.ase_texcoord3.xy * _Normal_ST.xy + _Normal_ST.zw;
-				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord3.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
-				float2 temp_cast_0 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_0 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_1 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_1 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_3 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_3 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_2 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_2 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_5 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_5 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord3.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -5061,11 +5119,16 @@ Shader "Shader_Tile"
 				float clampResult217 = clamp( ( smoothstepResult191 + ( smoothstepResult269 * 7.02 ) ) , 0.0 , 1.0 );
 				float clampResult219 = clamp( ( clampResult179 - clampResult217 ) , 0.0 , 1.0 );
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_7 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord3.xy * temp_cast_7 + float2( -1,0 );
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
 				
 
-				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
-				surfaceDescription.Smoothness = tex2DNode96.g;
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Normal = float3( 0, 0, 1 );
+				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -5171,6 +5234,8 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
+			#define ASE_BENT_NORMAL 1
+			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
 
@@ -5290,6 +5355,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -6056,26 +6122,30 @@ Shader "Shader_Tile"
 				float2 texCoord45 = packedInput.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner46 = ( 1.0 * _Time.y * float2( 0.05,0 ) + texCoord45);
 				float4 temp_output_25_0 = ( smoothstepResult39 * ( smoothstepResult36 + tex2D( _Texture0, panner46 ) ) );
-				Gradient gradient140 = NewGradient( 0, 4, 2, float4( 0.3962264, 0.02097896, 0.02018509, 0 ), float4( 0.8792453, 0.1177857, 0.1341067, 0.4011749 ), float4( 0.9490196, 0.2196078, 0.2528196, 0.6082399 ), float4( 1, 1, 1, 0.798825 ), 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
+				Gradient gradient140 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
 				float4 lerpResult131 = lerp( SampleGradient( gradient49, temp_output_25_0.r ) , SampleGradient( gradient140, temp_output_25_0.r ) , _State);
 				Gradient gradient145 = NewGradient( 0, 3, 2, float4( 0.2150944, 0.2150944, 0.2150944, 0 ), float4( 0.4505348, 0.4505348, 0.4505348, 0.5447013 ), float4( 1, 1, 1, 0.8976425 ), 0, 0, 0, 0, 0, float2( 1, 0 ), float2( 1, 1 ), 0, 0, 0, 0, 0, 0 );
-				float2 temp_cast_9 = (2.0).xx;
-				float2 texCoord103 = packedInput.ase_texcoord7.xy * temp_cast_9 + float2( -1,0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_10 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord7.xy * temp_cast_10 + float2( -1,0 );
 				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
 				float4 temp_output_43_0 = ( ( ( _State <= 1.0 ? lerpResult131 : SampleGradient( gradient145, temp_output_25_0.r ) ) * tex2DNode10.a ) * _HDR * _Alpha );
 				float4 lerpResult138 = lerp( float4( tex2DNode76.rgb , 0.0 ) , temp_output_43_0 , tex2DNode10.a);
 				float4 lerpResult143 = lerp( tex2DNode76 , lerpResult138 , _Alpha_shader);
-				float2 temp_cast_10 = (2.0).xx;
-				float2 texCoord302 = packedInput.ase_texcoord7.xy * temp_cast_10 + float2( -1,0 );
+				int lerpResult357 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_12 = lerpResult357;
+				float2 texCoord302 = packedInput.ase_texcoord7.xy * temp_cast_12 + float2( -1,0 );
 				float4 tex2DNode303 = tex2D( _DissolveText, texCoord302 );
 				float clampResult308 = clamp( ( 1.0 - ( ( tex2DNode303.r - ( 1.0 - ( _DissolveDelta * 1.5 ) ) ) * tex2DNode303.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_11 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord7.xy * temp_cast_11 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_14 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord7.xy * temp_cast_14 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_12 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord7.xy * temp_cast_12 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_16 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord7.xy * temp_cast_16 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord7.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -6098,8 +6168,9 @@ Shader "Shader_Tile"
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
 				float4 lerpResult142 = lerp( float4( 0,0,0,0 ) , temp_output_43_0 , _Alpha_shader);
-				float2 temp_cast_14 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord7.xy * temp_cast_14 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_19 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord7.xy * temp_cast_19 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
 				float smoothstepResult191 = smoothstep( 0.0 , 0.35 , ( ( _DissolveDelta * temp_output_268_0 ) * 0.2 ));
@@ -6109,23 +6180,25 @@ Shader "Shader_Tile"
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
 				float4 lerpResult328 = lerp( lerpResult142 , ( ( ( temp_output_323_0 - ( 1.0 - clampResult230 ) ) * SampleGradient( gradient325, temp_output_323_0 ) ) * 5.0 ) , temp_output_323_0);
 				
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
+				
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
 				surfaceDescription.BaseColor = lerpResult327.rgb;
-				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
-				surfaceDescription.BentNormal = float3( 0, 0, 1 );
+				surfaceDescription.Normal = float3( 0, 0, 1 );
+				surfaceDescription.BentNormal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
 				surfaceDescription.CoatMask = 0;
-				surfaceDescription.Metallic = tex2DNode96.b;
+				surfaceDescription.Metallic = tex2DNode96.r;
 
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = tex2DNode96.g;
-				surfaceDescription.Occlusion = 1;
+				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Occlusion = tex2DNode96.g;
 				surfaceDescription.Emission = lerpResult328.rgb;
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -6331,6 +6404,8 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
+			#define ASE_BENT_NORMAL 1
+			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
 
@@ -6432,6 +6507,7 @@ Shader "Shader_Tile"
 			float _Max2;
 			float _Min;
 			float _Max;
+			int _IsOverlay;
 			float _HDR;
 			float _Alpha;
 			float _Alpha_shader;
@@ -6504,6 +6580,7 @@ Shader "Shader_Tile"
 			sampler2D _VignetteTexture;
 			sampler2D _Spokes7512x512;
 			sampler2D _FireNoise;
+			sampler2D _TextureSample0;
 
 
             #ifdef DEBUG_DISPLAY
@@ -6800,17 +6877,20 @@ Shader "Shader_Tile"
 				float3 TangentWS = packedInput.tangentWS.xyz;
 				float3 BitangentWS = input.tangentToWorld[ 1 ];
 
-				float2 temp_cast_0 = (2.0).xx;
-				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_0 + float2( -1,0 );
+				int lerpResult350 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_1 = lerpResult350;
+				float2 texCoord155 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
 				float4 tex2DNode180 = tex2D( _DissolveText, texCoord155 );
 				float clampResult179 = clamp( ( 1.0 - ( ( tex2DNode180.r - ( 1.0 - _DissolveDelta ) ) * tex2DNode180.a ) ) , 0.0 , 1.0 );
-				float2 temp_cast_1 = (2.0).xx;
-				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_1 + float2( -1,0 );
+				int lerpResult347 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_3 = lerpResult347;
+				float2 texCoord161 = packedInput.ase_texcoord3.xy * temp_cast_3 + float2( -1,0 );
 				float4 tex2DNode158 = tex2D( _VignetteTexture, texCoord161 );
 				float clampResult242 = clamp( tex2DNode158.r , 0.0 , 1.0 );
 				float temp_output_223_0 = ( 1.0 - clampResult242 );
-				float2 temp_cast_2 = (2.0).xx;
-				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_2 + float2( -1,0 );
+				int lerpResult348 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_5 = lerpResult348;
+				float2 texCoord246 = packedInput.ase_texcoord3.xy * temp_cast_5 + float2( -1,0 );
 				float2 texCoord267 = packedInput.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float2 panner266 = ( 1.0 * _Time.y * float2( 0.03,0.05 ) + texCoord267);
 				float2 texCoord276 = packedInput.ase_texcoord3.xy * float2( 0.5,0.5 ) + float2( 0,0 );
@@ -6823,11 +6903,16 @@ Shader "Shader_Tile"
 				float clampResult217 = clamp( ( smoothstepResult191 + ( smoothstepResult269 * 7.02 ) ) , 0.0 , 1.0 );
 				float clampResult219 = clamp( ( clampResult179 - clampResult217 ) , 0.0 , 1.0 );
 				float clampResult230 = clamp( ( clampResult219 + ( clampResult242 * 2.0 ) ) , 0.0 , 1.0 );
+				int lerpResult352 = lerp( 2 , 1 , (float)_IsOverlay);
+				float2 temp_cast_7 = lerpResult352;
+				float2 texCoord103 = packedInput.ase_texcoord3.xy * temp_cast_7 + float2( -1,0 );
+				float4 tex2DNode10 = tex2D( _TextureSample0, texCoord103 );
+				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
 				
 
 				PickingSurfaceDescription surfaceDescription = (PickingSurfaceDescription)0;
 
-				surfaceDescription.Alpha = clampResult230;
+				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -7145,19 +7230,19 @@ Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0,
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;281;-1792,2576;Inherit;True;Property;_TextureSample1;Texture Sample 1;22;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;290;-1104,2800;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;245;-2416,2416;Inherit;False;Constant;_Vector3;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;244;-2416,2352;Inherit;False;Constant;_2;2;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;257;-1520,2576;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0.1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;289;-1312,2784;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;348;-2416,2304;Inherit;False;3;0;INT;2;False;1;INT;1;False;2;FLOAT;0;False;1;INT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;246;-2272,2352;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;274;-1280,2576;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;160;-2448,2176;Inherit;False;Constant;_Vector2;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;283;-2448,2112;Inherit;False;Constant;_3;2;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;237;-1824,2304;Inherit;True;Property;_Spokes7512x512;Spokes 7 - 512x512;17;0;Create;True;0;0;0;False;0;False;-1;2e3a92e1fa9874f468da2e9abd54afad;2e3a92e1fa9874f468da2e9abd54afad;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.ClampOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;286;-1072,2576;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;347;-2448,2064;Inherit;False;3;0;INT;2;False;1;INT;1;False;2;FLOAT;0;False;1;INT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;161;-2304,2112;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;247;-1520,2352;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.4;False;1;FLOAT;0
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;285;-896,2512;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;158;-1840,2096;Inherit;True;Property;_VignetteTexture;VignetteTexture;15;0;Create;True;1;Dissolve;0;0;False;0;False;-1;aa8df4507f8c55e418176cf5d551c6f2;deacccd4161109c40b56ed631cff19a7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;158;-1840,2096;Inherit;True;Property;_VignetteTexture;VignetteTexture;15;0;Create;True;1;Dissolve;0;0;False;0;False;-1;aa8df4507f8c55e418176cf5d551c6f2;aa8df4507f8c55e418176cf5d551c6f2;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;240;-1360,2304;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;288;-1232,2496;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.ClampOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;242;-1360,2144;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
@@ -7166,14 +7251,16 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;239;-1184,2192;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleSubtractOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;262;-896,2272;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;223;-1040,2176;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.IntNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;343;-3136,448;Inherit;False;Property;_IsOverlay;IsOverlay;20;0;Create;True;0;0;0;False;0;False;0;0;False;0;1;INT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;268;-752,2224;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;271;-736,2032;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;272;-528,2160;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;157;-1664,1712;Inherit;False;Constant;_Float2;Float 0;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;358;-2896,496;Inherit;False;1;0;INT;0;False;1;INT;0
 Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;156;-1664,1776;Inherit;False;Constant;_Vector1;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;248;-528,2000;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;181;-2304,1984;Inherit;False;Property;_DissolveDelta;DissolveDelta;16;0;Create;True;0;0;0;False;0;False;1.430727;0;0;2;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;270;-368,2224;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1.25;False;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;350;-1840,1664;Inherit;False;3;0;INT;2;False;1;INT;1;False;2;FLOAT;0;False;1;INT;0
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;287;-1584,1904;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;155;-1520,1712;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;249;-368,2000;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.2;False;1;FLOAT;0
@@ -7197,7 +7284,16 @@ Node;AmplifyShaderEditor.SimpleSubtractOpNode, AmplifyShaderEditor, Version=0.0.
 Node;AmplifyShaderEditor.ClampOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;219;144,1744;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;250;144,1856;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;221;304,1744;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;107;-768,-16;Inherit;False;Constant;_Vector0;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;352;-768,-144;Inherit;False;3;0;INT;2;False;1;INT;1;False;2;FLOAT;0;False;1;INT;0
 Node;AmplifyShaderEditor.ClampOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;230;512,1744;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;103;-608,-80;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;334;803.2688,1528.999;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;-400,-112;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;c2d591c55e414bf49ab1cd6f06d4ecdb;c2d591c55e414bf49ab1cd6f06d4ecdb;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;70;-32,448;Inherit;False;Property;_Alpha_shader;Alpha_shader;8;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;345;976,368;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;359;976,160;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;157;-1664,1712;Inherit;False;Constant;_Float2;Float 0;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.StickyNoteNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;147;-1056,-736;Inherit;False;220.7324;100;Player on tile;;0,0,0,1;;0;0
 Node;AmplifyShaderEditor.StickyNoteNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;148;-1056,-912;Inherit;False;220.7324;100;Locked tile;;0,0,0,1;;0;0
 Node;AmplifyShaderEditor.StickyNoteNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;149;-1056,-1088;Inherit;False;220.7324;100;Basic Selection;;0,0,0,1;;0;0
@@ -7207,17 +7303,13 @@ Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0,
 Node;AmplifyShaderEditor.NoiseGeneratorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;35;-2512,-944;Inherit;False;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;17;-2768,-944;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0.025,0.029;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;31;-1248,-176;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;70;-32,448;Inherit;False;Property;_Alpha_shader;Alpha_shader;8;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;96;-32,528;Inherit;True;Property;_MetallicRoughness;Metallic Roughness;12;0;Create;True;0;0;0;False;0;False;-1;None;420472abb5daa07449a61ee5805dd11d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;93;-32,256;Inherit;True;Property;_Normal;Normal;11;0;Create;True;0;0;0;False;0;False;-1;None;ba4d366b1decf3f4e8d7d132dc42c649;True;0;True;white;Auto;True;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;93;-32,256;Inherit;True;Property;_Normal;Normal;11;0;Create;True;0;0;0;False;0;False;-1;None;d8f79f22e172582498bade4fb7134ddd;True;0;False;white;Auto;True;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;48;-832,-1056;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;137;-832,-880;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;140;-1040,-880;Inherit;False;0;4;2;0.3962264,0.02097896,0.02018509,0;0.8792453,0.1177857,0.1341067,0.4011749;0.9490196,0.2196078,0.2528196,0.6082399;1,1,1,0.798825;1,0;1,1;0;1;OBJECT;0
-Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;145;-1040,-704;Inherit;False;0;3;2;0.2150944,0.2150944,0.2150944,0;0.4505348,0.4505348,0.4505348,0.5447013;1,1,1,0.8976425;1,0;1,1;0;1;OBJECT;0
+Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;140;-1040,-880;Inherit;False;0;3;2;0.2150944,0.2150944,0.2150944,0;0.4505348,0.4505348,0.4505348,0.5447013;1,1,1,0.8976425;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;131;-384,-896;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.Compare, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;152;-208,-784;Inherit;False;5;4;0;FLOAT;0;False;1;FLOAT;0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;153;-384,-768;Inherit;False;Constant;_Float1;Float 1;15;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;136;-544,-848;Inherit;False;Property;_State;State;14;1;[Enum];Create;True;0;3;Basic;0;Locked;1;PlayerOnTile;2;0;False;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.GradientSampleNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;146;-832,-704;Inherit;True;2;0;OBJECT;;False;1;FLOAT;0;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;25;-1056,-592;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;39;-1280,-592;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;1,0,0,0;False;1;COLOR;0
@@ -7230,12 +7322,9 @@ Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, 
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;143;688,-176;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;138;416,-304;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;265;208,-48;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;103;-608,-80;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;107;-768,-16;Inherit;False;Constant;_Vector0;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;106;-768,-80;Inherit;False;Constant;_Float0;Float 0;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;90;-400,-192;Inherit;False;Property;_Alpha;Alpha;10;0;Create;True;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;142;688,0;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;24;-1808,-176;Inherit;True;Property;_SpaceText;SpaceText;2;0;Create;True;0;0;0;False;0;False;-1;a1df82c5c992a5143bbbb2ba6030c4e7;a1df82c5c992a5143bbbb2ba6030c4e7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;24;-1808,-176;Inherit;True;Property;_SpaceText;SpaceText;2;0;Create;True;0;0;0;False;0;False;-1;a1df82c5c992a5143bbbb2ba6030c4e7;a625f43b0ebe13d4996b2d9b9b95e74f;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;37;-1680,16;Inherit;False;Property;_Min;Min;3;0;Create;True;0;0;0;False;0;False;0;0.07;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;38;-1680,80;Inherit;False;Property;_Max;Max;4;0;Create;True;0;0;0;False;0;False;0;0.34;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;47;-1808,176;Inherit;True;Property;_TextureSample6;Texture Sample 5;5;0;Create;True;0;0;0;False;0;False;-1;None;27b0238e9024c404faee6a91fd52a034;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
@@ -7247,7 +7336,6 @@ Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.
 Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;20;-2736,-592;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;-0.017,-0.013;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;19;-2976,-592;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;0.37,1.18;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.StickyNoteNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;298;-2592,1584;Inherit;False;3050.254;1505.193;Dissolve;;0.3584906,0.2482378,0.3125373,1;;0;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;300;-1680,864;Inherit;False;Constant;_Float3;Float 0;16;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.Vector2Node, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;301;-1680,928;Inherit;False;Constant;_Vector4;Vector 0;16;0;Create;True;0;0;0;False;0;False;-1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;302;-1536,864;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;303;-1328,832;Inherit;True;Property;_DissolveTexture1;DissolveTexture;16;0;Create;True;1;Dissolve;0;0;False;0;False;-1;5328bea024e2a7340bdd73a85036e371;5328bea024e2a7340bdd73a85036e371;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
@@ -7279,14 +7367,18 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;332;1179.717,1099.492;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;330;1392,1104;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;1;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;331;1232,1312;Inherit;False;Constant;_Float4;Float 4;20;0;Create;True;0;0;0;False;0;False;5;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;334;803.2688,1528.999;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;335;880,1568;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleSubtractOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;333;1024,1328;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;299;-1680,1104;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1.5;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;49;-1040,-1056;Inherit;False;0;4;2;0.9215686,0.8196079,0.5921569,0;0.7333333,0.6078432,0.2862745,0.344686;0.9685534,0.9158662,0.7827617,0.7152514;1,1,1,1;1,0;1,1;0;1;OBJECT;0
 Node;AmplifyShaderEditor.TexturePropertyNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;116;-2784,-192;Inherit;True;Property;_Texture0;Texture 0;13;0;Create;True;0;0;0;False;0;False;None;27b0238e9024c404faee6a91fd52a034;False;white;Auto;Texture2D;False;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;-400,-112;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;c2d591c55e414bf49ab1cd6f06d4ecdb;c2d591c55e414bf49ab1cd6f06d4ecdb;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;76;-32,64;Inherit;True;Property;_Texture;Texture;9;0;Create;True;0;0;0;False;0;False;-1;d018ce4d5e4f8d34e9b813affbeb8ee9;e23c2db2f53f3a14793c19e2627a7fc3;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;76;-32,64;Inherit;True;Property;_Texture;Texture;9;0;Create;True;0;0;0;False;0;False;-1;1a3b03db9e0022042a90020f9851104d;1a3b03db9e0022042a90020f9851104d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.GradientNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;145;-1040,-704;Inherit;False;0;3;2;0.2150944,0.2150944,0.2150944,0;0.4505348,0.4505348,0.4505348,0.5447013;1,1,1,0.8976425;1,0;1,1;0;1;OBJECT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;136;-528,-848;Inherit;False;Property;_State;State;14;1;[Enum];Create;True;0;3;Basic;0;Locked;1;PlayerOnTile;2;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;96;-32,528;Inherit;True;Property;_MetallicRoughness;Metallic Roughness;12;0;Create;True;0;0;0;False;0;False;-1;None;9f42e9601eafaea45a0cd939463c96ce;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.WireNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;341;1269.536,-111.2135;Inherit;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;344;1152,144;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;357;-1680,800;Inherit;False;3;0;INT;2;False;1;INT;1;False;2;FLOAT;0;False;1;INT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;118;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;119;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;120;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
@@ -7309,13 +7401,15 @@ WireConnection;281;1;266;0
 WireConnection;290;0;284;0
 WireConnection;257;0;281;1
 WireConnection;289;0;290;0
-WireConnection;246;0;244;0
+WireConnection;348;2;358;0
+WireConnection;246;0;348;0
 WireConnection;246;1;245;0
 WireConnection;274;0;257;0
 WireConnection;274;1;289;0
 WireConnection;237;1;246;0
 WireConnection;286;0;274;0
-WireConnection;161;0;283;0
+WireConnection;347;2;358;0
+WireConnection;161;0;347;0
 WireConnection;161;1;160;0
 WireConnection;247;0;237;1
 WireConnection;285;0;286;0
@@ -7336,11 +7430,13 @@ WireConnection;268;2;262;0
 WireConnection;271;0;181;0
 WireConnection;272;0;271;0
 WireConnection;272;1;223;0
+WireConnection;358;0;343;0
 WireConnection;248;0;271;0
 WireConnection;248;1;268;0
 WireConnection;270;0;272;0
+WireConnection;350;2;358;0
 WireConnection;287;0;181;0
-WireConnection;155;0;157;0
+WireConnection;155;0;350;0
 WireConnection;155;1;156;0
 WireConnection;249;0;248;0
 WireConnection;269;0;270;0
@@ -7368,7 +7464,15 @@ WireConnection;219;0;210;0
 WireConnection;250;0;226;0
 WireConnection;221;0;219;0
 WireConnection;221;1;250;0
+WireConnection;352;2;358;0
 WireConnection;230;0;221;0
+WireConnection;103;0;352;0
+WireConnection;103;1;107;0
+WireConnection;334;0;230;0
+WireConnection;10;1;103;0
+WireConnection;345;0;334;0
+WireConnection;359;0;10;4
+WireConnection;359;1;70;0
 WireConnection;13;0;116;0
 WireConnection;13;1;20;0
 WireConnection;21;0;35;0
@@ -7411,8 +7515,6 @@ WireConnection;138;0;76;5
 WireConnection;138;1;43;0
 WireConnection;138;2;265;0
 WireConnection;265;0;10;4
-WireConnection;103;0;106;0
-WireConnection;103;1;107;0
 WireConnection;142;1;43;0
 WireConnection;142;2;70;0
 WireConnection;24;1;27;0
@@ -7421,7 +7523,7 @@ WireConnection;47;1;46;0
 WireConnection;46;0;45;0
 WireConnection;27;0;26;0
 WireConnection;20;0;19;0
-WireConnection;302;0;300;0
+WireConnection;302;0;357;0
 WireConnection;302;1;301;0
 WireConnection;303;0;329;0
 WireConnection;303;1;302;0
@@ -7466,17 +7568,21 @@ WireConnection;332;0;333;0
 WireConnection;332;1;326;0
 WireConnection;330;0;332;0
 WireConnection;330;1;331;0
-WireConnection;334;0;230;0
 WireConnection;335;0;230;0
 WireConnection;333;0;323;0
 WireConnection;333;1;335;0
 WireConnection;299;0;181;0
-WireConnection;10;1;103;0
+WireConnection;341;0;93;0
+WireConnection;344;0;345;0
+WireConnection;344;1;359;0
+WireConnection;344;2;358;0
+WireConnection;357;2;358;0
 WireConnection;117;0;327;0
-WireConnection;117;1;93;0
-WireConnection;117;4;96;3
-WireConnection;117;7;96;2
+WireConnection;117;2;341;0
+WireConnection;117;4;96;1
+WireConnection;117;7;96;3
+WireConnection;117;8;96;2
 WireConnection;117;6;328;0
-WireConnection;117;9;334;0
+WireConnection;117;9;344;0
 ASEEND*/
-//CHKSM=84089D8E98752D59C1272B53C143B283768761D8
+//CHKSM=0DDE285663121EE78636DFBF51DEBA7A9BCDCBB9

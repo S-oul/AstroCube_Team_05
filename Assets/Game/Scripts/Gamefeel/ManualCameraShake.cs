@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEditor.Timeline;
-using UnityEditor.UIElements;
 
 public class CameraShake : MonoBehaviour
 {
@@ -50,5 +48,6 @@ public class CameraShake : MonoBehaviour
     private void TriggerCameraShake()
     {
         shakeDurationHolder += shakeDuration;
+        shakeDurationHolder = Mathf.Clamp(shakeDurationHolder, 0, 1);
     }
 }

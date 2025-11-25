@@ -73,7 +73,6 @@ public class PlayerTrigger : MonoBehaviour
             }
 
             EventManager.TriggerPlayerWin();
-            Destroy(other.gameObject);
         }
         else if (other.CompareTag("DeathZone"))
         {
