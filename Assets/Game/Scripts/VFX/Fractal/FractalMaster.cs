@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 public class FractalMaster : MonoBehaviour
 {
     [Serializable]
-    public class MandelbulbParameters // Inheriting MonoBehaviour makes values animation possible 
+    public class MandelbulbParameters
     {
         public MandelbulbParameters()
         {
@@ -50,8 +50,13 @@ public class FractalMaster : MonoBehaviour
     [SerializeField] private Color _colorB = new Color(1f, 0.5f, 0f);
     [SerializeField, Range(0f, 1f)] private float _blackAndWhite = 0.7f;
     [SerializeField] private float _darkness = 26f;
+    [Header("Fractal Transform")]
+    [SerializeField, Range(0.1f, 10f)] private float fractalScale = 1f;
+    [Header("Appearance")]
+    [SerializeField, Range(0f, 3f)] private float brightness = 1f;
+    [SerializeField, Range(0f, 1f)] private float transparencyAmount = 0f;
 
-    public MandelbulbParameters CurrentMandelbulbParameters {  get => _currentMandelbulbParameters; set => _currentMandelbulbParameters = value; }
+    public MandelbulbParameters CurrentMandelbulbParameters { get => _currentMandelbulbParameters; set => _currentMandelbulbParameters = value; }
     private MandelbulbParameters _currentMandelbulbParameters = new();
 
     [HorizontalLine(color: EColor.Blue)]
@@ -75,7 +80,7 @@ public class FractalMaster : MonoBehaviour
     public float oscillationRange = 5f;
     private float t = 0;
 
-    private int handleCSMain;
+    private int handleCSMain = -1;
 
     public float[] groupMinData;
     public int groupMin;
@@ -87,7 +92,7 @@ public class FractalMaster : MonoBehaviour
 
     public float minDist;
 
-    private int maxStepCount = 250;
+    private int maxStepCount = 500;
 
     public int maxIterations;
 
@@ -95,8 +100,6 @@ public class FractalMaster : MonoBehaviour
 
     Matrix4x4 cameraToWorldMatrix;
     Matrix4x4 projectionMatrixInverse;
-    private Material _mat;
-
 
     void Start()
     {
@@ -104,57 +107,48 @@ public class FractalMaster : MonoBehaviour
 
         if (null == fractalShader)
         {
-            Debug.Log("Shader missing.");
+            Debug.LogError("Fractal Shader missing!");
             return;
         }
-        _mat = GetComponent<Renderer>().sharedMaterial;
+
+        // Trouver le kernel une seule fois au démarrage
+        handleCSMain = fractalShader.FindKernel("CSMain");
+
+        if (handleCSMain < 0)
+        {
+            Debug.LogError("Cannot find kernel 'CSMain' in compute shader!");
+            enabled = false;
+            return;
+        }
     }
 
     void Init()
     {
         cam = Camera.main;
 
-        cameraToWorldMatrix = cam.cameraToWorldMatrix;
-        projectionMatrixInverse = cam.projectionMatrix.inverse;
+        if (cam == null)
+        {
+            Debug.LogError("No main camera found!");
+            return;
+        }
 
-        threadGroupsX = Mathf.CeilToInt(cam.pixelWidth / 64.0f);     //CREATING A THREAD FOR EACH PIXEL (/8 AS IT'S *8 IN THE SHADER)
+        threadGroupsX = Mathf.CeilToInt(cam.pixelWidth / 64.0f);
         threadGroupsY = Mathf.CeilToInt(cam.pixelHeight / 1.0f);
     }
 
     void InitBuffer()
     {
+        if (groupMinBuffer != null)
+        {
+            groupMinBuffer.Release();
+        }
+
         groupMinBuffer = new ComputeBuffer(threadGroupsX, (sizeof(uint) * 2) + (sizeof(float) * 1));
         groupMinData = new float[threadGroupsX * 3];
     }
 
-    // Animate properties
-    void Update()
+    void LateUpdate()
     {
-        /*
-        if (Application.isPlaying)
-        {
-            if (powerIncreaseRate != 0)
-            {
-                fractalPower += powerIncreaseRate * Time.deltaTime;
-            }
-
-            else if (oscillationRate != 0)
-            {
-                t = (t + (Time.deltaTime * oscillationRate)) % (2 * Mathf.PI);
-
-                fractalPower = 1f + oscillationRange * (1f + (Mathf.Cos(t + Mathf.PI)));
-            }
-
-            //fractalPower = Mathf.Lerp(2.5f, 9f, (Mathf.Sin(Time.time * .25f) + 1) / 2);
-            /*
-            redA = Mathf.Cos((Time.time +0f) *0.3f)/2 + .5f;
-            greenA = Mathf.Sin((Time.time - 0.6f) * 0.3f) /2 + .5f;
-            blueA = Mathf.Sin((Time.time + .9f) * 0.3f) /2 + .5f;
-            redB = Mathf.Cos((Time.time + .8f) * 0.3f) /2 + .5f;
-            greenB = Mathf.Cos((Time.time - 0f) * 0.3f) /2 + .5f;
-            blueB = Mathf.Sin((Time.time+ .0f) * 0.3f) /2 + .5f;
-        }
-        */
         UpdateValues();
         UpdateTexture();
     }
@@ -171,13 +165,28 @@ public class FractalMaster : MonoBehaviour
 
     void UpdateTexture()
     {
-        handleCSMain = fractalShader.FindKernel("CSMain");
+        if (fractalShader == null || handleCSMain < 0)
+        {
+            return;
+        }
+
         Init();
+
+        if (cam == null)
+        {
+            return;
+        }
+
         InitRenderTexture();
-
         InitBuffer();
-
         SetParameters();
+
+        // Vérifier que tout est bien initialisé avant le dispatch
+        if (groupMinBuffer == null || target == null)
+        {
+            Debug.LogError("Buffers not properly initialized!");
+            return;
+        }
 
         fractalShader.Dispatch(handleCSMain, threadGroupsX, threadGroupsY, 1);
 
@@ -194,32 +203,27 @@ public class FractalMaster : MonoBehaviour
             }
         }
 
-        // At the end, the relative luminance of the brightest pixel is at groupMinData[3 * groupMin + 2].
-        // Its x coordinate is at groupMinData[3 * groupMin + 0] and 
-        // its y coordinate is at groupMinData[3 * groupMin + 1]
         minDist = groupMinData[3 * groupMin + 2];
 
-        //Graphics.Blit(target, destination);
         Graphics.Blit(target, rt);
 
-        OnDestroy();
+        CleanupBuffers();
     }
 
     void SetParameters()
     {
-        //source.enableRandomWrite = true;
-        //RenderTexture src = new RenderTexture(source.width, source.height, 0, RenderTextureFormat.ARGB2101010);
-        //src.enableRandomWrite = true;
-        //src.Create();
+        cam.fieldOfView = cam.fieldOfView;
+        //cam.fieldOfView = cam.fieldOfView;
+        cameraToWorldMatrix = cam.cameraToWorldMatrix;
+        projectionMatrixInverse = cam.projectionMatrix.inverse;
 
-        //Graphics.Blit(source, src);
-        //Graphics.CopyTexture(source, src);
 
-        if(_mat)
-            _mat.SetColor("_BaseColor", new Color(1, 1, 1, _currentMandelbulbParameters.Alpha));
+        if (Application.isPlaying)
+        { //animation
+            _fractalPower += Time.deltaTime * 0.2f;
+        }
 
-        fractalShader.SetTexture(0, "Destination", target);
-        //fractalShader.SetTexture(0, "Source", src);
+        fractalShader.SetTexture(handleCSMain, "Destination", target);
         fractalShader.SetFloat("alpha", _extAlpha);
         fractalShader.SetFloat("power", Mathf.Max(_currentMandelbulbParameters.FractalPower, 1.01f));
         fractalShader.SetFloat("darkness", _currentMandelbulbParameters.Darkness);
@@ -227,8 +231,15 @@ public class FractalMaster : MonoBehaviour
         fractalShader.SetFloat("maxDst", drawDistance);
         fractalShader.SetVector("colourAMix", _currentMandelbulbParameters.ColorA);
         fractalShader.SetVector("colourBMix", _currentMandelbulbParameters.ColorB);
-        fractalShader.SetVector("positionOffset", positionOffset);
+        //fractalShader.SetVector("positionOffset", positionOffset);
+        fractalShader.SetVector("positionOffset", transform.position);
+        fractalShader.SetFloat("fractalScale", fractalScale);
+        fractalShader.SetVector("fractalRotation", transform.eulerAngles);
 
+        // Calculer la distance entre la caméra et la fractale
+        float distToFractal = Vector3.Distance(cam.transform.position, transform.position);
+        // Adapter le nombre de pas en fonction de la distance
+        maxStepCount = Mathf.Max(250, Mathf.CeilToInt(distToFractal * 100));
         fractalShader.SetInt("maxStepCount", maxStepCount);
 
         if (LODChangeWithDist)
@@ -241,7 +252,8 @@ public class FractalMaster : MonoBehaviour
 
         fractalShader.SetMatrix("_CameraToWorld", cameraToWorldMatrix);
         fractalShader.SetMatrix("_CameraInverseProjection", projectionMatrixInverse);
-        if(directionalLight)
+
+        if (directionalLight)
             fractalShader.SetVector("_LightDirection", directionalLight.transform.forward);
 
         fractalShader.SetBuffer(handleCSMain, "GroupMinBuffer", groupMinBuffer);
@@ -262,12 +274,28 @@ public class FractalMaster : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    void CleanupBuffers()
     {
-        if (null != groupMinBuffer)
+        if (groupMinBuffer != null)
         {
             groupMinBuffer.Release();
+            groupMinBuffer = null;
         }
     }
-}
 
+    void OnDestroy()
+    {
+        CleanupBuffers();
+
+        if (target != null)
+        {
+            target.Release();
+            target = null;
+        }
+    }
+
+    void OnDisable()
+    {
+        CleanupBuffers();
+    }
+}

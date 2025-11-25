@@ -7,6 +7,8 @@ using NUnit.Framework;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Path = DG.Tweening.Plugins.Core.PathCore.Path;
 
 public class MemoryObject : MonoBehaviour, IInteractable
@@ -14,11 +16,10 @@ public class MemoryObject : MonoBehaviour, IInteractable
     //[SerializeField] private MemoryCharacter _memoryCharacterPrefab;
     //[SerializeField] private List<Vector3> _characterPositions = new();
     [SerializeField] private List<MemoryVFXController> _memories = new();
-    [SerializeField] private GameObject _gameObjectToActivate;
-    [SerializeField] private List<string> _subtitles = new();
-    [SerializeField] float _subtitleDurationByLetter;
-    
-    public GameObject GameObjectToActivate => _gameObjectToActivate;
+    [SerializeField] private List<GameObject> _gameObjectsToActivate;
+    [SerializeField] private List<SubtitleData> _subtitles = new();
+
+    [SerializeField] public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
 
@@ -39,28 +40,38 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
     private void OnValidate()
     {
-        if (_gameObjectToActivate)
+        for (var index = 0; index < _gameObjectsToActivate.Count; index++)
         {
-            _gameObjectToActivate.transform.SetParent(_memories[^1].transform);
+            var gameObjectToActivate = _gameObjectsToActivate[index];
+
+            gameObjectToActivate.transform.SetParent(_memories.Count > index
+                ? _memories[index].transform
+                : _memories[^1].transform);
         }
     }
 
     private IEnumerator StartMemory()
     {
         _wasPlayed = true;
-        foreach (MemoryVFXController mem in _memories)
+        for (var index = 0; index < _memories.Count; index++)
         {
-            mem.StartVFX(_gameObjectToActivate);
-            //memChar.gameObject.SetActive(true);
+            var mem = _memories[index];
+            try
+            {
+                mem.StartVFX(_gameObjectsToActivate[index]);
+            }
+            catch
+            {
+                mem.StartVFX(null);
+            }
         }
-        TMP_Text text = GameObject.Find("Subtitles").GetComponent<TMP_Text>();
-        foreach (string subtitle in _subtitles)
+        
+        foreach (SubtitleData subtitle in _subtitles)
         {
-            text.text = subtitle;
-            yield return new WaitForSeconds(_subtitleDurationByLetter * subtitle.Length);
+            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.color);
+            yield return new WaitForSeconds(subtitle.duration);
         }
-
-        text.text = "";
+        LocalizationManager.Instance.PrintString("", Color.white);
     }
 
     private void OnDrawGizmos()
@@ -76,7 +87,19 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        if(!_wasPlayed)
+        if (!_wasPlayed)
+        {
             StartCoroutine(StartMemory());
+            OnMemoryInteracted?.Invoke();
+        }
     }
+}
+
+[Serializable]
+public struct SubtitleData
+{
+    public string csvName;
+    public string localizationID;
+    public float duration;
+    public Color color;
 }

@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
 using static CameraFocusAttractor;
+using FMODUnity;
 
 public class PlayerTrigger : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class PlayerTrigger : MonoBehaviour
 
     [Header("SpeedZone")]
     [SerializeField] float newSpeedMultiplyer = 0.5f;
+
+    [Header("FMOD Audio")]
+    [SerializeField] EventReference _doorEntryEvent;
 
     [SerializeField] VolumeProfile vol;
 
@@ -62,8 +66,13 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (other.CompareTag("VictoryZone"))
         {
+            // Play FMOD event when entering the door
+            if (!_doorEntryEvent.IsNull)
+            {
+                RuntimeManager.PlayOneShot(_doorEntryEvent, transform.position);
+            }
+
             EventManager.TriggerPlayerWin();
-            Destroy(other.gameObject);
         }
         else if (other.CompareTag("DeathZone"))
         {
@@ -94,7 +103,7 @@ public class PlayerTrigger : MonoBehaviour
             var belt = other.GetComponent<ConveyerBeltManager>();
             _playerMovement.SetExternallyAppliedMovement(belt.direction, belt.speed);
         }
-
+        /*
         if (other.CompareTag("Portal"))
         {
             float toEvaluate = Vector3.Distance(transform.position, other.transform.position) / 4f;
@@ -125,6 +134,7 @@ public class PlayerTrigger : MonoBehaviour
             if (Camera.allCameras.Length > 1)
                 overlayCamera.fieldOfView = overlayFOV;
         }
+        */
     }
 
     private void OnTriggerExit(Collider other)
@@ -144,6 +154,7 @@ public class PlayerTrigger : MonoBehaviour
         if (other.CompareTag("ConveyerBelt"))
             _playerMovement.SetExternallyAppliedMovement(Vector3.zero);
 
+        /*
         if (other.CompareTag("Portal"))
         {
             SmoothCameraTransition(GameManager.Instance.CustomSettings.customFov, 1f);
@@ -155,7 +166,7 @@ public class PlayerTrigger : MonoBehaviour
 
             cameraFocusAttractor.StopAllFocus();
             isInExitFocusState = false;
-        }
+        }*/
     }
 
     void SmoothCameraTransition(float targetFOV, float duration)
