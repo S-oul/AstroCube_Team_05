@@ -45,6 +45,31 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void ShowInGame<T>() where T : UIView
+    {
+        var view = GetView<T>();
+        if (view == null)
+        {
+            Debug.LogWarning($"[UIManager] ShowInGame: view {typeof(T)} not found.");
+            return;
+        }
+
+        view.Show();
+    }
+
+    public void ShowInGameExclusive<T>() where T : UIView
+    {
+        foreach (var v in _views.Values)
+            v.Hide();
+
+        var view = GetView<T>();
+        if (view == null) return;
+
+        view.Show();
+    }
+
+
+
     public T ShowAndReturn<T>() where T : UIView
     {
         var view = GetView<T>();
