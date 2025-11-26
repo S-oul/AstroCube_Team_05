@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask _floorLayer;
 
     bool _hasGravity = true;
+    bool _FreeFallZone = false;
 
     [Header("Movement Modifiers")]
     [SerializeField, Range(0.0f,2.0f)] float _speedMultiplier = 1.0f;
@@ -70,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float defaultSpeed { get; private set; }
     public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
+    public bool FreeFallZone { get => _FreeFallZone; set => _FreeFallZone = value; }
 
     private float _timerBeforeNextStep = 0;
     public float _timerTNextStep = 1;
@@ -167,7 +169,11 @@ public class PlayerMovement : MonoBehaviour
         _crouchInput = false;
 
         // no clip
+        if(_FreeFallZone == false)
         _horizontalVelocity += transform.up * _yInput;
+        else 
+        _horizontalVelocity += transform.up*.95f;
+
 
         // apply calculated Movement
         float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
