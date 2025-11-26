@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class PauseMenu : MonoBehaviour
     [SerializeReference] GameObject SettingsUIHolder;
     [SerializeField] TextMeshProUGUI _sceneName;
     [SerializeField] GameObject ControlsUIHolder;
+    [SerializeField] EventReference menuPauseSnapshot;
+
+    private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
 
     private void Start()
     {
@@ -39,6 +43,9 @@ public class PauseMenu : MonoBehaviour
         _UIHolder.SetActive(true);
         EventSystem.current.SetSelectedGameObject(_firstSelected);
         _sceneName.text = SceneManager.GetActiveScene().name;
+
+        _menuPauseSnapshotInstance = RuntimeManager.CreateInstance(menuPauseSnapshot);
+        _menuPauseSnapshotInstance.start();
     }
 
     void CloseMenu()
@@ -48,6 +55,12 @@ public class PauseMenu : MonoBehaviour
         SettingsUIHolder.SetActive(false);
         ControlsUIHolder.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
+
+        if (_menuPauseSnapshotInstance.isValid())
+        {
+            _menuPauseSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _menuPauseSnapshotInstance.release();
+        }
     }
 
     public void SetActiveSettingsMenu(bool isActive = true)

@@ -7,9 +7,6 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class RubiksCubeController : MonoBehaviour
 {
-    [Header("Wwise")]
-    [SerializeField] private AK.Wwise.Event previewChangeEvent;
-
     [SerializeField] GameObject _controlledCube;
     RubiksMovement _controlledScript;
     RubiksMove _lastInput = null;
@@ -157,7 +154,6 @@ public class RubiksCubeController : MonoBehaviour
                 break;
         }
         if (ActualFace) SetActualCube(ActualFace.transform);
-        if (playEvent) previewChangeEvent?.Post(gameObject);
     }
 
     public void ActionMakeTurn(bool clockwise)
