@@ -30,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("NoClip")]
     [SerializeField] bool _resetRotationWhenNoClip = false;
 
+    [Header("ViewBobbing")]
+    [SerializeField] bool _isViewBobbingEnabled = true;
+
     bool _canMove = true;
 
     Vector3 _gravityDirection;
@@ -186,7 +189,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        _ApplyCameraHeight(newCamPos.y);
+        if (_isViewBobbingEnabled)
+        {
+            _ApplyCameraHeight(newCamPos.y);
+        }
     }
 
     void ExecuteFootStep()
