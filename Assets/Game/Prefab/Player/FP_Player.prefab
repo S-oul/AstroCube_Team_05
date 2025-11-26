@@ -57,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 2936671167842300820}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4492761, y: -0.88262075, z: -2.9965045}
+  m_LocalPosition: {x: 0, y: 1.645, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -223,8 +223,6 @@ GameObject:
   - component: {fileID: 2867457531972925666}
   - component: {fileID: 8271240141020365605}
   - component: {fileID: 2516385824039960158}
-  - component: {fileID: 7104265957856665}
-  - component: {fileID: 1727229095393519118}
   m_Layer: 10
   m_Name: FP_Player
   m_TagString: Player
@@ -349,6 +347,13 @@ MonoBehaviour:
   cameraFocusAttractor: {fileID: 0}
   valueThatTriggersCamPan: 0.2
   newSpeedMultiplyer: 0.5
+  _doorEntryEvent:
+    Guid:
+      Data1: -1972174673
+      Data2: 1340888280
+      Data3: 1910056627
+      Data4: 1169998890
+    Path: event:/SFX/ExitDoor/SFX_ExitDoor_Transition
   vol: {fileID: 11400000, guid: 8fc96a36ce7ef8e42879f49d57343e14, type: 2}
   portailInt_Material: {fileID: 2100000, guid: c2eb9909707397447a1507cee0f30f0a, type: 2}
   fovMultiplier: 1
@@ -364,24 +369,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3977277b06bea1c42b96eb16adb488d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepWwiseEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
-      type: 2}
-  jumpWwiseEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
-      type: 2}
-  landWwiseEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 1d65ca651858147a79ba2e0f0ec71528,
-      type: 2}
-  terrainSwitch: 
-  footstepInterval: 0.5
+  footstepFmodEvent:
+    Guid:
+      Data1: -505436200
+      Data2: 1139561952
+      Data3: -1134421087
+      Data4: 1903145000
+    Path: event:/FOL/FOL_MC_FT
+  jumpFmodEvent:
+    Guid:
+      Data1: -505436200
+      Data2: 1139561952
+      Data3: -1134421087
+      Data4: 1903145000
+    Path: event:/FOL/FOL_MC_FT
+  landFmodEvent:
+    Guid:
+      Data1: -505436200
+      Data2: 1139561952
+      Data3: -1134421087
+      Data4: 1903145000
+    Path: event:/FOL/FOL_MC_FT
+  terrainSwitch: PR_FT
+  footstepInterval: 0.6
   playFootsteps: 1
+  groundCheckDistance: 3
 --- !u!114 &390007284634587234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,81 +457,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 5789224619367204211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc25f8b11806d664184260fe9096b7ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_listeners:
-    initialListenerList: []
-    useDefaultListeners: 1
-  isEnvironmentAware: 1
-  isStaticObject: 0
-  usePositionOffsetData: 0
-  m_positionOffsetData:
-    KeepMe: 0
-    positionOffset: {x: 0, y: 0, z: 0}
-  scalingFactor: 1
-  m_posOffsetData: {fileID: 0}
-  listenerMask: 1
---- !u!114 &7104265957856665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5789224619367204211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8dc960f5e88a1f4d9483cd2a32efeff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerList: f7e1664c
-  useOtherObject: 0
-  actionOnEventType: 0
-  curveInterpolation: 4
-  enableActionOnEvent: 0
-  data:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 1643f4fd6aa6a4f44b78db7cbfdbb459,
-      type: 2}
-  useCallbacks: 0
-  stopSoundOnDestroy: 1
-  Callbacks: []
-  soundEmitterObject: {fileID: 0}
-  transitionDuration: 0
-  eventIdInternal: 0
-  valueGuidInternal: 
-  m_callbackDataInternal: {fileID: 0}
---- !u!114 &1727229095393519118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5789224619367204211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8dc960f5e88a1f4d9483cd2a32efeff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerList: f7e1664c
-  useOtherObject: 0
-  actionOnEventType: 0
-  curveInterpolation: 4
-  enableActionOnEvent: 0
-  data:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 5b8879f3013bdbe458d2369b92d37116,
-      type: 2}
-  useCallbacks: 0
-  stopSoundOnDestroy: 1
-  Callbacks: []
-  soundEmitterObject: {fileID: 0}
-  transitionDuration: 0
-  eventIdInternal: 0
-  valueGuidInternal: 
-  m_callbackDataInternal: {fileID: 0}
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 339335465
+      Data2: 1075934433
+      Data3: -877016387
+      Data4: -602003508
+    Path: event:/AMB/PAD/AMB_PAD_Global_LP
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &6227919447832848270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -528,6 +487,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3567048206382962}
     m_Modifications:
+    - target: {fileID: 133413100070924764, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 133413100070924764, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
+      propertyPath: m_WorldUpOverride
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1933956230401820425, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: _playerTransform
@@ -551,6 +520,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
+      propertyPath: field of view
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 2225186487582987728, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 4294967295
       objectReference: {fileID: 0}
@@ -559,6 +533,11 @@ PrefabInstance:
       propertyPath: _playerTransform
       value: 
       objectReference: {fileID: 1537851944306892503}
+    - target: {fileID: 3652356511851091665, guid: b08a9a73207a57142b35500a818b6765,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3652356511851091665, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_Lens.FieldOfView
@@ -627,17 +606,17 @@ PrefabInstance:
     - target: {fileID: 8311390107998659293, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4492761
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8311390107998659293, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5276208
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8311390107998659293, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0000009536743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8311390107998659293, guid: b08a9a73207a57142b35500a818b6765,
         type: 3}

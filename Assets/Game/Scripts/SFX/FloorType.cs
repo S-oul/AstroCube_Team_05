@@ -1,16 +1,24 @@
-using System;
 using UnityEngine;
+
+public enum FloorSurface
+{
+    Carpet,
+    Tiles,
+    Dirt,
+    Concrete
+}
 
 public class FloorType : MonoBehaviour
 {
-    [SerializeField] private string _floorTypeTag;
+    [Tooltip("Select the surface type for FMOD audio.")]
+    [SerializeField] private FloorSurface _surfaceType = FloorSurface.Concrete;
     
-    public string FloorTypeTag => _floorTypeTag;
+    public FloorSurface SurfaceType => _surfaceType;
     
-    public bool CompareSoundTag(string tag) => _floorTypeTag == tag;
+    public string FloorTypeTag => _surfaceType.ToString();
 
     private void Reset()
     {
-        _floorTypeTag = "Default";
+        _surfaceType = FloorSurface.Concrete;
     }
 }

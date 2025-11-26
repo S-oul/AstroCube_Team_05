@@ -9,7 +9,10 @@ public class FloorSFXTypeGenerator : MonoBehaviour
     {
         foreach (GameObject obj in FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID))
         {
-            if (obj.layer != LayerMask.NameToLayer("Floor"))
+            int floorLayer = LayerMask.NameToLayer("Floor");
+            int tileLayer = LayerMask.NameToLayer("Tile");
+            
+            if (obj.layer != floorLayer && obj.layer != tileLayer)
                 continue;
             
             if (obj.GetComponent<FloorType>() != null)
