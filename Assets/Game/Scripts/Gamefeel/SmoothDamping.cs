@@ -92,7 +92,7 @@ public class SmoothDamping : MonoBehaviour
         transform.localPosition =
             _artCubeStartLocalPos 
             
-            + Vector3.down *
+            + transform.InverseTransformDirection(Vector3.down) *
             _verticalVelocity *
             _verticalIntencity
 
