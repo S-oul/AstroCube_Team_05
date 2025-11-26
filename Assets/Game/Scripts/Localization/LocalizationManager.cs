@@ -10,6 +10,7 @@ public class LocalizationManager : MonoBehaviour
     [SerializeField] private ELanguage _currentLanguage = ELanguage.ENGLISH;
     private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
     
+    [SerializeField] private TMP_Text _locutor;
     [SerializeField] private TextAutoSizing _textAutoSizing;
 
     private void Awake()
@@ -17,10 +18,7 @@ public class LocalizationManager : MonoBehaviour
         if (Instance != null)
             Destroy(gameObject);
         Instance = this;
-    }
-
-    private void Start()
-    {
+        
         _idToDialog = new();
         var csvFiles = Resources.LoadAll<TextAsset>("Localization");
         foreach (TextAsset csv in csvFiles)
@@ -31,7 +29,6 @@ public class LocalizationManager : MonoBehaviour
     
     private void UnparseCSV(TextAsset csv)
     {
-
         string csvName = csv.name;
         string[] lines = csv.text.Split('\n');
         string[] ids = lines[0].Split(';');
@@ -67,14 +64,26 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
-    public void PrintString(string value, Color? color = null)
+    public void PrintString(string value, string locutor, Color? color = null)
     {
         _textAutoSizing.SetText(value, color);
+
+        RectTransform rect = (RectTransform)_textAutoSizing.transform.GetChild(0);
+        _locutor.rectTransform.position = new Vector3(rect.position.x, rect.position.y + _textAutoSizing.PreferredHeight / 2.0F, rect.position.z);
+        _locutor.text = locutor;
+        _locutor.color = color ?? Color.white;
+        _locutor.gameObject.SetActive(true);
     }
 
-    public void PrintStringFromID(string csvName, string id, Color? color = null)
+    public void PrintStringFromID(string csvName, string id, string locutor, Color? color = null)
     {
-        PrintString(GetString(csvName, id), color);
+        PrintString(GetString(csvName, id), locutor, color);
+    }
+
+    public void ClearString()
+    {
+        _textAutoSizing.SetText("", null);
+        _locutor.gameObject.SetActive(false);
     }
 }
 

@@ -68,10 +68,10 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
-            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.color);
+            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
-        LocalizationManager.Instance.PrintString("", Color.white);
+        LocalizationManager.Instance.ClearString();
     }
 
     private void OnDrawGizmos()
@@ -98,6 +98,7 @@ public class MemoryObject : MonoBehaviour, IInteractable
 [Serializable]
 public struct SubtitleData
 {
+    public string locutor;
     public string csvName;
     public string localizationID;
     public float duration;
