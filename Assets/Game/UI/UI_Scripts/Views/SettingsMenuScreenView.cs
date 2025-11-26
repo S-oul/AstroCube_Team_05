@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using FMOD.Studio;
 
 public class SettingsMenuScreenView : UIView
 {
@@ -143,8 +144,6 @@ public class SettingsMenuScreenView : UIView
 
     #region Button Methods
 
-
-
     public override void Show()
     {
         base.Show();
@@ -201,6 +200,11 @@ public class SettingsMenuScreenView : UIView
     public void OnGeneralSoundSliderValueChanged(float value)
     {
         if(_isInitializing) return;
+
+
+        FMODUnity.RuntimeManager.LoadBank("Master", true);
+        
+        Debug.Log(FMODUnity.RuntimeManager.HasBankLoaded("Master"));
 
         _customisedSettings.customVolume = value;
         _customisedSettings.SaveRuntimeValues();
