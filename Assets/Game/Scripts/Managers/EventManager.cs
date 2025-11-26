@@ -119,6 +119,8 @@ public class EventManager : MonoBehaviour
     public static event Action OnPlayerChangeParent;
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
 
+    public static event Action OnPlayerStopsFalling;
+
     //Narrative Events
     public static event Action OnStartNarrativeSequence;
     public static event Action OnEndNarrativeSequence;
@@ -216,6 +218,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
     {
         OnPlayerFootSteps?.Invoke(_groundTypePlayerIsWalkingOn);
+    }
+
+    public static void TriggerPlayerStopsFalling()
+    {
+        OnPlayerStopsFalling?.Invoke();
     }
 
     public void TriggerReset()
