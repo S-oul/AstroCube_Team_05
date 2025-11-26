@@ -22,7 +22,7 @@ public class InputHandler : MonoBehaviour
     private Vector2 _cameraMovement;
 
     private bool _oneHandActAsNormal = true;
-    
+
     public bool CanMove
     {
         get => _canMove;
@@ -144,7 +144,7 @@ public class InputHandler : MonoBehaviour
         if (!IsInputEnabled(EInputType.COUNTER_CLOCKWISE)) return;
         if (ctx.performed)
             _controller.ActionMakeTurn(true);
-    }    
+    }
 
     public void OnMoveOverlayCube(InputAction.CallbackContext ctx)
     {
@@ -166,7 +166,7 @@ public class InputHandler : MonoBehaviour
         else if (ctx.canceled && ctx.time - ctx.startTime < 0.5f)
         {
             if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0)
-                EventManager.Instance.TriggerUndo();
+                return; //EventManager.Instance.TriggerUndo();
         }
     }
     public void OnPreviewCancel(InputAction.CallbackContext ctx)
@@ -179,7 +179,7 @@ public class InputHandler : MonoBehaviour
     public void OnSwitchLookMove(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
-        _oneHandActAsNormal = !_oneHandActAsNormal;
+            _oneHandActAsNormal = !_oneHandActAsNormal;
     }
     #endregion
 
@@ -252,14 +252,14 @@ public class InputHandler : MonoBehaviour
         if (!_controller.ControlledScript.IsReversing)
             _mouseCam.OnCamera(ctx);
     }
-    
+
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.JUMP)) return;
         if (ctx.started && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionJump();
     }
-    
+
     //Unused
     public void OnCrouch(InputAction.CallbackContext ctx)
     {
