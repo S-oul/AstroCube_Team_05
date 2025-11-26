@@ -75,23 +75,27 @@ public class ExitDoor : MonoBehaviour
     {
         _collider.enabled = true;
         
-        float distance = (transform.position - _playerTransform.position).magnitude;
-        float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
-        
+        //float distance = (transform.position - _playerTransform.position).magnitude;
+        //float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
+        _VFXAnimator.SetTrigger("Open");
+        /*
         DOTween.To(() => _currentLerp, x => _currentLerp = x, lerp, 1.5f).OnComplete(() =>
         {
             _isCurrentlyOpened = true;
         });
+        */
     }
 
     private void Update()
     {
+        /*
         if (_isCurrentlyOpened)
         {
             float distance = (transform.position - _playerTransform.position).magnitude;
             _currentLerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
         }
         _VFXAnimator.PlayInFixedTime("ZelligeDoorAnim_Open", 0, _currentLerp);
+        */
     }
 
     [Button("Close Door")]
@@ -99,8 +103,10 @@ public class ExitDoor : MonoBehaviour
     {
         _collider.enabled = false;
         _isCurrentlyOpened = false;
+        _VFXAnimator.SetTrigger("Close");
 
-        DOTween.To(() => _currentLerp, x => _currentLerp = x, 0.0f, 1.5f);
+
+        //DOTween.To(() => _currentLerp, x => _currentLerp = x, 0.0f, 1.5f);
     }
 
     public void SeeExitThroughWalls()
