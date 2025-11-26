@@ -13,7 +13,6 @@ public class Reseter : MonoBehaviour
     List<Pose> _positionOnLastRotation = new();
 
     //CONTROLLER AND CLOSE INPUTS
-
     void Awake()
     {
         _resetPos = new Pose();
@@ -36,6 +35,12 @@ public class Reseter : MonoBehaviour
         EventManager.OnStartCubeRotation -= SavePose;
 
 
+    }
+
+    public void ChangeResetFunc(Transform NewPose)
+    {
+        NewPose.GetPositionAndRotation(out _resetPos.position,out _resetPos.rotation);
+        _positionOnLastRotation.Clear();
     }
 
     void SavePose()

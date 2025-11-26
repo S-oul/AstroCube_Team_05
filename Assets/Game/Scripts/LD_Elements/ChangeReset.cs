@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class ChangeReset : MonoBehaviour
 {
-    [SerializeField] Transform NewResetPos;
+    [SerializeField] Transform _newResetPos;
 
-    void ChangeResetPos()
-    {
-
-    }
+    public Transform NewResetPos { get => _newResetPos; set => _newResetPos = value; }
 }
