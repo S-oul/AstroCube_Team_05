@@ -111,7 +111,15 @@ public class PlayerMovement : MonoBehaviour
         if (!_canMove) return;
 
         //check player state
+        bool oldIsGrounded = _isGrounded;
         _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
+
+        if (oldIsGrounded == false && _isGrounded == true)
+        {
+            // player just landed on the ground
+            EventManager.TriggerPlayerStopsFalling();
+            Debug.Log("player landed");
+        }
 
         //apply gravity
         if (_hasGravity)
