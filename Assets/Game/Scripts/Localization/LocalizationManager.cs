@@ -21,6 +21,7 @@ public class LocalizationManager : MonoBehaviour
 
     private void Start()
     {
+        _idToDialog = new();
         var csvFiles = Resources.LoadAll<TextAsset>("Localization");
         foreach (TextAsset csv in csvFiles)
         {
@@ -31,7 +32,6 @@ public class LocalizationManager : MonoBehaviour
     private void UnparseCSV(TextAsset csv)
     {
 
-        _idToDialog = new();
         string csvName = csv.name;
         string[] lines = csv.text.Split('\n');
         string[] ids = lines[0].Split(';');
