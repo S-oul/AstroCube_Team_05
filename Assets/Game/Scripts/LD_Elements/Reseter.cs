@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Reseter : MonoBehaviour
 {
-    Pose _startPos;
+    Pose _resetPos;
     Pose _poseOnReset;
 
     Rigidbody _rb;
@@ -16,8 +16,8 @@ public class Reseter : MonoBehaviour
 
     void Awake()
     {
-        _startPos = new Pose();
-        transform.GetPositionAndRotation(out _startPos.position, out _startPos.rotation);
+        _resetPos = new Pose();
+        transform.GetPositionAndRotation(out _resetPos.position, out _resetPos.rotation);
         TryGetComponent(out _rb);
 
 
@@ -93,12 +93,12 @@ public class Reseter : MonoBehaviour
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(_poseOnReset.position, _startPos.position, elapsedTime / duration);
-            transform.rotation = Quaternion.Lerp(_poseOnReset.rotation, _startPos.rotation, elapsedTime / duration);
+            transform.position = Vector3.Lerp(_poseOnReset.position, _resetPos.position, elapsedTime / duration);
+            transform.rotation = Quaternion.Lerp(_poseOnReset.rotation, _resetPos.rotation, elapsedTime / duration);
             yield return null;
         }
-        transform.position = _startPos.position;
-        transform.rotation = _startPos.rotation;
+        transform.position = _resetPos.position;
+        transform.rotation = _resetPos.rotation;
 
         if (gameObject.CompareTag("Player"))
         {
@@ -106,5 +106,7 @@ public class Reseter : MonoBehaviour
             GetComponent<CharacterController>().excludeLayers = 0;
         }
     }
+
+
 
 }
