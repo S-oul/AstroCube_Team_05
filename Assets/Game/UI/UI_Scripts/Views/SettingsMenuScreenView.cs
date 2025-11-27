@@ -12,6 +12,7 @@ public class SettingsMenuScreenView : UIView
 {
     [Header("(REQUIRED)")]
 
+    [SerializeField] private bool isInGameplay = false;
 
 
     [Header("Description Part")]
@@ -154,7 +155,15 @@ public class SettingsMenuScreenView : UIView
     private void OnQuitClicked()
     {
         Hide();
-        _uiManager.Show<MainMenuView>();
+        if (isInGameplay)
+        {
+            _uiManager.ShowInGameExclusive<PauseMenuView>();
+        }
+
+        if (!isInGameplay)
+        {
+            _uiManager.Show<MainMenuView>();
+        }
     }
 
     private void OnMotionBlurToggled(bool state)
@@ -204,7 +213,6 @@ public class SettingsMenuScreenView : UIView
 
         FMODUnity.RuntimeManager.LoadBank("Master", true);
         
-        Debug.Log(FMODUnity.RuntimeManager.HasBankLoaded("Master"));
 
         _customisedSettings.customVolume = value;
         _customisedSettings.SaveRuntimeValues();
