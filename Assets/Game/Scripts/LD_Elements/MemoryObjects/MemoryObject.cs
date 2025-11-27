@@ -77,7 +77,13 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
-            if (!subtitle._voiceLineEvent.IsNull) RuntimeManager.PlayOneShot(subtitle._voiceLineEvent, transform.position);
+            Vector3 soundPos = transform.position;
+            if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
+            {
+                soundPos = _memories[subtitle.characterIndex].transform.position;
+            }
+
+            if (!subtitle._voiceLineEvent.IsNull) RuntimeManager.PlayOneShot(subtitle._voiceLineEvent, soundPos);
             LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
@@ -117,4 +123,5 @@ public struct SubtitleData
     public float duration;
     public Color color;
     public EventReference _voiceLineEvent;
+    public int characterIndex;
 }
