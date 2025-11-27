@@ -167,6 +167,8 @@ public class RubiksMovement : MonoBehaviour
             yield return new WaitForSeconds(TimeBetweenSequence);
         }
         EventManager.TriggerEndCubeSequence();
+        _moves.Clear();
+        
     }
 
     IEnumerator Scramble()
