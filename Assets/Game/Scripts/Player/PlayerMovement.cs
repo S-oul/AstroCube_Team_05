@@ -92,6 +92,9 @@ public class PlayerMovement : MonoBehaviour
     public void EnableMovement() => _canMove = true;
     public void DisableMovement() => _canMove = false;
 
+    public void EnableBobbing() => _isViewBobbingEnabled = true;
+    public void DisableBobbing() => _isViewBobbingEnabled = false;
+
     public void UnParentPlayer() => transform.SetParent(null);
     void Start()
     {
