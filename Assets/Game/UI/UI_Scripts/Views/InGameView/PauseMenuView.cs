@@ -57,7 +57,7 @@ public class PauseMenuView : UIView
     private void OnQuitClicked()
     {
         Debug.Log("Quitting to Main Menu");
-        EventManager.TriggerGameUnpause();
+        Time.timeScale = 1f;
         SceneManager.LoadScene("GameEntry");
 
     }
@@ -65,8 +65,8 @@ public class PauseMenuView : UIView
     private void OnRestartClicked()
     {
         Debug.Log("Restarting Level");
-        EventManager.TriggerGameUnpause();
         var currentScene = SceneManager.GetActiveScene();
+        Time.timeScale = 1f;
         SceneManager.LoadScene(currentScene.name);
     }
 

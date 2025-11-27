@@ -17,6 +17,7 @@ public class LevelSelectionView : UIView
 
     [Header("Levels")]
     [SerializeField] private List<string> levelNames;
+    [SerializeField] private int levelIndexOffset = 1;
 
     [Header("Scrolling")]
     [SerializeField] private float scrollSpeed = 10f;
@@ -211,7 +212,7 @@ public class LevelSelectionView : UIView
     {
         LevelProgressionSystem.Unlock(index);
         LevelProgressionSystem.SetLastLevel(index);
-        SceneManager.LoadScene(index);
+        SceneManager.LoadScene(index+levelIndexOffset);
     }
 
     private void OnBackClicked()
