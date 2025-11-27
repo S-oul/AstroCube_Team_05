@@ -17,7 +17,7 @@ public class SettingsMenuScreenView : UIView
 
     [Header("Description Part")]
 
-    [SerializeField] private TMP_Text titleText;  
+    [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descriptionText;
 
 
@@ -50,7 +50,7 @@ public class SettingsMenuScreenView : UIView
 
     [Header("Settings Referendes")]
     [SerializeField] private CustomisedSettings _customisedSettings;
-    
+
 
 
 
@@ -136,7 +136,7 @@ public class SettingsMenuScreenView : UIView
         voiceSoundSlider.maxValue = _customisedSettings.maxVoiceVolume;
         voiceSoundSlider.value = _customisedSettings.customVoiceVolume;
 
- 
+
 
         _isInitializing = false;
 
@@ -208,11 +208,11 @@ public class SettingsMenuScreenView : UIView
 
     public void OnGeneralSoundSliderValueChanged(float value)
     {
-        if(_isInitializing) return;
+        if (_isInitializing) return;
 
 
         FMODUnity.RuntimeManager.LoadBank("Master", true);
-        
+
 
         _customisedSettings.customVolume = value;
         _customisedSettings.SaveRuntimeValues();
@@ -265,7 +265,26 @@ public class SettingsMenuScreenView : UIView
     #endregion
 
 
+    private void OnEnable()
+    {
+        if (isInGameplay)
+        {
+            EventManager.OnGameUnpause += CloseMenu;
+        }
+    }
 
+    private void OnDisable()
+    {
+        if (isInGameplay)
+        {
+            EventManager.OnGameUnpause -= CloseMenu;
+        }
+    }
+
+    private void CloseMenu()
+    {
+        _uiManager.ShowInGameExclusive<PlayingView>();
+    }
 
 
 
