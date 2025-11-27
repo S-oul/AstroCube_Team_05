@@ -576,21 +576,24 @@ MonoBehaviour:
     localizationID: 
     duration: 0
     color: {r: 0, g: 0, b: 0, a: 0}
+  _startMemoryEvent:
+    Guid:
+      Data1: 403820775
+      Data2: 1301207226
+      Data3: -839299413
+      Data4: -883991320
+    Path: event:/SFX/Memory/SFX_Memory_Person_Start
+  _stopMemoryEvent:
+    Guid:
+      Data1: 100600278
+      Data2: 1080182110
+      Data3: -1606780996
+      Data4: -217460045
+    Path: event:/SFX/Memory/SFX_Memory_Person_Stop
+  _delayBeforeStopEvent: 2.5
   OnMemoryInteracted:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4631585379974278388}
-        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnCharacterAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -1175,7 +1178,7 @@ GameObject:
   - component: {fileID: 2376876031157178292}
   - component: {fileID: 5036091211854611782}
   - component: {fileID: 1824115161880501666}
-  - component: {fileID: 6154698059045408624}
+  - component: {fileID: 4308504343188158438}
   m_Layer: 0
   m_Name: Memory_VFX
   m_TagString: Untagged
@@ -1198,7 +1201,6 @@ Transform:
   m_Children:
   - {fileID: 6635907406617987853}
   - {fileID: 712581053627640105}
-  - {fileID: 5081803252690723337}
   m_Father: {fileID: 3177495658605826394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2376876031157178292
@@ -1323,7 +1325,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &6154698059045408624
+--- !u!114 &4308504343188158438
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2058,69 +2060,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5217058866148867337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8612212221628194671
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5081803252690723337}
-  - component: {fileID: 3332857372172073996}
-  m_Layer: 0
-  m_Name: SFX_Memory_Person
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5081803252690723337
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8612212221628194671}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.000000014868655, y: 0.06601626, z: 9.837189e-10, w: 0.9978185}
-  m_LocalPosition: {x: -1.2496197, y: -2.920115, z: -3.6889157}
-  m_LocalScale: {x: 0.3333333, y: 0.33333334, z: 0.3333333}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5217058866148867337}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3332857372172073996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8612212221628194671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1892178560
-      Data2: 1314780547
-      Data3: 1091168446
-      Data4: -1328948089
-    Path: event:/SFX/Memory/SFX_Memory_Person_LP
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &8729912466619796981
 GameObject:
   m_ObjectHideFlags: 0
