@@ -33,19 +33,15 @@ public class SmoothDamping : MonoBehaviour
     float _horizontalVelocityZ;
 
     [Header("Camera Rotation")]
+
     [SerializeField] Transform _cameraTransfrom;
     [SerializeField] float _rotationSmoothAmount;
     [SerializeField] float _rotationIntencity;
     [SerializeField] Vector2 _maxRange;
     [SerializeField] Vector2 _minRange;
 
-    Quaternion _oldCamRotation;
-    Vector3 _rotationDirection;
-    float _rotationSpeed;
-
     Vector2 _imaginaryCubePosVec;
     Vector2 _rotationVelocity;
-
     Vector2 targetPos = Vector2.zero;
 
     private void Start()
@@ -53,8 +49,6 @@ public class SmoothDamping : MonoBehaviour
         _artCubeStartLocalPos = transform.localPosition;
         _imaginaryCubePosY = _playerTransform.position.y;
         _imaginaryCubePosX = _playerTransform.position.x;
-
-        _oldCamRotation = _cameraTransfrom.rotation;
     }
 
     private void LateUpdate()
@@ -110,10 +104,6 @@ public class SmoothDamping : MonoBehaviour
 
         // camera rotation movement ----------------
 
-        //GetCameraRotation();
-
-        //targetPos += new Vector2(_rotationDirection.x, _rotationDirection.y + _rotationDirection.z) * _rotationSpeed;
-
         targetPos += _cameraTransfrom.gameObject.GetComponent<MouseCamControl>().GetMousePos;
 
         Vector2 newImaginaryCubePosVec = Vector2.SmoothDamp(
@@ -151,31 +141,6 @@ public class SmoothDamping : MonoBehaviour
             _horizontalVelocityZ *
             _horizontalIntencity
 
-            //- transform.InverseTransformDirection(rotationVelocityV3) * _rotationIntencity;
             - rotationVelocityV3 * _rotationIntencity;
     }
-
-    //void GetCameraRotation()
-    //{
-    //    Quaternion currentRot = _cameraTransfrom.rotation;
-    //    Quaternion delta = currentRot * Quaternion.Inverse(_oldCamRotation);
-
-    //    delta.ToAngleAxis(out float angle, out Vector3 axis); // get angle
-    //    if (angle > 180f) angle -= 360f; // normalize
-
-    //    if (Mathf.Abs(angle) > 0.0001f)
-    //    {
-    //        _rotationDirection = axis;
-    //        _rotationSpeed = angle;
-    //    } 
-    //    else
-    //    {
-    //        _rotationDirection = Vector3.zero;
-    //        _rotationSpeed = 0;
-    //    }
-
-    //    Debug.Log("Rotating around " + axis + " with angle " + angle);
-
-    //    _oldCamRotation = currentRot;
-    //}
 }
