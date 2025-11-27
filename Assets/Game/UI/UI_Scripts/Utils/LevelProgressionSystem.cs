@@ -19,9 +19,9 @@ public static class LevelProgressionSystem
         PlayerPrefs.Save();
     }
 
-    public static void UnlockNextLevel(int currentLevelIndex)
+    public static void UnlockNextLevel(int currentLogicalLevel)
     {
-        int next = currentLevelIndex + 1;
+        int next = currentLogicalLevel + 1;
         PlayerPrefs.SetInt(Key + next, 1);
         PlayerPrefs.Save();
     }
@@ -29,9 +29,7 @@ public static class LevelProgressionSystem
     public static void LockAllLevelsExceptFirst(int totalLevels)
     {
         for (int i = 0; i < totalLevels; i++)
-        {
-            PlayerPrefs.SetInt(Key + i, i == 0 ? 1 : 0);
-        }
+            PlayerPrefs.SetInt(Key + i, (i == 0) ? 1 : 0);
 
         PlayerPrefs.Save();
     }
@@ -44,9 +42,10 @@ public static class LevelProgressionSystem
         PlayerPrefs.Save();
     }
 
-    public static void SetLastLevel(int levelIndex)
+
+    public static void SetLastLevel(int logicalLevel)
     {
-        PlayerPrefs.SetInt(LastLevelKey, levelIndex);
+        PlayerPrefs.SetInt(LastLevelKey, logicalLevel);
         PlayerPrefs.Save();
     }
 
