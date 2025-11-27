@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UIElements;
 using static CameraFocusAttractor;
+using FMODUnity;
 
 public class PlayerTrigger : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class PlayerTrigger : MonoBehaviour
 
     [SerializeField] private Material portailInt_Material;
     [SerializeField] float fovMultiplier = 1.0f;
+
+    [Header("FMOD")]
+    [SerializeField] private EventReference _victoryZoneEvent;
 
     private bool isInExitFocusState = false;
     private Coroutine _fovCoroutine;
@@ -68,6 +72,7 @@ public class PlayerTrigger : MonoBehaviour
         switch (other.tag)
         {
             case "VictoryZone":
+                if (!_victoryZoneEvent.IsNull) RuntimeManager.PlayOneShot(_victoryZoneEvent);
                 EventManager.TriggerPlayerWin();
                 Destroy(other.gameObject);
                 break;
