@@ -38,6 +38,7 @@ public class MouseCamControl : MonoBehaviour
     InputHandler _inputHandler;
 
     Vector2 _mousePos;
+    public Vector2 GetMousePos { get => _mousePos; }
     private Quaternion _externalRotationInfluence = Quaternion.identity;
     private float _rotationInfluenceAmount = 0f;
 
