@@ -69,7 +69,11 @@ public class LocalizationManager : MonoBehaviour
         _textAutoSizing.SetText(value, color);
 
         RectTransform rect = (RectTransform)_textAutoSizing.transform.GetChild(0);
-        _locutor.rectTransform.position = new Vector3(rect.position.x, rect.position.y + _textAutoSizing.PreferredHeight / 2.0F, rect.position.z);
+        _locutor.rectTransform.position = new Vector3(
+            rect.position.x, 
+            rect.position.y + (rect.rect.height * rect.lossyScale.y / 2f) + 15.0f, 
+            rect.position.z
+        );
         _locutor.text = locutor;
         _locutor.color = color ?? Color.white;
         _locutor.gameObject.SetActive(true);
