@@ -92,6 +92,9 @@ public class PlayerMovement : MonoBehaviour
     public void EnableMovement() => _canMove = true;
     public void DisableMovement() => _canMove = false;
 
+    public void EnableBobbing() => _isViewBobbingEnabled = true;
+    public void DisableBobbing() => _isViewBobbingEnabled = false;
+
     public void UnParentPlayer() => transform.SetParent(null);
     void Start()
     {
@@ -161,6 +164,11 @@ public class PlayerMovement : MonoBehaviour
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
         }
 
+        if (_isGrounded && !_jumpInput)
+        {
+            _verticalVelocity = Vector3.zero - new Vector3(0.0f, 9f, 0.0f);
+        }
+
         _jumpInput = false;
 
         // crouch
@@ -181,10 +189,9 @@ public class PlayerMovement : MonoBehaviour
 
         // no clip
         if(_FreeFallZone == false)
-        _horizontalVelocity += transform.up * _yInput;
+            _horizontalVelocity += transform.up * _yInput;
         else 
-        _horizontalVelocity += transform.up*.95f;
-
+            _horizontalVelocity += transform.up*.95f;
 
         // apply calculated Movement
         float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
