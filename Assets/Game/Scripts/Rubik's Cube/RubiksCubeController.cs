@@ -105,7 +105,7 @@ public class RubiksCubeController : MonoBehaviour
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 
-        if (_ShowStripLayerToPlayer && _TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
+        if (ControlledScript.IsTransformInside(_player) && _ShowStripLayerToPlayer && _TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
         {
             if (!(_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview))
                 ActualFace.Select(SelectionCube.SelectionMode.CUBE);
@@ -158,7 +158,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript && !_controlledScript.IsRotating/* && _canPlayerMoveAxis*/)
+        if (_controlledScript && !_controlledScript.IsRotating  && ControlledScript.IsTransformInside(_player))
         {
             if (!_canPlayerUseIt) return;
 
