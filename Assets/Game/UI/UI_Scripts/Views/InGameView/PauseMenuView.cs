@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class PauseMenuView : UIView
 {
@@ -12,7 +13,9 @@ public class PauseMenuView : UIView
     [SerializeField] private Button restartButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private EventReference menuPauseSnapshot;
 
+    private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
 
     private void Awake()
     {
@@ -23,21 +26,40 @@ public class PauseMenuView : UIView
 
     private void OnEnable()
     {
+        Debug.Log("[PauseMenuView] OnEnable called");
         resumeButton.onClick.AddListener(OnResumeClicked);
         settingsButton.onClick.AddListener(OnSettingsClicked);
         quitButton.onClick.AddListener(OnQuitClicked);
         restartButton.onClick.AddListener(OnRestartClicked);
         EventManager.OnGameUnpause += CloseMenu;
 
+        if (menuPauseSnapshot.IsNull)
+        {
+            Debug.LogError("[PauseMenuView] Menu Pause Snapshot reference is missing in Inspector!");
+        }
+        else
+        {
+            _menuPauseSnapshotInstance = RuntimeManager.CreateInstance(menuPauseSnapshot);
+            FMOD.RESULT result = _menuPauseSnapshotInstance.start();
+            Debug.Log($"[PauseMenuView] Snapshot started. Result: {result}, IsValid: {_menuPauseSnapshotInstance.isValid()}");
+        }
     }
 
     private void OnDisable()
     {
+        Debug.Log("[PauseMenuView] OnDisable called");
         resumeButton.onClick.RemoveListener(OnResumeClicked);
         settingsButton.onClick.RemoveListener(OnSettingsClicked);
         quitButton.onClick.RemoveListener(OnQuitClicked);
         restartButton.onClick.RemoveListener(OnRestartClicked);
         EventManager.OnGameUnpause -= CloseMenu;
+
+        if (_menuPauseSnapshotInstance.isValid())
+        {
+            Debug.Log("[PauseMenuView] Stopping snapshot");
+            _menuPauseSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _menuPauseSnapshotInstance.release();
+        }
     }
 
     private void OnResumeClicked()
