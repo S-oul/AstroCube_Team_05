@@ -407,6 +407,7 @@ public class RubiksMovement : MonoBehaviour
         {
             Transform block = _allBlocks[i];
 
+            var deltaTime = Time.deltaTime;
             Tile[] tiles = block.GetComponentsInChildren<Tile>();
             foreach (var tile in tiles)
             {
@@ -417,18 +418,7 @@ public class RubiksMovement : MonoBehaviour
 
                     Quaternion spawnRot = Quaternion.LookRotation(normal) * Quaternion.Euler(-90f, 0f, 0f);
 
-                    GameObject particleInstance = Instantiate(_DustParticleAfterRotate, spawnPos, spawnRot);
-
-                    ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
-                    if (ps != null)
-                    {
-                        ps.Play();
-                        Destroy(particleInstance, ps.main.duration + ps.main.startLifetime.constantMax);
-                    }
-                    else
-                    {
-                        Destroy(particleInstance, 2f);
-                    }
+                    Destroy(Instantiate(_DustParticleAfterRotate, spawnPos, spawnRot), 3f + deltaTime*3f);
                 }
             }
 
