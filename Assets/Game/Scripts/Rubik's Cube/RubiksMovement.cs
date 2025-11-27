@@ -67,6 +67,7 @@ public class RubiksMovement : MonoBehaviour
     [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenMoves = .5f;
     [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenSequence = 1f;
     [ShowIf("_DoAutoMoves"), SerializeField] List<RubiksMove> AutoMovesSequence = new List<RubiksMove>();
+    private int _sequenceIndex = 0;
 
     [Header("Visuals")]
     [SerializeField] GameObject _DustParticleAfterRotate;
@@ -141,24 +142,49 @@ public class RubiksMovement : MonoBehaviour
         _DoAutoMoves = true;
         StartCoroutine(FollowSequence());
     }
+
+    public void DoNextSequenceMove()
+    {
+        if (!_isRotating)
+            StartCoroutine(NextSequenceMove());
+    }
+    IEnumerator NextSequenceMove()
+    {
+        if (!AutoMovesSequence[_sequenceIndex].Axis)
+        {
+            AutoMovesSequence[_sequenceIndex].Axis = GetAxisFromCube(AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].orientation);
+        }
+
+        StartCoroutine(RotateAxisCoroutine(AutoMovesSequence[_sequenceIndex].Axis, AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].clockWise, TimeToRotate, AutoMovesSequence[_sequenceIndex].orientation));
+        yield return new WaitForSeconds(TimeToRotate);
+
+        _sequenceIndex++;
+        if (_sequenceIndex == AutoMovesSequence.Count)
+        {
+            _sequenceIndex = 0;
+        }
+    }
     IEnumerator FollowSequence()
     {
         int nbOfSquenceExecuted = 0;
         while (nbOfSquenceExecuted != ExecuteSequenceXTime)
         {
-            int SequenceIndex = 0;
             while (true) //maybe While(SequenceIndex != AutoMovesSequence.Count-1) but true easier
             {
-                if (!AutoMovesSequence[SequenceIndex].Axis)
+                if (!AutoMovesSequence[_sequenceIndex].Axis)
                 {
-                    AutoMovesSequence[SequenceIndex].Axis = GetAxisFromCube(AutoMovesSequence[SequenceIndex].cube, AutoMovesSequence[SequenceIndex].orientation);
+                    AutoMovesSequence[_sequenceIndex].Axis = GetAxisFromCube(AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].orientation);
                 }
 
-                StartCoroutine(RotateAxisCoroutine(AutoMovesSequence[SequenceIndex].Axis, AutoMovesSequence[SequenceIndex].cube, AutoMovesSequence[SequenceIndex].clockWise, TimeToRotate, AutoMovesSequence[SequenceIndex].orientation));
+                StartCoroutine(RotateAxisCoroutine(AutoMovesSequence[_sequenceIndex].Axis, AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].clockWise, TimeToRotate, AutoMovesSequence[_sequenceIndex].orientation));
                 yield return new WaitForSeconds(TimeToRotate);
 
-                SequenceIndex++;
-                if (SequenceIndex == AutoMovesSequence.Count) break;
+                _sequenceIndex++;
+                if (_sequenceIndex == AutoMovesSequence.Count)
+                {
+                    _sequenceIndex = 0;
+                    break;
+                }
 
                 yield return new WaitForSeconds(TimeBetweenMoves);
             }
