@@ -123,7 +123,7 @@ public class SmoothDamping : MonoBehaviour
 
         Vector3 rotationVelocityV3 = new Vector3(_rotationVelocity.x, _rotationVelocity.y, 0);
 
-        Debug.Log(targetPos);
+        
 
         // create new pos ----------------
         transform.localPosition =
