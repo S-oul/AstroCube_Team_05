@@ -2,6 +2,7 @@ using System;
 using Unity.Mathematics;
 using UnityEditor.Analytics;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class SmoothDamping : MonoBehaviour
 {
@@ -44,14 +45,24 @@ public class SmoothDamping : MonoBehaviour
     Vector2 _rotationVelocity;
     Vector2 targetPos = Vector2.zero;
 
+    [Header("Art Cube Rotation")]
+
+    [SerializeField] float _cubeRotationIntencity;
+    [SerializeField] float _maxCubeRotation;
+    [SerializeField] bool LockRotationToWorldRotation;
+
+    Quaternion _cubeStartRotation;
+
     private void Start()
     {
         _artCubeStartLocalPos = transform.localPosition;
         _imaginaryCubePosY = _playerTransform.position.y;
         _imaginaryCubePosX = _playerTransform.position.x;
+
+        _cubeStartRotation = transform.parent.localRotation;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         // vertical movement ----------------
 
@@ -123,8 +134,6 @@ public class SmoothDamping : MonoBehaviour
 
         Vector3 rotationVelocityV3 = new Vector3(_rotationVelocity.x, _rotationVelocity.y, 0);
 
-        Debug.Log(targetPos);
-
         // create new pos ----------------
         transform.localPosition =
             _artCubeStartLocalPos
@@ -142,5 +151,22 @@ public class SmoothDamping : MonoBehaviour
             _horizontalIntencity
 
             - rotationVelocityV3 * _rotationIntencity;
+
+        if (LockRotationToWorldRotation)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0f);
+        }
+        else
+        {
+            float yModifyer = (_rotationVelocity.y > _maxCubeRotation ? _maxCubeRotation : _rotationVelocity.y < _maxCubeRotation * -1 ? _maxCubeRotation * -1 : _rotationVelocity.y);
+            float xModifyer = (_rotationVelocity.x > _maxCubeRotation ? _maxCubeRotation : _rotationVelocity.x < _maxCubeRotation * -1 ? _maxCubeRotation * -1 : _rotationVelocity.x);
+
+            transform.parent.localRotation = _cubeStartRotation;
+            transform.parent.Rotate(yModifyer * _cubeRotationIntencity, xModifyer * _cubeRotationIntencity * -1, 0f);
+        }
+
+        //transform.parent.localRotation = Quaternion.Euler(_rotationVelocity.y * _cubeRotationIntencity, _rotationVelocity.x * _cubeRotationIntencity * -1, 0f);
+
+        //transform.parent.Rotate(_rotationVelocity.y * _cubeRotationIntencity, _rotationVelocity.x * _cubeRotationIntencity * -1, 0f);
     }
 }
