@@ -3,13 +3,16 @@ using System.Collections;
 
 public class CameraShake : MonoBehaviour
 {
-    [SerializeField] float shakeDuration;
-    [SerializeField] float shakeAmount = 0.7f;
+    [SerializeField] float bigShakeDuration;
+    [SerializeField] float bigShakeAmount = 0.7f;    
+    [SerializeField] float smalShakeDuration;
+    [SerializeField] float smalShakeAmount = 0.7f;
     [SerializeField] AnimationCurve intencityCurve;
 
     Transform camTransform;
     Vector3 originalPos;
-    float shakeDurationHolder = 0;
+    float bigShakeDurationHolder = 0;
+    float smalShakeDurationHolder = 0;
     float decreaseFactor = 1.0f;
 
     void Awake()
@@ -21,33 +24,52 @@ public class CameraShake : MonoBehaviour
     {
         originalPos = camTransform.localPosition;
 
-        EventManager.OnEndCubeRotation += TriggerCameraShake;
+        EventManager.OnEndCubeRotation += TriggerBigCameraShake;
+        EventManager.OnPlayerStopsFalling += TriggerSmalCameraShake;
     }
 
     private void OnDisable()
     {
-        EventManager.OnEndCubeRotation -= TriggerCameraShake;
+        EventManager.OnEndCubeRotation -= TriggerBigCameraShake;
+        EventManager.OnPlayerStopsFalling -= TriggerSmalCameraShake;
     }
 
     void Update()
     {
-        if (shakeDurationHolder > 0)
+        if (bigShakeDurationHolder > 0)
         {
-            float tempShakeAmount = intencityCurve.Evaluate(1 - shakeDurationHolder/ shakeDuration) * shakeAmount;
+            float tempShakeAmount = intencityCurve.Evaluate(1 - bigShakeDurationHolder/ bigShakeDuration) * bigShakeAmount;
             camTransform.localPosition = originalPos + Random.insideUnitSphere * tempShakeAmount;
 
-            shakeDurationHolder -= Time.deltaTime * decreaseFactor;
+            bigShakeDurationHolder -= Time.deltaTime * decreaseFactor;
+
+            if (bigShakeDurationHolder > 0) smalShakeDurationHolder -= Time.deltaTime * decreaseFactor; //big shake overwrites smal shake
+
+        }
+        else if (smalShakeDurationHolder > 0)
+        {
+            float tempShakeAmount = intencityCurve.Evaluate(1 - smalShakeDurationHolder / smalShakeDuration) * smalShakeAmount;
+            camTransform.localPosition = originalPos + Random.insideUnitSphere * tempShakeAmount;
+
+            smalShakeDurationHolder -= Time.deltaTime * decreaseFactor;
+
         }
         else
         {
-            shakeDurationHolder = 0f;
+            bigShakeDurationHolder = 0f;
             camTransform.localPosition = originalPos;
         }
     }
 
-    private void TriggerCameraShake()
+    private void TriggerBigCameraShake()
     {
-        shakeDurationHolder += shakeDuration;
-        shakeDurationHolder = Mathf.Clamp(shakeDurationHolder, 0, 1);
+        bigShakeDurationHolder += bigShakeDuration;
+        bigShakeDurationHolder = Mathf.Clamp(bigShakeDurationHolder, 0, 1);
+    }
+
+    private void TriggerSmalCameraShake()
+    {
+        smalShakeDurationHolder += smalShakeDuration;
+        Debug.Log("SmalShakeTriggered");
     }
 }

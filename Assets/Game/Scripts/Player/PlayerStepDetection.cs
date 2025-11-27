@@ -43,13 +43,11 @@ public class PlayerStepDetection : MonoBehaviour
             timer = 0;
             return;
         }
-        print("GRAAAAA LE GROS CACA");
 
         timer += Time.deltaTime;
 
         if (timer >= footstepInterval)
         {
-            print("GRAAAAA LE GROS CACA");
             PlayFootstep();
             timer = 0f;
         }
