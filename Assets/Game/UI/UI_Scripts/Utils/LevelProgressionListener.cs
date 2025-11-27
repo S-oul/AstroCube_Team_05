@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelProgressionListener : MonoBehaviour
 {
-    [SerializeField] private int totalLevels = 20;
-
     private void OnEnable()
     {
         EventManager.OnLevelFinished += HandleLevelFinished;
@@ -19,16 +17,13 @@ public class LevelProgressionListener : MonoBehaviour
     {
         string sceneName = SceneManager.GetActiveScene().name;
 
-        // éviter de save le main menu
-        if (LevelProgressionSystem.ShouldSaveLastLevel(sceneName) == false)
+        if (!LevelProgressionSystem.ShouldSaveLastLevel(sceneName))
             return;
 
-        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+        int logicalIndex = SceneManager.GetActiveScene().buildIndex;
+        logicalIndex -= 1; 
 
-        // sauver le dernier niveau joué 
-        LevelProgressionSystem.SetLastLevel(currentIndex);
-
-        // débloquer le niveau suivant
-        LevelProgressionSystem.UnlockNextLevel(currentIndex);
+        LevelProgressionSystem.SetLastLevel(logicalIndex);
+        LevelProgressionSystem.UnlockNextLevel(logicalIndex);
     }
 }
