@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using FMODUnity;
 
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -166,6 +167,8 @@ public class RubiksMovement : MonoBehaviour
             yield return new WaitForSeconds(TimeBetweenSequence);
         }
         EventManager.TriggerEndCubeSequence();
+        _moves.Clear();
+        
     }
 
     IEnumerator Scramble()
@@ -786,6 +789,29 @@ public class RubiksMovement : MonoBehaviour
             }
         }
     }
+
+    public bool IsTransformInside(Transform t)
+    {
+        Vector3 localPos = t.InverseTransformPoint(transform.position);
+        Vector3 halfSize = (transform.parent.localScale*3)/2;
+        bool isInside =
+            Mathf.Abs(localPos.x) <= halfSize.x &&
+            Mathf.Abs(localPos.y) <= halfSize.y &&
+            Mathf.Abs(localPos.z) <= halfSize.z;
+
+        /*print(isInside ?
+            t.name + " is " + isInside + " + this.name"
+            : t.name + " is NOT " + isInside + " + this.name"
+        );*/
+        return isInside;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(transform.position, transform.parent.localScale*3);
+    }
+
 }
 
 namespace RubiksStatic
