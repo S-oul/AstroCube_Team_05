@@ -809,7 +809,7 @@ public class RubiksMovement : MonoBehaviour
     public bool IsTransformInside(Transform t)
     {
         Vector3 localPos = t.InverseTransformPoint(transform.position);
-        Vector3 halfSize = (transform.parent.localScale*3)/2;
+        Vector3 halfSize = (transform.parent.localScale*3.1f)/2;
         bool isInside =
             Mathf.Abs(localPos.x) <= halfSize.x &&
             Mathf.Abs(localPos.y) <= halfSize.y &&

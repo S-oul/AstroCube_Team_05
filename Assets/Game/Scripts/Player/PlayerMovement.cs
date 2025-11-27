@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // player just landed on the ground
             EventManager.TriggerPlayerStopsFalling();
-            Debug.Log("player landed");
+            //Debug.Log("player landed");
         }
 
         //apply gravity

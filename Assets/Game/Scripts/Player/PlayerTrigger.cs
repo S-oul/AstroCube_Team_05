@@ -100,6 +100,9 @@ public class PlayerTrigger : MonoBehaviour
             case "ChangeReset":
                 _reset.ChangeResetFunc(other.GetComponentInChildren<ChangeReset>().NewResetPos);
                 break;
+            case "ObjectLoader":
+                other.GetComponent<ObjectLoader>().SwitchActivate();
+                break;
         }
 
     }

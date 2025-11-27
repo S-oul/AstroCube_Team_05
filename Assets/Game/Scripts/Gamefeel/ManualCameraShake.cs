@@ -70,6 +70,6 @@ public class CameraShake : MonoBehaviour
     private void TriggerSmalCameraShake()
     {
         smalShakeDurationHolder += smalShakeDuration;
-        Debug.Log("SmalShakeTriggered");
+        //Debug.Log("SmalShakeTriggered");
     }
 }
