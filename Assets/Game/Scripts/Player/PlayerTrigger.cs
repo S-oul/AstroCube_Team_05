@@ -68,7 +68,7 @@ public class PlayerTrigger : MonoBehaviour
         switch (other.tag)
         {
             case "VictoryZone":
-                EventManager.TriggerPlayerWin();
+                EventManager.TriggerLevelFinished();
                 Destroy(other.gameObject);
                 break;
 
