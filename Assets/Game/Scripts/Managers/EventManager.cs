@@ -84,6 +84,8 @@ public class EventManager : MonoBehaviour
     public static event Action OnGamePause;
     public static event Action OnGameUnpause;
 
+
+
     public static event Action OnSeeExit;
 
     //Rubik's Cube Events
@@ -98,6 +100,7 @@ public class EventManager : MonoBehaviour
     //UI Events
     public static event Action<UIView> OnViewShow;
     public static event Action<UIView> OnViewHide;
+    public static event Action OnEscape;
 
 
     //Object Events
@@ -134,6 +137,14 @@ public class EventManager : MonoBehaviour
     public static event Action<bool> OnVibrationChange;
     public static event Action<bool> OnMotionBlurChange;
     public static event Action<bool> OnPreviewChange;
+
+
+
+
+    public static void TriggerEscape()
+    {
+        OnEscape?.Invoke();
+    }
 
     public static void TriggerViewShow(UIView uiView)
     {
