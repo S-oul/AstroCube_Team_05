@@ -5315,8 +5315,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 0.7372549, g: 0.5179598, b: 0.49019608, a: 1}
-  m_Intensity: 716197.25
+  m_Color: {r: 0.3939728, g: 0.313059, b: 0.72300005, a: 1}
+  m_Intensity: 7161972
   m_Range: 6000
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -7851,6 +7851,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37ecbaafdeb09ac4e88d8aeecd7d304a, type: 3}
+--- !u!1 &399760748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 399760750}
+  - component: {fileID: 399760749}
+  m_Layer: 4
+  m_Name: UncontrolledFallingTrigger
+  m_TagString: UncontrolledFallingTrigger
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &399760749
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399760748}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5803223, y: 1, z: 2.45401}
+  m_Center: {x: 0.43017578, y: 0, z: -0.13597107}
+--- !u!4 &399760750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399760748}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 515.81, y: 2893.025, z: -259.85}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &407421482
 Mesh:
   m_ObjectHideFlags: 0
@@ -68664,3 +68717,4 @@ SceneRoots:
   - {fileID: 1623105679}
   - {fileID: 1681885601}
   - {fileID: 1686498381}
+  - {fileID: 399760750}
