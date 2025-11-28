@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: 3177495658605826394}
   - component: {fileID: 4213974095151647054}
   - component: {fileID: 224217342750856260}
+  - component: {fileID: 4631585379974278388}
   m_Layer: 16
   m_Name: MemoryObject
   m_TagString: Untagged
@@ -545,7 +546,6 @@ Transform:
   m_Children:
   - {fileID: 5355362666668772912}
   - {fileID: 5217058866148867337}
-  - {fileID: 2495849582999130231}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4213974095151647054
@@ -568,14 +568,50 @@ MonoBehaviour:
     localizationID: 
     duration: 0
     color: {r: 0, g: 0, b: 0, a: 0}
+    _voiceLineEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
   - csvName: 
     localizationID: 
     duration: 0
     color: {r: 0, g: 0, b: 0, a: 0}
+    _voiceLineEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
   - csvName: 
     localizationID: 
     duration: 0
     color: {r: 0, g: 0, b: 0, a: 0}
+    _voiceLineEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  _startMemoryEvent:
+    Guid:
+      Data1: 403820775
+      Data2: 1301207226
+      Data3: -839299413
+      Data4: -883991320
+    Path: event:/SFX/Memory/SFX_Memory_Person_Start
+  _stopMemoryEvent:
+    Guid:
+      Data1: 100600278
+      Data2: 1080182110
+      Data3: -1606780996
+      Data4: -217460045
+    Path: event:/SFX/Memory/SFX_Memory_Person_Stop
+  _delayBeforeStopEvent: 2.5
   OnMemoryInteracted:
     m_PersistentCalls:
       m_Calls: []
@@ -606,6 +642,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.9
   m_Center: {x: 0, y: -0.53, z: 0}
+--- !u!114 &4631585379974278388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2359765729552621653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -935180685
+      Data2: 1289026627
+      Data3: -1103783249
+      Data4: -138529400
+    Path: event:/AMB/SP/AMB_SP_Memory_LP
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 1
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 15
 --- !u!1 &2395810558279898565
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,69 +867,6 @@ Transform:
   - {fileID: 3546872898841765691}
   m_Father: {fileID: 3219363491325639062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3034735608045966312
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2495849582999130231}
-  - component: {fileID: 5858160647946419510}
-  m_Layer: 16
-  m_Name: AMB_SP_Memory_LP
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2495849582999130231
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3034735608045966312}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.52, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3177495658605826394}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5858160647946419510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3034735608045966312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -935180685
-      Data2: 1289026627
-      Data3: -1103783249
-      Data4: -138529400
-    Path: event:/AMB/SP/AMB_SP_Memory_LP
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 8
 --- !u!1 &3390797994161829689
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,6 +1239,13 @@ MonoBehaviour:
   _animationDuration: 0
   _stayDuration: 0
   _spawnsLDElement: 0
+  _memoryVFXEvent:
+    Guid:
+      Data1: 1892178560
+      Data2: 1314780547
+      Data3: 1091168446
+      Data4: -1328948089
+    Path: event:/SFX/Memory/SFX_Memory_Person_LP
 --- !u!2083052967 &5036091211854611782
 VisualEffect:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.VFX;
+using FMODUnity;
 
 public class MemoryVFXController : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class MemoryVFXController : MonoBehaviour
     [SerializeField] private float _animationDuration;
     [SerializeField] private float _stayDuration;
     [SerializeField] private bool _spawnsLDElement;
+
+    [Header("FMOD")]
+    [SerializeField] private EventReference _memoryVFXEvent;
     
     private Transform _origin;
     private GameObject _LDElement;
@@ -38,6 +42,7 @@ public class MemoryVFXController : MonoBehaviour
         
         if (_vfx)
         {
+            if (!_memoryVFXEvent.IsNull) RuntimeManager.PlayOneShot(_memoryVFXEvent, transform.position);
             LinkOriginToVFX();
             StartCoroutine(PlayAnimation());
             _vfx.Play();

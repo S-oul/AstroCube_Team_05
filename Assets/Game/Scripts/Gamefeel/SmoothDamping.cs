@@ -1,5 +1,8 @@
+using System;
+using Unity.Mathematics;
 using UnityEditor.Analytics;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class SmoothDamping : MonoBehaviour
 {
@@ -30,17 +33,39 @@ public class SmoothDamping : MonoBehaviour
     float _imaginaryCubePosZ;
     float _horizontalVelocityZ;
 
+    [Header("Camera Rotation")]
+
+    [SerializeField] Transform _cameraTransfrom;
+    [SerializeField] float _rotationSmoothAmount;
+    [SerializeField] float _rotationIntencity;
+    [SerializeField] Vector2 _maxRange;
+    [SerializeField] Vector2 _minRange;
+
+    Vector2 _imaginaryCubePosVec;
+    Vector2 _rotationVelocity;
+    Vector2 targetPos = Vector2.zero;
+
+    [Header("Art Cube Rotation")]
+
+    [SerializeField] float _cubeRotationIntencity;
+    [SerializeField] float _maxCubeRotation;
+    [SerializeField] bool LockRotationToWorldRotation;
+
+    Quaternion _cubeStartRotation;
+
     private void Start()
     {
         _artCubeStartLocalPos = transform.localPosition;
         _imaginaryCubePosY = _playerTransform.position.y;
         _imaginaryCubePosX = _playerTransform.position.x;
+
+        _cubeStartRotation = transform.parent.localRotation;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
-        // vertical movement
-        
+        // vertical movement ----------------
+
         // calculate _verticalVelocity
         float newImaginaryCubePos = Mathf.SmoothDamp(
             _imaginaryCubePosY,
@@ -55,43 +80,64 @@ public class SmoothDamping : MonoBehaviour
         if (_imaginaryCubePosY - _playerTransform.position.y < _minHight) _imaginaryCubePosY = _playerTransform.position.y + _minHight;
 
 
-        // horizontal movement
+        // horizontal movement ----------------
 
         // X
 
         // calculate _horizontalVelocity
         newImaginaryCubePos = Mathf.SmoothDamp(
             _imaginaryCubePosX,
-            _playerTransform.localPosition.x,
+            _playerTransform.position.x,
             ref _horizontalVelocityX,
             _horizontalSmoothAmount
         );
         _imaginaryCubePosX = newImaginaryCubePos;
 
         // clamp
-        if (_imaginaryCubePosX - _playerTransform.localPosition.x > _maxHorizontalRange) _imaginaryCubePosX = _playerTransform.localPosition.x + _maxHorizontalRange;
-        if (_imaginaryCubePosX - _playerTransform.localPosition.x < _minHorizontalRange) _imaginaryCubePosX = _playerTransform.localPosition.x + _minHorizontalRange;
+        if (_imaginaryCubePosX - _playerTransform.position.x > _maxHorizontalRange) _imaginaryCubePosX = _playerTransform.position.x + _maxHorizontalRange;
+        if (_imaginaryCubePosX - _playerTransform.position.x < _minHorizontalRange) _imaginaryCubePosX = _playerTransform.position.x + _minHorizontalRange;
 
 
         // Z
         
         newImaginaryCubePos = Mathf.SmoothDamp(
             _imaginaryCubePosZ,
-            _playerTransform.localPosition.z,
+            _playerTransform.position.z,
             ref _horizontalVelocityZ,
             _horizontalSmoothAmount
         );
         _imaginaryCubePosZ = newImaginaryCubePos;
 
         // clamp
-        if (_imaginaryCubePosZ - _playerTransform.localPosition.z > _maxHorizontalRange) _imaginaryCubePosZ = _playerTransform.localPosition.z + _maxHorizontalRange;
-        if (_imaginaryCubePosZ - _playerTransform.localPosition.z < _minHorizontalRange) _imaginaryCubePosZ = _playerTransform.localPosition.z + _minHorizontalRange;
+        if (_imaginaryCubePosZ - _playerTransform.position.z > _maxHorizontalRange) _imaginaryCubePosZ = _playerTransform.position.z + _maxHorizontalRange;
+        if (_imaginaryCubePosZ - _playerTransform.position.z < _minHorizontalRange) _imaginaryCubePosZ = _playerTransform.position.z + _minHorizontalRange;
 
 
-        // create new pos
+        // camera rotation movement ----------------
+
+        targetPos += _cameraTransfrom.gameObject.GetComponent<MouseCamControl>().GetMousePos;
+
+        Vector2 newImaginaryCubePosVec = Vector2.SmoothDamp(
+            _imaginaryCubePosVec,
+            targetPos,
+            ref _rotationVelocity,
+            _rotationSmoothAmount
+        );
+        _imaginaryCubePosVec = newImaginaryCubePosVec;
+
+        // clamp
+        if (_imaginaryCubePosVec.x - targetPos.x > _maxRange.x) _imaginaryCubePosVec.x = targetPos.x + _maxRange.x;
+        if (_imaginaryCubePosVec.x - targetPos.x < _minRange.x) _imaginaryCubePosVec.x = targetPos.x + _minRange.x;
+
+        if (_imaginaryCubePosVec.y - targetPos.y > _maxRange.y) _imaginaryCubePosVec.y = targetPos.y + _maxRange.y;
+        if (_imaginaryCubePosVec.y - targetPos.y < _minRange.y) _imaginaryCubePosVec.y = targetPos.y + _minRange.y;
+
+        Vector3 rotationVelocityV3 = new Vector3(_rotationVelocity.x, _rotationVelocity.y, 0);
+
+        // create new pos ----------------
         transform.localPosition =
-            _artCubeStartLocalPos 
-            
+            _artCubeStartLocalPos
+
             + transform.InverseTransformDirection(Vector3.down) *
             _verticalVelocity *
             _verticalIntencity
@@ -102,6 +148,25 @@ public class SmoothDamping : MonoBehaviour
 
             + transform.InverseTransformDirection(Vector3.back) *
             _horizontalVelocityZ *
-            _horizontalIntencity;
+            _horizontalIntencity
+
+            - rotationVelocityV3 * _rotationIntencity;
+
+        if (LockRotationToWorldRotation)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0f);
+        }
+        else
+        {
+            float yModifyer = (_rotationVelocity.y > _maxCubeRotation ? _maxCubeRotation : _rotationVelocity.y < _maxCubeRotation * -1 ? _maxCubeRotation * -1 : _rotationVelocity.y);
+            float xModifyer = (_rotationVelocity.x > _maxCubeRotation ? _maxCubeRotation : _rotationVelocity.x < _maxCubeRotation * -1 ? _maxCubeRotation * -1 : _rotationVelocity.x);
+
+            transform.parent.localRotation = _cubeStartRotation;
+            transform.parent.Rotate(yModifyer * _cubeRotationIntencity, xModifyer * _cubeRotationIntencity * -1, 0f);
+        }
+
+        //transform.parent.localRotation = Quaternion.Euler(_rotationVelocity.y * _cubeRotationIntencity, _rotationVelocity.x * _cubeRotationIntencity * -1, 0f);
+
+        //transform.parent.Rotate(_rotationVelocity.y * _cubeRotationIntencity, _rotationVelocity.x * _cubeRotationIntencity * -1, 0f);
     }
 }
