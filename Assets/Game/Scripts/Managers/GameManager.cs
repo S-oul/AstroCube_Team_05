@@ -221,4 +221,9 @@ public class GameManager : MonoBehaviour
         isUIRubiksCubeEnabled = isEnabled;
         _rubiksCubeUI.SetActive(isEnabled);
     }
+
+    public void MakeCutsceneLevelMarkAsFinished()
+    {
+        EventManager.TriggerLevelFinished();
+    }
 }

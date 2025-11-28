@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
     [SerializeField] float _floorDistance = 0.5f;
+    [SerializeField] float _maxPlayerFallSpeed = 50;
 
     [Header("Crouch")]
     [SerializeField] bool _canCrouch = true;
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     float _currentMoveSpeed;
     float _currentMoveSpeedFactor = 1f;
     Vector3 _verticalVelocity;
+    float _currentFallSpeed;
     Vector3 _horizontalVelocity;
     bool _isGrounded;
 
@@ -128,10 +130,18 @@ public class PlayerMovement : MonoBehaviour
         if (_hasGravity)
         {
             _gravityDirection = transform.up;
-            _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
 
-            if (_isGrounded && _verticalVelocity.y <= 0)
+            //_verticalVelocity += _gravityDirection * (Math.Clamp(_gameSettings.Gravity * Time.deltaTime, 0, _maxPlayerFallSpeed));
+
+            _currentFallSpeed += _gameSettings.Gravity * Time.deltaTime; // this is not used directly but helps track the current vertical velocity. 
+            if (_currentFallSpeed > _maxPlayerFallSpeed * -1) // only add to the vertical velocity if fall speed is above the minimum vertical velocity. 
             {
+                _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
+            }
+
+            if (_isGrounded && _currentFallSpeed <= 0)
+            {
+                _currentFallSpeed = 0;
                 _verticalVelocity = Vector3.zero;
             }
         }
