@@ -1,5 +1,6 @@
 using System;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.Windows;
@@ -40,6 +41,8 @@ public class SmoothDamping : MonoBehaviour
     [SerializeField] float _rotationIntencity;
     [SerializeField] Vector2 _maxRange;
     [SerializeField] Vector2 _minRange;
+    [SerializeField] Vector2 _maxHardClampRange;
+    [SerializeField] Vector2 _minHardClampRange;
 
     Vector2 _imaginaryCubePosVec;
     Vector2 _rotationVelocity;
@@ -125,12 +128,19 @@ public class SmoothDamping : MonoBehaviour
         );
         _imaginaryCubePosVec = newImaginaryCubePosVec;
 
-        // clamp
+        // clamp  - preserves smoothness but is relient on player movement speed. Bigger speed = wider clamp ranger. 
         if (_imaginaryCubePosVec.x - targetPos.x > _maxRange.x) _imaginaryCubePosVec.x = targetPos.x + _maxRange.x;
         if (_imaginaryCubePosVec.x - targetPos.x < _minRange.x) _imaginaryCubePosVec.x = targetPos.x + _minRange.x;
 
         if (_imaginaryCubePosVec.y - targetPos.y > _maxRange.y) _imaginaryCubePosVec.y = targetPos.y + _maxRange.y;
         if (_imaginaryCubePosVec.y - targetPos.y < _minRange.y) _imaginaryCubePosVec.y = targetPos.y + _minRange.y;
+
+        // hardClamp  - This will look less mooth but will 100% prevent the cube from leaving the screen !
+        if (_rotationVelocity.x > _maxHardClampRange.x) _rotationVelocity.x = _maxHardClampRange.x;
+        if (_rotationVelocity.x < _minHardClampRange.x) _rotationVelocity.x = _minHardClampRange.x;
+
+        if (_rotationVelocity.y > _maxHardClampRange.y) _rotationVelocity.y = _maxHardClampRange.y;
+        if (_rotationVelocity.y < _minHardClampRange.y) _rotationVelocity.y = _minHardClampRange.y;
 
         Vector3 rotationVelocityV3 = new Vector3(_rotationVelocity.x, _rotationVelocity.y, 0);
 
