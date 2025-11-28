@@ -60,7 +60,7 @@ public class LazerBeam
 
             if (_aimHitTime >= 5f)
             {
-                EventManager.TriggerPlayerWin();
+                EventManager.TriggerLevelFinished();
                 _aimHitTime = 0f; // évite de spammer
             }
 

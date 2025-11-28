@@ -76,7 +76,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnSceneStart;
     public static event Action OnSceneEnd;
 
-    public static event Action OnPlayerWin;
+    public static event Action OnLevelFinished;
     public static event Action OnPlayerLose;
 
     public static event Action OnSceneChange;
@@ -163,9 +163,9 @@ public class EventManager : MonoBehaviour
     }
 
 
-    public static void TriggerPlayerWin()
+    public static void TriggerLevelFinished()
     {
-        OnPlayerWin?.Invoke();
+        OnLevelFinished?.Invoke();
     }
 
     public void TriggerPlayerLose()

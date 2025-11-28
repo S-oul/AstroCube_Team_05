@@ -3,6 +3,7 @@ using UnityEngine;
 public static class LevelProgressionSystem
 {
     private const string Key = "LevelUnlocked_";
+    private const string LastLevelKey = "LastLevelPlayed";
 
     public static bool IsUnlocked(int levelIndex)
     {
@@ -18,27 +19,17 @@ public static class LevelProgressionSystem
         PlayerPrefs.Save();
     }
 
-
-    public static void UnlockAllLevels(int totalLevels)
+    public static void UnlockNextLevel(int currentLogicalLevel)
     {
-        for (int i = 0; i < totalLevels; i++)
-        {
-            PlayerPrefs.SetInt(Key + i, 1);
-        }
-
+        int next = currentLogicalLevel + 1;
+        PlayerPrefs.SetInt(Key + next, 1);
         PlayerPrefs.Save();
     }
-
 
     public static void LockAllLevelsExceptFirst(int totalLevels)
     {
         for (int i = 0; i < totalLevels; i++)
-        {
-            if (i == 0)
-                PlayerPrefs.SetInt(Key + i, 1);  
-            else
-                PlayerPrefs.SetInt(Key + i, 0);  
-        }
+            PlayerPrefs.SetInt(Key + i, (i == 0) ? 1 : 0);
 
         PlayerPrefs.Save();
     }
@@ -46,18 +37,21 @@ public static class LevelProgressionSystem
     public static void ResetProgression(int totalLevels)
     {
         for (int i = 0; i < totalLevels; i++)
-        {
             PlayerPrefs.DeleteKey(Key + i);
-        }
 
         PlayerPrefs.Save();
     }
 
-    private const string LastLevelKey = "LastLevelPlayed";
 
-    public static void SetLastLevel(int levelIndex)
+    public static void SetLastLevel(int logicalLevel)
     {
-        PlayerPrefs.SetInt(LastLevelKey, levelIndex);
+        PlayerPrefs.SetInt(LastLevelKey, logicalLevel);
+        PlayerPrefs.Save();
+    }
+
+    public static void ResetLastLevel()
+    {
+        PlayerPrefs.DeleteKey(LastLevelKey);
         PlayerPrefs.Save();
     }
 
@@ -69,5 +63,10 @@ public static class LevelProgressionSystem
     public static bool HasProgression()
     {
         return PlayerPrefs.HasKey(LastLevelKey);
+    }
+
+    public static bool ShouldSaveLastLevel(string sceneName)
+    {
+        return sceneName != "GameEntry";
     }
 }
