@@ -27,14 +27,14 @@ public class PauseMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnGamePause += OpenMenu;
-        EventManager.OnGameUnpause += CloseMenu;
+        //EventManager.OnGamePause += OpenMenu;
+        //EventManager.OnGameUnpause += CloseMenu;
     }
 
     private void OnDisable()
     {
-        EventManager.OnGamePause -= OpenMenu;
-        EventManager.OnGameUnpause -= CloseMenu;
+        //EventManager.OnGamePause -= OpenMenu;
+        //EventManager.OnGameUnpause -= CloseMenu;
     }
 
     void OpenMenu()

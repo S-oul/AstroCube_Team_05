@@ -34,6 +34,7 @@ public class MainMenuView : UIView
     public override void Show()
     {
         base.Show();
+
         continueButton.interactable = LevelProgressionSystem.HasProgression();
     }
 
@@ -41,7 +42,7 @@ public class MainMenuView : UIView
     {
         if (!LevelProgressionSystem.HasProgression())
         {
-            SceneManager.LoadScene(firstLevelName);
+            StartFreshGame();
             return;
         }
 
@@ -56,26 +57,28 @@ public class MainMenuView : UIView
             cancel: "Non",
             onConfirm: () =>
             {
-                int totalLevels = SceneManager.sceneCountInBuildSettings;
-                LevelProgressionSystem.ResetProgression(totalLevels);
-                PlayerPrefs.DeleteKey("LastLevelPlayed");
-                PlayerPrefs.Save();
-                SceneManager.LoadScene(firstLevelName);
+                StartFreshGame();
             }
         ));
     }
 
-    private void OnContinueClicked()
+    private void StartFreshGame()
     {
-        int lastLevel = LevelProgressionSystem.GetLastLevel();
+        int totalLevels = SceneManager.sceneCountInBuildSettings;
 
-        if (lastLevel == -1)
-        {
-            SceneManager.LoadScene(firstLevelName);
-            return;
-        }
+        LevelProgressionSystem.ResetProgression(totalLevels);
+        LevelProgressionSystem.LockAllLevelsExceptFirst(totalLevels);
+        LevelProgressionSystem.ResetLastLevel();
 
-        SceneManager.LoadScene(lastLevel);
+        SceneManager.LoadScene(firstLevelName);
+    }
+
+    public void OnContinueClicked()
+    {
+        int last = LevelProgressionSystem.GetLastLevel();
+
+        if (last != -1)
+            SceneManager.LoadScene(last);
     }
 
     private void OnLevelsClicked()

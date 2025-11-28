@@ -113,11 +113,11 @@ public class InputSystemManager : MonoBehaviour
 
     void DeactivateActionMap()
     {
-        _playerInputs.currentActionMap.Disable();
+        //_playerInputs.currentActionMap.Disable();
     }    
     void ActivateActionMap()
     {
-        _playerInputs.currentActionMap.Enable();
+       // _playerInputs.currentActionMap.Enable();
     }
     
 }
