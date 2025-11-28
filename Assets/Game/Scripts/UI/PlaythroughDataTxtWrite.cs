@@ -61,13 +61,13 @@ public class PlaythroughDataTxtWrite : MonoBehaviour
     private void OnEnable()
     {
         if (SystemInfo.operatingSystem.Contains("Windows "))
-        EventManager.OnLevelFinished += AddDataEntry;
+        EventManager.OnPlayerWin += AddDataEntry;
     }
 
     private void OnDisable()
     {
         if (SystemInfo.operatingSystem.Contains("Windows "))
-            EventManager.OnLevelFinished -= AddDataEntry;
+            EventManager.OnPlayerWin -= AddDataEntry;
     }
 
     void AddDataEntry()
