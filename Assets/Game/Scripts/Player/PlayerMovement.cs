@@ -139,8 +139,6 @@ public class PlayerMovement : MonoBehaviour
                 _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
             }
 
-            Debug.Log(_currentFallSpeed);
-
             if (_isGrounded && _currentFallSpeed <= 0)
             {
                 _currentFallSpeed = 0;
