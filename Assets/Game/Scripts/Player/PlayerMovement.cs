@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     bool _FreeFallZone = false;
 
     [Header("Movement Modifiers")]
-    [SerializeField, Range(0.0f,2.0f)] float _speedMultiplier = 1.0f;
+    [SerializeField, Range(0.0f, 2.0f)] float _speedMultiplier = 1.0f;
 
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _canCrouch = true;
 
     [Header("Slipping")]
-    [SerializeField] [Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
+    [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
 
     [Header("GravityRotation")]
     [SerializeField] bool _enableGravityRotation = true;
@@ -75,6 +75,8 @@ public class PlayerMovement : MonoBehaviour
     Vector3 _externallyAppliedMovement = Vector3.zero;
 
     public bool isOnDefaultGround;
+
+    bool _isUncontrolledFalling;
 
     public float defaultSpeed { get; private set; }
     public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
@@ -127,7 +129,6 @@ public class PlayerMovement : MonoBehaviour
         {
             // player just landed on the ground
             EventManager.TriggerPlayerStopsFalling();
-            Debug.Log("player landed");
         }
 
         //apply gravity
@@ -149,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
                 _verticalVelocity = Vector3.zero;
             }
         }
-    
+
         if (!_canMove) return;
         /*
         // collect player inputs
@@ -208,15 +209,18 @@ public class PlayerMovement : MonoBehaviour
         _crouchInput = false;
 
         // no clip
-        if(_FreeFallZone == false)
+        if (_FreeFallZone == false)
             _horizontalVelocity += transform.up * _yInput;
-        else 
-            _horizontalVelocity += transform.up*.95f;
+        else
+            _horizontalVelocity += transform.up * .95f;
+
+        if (_isGrounded && _isUncontrolledFalling) _isUncontrolledFalling = false;
+        if (_isUncontrolledFalling) _horizontalVelocity = Vector3.zero; //cancel any non-vertical movement
 
         // apply calculated Movement
         float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
         if (_hasGravity) {
-            _controller.Move((_horizontalVelocity * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime) + _externallyAppliedMovement)  * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
+            _controller.Move((_horizontalVelocity * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime) + _externallyAppliedMovement) * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
             _controller.Move(_verticalVelocity * Time.deltaTime);
         } else // no clip
         {
@@ -224,7 +228,7 @@ public class PlayerMovement : MonoBehaviour
                              + _externallyAppliedMovement);
         }
 
-        
+
         ExecuteFootStep();
     }
 
@@ -399,6 +403,9 @@ public class PlayerMovement : MonoBehaviour
             _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
         }
     }
+
+    // player will have locked movement until they stop falling (until _isGrounded == true). 
+    public void SetUncontrolledFalling(bool isUncontrolledFalling) { _isUncontrolledFalling = isUncontrolledFalling;}
 
     private void OnDrawGizmos()
     {
