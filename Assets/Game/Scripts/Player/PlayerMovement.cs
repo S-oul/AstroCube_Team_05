@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
     [SerializeField] float _floorDistance = 0.5f;
+    [SerializeField] float _maxPlayerFallSpeed = 50;
 
     [Header("Crouch")]
     [SerializeField] bool _canCrouch = true;
@@ -128,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
         if (_hasGravity)
         {
             _gravityDirection = transform.up;
-            _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
+            _verticalVelocity += _gravityDirection * (Math.Clamp(_gameSettings.Gravity * Time.deltaTime, 0, _maxPlayerFallSpeed));
 
             if (_isGrounded && _verticalVelocity.y <= 0)
             {
