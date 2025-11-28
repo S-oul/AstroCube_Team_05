@@ -114,11 +114,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b1c2443cb03f0bf4282a2aa2f330a89e,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5073927612446701573}
+      addedObject: {fileID: -6826771567585951712}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b1c2443cb03f0bf4282a2aa2f330a89e,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: -6826771567585951712}
+      addedObject: {fileID: 6253398684351637533}
   m_SourcePrefab: {fileID: 100100000, guid: b1c2443cb03f0bf4282a2aa2f330a89e, type: 3}
 --- !u!1 &8922585677825827325 stripped
 GameObject:
@@ -153,8 +153,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
---- !u!64 &5073927612446701573
-MeshCollider:
+--- !u!114 &-6826771567585951712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922585677825827325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56452a186946d84eac27a0d18822032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllowPropChildingToolToOrganizeThisObject: 1
+--- !u!65 &6253398684351637533
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -171,20 +184,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!114 &-6826771567585951712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8922585677825827325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a56452a186946d84eac27a0d18822032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AllowPropChildingToolToOrganizeThisObject: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 0.25, z: 10}
+  m_Center: {x: 0.25, y: 4, z: 0}
