@@ -172,6 +172,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec496cd1-0c7f-483e-a732-b616d4071ecb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -392,6 +401,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""SwitchMoveLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4183d870-e7b0-422a-8e70-f37f896b4dc2"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4185538-3986-49bd-8cfc-aa509ffbfeca"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -946,6 +977,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_RubiksCube_ShowStrips = m_RubiksCube.FindAction("ShowStrips", throwIfNotFound: true);
         m_RubiksCube_PreviewCancel = m_RubiksCube.FindAction("PreviewCancel", throwIfNotFound: true);
         m_RubiksCube_SwitchMoveLook = m_RubiksCube.FindAction("SwitchMoveLook", throwIfNotFound: true);
+        m_RubiksCube_Escape = m_RubiksCube.FindAction("Escape", throwIfNotFound: true);
         // OtherActions
         m_OtherActions = asset.FindActionMap("OtherActions", throwIfNotFound: true);
         m_OtherActions_Interact = m_OtherActions.FindAction("Interact", throwIfNotFound: true);
@@ -1056,6 +1088,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_RubiksCube_ShowStrips;
     private readonly InputAction m_RubiksCube_PreviewCancel;
     private readonly InputAction m_RubiksCube_SwitchMoveLook;
+    private readonly InputAction m_RubiksCube_Escape;
     /// <summary>
     /// Provides access to input actions defined in input action map "RubiksCube".
     /// </summary>
@@ -1103,6 +1136,10 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "RubiksCube/SwitchMoveLook".
         /// </summary>
         public InputAction @SwitchMoveLook => m_Wrapper.m_RubiksCube_SwitchMoveLook;
+        /// <summary>
+        /// Provides access to the underlying input action "RubiksCube/Escape".
+        /// </summary>
+        public InputAction @Escape => m_Wrapper.m_RubiksCube_Escape;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1156,6 +1193,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SwitchMoveLook.started += instance.OnSwitchMoveLook;
             @SwitchMoveLook.performed += instance.OnSwitchMoveLook;
             @SwitchMoveLook.canceled += instance.OnSwitchMoveLook;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         /// <summary>
@@ -1194,6 +1234,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SwitchMoveLook.started -= instance.OnSwitchMoveLook;
             @SwitchMoveLook.performed -= instance.OnSwitchMoveLook;
             @SwitchMoveLook.canceled -= instance.OnSwitchMoveLook;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         /// <summary>
@@ -1801,6 +1844,13 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitchMoveLook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Escape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEscape(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "OtherActions" which allows adding and removing callbacks.
