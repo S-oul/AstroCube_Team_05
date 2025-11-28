@@ -23,6 +23,9 @@ public class GameSettings : ScriptableObject
     public float StartWalkingTransitionDuration => _startWalkingTransitionDuration;
     public float StopWalkingTransitionDuration => _stopWalkingTransitionDuration;
     public AnimationCurve HeadBobbingCurve => _headBobbingCurve;
+    public AnimationCurve HeadBobbingStairsCurve => _headBobbingStairsCurve;
+    public float ViewBobbingWalkMultiplier => viewBobbingWalkMultiplier;
+    public float ViewBobbingStairsMultiplier => viewBobbingStairsMultiplier;
     public bool EnableGravityRotation => _enableGravityRotation;
 
 
@@ -71,21 +74,20 @@ public class GameSettings : ScriptableObject
 
     [Header("- Slipping")]
     [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
-
-    [Header("- HeadBobbing Walking")]
+    
+    [Header("- HeadBobbing -")]
     [SerializeField] float _headBobbingAmount = 2.0f;
     [SerializeField] float _headBobbingSpeed = 3.0f;
     [SerializeField] float _startWalkingTransitionDuration = 0.5f;
     [SerializeField] float _stopWalkingTransitionDuration = 0.5f;
+    
+    [Header("- HeadBobbing Walking")]
+    [SerializeField] private float viewBobbingWalkMultiplier;
     [SerializeField] AnimationCurve _headBobbingCurve;
 
-    [Header("- HeadBobbing Stairs")] // Not implemented yet
-    [SerializeField] float _headBobbingStairsAmount = 2.0f;
-    [SerializeField] float _headBobbingStairsSpeed = 3.0f;
-    [SerializeField] float _startStairsTransitionDuration = 0.5f;
-    [SerializeField] float _stopStairsTransitionDuration = 0.5f;
+    [Header("- HeadBobbing Stairs")]
+    [SerializeField] private float viewBobbingStairsMultiplier;
     [SerializeField] AnimationCurve _headBobbingStairsCurve;
-
 
     [Header("- GravityRotation")]
     [SerializeField] bool _enableGravityRotation = false;

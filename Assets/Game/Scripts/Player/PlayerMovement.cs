@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
     [SerializeField] float _floorDistance = 0.5f;
+    [SerializeField] private float _coyoteTime;
+    [SerializeField] float _maxPlayerFallSpeed = 50;
 
     [Header("Crouch")]
     [SerializeField] bool _canCrouch = true;
@@ -43,8 +45,10 @@ public class PlayerMovement : MonoBehaviour
     float _currentMoveSpeed;
     float _currentMoveSpeedFactor = 1f;
     Vector3 _verticalVelocity;
+    float _currentFallSpeed;
     Vector3 _horizontalVelocity;
     bool _isGrounded;
+    float _currentCoyoteTime;
 
     float _defaultCameraHeight;
     float _defaultControllerHeight;
@@ -107,6 +111,8 @@ public class PlayerMovement : MonoBehaviour
 
         defaultSpeed = _gameSettings.PlayerMoveSpeed * _speedMultiplier;
         _currentMoveSpeed = defaultSpeed;
+
+        _currentCoyoteTime = _coyoteTime;
     }
 
     private void FixedUpdate()
@@ -128,10 +134,18 @@ public class PlayerMovement : MonoBehaviour
         if (_hasGravity)
         {
             _gravityDirection = transform.up;
-            _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
 
-            if (_isGrounded && _verticalVelocity.y <= 0)
+            //_verticalVelocity += _gravityDirection * (Math.Clamp(_gameSettings.Gravity * Time.deltaTime, 0, _maxPlayerFallSpeed));
+
+            _currentFallSpeed += _gameSettings.Gravity * Time.deltaTime; // this is not used directly but helps track the current vertical velocity. 
+            if (_currentFallSpeed > _maxPlayerFallSpeed * -1) // only add to the vertical velocity if fall speed is above the minimum vertical velocity. 
             {
+                _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
+            }
+
+            if (_isGrounded && _currentFallSpeed <= 0)
+            {
+                _currentFallSpeed = 0;
                 _verticalVelocity = Vector3.zero;
             }
         }
@@ -159,9 +173,15 @@ public class PlayerMovement : MonoBehaviour
             _horizontalVelocity.z = _horizontalVelocity.z < -1 ? -1 : _horizontalVelocity.z;
         }
 
+        if (_isGrounded)
+            _currentCoyoteTime = _coyoteTime;
+        else
+            _currentCoyoteTime -= Time.fixedDeltaTime;
+
         // jump
-        if (_jumpInput && _isGrounded) {
+        if (_jumpInput && (_isGrounded || _currentCoyoteTime > 0f)) {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
+            _currentCoyoteTime = -1.0f;
         }
 
         if (_isGrounded && !_jumpInput)
@@ -287,12 +307,27 @@ public class PlayerMovement : MonoBehaviour
             if (_startWalkingDuration <= _gameSettings.StartWalkingTransitionDuration) {
                 _stopWalkingDuration = 0.0f;
                 _startWalkingDuration += Time.deltaTime;
-                newCameraHeight = Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
+                newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
                     currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount,
                     _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
             } else {
                 _walkingDuration += Time.deltaTime;
-                newCameraHeight = Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+
+                if (Physics.Raycast(transform.position, -transform.up, out var hit, 10000, LayerMask.GetMask("Floor")))
+                {
+                    if (hit.normal != Vector3.up)
+                    {
+                        newCameraHeight = _gameSettings.ViewBobbingStairsMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingStairsCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                    }
+                    else
+                    {
+                        newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                    }
+                }
+                else
+                {
+                    newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                }
             }
         } else {
             _walkingDuration = 0.0f;
@@ -306,7 +341,6 @@ public class PlayerMovement : MonoBehaviour
                 newCameraHeight = Vector3.up * currentDefaultHeight;
             }
         }
-
         float cameraHightModifyer = newCameraHeight.y - _camera.transform.localPosition.y;
         _camera.transform.localPosition += cameraHightModifyer * Vector3.up;
     }

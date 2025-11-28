@@ -1,62 +1,50 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
-using System;
 using FMOD.Studio;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class SettingsMenuScreenView : UIView
 {
     [Header("(REQUIRED)")]
-
     [SerializeField] private bool isInGameplay = false;
 
-
     [Header("Description Part")]
-
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descriptionText;
 
-
-
     [Header("Sound Settings")]
-
     [SerializeField] private Slider generalSoundSlider;
     [SerializeField] private Slider musicSoundSlider;
     [SerializeField] private Slider soundSlider;
     [SerializeField] private Slider voiceSoundSlider;
 
-
     [Header("Camera Settings")]
-
     [SerializeField] private Slider fovSlider;
     [SerializeField] private Slider cameraSensitivitySlider;
     [SerializeField] private UIToggleButton motionBlurButton;
 
-
     [Header("Accessibility Settings")]
-
     [SerializeField] private UIToggleButton rumbleButton;
     [SerializeField] private UIToggleButton previewButton;
     [SerializeField] private UIToggleButton oneHandedButton;
 
-
     [Header("Others")]
-
     [SerializeField] private Button backButton;
 
-    [Header("Settings Referendes")]
+    [Header("Settings References")]
     [SerializeField] private CustomisedSettings _customisedSettings;
-
-
-
 
     private bool _isInitializing = false;
     private UIManager _uiManager;
     private Dictionary<string, string> _descriptionBySettings;
+
+    private InputAction _cancelAction;
+
+
 
     private void Awake()
     {
@@ -68,19 +56,16 @@ public class SettingsMenuScreenView : UIView
             { "General :", "Controls the global sound level" },
             { "Music :", "Controls the music and ambiance sound level"},
             { "Sound Effects :", "Controls the sound level of the sound effects"},
-            { "Voice :", "controls the sound level of the voicelines"},
+            { "Voice :", "Controls the sound level of the voice lines"},
 
-            { "Field of View :", "Changes the angle of the player's field of view. "},
+            { "Field of View :", "Changes the angle of the player's field of view"},
             { "Camera Sensitivity :", "Affects the speed at which the camera moves"},
-            { "Motion Blur :", "Enables/Disables the motion blur on the player's screen"},
+            { "Motion Blur :", "Enables/Disables motion blur"},
 
-
-            { "Rumble :", "Enables/disables the controller rumble"},
-            { "Preview Hints :", "Enables/disables the preview feature"},
-            { "One Handed Mode :", "Enables/disables the one handed mode"},
-            { "Correct Action Feedback :", "Enables/disables the correct action feedback"}
+            { "Rumble :", "Enables/disables controller vibration"},
+            { "Preview Hints :", "Enables/disables preview feature"},
+            { "One Handed Mode :", "Enables/disables one handed mode"}
         };
-
 
         _customisedSettings.LoadRuntimeValues();
         SetupUI();
@@ -90,6 +75,15 @@ public class SettingsMenuScreenView : UIView
     private void SetupUI()
     {
         _isInitializing = true;
+
+        if (PlayerPrefs.HasKey("MasterVolume"))
+            _customisedSettings.customVolume = PlayerPrefs.GetFloat("MasterVolume");
+        if (PlayerPrefs.HasKey("MusicVolume"))
+            _customisedSettings.customMusicVolume = PlayerPrefs.GetFloat("MusicVolume");
+        if (PlayerPrefs.HasKey("SFXVolume"))
+            _customisedSettings.customSoundEffectsVolume = PlayerPrefs.GetFloat("SFXVolume");
+        if (PlayerPrefs.HasKey("VoiceVolume"))
+            _customisedSettings.customVoiceVolume = PlayerPrefs.GetFloat("VoiceVolume");
 
         generalSoundSlider.onValueChanged.AddListener(OnGeneralSoundSliderValueChanged);
         musicSoundSlider.onValueChanged.AddListener(OnMusicSoundSliderValueChanged);
@@ -123,7 +117,6 @@ public class SettingsMenuScreenView : UIView
         generalSoundSlider.maxValue = _customisedSettings.maxVolume;
         generalSoundSlider.value = _customisedSettings.customVolume;
 
-
         musicSoundSlider.minValue = _customisedSettings.minMusicVolume;
         musicSoundSlider.maxValue = _customisedSettings.maxMusicVolume;
         musicSoundSlider.value = _customisedSettings.customMusicVolume;
@@ -136,11 +129,31 @@ public class SettingsMenuScreenView : UIView
         voiceSoundSlider.maxValue = _customisedSettings.maxVoiceVolume;
         voiceSoundSlider.value = _customisedSettings.customVoiceVolume;
 
-
+        ApplySavedSoundValues();
 
         _isInitializing = false;
 
-        Debug.Log($"[Init Settings] MotionBlur={_customisedSettings.customMotionBlur}, Rumble={_customisedSettings.customVibration}, Preview={_customisedSettings.customPreview}, fov value = {_customisedSettings.customFov},  senssitivity value : {_customisedSettings.customMouse}");
+        Debug.Log($"[Init Settings] MotionBlur={_customisedSettings.customMotionBlur}, Rumble={_customisedSettings.customVibration}, Preview={_customisedSettings.customPreview}");
+    }
+
+    private void ApplySavedSoundValues()
+    {
+        FMOD.Studio.VCA masterVCA = FMODUnity.RuntimeManager.GetVCA("vca:/Master");
+        FMOD.Studio.VCA musicVCA = FMODUnity.RuntimeManager.GetVCA("vca:/Music");
+        FMOD.Studio.VCA sfxVCA = FMODUnity.RuntimeManager.GetVCA("vca:/Effect");
+        FMOD.Studio.VCA voiceVCA = FMODUnity.RuntimeManager.GetVCA("vca:/VO");
+
+        masterVCA.setVolume(_customisedSettings.customVolume);
+        musicVCA.setVolume(_customisedSettings.customMusicVolume);
+        sfxVCA.setVolume(_customisedSettings.customSoundEffectsVolume);
+        voiceVCA.setVolume(_customisedSettings.customVoiceVolume);
+
+        generalSoundSlider.SetValueWithoutNotify(_customisedSettings.customVolume);
+        musicSoundSlider.SetValueWithoutNotify(_customisedSettings.customMusicVolume);
+        soundSlider.SetValueWithoutNotify(_customisedSettings.customSoundEffectsVolume);
+        voiceSoundSlider.SetValueWithoutNotify(_customisedSettings.customVoiceVolume);
+
+        Debug.Log("[FMOD Sync] Restored saved VCA volumes");
     }
 
     #region Button Methods
@@ -156,94 +169,89 @@ public class SettingsMenuScreenView : UIView
     {
         Hide();
         if (isInGameplay)
-        {
             _uiManager.ShowInGameExclusive<PauseMenuView>();
-        }
-
-        if (!isInGameplay)
-        {
+        else
             _uiManager.Show<MainMenuView>();
-        }
     }
 
     private void OnMotionBlurToggled(bool state)
     {
-        Debug.Log("Motion Blur Toggled : " + state);
         _customisedSettings.customMotionBlur = state;
         _customisedSettings.SaveRuntimeValues();
     }
 
     private void OnRumbleToggled(bool state)
     {
-        Debug.Log("Rumble toggled");
         _customisedSettings.customVibration = state;
-
         _customisedSettings.SaveRuntimeValues();
     }
 
     private void OnPreviewToggled(bool state)
     {
-        Debug.Log("Preview toggled");
         _customisedSettings.customPreview = state;
         _customisedSettings.SaveRuntimeValues();
-
     }
 
     private void OnOneHandToggled(bool state)
     {
-        Debug.Log("One Handed toggled");
         _customisedSettings.customOneHandMode = state;
         _customisedSettings.SaveRuntimeValues();
-        Debug.LogError("Not implemented yet");
-
-    }
-
-    private void OnCorrectActionToggled(bool state)
-    {
-        Debug.Log("Correct Action toggled");
-        _customisedSettings.customCorrectActions = state;
-        _customisedSettings.SaveRuntimeValues();
-        Debug.LogError("Not implemented yet");
     }
 
     public void OnGeneralSoundSliderValueChanged(float value)
     {
         if (_isInitializing) return;
 
-
-        FMODUnity.RuntimeManager.LoadBank("Master", true);
-
+        FMOD.Studio.VCA masterVCA = FMODUnity.RuntimeManager.GetVCA("vca:/Master");
+        masterVCA.setVolume(value);
 
         _customisedSettings.customVolume = value;
         _customisedSettings.SaveRuntimeValues();
-        Debug.Log($"[UI] General sound changed to {value}");
+
+        PlayerPrefs.SetFloat("MasterVolume", value);
+        PlayerPrefs.Save();
     }
 
     private void OnMusicSoundSliderValueChanged(float value)
     {
         if (_isInitializing) return;
 
+        FMOD.Studio.VCA musicVCA = FMODUnity.RuntimeManager.GetVCA("vca:/Music");
+        musicVCA.setVolume(value);
+
         _customisedSettings.customMusicVolume = value;
         _customisedSettings.SaveRuntimeValues();
-        Debug.Log($"[UI] Music sound changed to {value}");
+
+        PlayerPrefs.SetFloat("MusicVolume", value);
+        PlayerPrefs.Save();
     }
 
     private void OnSoundSoundSliderValueChanged(float value)
     {
         if (_isInitializing) return;
 
+        FMOD.Studio.VCA sfxVCA = FMODUnity.RuntimeManager.GetVCA("vca:/Effect");
+        sfxVCA.setVolume(value);
+
         _customisedSettings.customSoundEffectsVolume = value;
         _customisedSettings.SaveRuntimeValues();
-        Debug.Log($"[UI] Sound Effects changed to {value}");
+
+        PlayerPrefs.SetFloat("SFXVolume", value);
+        PlayerPrefs.Save();
     }
 
     private void OnVoiceSoundSliderValueChanged(float value)
     {
         if (_isInitializing) return;
 
+        FMOD.Studio.VCA voiceVCA = FMODUnity.RuntimeManager.GetVCA("vca:/VO");
+        voiceVCA.setVolume(value);
+
         _customisedSettings.customVoiceVolume = value;
         _customisedSettings.SaveRuntimeValues();
-        Debug.Log($"[UI] Voice sound changed to {value}");
+
+        PlayerPrefs.SetFloat("VoiceVolume", value);
+        PlayerPrefs.Save();
     }
 
     public void OnFovSliderChanged(float value)
@@ -252,24 +260,31 @@ public class SettingsMenuScreenView : UIView
 
         _customisedSettings.customFov = value;
         _customisedSettings.SaveRuntimeValues();
-        Debug.Log($"[UI] FOV changed to {value}");
     }
+
     public void OnCameraSensitivityChanged(float value)
     {
         if (_isInitializing) return;
 
         _customisedSettings.customMouse = value;
         _customisedSettings.SaveRuntimeValues();
-        Debug.Log($"[UI] Sensitivity changed to {value}");
     }
-    #endregion
 
+    #endregion
 
     private void OnEnable()
     {
+        var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
+        _cancelAction = uiModule.cancel;
+
         if (isInGameplay)
         {
             EventManager.OnGameUnpause += CloseMenu;
+        }
+
+        if (!isInGameplay)
+        {
+            _cancelAction.performed += OnCancelPerformed;
         }
     }
 
@@ -279,6 +294,17 @@ public class SettingsMenuScreenView : UIView
         {
             EventManager.OnGameUnpause -= CloseMenu;
         }
+
+        if (!isInGameplay)
+        {
+            _cancelAction.performed -= OnCancelPerformed;
+        }
+    }
+
+    private void OnCancelPerformed(InputAction.CallbackContext ctx)
+    {
+        Hide();
+        _uiManager.Show<MainMenuView>();
     }
 
     private void CloseMenu()
@@ -286,14 +312,14 @@ public class SettingsMenuScreenView : UIView
         _uiManager.ShowInGameExclusive<PlayingView>();
     }
 
+    private void BackToMainMenu()
+    {
+        Debug.Log("Back to Main Menu from Settings Menu");
+        Hide();
+        _uiManager.Show<MainMenuView>();
+    }
 
-
-
-
-
-
-    #region Hover Interface Implementation
-
+    #region Hover Implementation
 
     private void OnSettingSelected(string key)
     {
@@ -318,7 +344,6 @@ public class SettingsMenuScreenView : UIView
         AddHover(rumbleButton.gameObject, "Rumble :");
         AddHover(previewButton.gameObject, "Preview Hints :");
         AddHover(oneHandedButton.gameObject, "One Handed Mode :");
-
     }
 
     public void OnSettingHovered(string key)
@@ -330,7 +355,6 @@ public class SettingsMenuScreenView : UIView
         }
     }
 
-
     private void AddHover(GameObject obj, string key)
     {
         var hover = obj.GetComponent<SettingsHoverElement>();
@@ -340,5 +364,4 @@ public class SettingsMenuScreenView : UIView
     }
 
     #endregion
-
 }

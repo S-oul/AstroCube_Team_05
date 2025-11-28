@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class PauseMenuView : UIView
 {
@@ -12,7 +13,9 @@ public class PauseMenuView : UIView
     [SerializeField] private Button restartButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private EventReference menuPauseSnapshot;
 
+    private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
 
     private void Awake()
     {
@@ -29,6 +32,11 @@ public class PauseMenuView : UIView
         restartButton.onClick.AddListener(OnRestartClicked);
         EventManager.OnGameUnpause += CloseMenu;
 
+        if (!menuPauseSnapshot.IsNull)
+        {
+            _menuPauseSnapshotInstance = RuntimeManager.CreateInstance(menuPauseSnapshot);
+            _menuPauseSnapshotInstance.start();
+        }
     }
 
     private void OnDisable()
@@ -38,6 +46,12 @@ public class PauseMenuView : UIView
         quitButton.onClick.RemoveListener(OnQuitClicked);
         restartButton.onClick.RemoveListener(OnRestartClicked);
         EventManager.OnGameUnpause -= CloseMenu;
+
+        if (_menuPauseSnapshotInstance.isValid())
+        {
+            _menuPauseSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _menuPauseSnapshotInstance.release();
+        }
     }
 
     private void OnResumeClicked()

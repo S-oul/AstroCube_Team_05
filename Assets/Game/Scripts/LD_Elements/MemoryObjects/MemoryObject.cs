@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Path = DG.Tweening.Plugins.Core.PathCore.Path;
+using FMODUnity;
 
 public class MemoryObject : MonoBehaviour, IInteractable
 {
@@ -18,6 +19,11 @@ public class MemoryObject : MonoBehaviour, IInteractable
     [SerializeField] private List<MemoryVFXController> _memories = new();
     [SerializeField] private List<GameObject> _gameObjectsToActivate;
     [SerializeField] private List<SubtitleData> _subtitles = new();
+
+    [Header("FMOD")]
+    [SerializeField] private EventReference _startMemoryEvent;
+    [SerializeField] private EventReference _stopMemoryEvent;
+    [SerializeField] private float _delayBeforeStopEvent = 3f;
 
     [SerializeField] public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
@@ -53,6 +59,9 @@ public class MemoryObject : MonoBehaviour, IInteractable
     private IEnumerator StartMemory()
     {
         _wasPlayed = true;
+        
+        if (!_startMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_startMemoryEvent, transform.position);
+
         for (var index = 0; index < _memories.Count; index++)
         {
             var mem = _memories[index];
@@ -68,10 +77,21 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
-            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.color);
+            Vector3 soundPos = transform.position;
+            if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
+            {
+                soundPos = _memories[subtitle.characterIndex].transform.position;
+            }
+
+            if (!subtitle._voiceLineEvent.IsNull) RuntimeManager.PlayOneShot(subtitle._voiceLineEvent, soundPos);
+            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
-        LocalizationManager.Instance.PrintString("", Color.white);
+        LocalizationManager.Instance.ClearString();
+        
+        yield return new WaitForSeconds(_delayBeforeStopEvent);
+
+        if (!_stopMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_stopMemoryEvent, transform.position);
     }
 
     private void OnDrawGizmos()
@@ -98,8 +118,11 @@ public class MemoryObject : MonoBehaviour, IInteractable
 [Serializable]
 public struct SubtitleData
 {
+    public string locutor;
     public string csvName;
     public string localizationID;
     public float duration;
     public Color color;
+    public EventReference _voiceLineEvent;
+    public int characterIndex;
 }

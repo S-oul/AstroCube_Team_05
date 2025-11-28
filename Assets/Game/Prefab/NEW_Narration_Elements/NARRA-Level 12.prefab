@@ -700,6 +700,7 @@ GameObject:
   - component: {fileID: 1456262965243841880}
   - component: {fileID: 9186524085267339111}
   - component: {fileID: 1124062615896302616}
+  - component: {fileID: 8631377088788346244}
   m_Layer: 5
   m_Name: Hello? Can you- are you still there?
   m_TagString: Untagged
@@ -826,6 +827,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8631377088788346244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530649263152000039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1838340964
+      Data2: 1169935185
+      Data3: -291152215
+      Data4: 333333219
+    Path: event:/VO/LVL12/VO_Level_12_Silpha
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &9173677330623307137
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,6 +869,7 @@ GameObject:
   - component: {fileID: 4759284707162432626}
   - component: {fileID: 3963573316184265882}
   - component: {fileID: 4741724191880753016}
+  - component: {fileID: 3951906116857058155}
   m_Layer: 5
   m_Name: "We\u2019re connected now. I can hear you, you can hear me."
   m_TagString: Untagged
@@ -962,6 +995,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3951906116857058155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9173677330623307137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1838340964
+      Data2: 1169935185
+      Data3: -291152215
+      Data4: 333333219
+    Path: event:/VO/LVL12/VO_Level_12_Silpha
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &829405273152363321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1211,6 +1275,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Subtitles Level 12
       objectReference: {fileID: 0}
+    - target: {fileID: 6881072643004580789, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: EventReference.Path
+      value: event:/VO/LVL12/VO_Level_12_Mariam
+      objectReference: {fileID: 0}
+    - target: {fileID: 6881072643004580789, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: 474520001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6881072643004580789, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1297087280
+      objectReference: {fileID: 0}
+    - target: {fileID: 6881072643004580789, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1501197744
+      objectReference: {fileID: 0}
+    - target: {fileID: 6881072643004580789, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 45059095
+      objectReference: {fileID: 0}
     - target: {fileID: 8668037244736144456, guid: 7769f124731a2434585d829d21d273e7,
         type: 3}
       propertyPath: m_text
@@ -1265,7 +1354,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7454467708136416027}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2560674240286353721, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3906969986816114793}
   m_SourcePrefab: {fileID: 100100000, guid: 7769f124731a2434585d829d21d273e7, type: 3}
 --- !u!1 &86278316984033813 stripped
 GameObject:
@@ -1285,6 +1378,43 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7990825230746970936}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5578916030423761409 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2560674240286353721, guid: 7769f124731a2434585d829d21d273e7,
+    type: 3}
+  m_PrefabInstance: {fileID: 7990825230746970936}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3906969986816114793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578916030423761409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 474520001
+      Data2: 1297087280
+      Data3: 1501197744
+      Data4: 45059095
+    Path: event:/VO/LVL12/VO_Level_12_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!224 &8790007371801174160 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1664497979100285864, guid: 7769f124731a2434585d829d21d273e7,
