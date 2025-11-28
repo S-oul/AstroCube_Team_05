@@ -154,6 +154,15 @@ public class InputHandler : MonoBehaviour
             _controller.ActionRotateCubeUI(ctx.ReadValue<Vector2>());
     }
 
+    public void OnEscape(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            EventManager.TriggerEscape();
+        }
+    }
+
+
     public void OnResetRoom(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.RESET_ROOM)) return;
