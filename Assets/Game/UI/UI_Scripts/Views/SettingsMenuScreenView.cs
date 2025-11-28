@@ -3,6 +3,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using FMOD.Studio;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class SettingsMenuScreenView : UIView
 {
@@ -39,6 +42,10 @@ public class SettingsMenuScreenView : UIView
     private UIManager _uiManager;
     private Dictionary<string, string> _descriptionBySettings;
 
+    private InputAction _cancelAction;
+
+
+
     private void Awake()
     {
         base.Awake();
@@ -69,7 +76,6 @@ public class SettingsMenuScreenView : UIView
     {
         _isInitializing = true;
 
-        // Restore from PlayerPrefs if needed
         if (PlayerPrefs.HasKey("MasterVolume"))
             _customisedSettings.customVolume = PlayerPrefs.GetFloat("MasterVolume");
         if (PlayerPrefs.HasKey("MusicVolume"))
@@ -79,7 +85,6 @@ public class SettingsMenuScreenView : UIView
         if (PlayerPrefs.HasKey("VoiceVolume"))
             _customisedSettings.customVoiceVolume = PlayerPrefs.GetFloat("VoiceVolume");
 
-        // --- Slider listeners ---
         generalSoundSlider.onValueChanged.AddListener(OnGeneralSoundSliderValueChanged);
         musicSoundSlider.onValueChanged.AddListener(OnMusicSoundSliderValueChanged);
         soundSlider.onValueChanged.AddListener(OnSoundSoundSliderValueChanged);
@@ -95,7 +100,6 @@ public class SettingsMenuScreenView : UIView
 
         backButton.onClick.AddListener(OnQuitClicked);
 
-        // --- Initial UI sync ---
         motionBlurButton.SetState(_customisedSettings.customMotionBlur, false);
         rumbleButton.SetState(_customisedSettings.customVibration, false);
         previewButton.SetState(_customisedSettings.customPreview, false);
@@ -125,7 +129,6 @@ public class SettingsMenuScreenView : UIView
         voiceSoundSlider.maxValue = _customisedSettings.maxVoiceVolume;
         voiceSoundSlider.value = _customisedSettings.customVoiceVolume;
 
-        // --- Apply to FMOD ---
         ApplySavedSoundValues();
 
         _isInitializing = false;
@@ -271,19 +274,49 @@ public class SettingsMenuScreenView : UIView
 
     private void OnEnable()
     {
+        var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
+        _cancelAction = uiModule.cancel;
+
         if (isInGameplay)
+        {
             EventManager.OnGameUnpause += CloseMenu;
+        }
+
+        if (!isInGameplay)
+        {
+            _cancelAction.performed += OnCancelPerformed;
+        }
     }
 
     private void OnDisable()
     {
         if (isInGameplay)
+        {
             EventManager.OnGameUnpause -= CloseMenu;
+        }
+
+        if (!isInGameplay)
+        {
+            _cancelAction.performed -= OnCancelPerformed;
+        }
+    }
+
+    private void OnCancelPerformed(InputAction.CallbackContext ctx)
+    {
+        Hide();
+        _uiManager.Show<MainMenuView>();
     }
 
     private void CloseMenu()
     {
         _uiManager.ShowInGameExclusive<PlayingView>();
+    }
+
+    private void BackToMainMenu()
+    {
+        Debug.Log("Back to Main Menu from Settings Menu");
+        Hide();
+        _uiManager.Show<MainMenuView>();
     }
 
     #region Hover Implementation
