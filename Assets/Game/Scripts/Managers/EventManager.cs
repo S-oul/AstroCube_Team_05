@@ -76,7 +76,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnSceneStart;
     public static event Action OnSceneEnd;
 
-    public static event Action OnPlayerWin;
+    public static event Action OnLevelFinished;
     public static event Action OnPlayerLose;
 
     public static event Action OnSceneChange;
@@ -118,6 +118,8 @@ public class EventManager : MonoBehaviour
 
     public static event Action OnPlayerChangeParent;
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
+
+    public static event Action OnPlayerStopsFalling;
 
     //Narrative Events
     public static event Action OnStartNarrativeSequence;
@@ -161,9 +163,9 @@ public class EventManager : MonoBehaviour
     }
 
 
-    public static void TriggerPlayerWin()
+    public static void TriggerLevelFinished()
     {
-        OnPlayerWin?.Invoke();
+        OnLevelFinished?.Invoke();
     }
 
     public void TriggerPlayerLose()
@@ -216,6 +218,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
     {
         OnPlayerFootSteps?.Invoke(_groundTypePlayerIsWalkingOn);
+    }
+
+    public static void TriggerPlayerStopsFalling()
+    {
+        OnPlayerStopsFalling?.Invoke();
     }
 
     public void TriggerReset()

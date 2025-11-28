@@ -36,6 +36,8 @@ public abstract class UIView : MonoBehaviour
         }));
     }
 
+
+
     public virtual void Hide()
     {
         if (!gameObject.activeInHierarchy)

@@ -2550,7 +2550,7 @@ Transform:
   m_GameObject: {fileID: 5572829294728235433}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 6.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2608,9 +2608,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTransform: {fileID: 0}
   _verticalSmoothAmount: 0.4
-  _intencity: 0.6
+  _verticalIntencity: 1
   _maxHight: 5
   _minHight: -1
+  _horizontalSmoothAmount: 0.4
+  _horizontalIntencity: 0.2
+  _maxHorizontalRange: 1
+  _minHorizontalRange: -1
+  _cameraTransfrom: {fileID: 0}
+  _rotationSmoothAmount: 0.4
+  _rotationIntencity: 0.3
+  _maxRange: {x: 0.5, y: 0.5}
+  _minRange: {x: -0.5, y: -0.5}
+  _cubeRotationIntencity: 3
+  _maxCubeRotation: 5
+  LockRotationToWorldRotation: 0
 --- !u!1 &6744327405776517670
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,6 +3063,20 @@ MonoBehaviour:
     orientation: 0
     clockWise: 0
   _DustParticleAfterRotate: {fileID: 0}
+  _cubeRotationStartEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _cubeRotationEndEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   OnCorrectAction:
     m_PersistentCalls:
       m_Calls: []

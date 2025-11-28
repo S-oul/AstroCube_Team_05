@@ -17,7 +17,7 @@ public class ExitDoor : MonoBehaviour
     [SerializeField] private Animator _VFXAnimator;
     [SerializeField] private GameObject _stencil;
     [SerializeField] private float _endScaleStencil = 5.0f;
-    [SerializeField] private Transform _playerTransform;
+    [SerializeField] private Transform _zelligeDoorTransform;
 
     [Header("Camera Focus to end")]
     [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
@@ -26,6 +26,7 @@ public class ExitDoor : MonoBehaviour
     [Header("FOV")]
     [SerializeField] private float _MaxFOV_END = 150.0f;
 
+    private Transform _playerTransform;
     private GameSettings _gameSettings;
     private bool _isShowing = false;
     private Collider _collider;
@@ -37,7 +38,9 @@ public class ExitDoor : MonoBehaviour
     {
         if (_instance) Destroy(this);
         else _instance = this;
-
+        
+        _playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
+        
         _collider = GetComponent<Collider>();
 
         if (_isDoorOpenAtStart)
@@ -55,6 +58,7 @@ public class ExitDoor : MonoBehaviour
     {
         _gameSettings = GameManager.Instance.Settings;
         _isShowing = false;
+
         //SeeExitThroughWalls();
     }
 
@@ -75,27 +79,34 @@ public class ExitDoor : MonoBehaviour
     {
         _collider.enabled = true;
         
-        //float distance = (transform.position - _playerTransform.position).magnitude;
-        //float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
-        _VFXAnimator.SetTrigger("Open");
-        /*
+        float distance = (_zelligeDoorTransform.position - _playerTransform.position).magnitude;
+        float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
+        //_VFXAnimator.SetTrigger("Open");
         DOTween.To(() => _currentLerp, x => _currentLerp = x, lerp, 1.5f).OnComplete(() =>
         {
             _isCurrentlyOpened = true;
         });
-        */
     }
 
     private void Update()
     {
-        /*
         if (_isCurrentlyOpened)
         {
-            float distance = (transform.position - _playerTransform.position).magnitude;
+            float distance = (_zelligeDoorTransform.position - _playerTransform.position).magnitude;
             _currentLerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
         }
         _VFXAnimator.PlayInFixedTime("ZelligeDoorAnim_Open", 0, _currentLerp);
-        */
+        
+        #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.I))
+        { 
+            CloseDoor();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            OpenDoor();
+        }
+        #endif
     }
 
     [Button("Close Door")]
@@ -103,10 +114,10 @@ public class ExitDoor : MonoBehaviour
     {
         _collider.enabled = false;
         _isCurrentlyOpened = false;
-        _VFXAnimator.SetTrigger("Close");
+        //_VFXAnimator.SetTrigger("Close");
 
 
-        //DOTween.To(() => _currentLerp, x => _currentLerp = x, 0.0f, 1.5f);
+        DOTween.To(() => _currentLerp, x => _currentLerp = x, 0.0f, 1.5f);
     }
 
     public void SeeExitThroughWalls()
