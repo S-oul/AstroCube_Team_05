@@ -84,10 +84,10 @@ public class MemoryObject : MonoBehaviour, IInteractable
             }
 
             if (!subtitle._voiceLineEvent.IsNull) RuntimeManager.PlayOneShot(subtitle._voiceLineEvent, soundPos);
-            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.color);
+            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
-        LocalizationManager.Instance.PrintString("", Color.white);
+        LocalizationManager.Instance.ClearString();
         
         yield return new WaitForSeconds(_delayBeforeStopEvent);
 
