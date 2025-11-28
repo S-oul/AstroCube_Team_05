@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
     [SerializeField] float _floorDistance = 0.5f;
+    [SerializeField] private float _coyoteTime;
 
     [Header("Crouch")]
     [SerializeField] bool _canCrouch = true;
@@ -45,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 _verticalVelocity;
     Vector3 _horizontalVelocity;
     bool _isGrounded;
+    float _currentCoyoteTime;
 
     float _defaultCameraHeight;
     float _defaultControllerHeight;
@@ -104,6 +106,8 @@ public class PlayerMovement : MonoBehaviour
 
         defaultSpeed = _gameSettings.PlayerMoveSpeed * _speedMultiplier;
         _currentMoveSpeed = defaultSpeed;
+
+        _currentCoyoteTime = _coyoteTime;
     }
 
     private void FixedUpdate()
@@ -156,9 +160,15 @@ public class PlayerMovement : MonoBehaviour
             _horizontalVelocity.z = _horizontalVelocity.z < -1 ? -1 : _horizontalVelocity.z;
         }
 
+        if (_isGrounded)
+            _currentCoyoteTime = _coyoteTime;
+        else
+            _currentCoyoteTime -= Time.fixedDeltaTime;
+
         // jump
-        if (_jumpInput && _isGrounded) {
+        if (_jumpInput && (_isGrounded || _currentCoyoteTime > 0f)) {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
+            _currentCoyoteTime = -1.0f;
         }
 
         if (_isGrounded && !_jumpInput)
