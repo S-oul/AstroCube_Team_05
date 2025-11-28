@@ -40,7 +40,6 @@ public class ExitDoor : MonoBehaviour
         else _instance = this;
         
         _playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
-        print(_playerTransform);
         
         _collider = GetComponent<Collider>();
 

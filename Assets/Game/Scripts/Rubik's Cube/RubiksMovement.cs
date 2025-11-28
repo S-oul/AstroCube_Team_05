@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using FMODUnity;
 
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -66,6 +67,7 @@ public class RubiksMovement : MonoBehaviour
     [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenMoves = .5f;
     [ShowIf("_DoAutoMoves"), SerializeField] float TimeBetweenSequence = 1f;
     [ShowIf("_DoAutoMoves"), SerializeField] List<RubiksMove> AutoMovesSequence = new List<RubiksMove>();
+    private int _sequenceIndex = 0;
 
     [Header("Visuals")]
     [SerializeField] GameObject _DustParticleAfterRotate;
@@ -140,24 +142,49 @@ public class RubiksMovement : MonoBehaviour
         _DoAutoMoves = true;
         StartCoroutine(FollowSequence());
     }
+
+    public void DoNextSequenceMove()
+    {
+        if (!_isRotating)
+            StartCoroutine(NextSequenceMove());
+    }
+    IEnumerator NextSequenceMove()
+    {
+        if (!AutoMovesSequence[_sequenceIndex].Axis)
+        {
+            AutoMovesSequence[_sequenceIndex].Axis = GetAxisFromCube(AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].orientation);
+        }
+
+        StartCoroutine(RotateAxisCoroutine(AutoMovesSequence[_sequenceIndex].Axis, AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].clockWise, TimeToRotate, AutoMovesSequence[_sequenceIndex].orientation));
+        yield return new WaitForSeconds(TimeToRotate);
+
+        _sequenceIndex++;
+        if (_sequenceIndex == AutoMovesSequence.Count)
+        {
+            _sequenceIndex = 0;
+        }
+    }
     IEnumerator FollowSequence()
     {
         int nbOfSquenceExecuted = 0;
         while (nbOfSquenceExecuted != ExecuteSequenceXTime)
         {
-            int SequenceIndex = 0;
             while (true) //maybe While(SequenceIndex != AutoMovesSequence.Count-1) but true easier
             {
-                if (!AutoMovesSequence[SequenceIndex].Axis)
+                if (!AutoMovesSequence[_sequenceIndex].Axis)
                 {
-                    AutoMovesSequence[SequenceIndex].Axis = GetAxisFromCube(AutoMovesSequence[SequenceIndex].cube, AutoMovesSequence[SequenceIndex].orientation);
+                    AutoMovesSequence[_sequenceIndex].Axis = GetAxisFromCube(AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].orientation);
                 }
 
-                StartCoroutine(RotateAxisCoroutine(AutoMovesSequence[SequenceIndex].Axis, AutoMovesSequence[SequenceIndex].cube, AutoMovesSequence[SequenceIndex].clockWise, TimeToRotate, AutoMovesSequence[SequenceIndex].orientation));
+                StartCoroutine(RotateAxisCoroutine(AutoMovesSequence[_sequenceIndex].Axis, AutoMovesSequence[_sequenceIndex].cube, AutoMovesSequence[_sequenceIndex].clockWise, TimeToRotate, AutoMovesSequence[_sequenceIndex].orientation));
                 yield return new WaitForSeconds(TimeToRotate);
 
-                SequenceIndex++;
-                if (SequenceIndex == AutoMovesSequence.Count) break;
+                _sequenceIndex++;
+                if (_sequenceIndex == AutoMovesSequence.Count)
+                {
+                    _sequenceIndex = 0;
+                    break;
+                }
 
                 yield return new WaitForSeconds(TimeBetweenMoves);
             }
@@ -166,6 +193,8 @@ public class RubiksMovement : MonoBehaviour
             yield return new WaitForSeconds(TimeBetweenSequence);
         }
         EventManager.TriggerEndCubeSequence();
+        _moves.Clear();
+        
     }
 
     IEnumerator Scramble()
@@ -786,6 +815,29 @@ public class RubiksMovement : MonoBehaviour
             }
         }
     }
+
+    public bool IsTransformInside(Transform t)
+    {
+        Vector3 localPos = t.InverseTransformPoint(transform.position);
+        Vector3 halfSize = (transform.parent.localScale*3)/2;
+        bool isInside =
+            Mathf.Abs(localPos.x) <= halfSize.x &&
+            Mathf.Abs(localPos.y) <= halfSize.y &&
+            Mathf.Abs(localPos.z) <= halfSize.z;
+
+        /*print(isInside ?
+            t.name + " is " + isInside + " + this.name"
+            : t.name + " is NOT " + isInside + " + this.name"
+        );*/
+        return isInside;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(transform.position, transform.parent.localScale*3);
+    }
+
 }
 
 namespace RubiksStatic
