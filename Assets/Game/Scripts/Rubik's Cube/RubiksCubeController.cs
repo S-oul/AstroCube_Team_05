@@ -99,7 +99,7 @@ public class RubiksCubeController : MonoBehaviour
 
         if (_controlledScript == null) return;
         if (_controlledScript.IsRotating) return;
-
+        GameManager.Instance.RubiksCube = _controlledScript;
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 

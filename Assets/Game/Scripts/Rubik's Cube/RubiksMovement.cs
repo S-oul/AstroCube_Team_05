@@ -252,8 +252,8 @@ public class RubiksMovement : MonoBehaviour
     }
     void ReverseMoves(float timeToReset)
     {
-        _doScramble = false;
-        StartCoroutine(ReverseAllMoves(timeToReset));
+        if (IsTransformInside(GameManager.Instance.Player.transform))
+            StartCoroutine(ReverseAllMoves(timeToReset));
     }
     IEnumerator ReverseAllMoves(float time)
     {
