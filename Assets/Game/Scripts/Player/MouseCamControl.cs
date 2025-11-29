@@ -61,7 +61,7 @@ public class MouseCamControl : MonoBehaviour
         UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
         ForceResetSelection();
-        _detectableLayer = GameManager.Instance.Settings.AimAtObject? _detectableObjectLayer : _detectableTileLayer;
+        _detectableLayer = GameManager.Instance.Settings.AimAtObject ? _detectableObjectLayer : _detectableTileLayer;
     }
 
     public void OnCamera(InputAction.CallbackContext callbackContext)
@@ -155,7 +155,12 @@ public class MouseCamControl : MonoBehaviour
             return;
 
         if (forceNewSelection)
-            rubiksCubeController.SetActualCube(_oldTile.parent);
+        {
+            if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
+            {
+                rubiksCubeController.SetActualCube(_oldTile.parent);
+            }
+        }
         else
         {
             if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)

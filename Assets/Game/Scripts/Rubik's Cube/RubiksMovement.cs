@@ -146,9 +146,10 @@ public class RubiksMovement : MonoBehaviour
         if (IsArtCube || IsPreview) return;
         foreach (var obj in allParticle)
         {
+            if(obj != null && obj.transform != null && obj.transform.root != null)
             GameObject.DestroyImmediate(obj.transform.root.gameObject);
         }
-
+        allParticle.Clear();
     }
 
     private void OnEnable()
