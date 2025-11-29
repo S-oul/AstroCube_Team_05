@@ -51,7 +51,11 @@ public class MouseCamControl : MonoBehaviour
 
     CinemachineVirtualCamera _cinemashineCam;
     LayerMask _detectableLayer;
+    private void Awake()
+    {
+        transform.localPosition = Vector3.zero;
 
+    }
     void Start()
     {
         _cinemashineCam = GetComponent<CinemachineVirtualCamera>();
