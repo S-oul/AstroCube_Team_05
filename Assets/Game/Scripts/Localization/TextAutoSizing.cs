@@ -8,6 +8,7 @@ public class TextAutoSizing : MonoBehaviour
 
     [SerializeField] private Vector2 _margin;
     [SerializeField] private TMP_Text _text;
+    public float PreferredHeight => _text.preferredHeight;
 
     private void Reset()
     {

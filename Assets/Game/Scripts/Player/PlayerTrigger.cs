@@ -75,7 +75,6 @@ public class PlayerTrigger : MonoBehaviour
                 EventManager.TriggerLevelFinished();
 
                 if (!_victoryZoneEvent.IsNull) RuntimeManager.PlayOneShot(_victoryZoneEvent);
-                Destroy(other.gameObject);
                 break;
 
             case "DeathZone":
@@ -103,8 +102,11 @@ public class PlayerTrigger : MonoBehaviour
             case "ObjectLoader":
                 other.GetComponent<ObjectLoader>().SwitchActivate();
                 break;
-        }
 
+            case "UncontrolledFallingTrigger": // to be triggered when the player starts falling though the menger sponge fractal. 
+                _playerMovement.SetUncontrolledFalling(true);
+                break;
+        }
     }
 
     private void OnTriggerStay(Collider other)
