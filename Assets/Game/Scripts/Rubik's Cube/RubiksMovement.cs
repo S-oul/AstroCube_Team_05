@@ -85,6 +85,9 @@ public class RubiksMovement : MonoBehaviour
 
     public UnityEvent OnCorrectAction;
 
+    public List<ParticleSystem> allParticle;
+
+
     #region Accessor
     public bool IsPreview { get => _isPreview; set => _isPreview = value; }
     public bool IsRotating { get => _isRotating; }
@@ -104,7 +107,6 @@ public class RubiksMovement : MonoBehaviour
     #endregion
 
 
-    public List<ParticleSystem> allParticle;
     private void Awake()
     {
         _allBlocks.Clear();
@@ -123,8 +125,9 @@ public class RubiksMovement : MonoBehaviour
     Coroutine DustCorutine;
     private void Start()
     {
-        allParticle.Clear();
+        if (!Application.isPlaying) return;
         if (IsArtCube || IsPreview) return;
+        allParticle.Clear();
         List<Tile> tiles = new List<Tile>();
         AllBlocks.ForEach(t => tiles.AddRange(t.GetComponentsInChildren<Tile>().ToList()));
         foreach (var tile in tiles)
@@ -133,22 +136,18 @@ public class RubiksMovement : MonoBehaviour
             if (!ps) continue;
 
             allParticle.Add(ps);
-            ps.transform.parent.gameObject.SetActive(false);
+            ps.transform.root.gameObject.SetActive(false);
         }
     }
 
     private void OnDestroy()
     {
-        for (int i = 0; i < allParticle.Count; i++)
+        if (!Application.isPlaying) return;
+        if (IsArtCube || IsPreview) return;
+        foreach (var obj in allParticle)
         {
-            if (allParticle[i] != null && allParticle[i].transform != null)
-            {
-                var ttt = allParticle[i].transform;
-                DestroyImmediate(allParticle[i].gameObject);
-                DestroyImmediate(ttt);
-            }
+            GameObject.DestroyImmediate(obj.transform.root.gameObject);
         }
-        allParticle.Clear();
 
     }
 
@@ -176,9 +175,6 @@ public class RubiksMovement : MonoBehaviour
         EventManager.OnPlayerReset -= ReverseMoves;
         EventManager.OnPlayerUndo -= UndoMove;
         EventManager.OnActivateSequence -= StartAutoMoves;
-
-        //allParticle.ForEach(t => DestroyImmediate(t));
-
     }
 
     public void StartAutoMoves()
@@ -476,7 +472,7 @@ public class RubiksMovement : MonoBehaviour
                     y++;
                 }
 
-                if(DustCorutine is not null)StopCoroutine(DustCorutine);
+                if (DustCorutine is not null) StopCoroutine(DustCorutine);
                 DustCorutine = null;
             }
 
@@ -525,7 +521,7 @@ public class RubiksMovement : MonoBehaviour
     IEnumerator DesacParticle()
     {
         yield return new WaitForSeconds(3f);
-        allParticle.ForEach(t => t.transform.parent.gameObject.SetActive(false));
+        allParticle.ForEach(t => t.transform.root.gameObject.SetActive(false));
     }
 
     private void _CheckCorrectActions(List<int> blockIndexs)
