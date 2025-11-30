@@ -29,7 +29,7 @@ public class PlayerStepDetection : MonoBehaviour
         _lastPosition = transform.position;
     }
 
-    private void Update()
+    private void  FixedUpdate()
     {
         Vector3 currentPosition = transform.position;
         float velocity = (currentPosition - _lastPosition).magnitude;
@@ -58,23 +58,22 @@ public class PlayerStepDetection : MonoBehaviour
         if (footstepFmodEvent.IsNull)
             return;
 
-        int layerMask = LayerMask.GetMask("Floor", "Tile");
+        int layerMask = LayerMask.GetMask("Floor");
         
         Vector3 startPoint = transform.position + transform.up * 0.5f;
         
         if (Physics.Raycast(startPoint, -transform.up, out RaycastHit hit, groundCheckDistance, layerMask))
         {
             FloorType floorType;
-            hit.collider.TryGetComponent<FloorType>(out floorType);
+            hit.collider.TryGetComponent(out floorType);
             
-            if (floorType == null) 
+            if (!floorType) 
             {
                 floorType = hit.collider.GetComponentInParent<FloorType>();
             }
 
             string detectedTag = "Concrete";
-            
-            if (floorType != null) 
+            if (floorType) 
             {
                 detectedTag = floorType.FloorTypeTag;
             }
@@ -86,6 +85,8 @@ public class PlayerStepDetection : MonoBehaviour
             {
                 terrainSwitch = "PR_FT";
             }
+            
+            Debug.Log("Footstep on: " + detectedTag);
 
             instance.setParameterByNameWithLabel(terrainSwitch, detectedTag);
             instance.start();

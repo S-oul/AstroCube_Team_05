@@ -79,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
     public bool FreeFallZone { get => _FreeFallZone; set => _FreeFallZone = value; }
 
     private float _timerBeforeNextStep = 0;
+    private PlayerStepDetection _stepDetection;
     public float _timerTNextStep = 1;
 
     private void OnEnable()
@@ -98,6 +99,12 @@ public class PlayerMovement : MonoBehaviour
     public void DisableBobbing() => _isViewBobbingEnabled = false;
 
     public void UnParentPlayer() => transform.SetParent(null);
+
+    private void Awake()
+    {
+        _stepDetection = GetComponent<PlayerStepDetection>();
+    }
+
     void Start()
     {
         _gameSettings = GameManager.Instance.Settings;
@@ -172,6 +179,7 @@ public class PlayerMovement : MonoBehaviour
         if (_jumpInput && (_isGrounded || _currentCoyoteTime > 0f)) {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
             _currentCoyoteTime = -1.0f;
+            _stepDetection.Jump();
         }
 
         if (_isGrounded && !_jumpInput)

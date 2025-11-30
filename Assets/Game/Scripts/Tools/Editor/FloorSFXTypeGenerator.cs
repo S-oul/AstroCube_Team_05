@@ -15,6 +15,8 @@ public class FloorSFXTypeGenerator : MonoBehaviour
             if (obj.layer != floorLayer && obj.layer != tileLayer)
                 continue;
             
+            EditorUtility.SetDirty(obj);
+            
             if (obj.GetComponent<FloorType>() != null)
                 continue;
             
@@ -25,6 +27,8 @@ public class FloorSFXTypeGenerator : MonoBehaviour
             
             BoxCollider col = obj.AddComponent<BoxCollider>();
             col.isTrigger = true;
+            
+            AssetDatabase.SaveAssetIfDirty(obj);
         }
     }
 }
