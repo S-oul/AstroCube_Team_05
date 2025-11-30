@@ -25701,7 +25701,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4681058266333535555, guid: c77ea91a2275ef54e9942acde3330db7,
+        type: 3}
+      insertIndex: 27
+      addedObject: {fileID: 1819327624}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c77ea91a2275ef54e9942acde3330db7, type: 3}
 --- !u!114 &454309333 stripped
@@ -68114,6 +68118,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.7071068
       objectReference: {fileID: 0}
+    - target: {fileID: 3751596808873362060, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: _ShowStripLayerToPlayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3814425506361698558, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -73680,6 +73689,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6473350233584902950, guid: 37ecbaafdeb09ac4e88d8aeecd7d304a,
     type: 3}
   m_PrefabInstance: {fileID: 804757655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &805670661 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4681058266333535555, guid: c77ea91a2275ef54e9942acde3330db7,
+    type: 3}
+  m_PrefabInstance: {fileID: 454309332}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &806125186
 PrefabInstance:
@@ -108124,6 +108139,67 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 173fecae62a67a641af8ef20723ed6aa, type: 3}
+--- !u!1 &1819327623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1819327624}
+  - component: {fileID: 1819327625}
+  m_Layer: 0
+  m_Name: CALL FUNCTIONS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1819327624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819327623}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 805670661}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1819327625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819327623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8c1bc3611ee1841b8a1578476843df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationMode: 0
+  waitTime: 1
+  _events:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1826627895}
+        m_TargetAssemblyTypeName: RubiksCubeController, Assembly-CSharp
+        m_MethodName: set_ShowStripLayerToPlayer
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1001 &1822853341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108265,6 +108341,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &1826627895 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3751596808873362060, guid: e0c85bf540713094da1c4173f8b550de,
+    type: 3}
+  m_PrefabInstance: {fileID: 716216890}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1827273486 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5982506399471399771, guid: e0c85bf540713094da1c4173f8b550de,
