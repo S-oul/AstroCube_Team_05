@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
+using Debug = FMOD.Debug;
 
 public class RubiksCubeController : MonoBehaviour
 {
@@ -367,6 +368,10 @@ public class RubiksCubeController : MonoBehaviour
     /// <returns></returns>
     bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
+        UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
+        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
+            return false;
+        
         List<SelectionCube> selectionCubes = new List<SelectionCube>();
         bool isOneTileLocked = false;
         bool isPlayerOnATile = false;
