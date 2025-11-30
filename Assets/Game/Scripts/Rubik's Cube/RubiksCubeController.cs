@@ -157,7 +157,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript && !_controlledScript.IsRotating  && ControlledScript.IsTransformInside(_player))
+        if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
             if (!_canPlayerUseIt) return;
 
@@ -379,7 +379,7 @@ public class RubiksCubeController : MonoBehaviour
         {
             if (_controlledScript.IsRotating || _controlledScript.IsReversing) return false;
 
-       
+
             var AllBlocksInFace = _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis);
             bool isSameBlock = OldBlocksInFace == AllBlocksInFace;
             OldBlocksInFace = AllBlocksInFace;
@@ -387,7 +387,12 @@ public class RubiksCubeController : MonoBehaviour
             foreach (Transform go in _replicatedScript[0].AllBlocks)
             {
                 if (isSameBlock) break;
-                go.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(false);
+                var anim = go.GetComponentInChildren<ArtRubiksAnimator>();
+                if (anim)
+                {
+                    anim.SetSelectedBool(false);
+                    anim.StopAllCoroutines();
+                }
             }
 
             foreach (Transform go in AllBlocksInFace)
