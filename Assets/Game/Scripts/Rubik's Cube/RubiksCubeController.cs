@@ -32,7 +32,7 @@ public class RubiksCubeController : MonoBehaviour
     [SerializeField] Transform _player;
     [SerializeField] DetectNewParent _detectParentForGroundRotation;
 
-    SliceAxis _selectedSlice = 0;
+    [SerializeField] SliceAxis _selectedSlice = 0;
     private GameSettings _gameSettings;
 
     bool _canPlayerMoveAxis = true;
@@ -60,8 +60,6 @@ public class RubiksCubeController : MonoBehaviour
                 _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
-        if (GameManager.Instance.IsUIRubiksCubeEnabled)
-            ActionSwitchLineCols(true, false);
     }
     private void Start()
     {
@@ -101,7 +99,7 @@ public class RubiksCubeController : MonoBehaviour
 
         if (_controlledScript == null) return;
         if (_controlledScript.IsRotating) return;
-
+        GameManager.Instance.RubiksCube = _controlledScript;
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 

@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class LevelSelectionView : UIView
 {
@@ -28,6 +30,9 @@ public class LevelSelectionView : UIView
 
     private UIManager uiManager;
 
+    private InputAction _cancelAction;
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -38,6 +43,15 @@ public class LevelSelectionView : UIView
     {
         GenerateList();
         backButton.onClick.AddListener(OnBackClicked);
+    }
+
+    private void OnEnable()
+    {
+        var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
+        _cancelAction = uiModule.cancel;
+
+        _cancelAction.performed += OnCancelPerformed;
+
     }
 
     private void GenerateList()
@@ -167,6 +181,13 @@ public class LevelSelectionView : UIView
             backButton.Select();
         else
             items[currentIndex].Button.Select();
+    }
+
+
+    private void OnCancelPerformed(InputAction.CallbackContext ctx)
+    {
+        Hide();
+        uiManager.Show<MainMenuView>();
     }
 
     private void SmoothScroll()

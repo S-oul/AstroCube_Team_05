@@ -154,6 +154,15 @@ public class InputHandler : MonoBehaviour
             _controller.ActionRotateCubeUI(ctx.ReadValue<Vector2>());
     }
 
+    public void OnEscape(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            EventManager.TriggerEscape();
+        }
+    }
+
+
     public void OnResetRoom(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.RESET_ROOM)) return;
@@ -249,8 +258,8 @@ public class InputHandler : MonoBehaviour
     void OnFakeCamera(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.CAMERA)) return;
-        if (!_controller.ControlledScript.IsReversing)
-            _mouseCam.OnCamera(ctx);
+        if (_controller.ControlledScript.IsReversing) return;
+        if (ctx.performed) _mouseCam.OnCamera(ctx);
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
