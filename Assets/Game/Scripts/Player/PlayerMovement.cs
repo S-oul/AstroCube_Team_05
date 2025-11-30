@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
     private float _timerBeforeNextStep = 0;
     private PlayerStepDetection _stepDetection;
     public float _timerTNextStep = 1;
+    private bool _isFirstFrame = true;
 
     private void OnEnable()
     {
@@ -136,6 +137,18 @@ public class PlayerMovement : MonoBehaviour
         {
             // player just landed on the ground
             EventManager.TriggerPlayerStopsFalling();
+            
+            // Don't play landing sound on first frame (scene load)
+            if (!_isFirstFrame)
+            {
+                _stepDetection.Land();
+            }
+        }
+        
+        // After first frame, allow landing sounds
+        if (_isFirstFrame)
+        {
+            _isFirstFrame = false;
         }
 
         //apply gravity
