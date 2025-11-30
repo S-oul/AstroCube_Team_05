@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 432423743102860373}
   - component: {fileID: 3689885701422683347}
   - component: {fileID: 6605409272754293256}
+  - component: {fileID: 232361930005937961}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_01'
   m_TagString: Untagged
@@ -314,6 +315,39 @@ MonoBehaviour:
   nextTrigger: {fileID: 712234836499161388}
   playerTag: Player
   disableSelfAfterTrigger: 1
+--- !u!114 &232361930005937961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397747147724182174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -25014119
+      Data2: 1093321709
+      Data3: 291894972
+      Data4: 684524676
+    Path: event:/SFX/Whoosh/SFX_Falling_Velocity
+  Event: 
+  EventPlayTrigger: 3
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: PR_Wind
+    Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 10000
+  OverrideMaxDistance: 10000
 --- !u!1 &436282804526364164
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,6 +833,7 @@ GameObject:
   - component: {fileID: 3993632711586278445}
   - component: {fileID: 5378025168674933419}
   - component: {fileID: 5592908291288307311}
+  - component: {fileID: 5328946517180989482}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_12'
   m_TagString: Untagged
@@ -939,9 +974,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previousTrigger: {fileID: 0}
-  nextTrigger: {fileID: 0}
+  nextTrigger: {fileID: 4227461664977327227}
   playerTag: Player
   disableSelfAfterTrigger: 1
+--- !u!114 &5328946517180989482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551414884775066055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 232361930005937961}
+    Params:
+    - Name: PR_Wind
+      Value: 0
+  - Target: {fileID: 5864320452258834316}
+    Params: []
+  TriggerEvent: 3
 --- !u!1 &1681782204379116576
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,6 +1012,7 @@ GameObject:
   - component: {fileID: 771703519554272460}
   - component: {fileID: 1381208975758528710}
   - component: {fileID: 9158949641859839519}
+  - component: {fileID: 7901463620744084345}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_31'
   m_TagString: Untagged
@@ -1099,6 +1156,37 @@ MonoBehaviour:
   nextTrigger: {fileID: 0}
   playerTag: Player
   disableSelfAfterTrigger: 1
+--- !u!114 &7901463620744084345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681782204379116576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -25014119
+      Data2: 1093321709
+      Data3: 291894972
+      Data4: 684524676
+    Path: event:/SFX/Whoosh/SFX_Falling_Velocity
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 3
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 10000
+  OverrideMaxDistance: 10000
 --- !u!1 &3012867921205837577
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,6 +1201,7 @@ GameObject:
   - component: {fileID: 4655741244820526032}
   - component: {fileID: 171905099081143644}
   - component: {fileID: 8748451630097401222}
+  - component: {fileID: 5611345288558551572}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_11'
   m_TagString: Untagged
@@ -1256,6 +1345,27 @@ MonoBehaviour:
   nextTrigger: {fileID: 1551414884775066055}
   playerTag: Player
   disableSelfAfterTrigger: 1
+--- !u!114 &5611345288558551572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3012867921205837577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 232361930005937961}
+    Params:
+    - Name: PR_Wind
+      Value: 2
+  - Target: {fileID: 5864320452258834316}
+    Params: []
+  TriggerEvent: 3
 --- !u!1 &3787807569791786628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,6 +1694,7 @@ GameObject:
   - component: {fileID: 3757117042176818273}
   - component: {fileID: 2495295529241897767}
   - component: {fileID: 409074676256786272}
+  - component: {fileID: 6873773427092688270}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_28'
   m_TagString: Untagged
@@ -1727,6 +1838,27 @@ MonoBehaviour:
   nextTrigger: {fileID: 468200080125882053}
   playerTag: Player
   disableSelfAfterTrigger: 1
+--- !u!114 &6873773427092688270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4227461664977327227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 232361930005937961}
+    Params:
+    - Name: PR_Wind
+      Value: 3
+  - Target: {fileID: 5864320452258834316}
+    Params: []
+  TriggerEvent: 3
 --- !u!1 &4243614518588830215
 GameObject:
   m_ObjectHideFlags: 0
@@ -1741,6 +1873,7 @@ GameObject:
   - component: {fileID: 457768289555628963}
   - component: {fileID: 8161025425093665951}
   - component: {fileID: 5594485070953853771}
+  - component: {fileID: 5185352727308018636}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_06'
   m_TagString: Untagged
@@ -1884,6 +2017,27 @@ MonoBehaviour:
   nextTrigger: {fileID: 296111250299434205}
   playerTag: Player
   disableSelfAfterTrigger: 1
+--- !u!114 &5185352727308018636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243614518588830215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 232361930005937961}
+    Params:
+    - Name: PR_Wind
+      Value: 1
+  - Target: {fileID: 5864320452258834316}
+    Params: []
+  TriggerEvent: 3
 --- !u!1 &7421876013810726918
 GameObject:
   m_ObjectHideFlags: 0
