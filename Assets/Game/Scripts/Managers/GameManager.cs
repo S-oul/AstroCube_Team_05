@@ -224,7 +224,6 @@ public class GameManager : MonoBehaviour
     private void ToggleRubiksCube(bool isEnabled)
     {
         isUIRubiksCubeEnabled = isEnabled;
-        _rubiksCubeUI.SetActive(isEnabled);
     }
 
     public void MakeCutsceneLevelMarkAsFinished()
