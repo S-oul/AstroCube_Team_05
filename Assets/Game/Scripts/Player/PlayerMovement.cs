@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Modifiers")]
     [SerializeField, Range(0.0f, 2.0f)] float _speedMultiplier = 1.0f;
 
+    [SerializeField, Min(0.0f)] private float _stairsSpeedMultiplier = 0.85f;
+
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
     [SerializeField] float _floorDistance = 0.5f;
@@ -238,8 +240,17 @@ public class PlayerMovement : MonoBehaviour
         if (_isGrounded && _isUncontrolledFalling) _isUncontrolledFalling = false;
         if (_isUncontrolledFalling) _horizontalVelocity = Vector3.zero; //cancel any non-vertical movement
 
+        bool _isOnStairs = false;
+        if (Physics.Raycast(transform.position, -transform.up, out var hit, 10000, LayerMask.GetMask("Floor")))
+        {
+            if (hit.normal != Vector3.up)
+            {
+                _isOnStairs = true;
+            }
+        }
+
         // apply calculated Movement
-        float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
+        float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor * (_isOnStairs ? _stairsSpeedMultiplier : 1);
         if (_hasGravity) {
             _controller.Move((_horizontalVelocity * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime) + _externallyAppliedMovement) * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
             _controller.Move(_verticalVelocity * Time.deltaTime);
@@ -332,9 +343,9 @@ public class PlayerMovement : MonoBehaviour
             if (_startWalkingDuration <= _gameSettings.StartWalkingTransitionDuration) {
                 _stopWalkingDuration = 0.0f;
                 _startWalkingDuration += Time.deltaTime;
-                newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
+                newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingWalkMultiplier * Mathf.Lerp(_camera.transform.localPosition.y,
                     currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount,
-                    _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
+                    _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration));
             } else {
                 _walkingDuration += Time.deltaTime;
 
@@ -342,16 +353,16 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (hit.normal != Vector3.up)
                     {
-                        newCameraHeight = _gameSettings.ViewBobbingStairsMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingStairsCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                        newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingStairsMultiplier * (currentDefaultHeight + _gameSettings.HeadBobbingStairsCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount));
                     }
                     else
                     {
-                        newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                        newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingWalkMultiplier * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount));
                     }
                 }
                 else
                 {
-                    newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                    newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingWalkMultiplier * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount));
                 }
             }
         } else {

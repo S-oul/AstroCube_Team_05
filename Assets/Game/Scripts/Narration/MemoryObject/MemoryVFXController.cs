@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -56,18 +57,36 @@ public class MemoryVFXController : MonoBehaviour
         _vfx.SetVector3("Origin", _origin.transform.localPosition);
         if (_LDElement)
         {
-            _vfx.SetVector3("Origin_LD_Element_Position", _LDElement.transform.localPosition);
-            _vfx.SetVector3("Origin_LD_Element_Rotation", _LDElement.transform.rotation.eulerAngles);
-            _vfx.SetVector3("Origin_LD_Element_Scale", _LDElement.transform.localScale);
+            Vector3 localPosition = transform.InverseTransformPoint(_LDElement.transform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _LDElement.transform.rotation;
+            Vector3 localScale = new Vector3(
+                _LDElement.transform.lossyScale.x / transform.lossyScale.x,
+                _LDElement.transform.lossyScale.y / transform.lossyScale.y,
+                _LDElement.transform.lossyScale.z / transform.lossyScale.z
+            );
+
+            _vfx.SetVector3("Origin_LD_Element_Position", localPosition);
+            _vfx.SetVector3("Origin_LD_Element_Rotation", localRotation.eulerAngles);
+            _vfx.SetVector3("Origin_LD_Element_Scale", localScale);
         }
-        
-        //mettre l'objet en enfant pour avoir la bonne position (local ?)
-        
-        
-        // desactiver le mesh renderer et activer le collider apr�s toute l'animation
-        
-        
-        //Il faut que les models 3D soient READABLE
+    }
+
+    private void LateUpdate()
+    {
+        if (_LDElement)
+        {
+            Vector3 localPosition = transform.InverseTransformPoint(_LDElement.transform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _LDElement.transform.rotation;
+            Vector3 localScale = new Vector3(
+                _LDElement.transform.lossyScale.x / transform.lossyScale.x,
+                _LDElement.transform.lossyScale.y / transform.lossyScale.y,
+                _LDElement.transform.lossyScale.z / transform.lossyScale.z
+            );
+
+            _vfx.SetVector3("Origin_LD_Element_Position", localPosition);
+            _vfx.SetVector3("Origin_LD_Element_Rotation", localRotation.eulerAngles);
+            _vfx.SetVector3("Origin_LD_Element_Scale", localScale);
+        }
     }
 
     private IEnumerator PlayAnimation()
@@ -80,15 +99,23 @@ public class MemoryVFXController : MonoBehaviour
         
         yield return new WaitForSeconds(_stayDuration);
         
-        yield return DOTween
-            .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
-            .SetEase(Ease.InOutCubic).WaitForCompletion();
-
         if (_LDElement)
         {
+            DOTween
+                .To(() => _vfx.GetFloat("ParticleSizeMultiplier"), (t) => _vfx.SetFloat("ParticleSizeMultiplier", t), 0.3f, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+            yield return DOTween
+                .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+            
             _memoryObject.OnAnimationFinished?.Invoke();
-            _LDElement.GetComponent<MeshRenderer>().enabled = false;
             _LDElement.SetActive(true);
+        }
+        else
+        {
+            DOTween
+                .To(() => _vfx.GetFloat("ParticleSizeMultiplier"), (t) => _vfx.SetFloat("ParticleSizeMultiplier", t), 0, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
         }
     }
 

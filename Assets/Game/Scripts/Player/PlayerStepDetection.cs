@@ -18,7 +18,7 @@ public class PlayerStepDetection : MonoBehaviour
     private CharacterController _characterController;
     private Vector3 _lastPosition;
 
-    private float _timer = 0f;
+    private float _timer;
 
     //Use this 
     public bool PlayFootsteps { get => playFootsteps; set => playFootsteps = value; }
@@ -50,7 +50,7 @@ public class PlayerStepDetection : MonoBehaviour
         if (_timer >= footstepInterval)
         {
             PlayFootstep();
-            _timer = 0;
+            _timer = 0f;
         }
     }
 
