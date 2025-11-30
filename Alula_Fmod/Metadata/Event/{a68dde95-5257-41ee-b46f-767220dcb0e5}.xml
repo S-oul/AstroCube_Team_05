@@ -8,7 +8,7 @@
 			<value>VO_Level_13_Memory_Nastulus</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{a84dba6d-fc65-43e5-94b2-751f82909920}</destination>
@@ -62,7 +62,11 @@
 			<destination>{fd8d9d6e-2ff5-40d9-9bb7-3d3fc72e03ef}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{5bf7dc34-b090-4770-98bd-51f96a3a5c97}" />
+	<object class="EventAutomatableProperties" id="{5bf7dc34-b090-4770-98bd-51f96a3a5c97}">
+		<property name="maximumDistance">
+			<value>40</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{aba721db-637f-4b36-895c-aa31cbf77817}" />
 	<object class="Timeline" id="{f7489ca1-ef95-420e-a526-d8058f74e743}">
 		<property name="isProxyEnabled">
@@ -102,6 +106,7 @@
 	<object class="MixerBusEffectChain" id="{f211cf89-c81c-42c6-a231-b18980a4fce7}">
 		<relationship name="effects">
 			<destination>{ad7430fd-377e-4212-b53d-c38fbff590e2}</destination>
+			<destination>{5853b9aa-fefd-4e71-b6e2-618cd79c0a11}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9a696ada-749a-4493-bcbf-9a2107a39453}" />
@@ -124,6 +129,7 @@
 	</object>
 	<object class="MixerBusFader" id="{9043a993-28e9-4942-a5c0-3dad0615718e}" />
 	<object class="MixerBusFader" id="{ad7430fd-377e-4212-b53d-c38fbff590e2}" />
+	<object class="SpatialiserEffect" id="{5853b9aa-fefd-4e71-b6e2-618cd79c0a11}" />
 	<object class="SingleSound" id="{561509fc-4ad8-4600-ad71-0ffbe9cff5dc}">
 		<relationship name="audioFile">
 			<destination>{4b39643e-c466-45d0-ad72-18ab0aa25b27}</destination>
