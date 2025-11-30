@@ -18,7 +18,7 @@ public class PlayerStepDetection : MonoBehaviour
     private CharacterController _characterController;
     private Vector3 _lastPosition;
 
-    private float timer = 0f;
+    private float _timer = 0f;
 
     //Use this 
     public bool PlayFootsteps { get => playFootsteps; set => playFootsteps = value; }
@@ -27,6 +27,7 @@ public class PlayerStepDetection : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _lastPosition = transform.position;
+        _timer = footstepInterval;
     }
 
     private void  FixedUpdate()
@@ -40,16 +41,16 @@ public class PlayerStepDetection : MonoBehaviour
         
         if (velocity < 0.15f)
         {
-            timer = 0;
+            _timer = footstepInterval;
             return;
         }
 
-        timer += Time.deltaTime;
+        _timer += Time.deltaTime;
 
-        if (timer >= footstepInterval)
+        if (_timer >= footstepInterval)
         {
             PlayFootstep();
-            timer = 0f;
+            _timer = 0;
         }
     }
 
