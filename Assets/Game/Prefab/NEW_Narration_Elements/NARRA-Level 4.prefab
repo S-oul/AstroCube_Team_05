@@ -35,6 +35,100 @@ Transform:
   - {fileID: 3606399556080662056}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4024639138719680155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6227251770980897001}
+  - component: {fileID: 7790241904677047610}
+  m_Layer: 0
+  m_Name: 'ACTIVATE [GameObject]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6227251770980897001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024639138719680155}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 28.435846, y: -51.539364, z: -9.852272}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4159021574439353939}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7790241904677047610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024639138719680155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9f91d36c644ae28ada14638cdbb951, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationMode: 0
+  waitTime: 1
+  _targetGameObject: {fileID: 0}
+--- !u!1 &7629182723381965513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 456215815610866352}
+  - component: {fileID: 1515287920233658054}
+  m_Layer: 0
+  m_Name: 'DISABLE [GameObject]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &456215815610866352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629182723381965513}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 28.335625, y: -50.87556, z: -9.121017}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4159021574439353939}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1515287920233658054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629182723381965513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d398fe4f994660a716412e14a378a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationMode: 0
+  waitTime: 1
+  _targetGameObject: {fileID: 0}
 --- !u!1001 &1328707449488592173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -171,7 +265,7 @@ PrefabInstance:
     - target: {fileID: 2652759112920183021, guid: bcfa5196b9b652143a5f918f78782b36,
         type: 3}
       propertyPath: autoPlay
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2765174842860649694, guid: bcfa5196b9b652143a5f918f78782b36,
         type: 3}
@@ -191,7 +285,7 @@ PrefabInstance:
     - target: {fileID: 4096965808804780003, guid: bcfa5196b9b652143a5f918f78782b36,
         type: 3}
       propertyPath: m_Name
-      value: 'AUTO PLAY SEQUENCER [Sequencer]'
+      value: PLAY SEQUENCER [Sequencer] (0)
       objectReference: {fileID: 0}
     - target: {fileID: 4639085604309904694, guid: bcfa5196b9b652143a5f918f78782b36,
         type: 3}
@@ -263,7 +357,16 @@ PrefabInstance:
     - {fileID: 194206808671994140, guid: bcfa5196b9b652143a5f918f78782b36, type: 3}
     - {fileID: 9078991479375346286, guid: bcfa5196b9b652143a5f918f78782b36, type: 3}
     - {fileID: 6906532064635419365, guid: bcfa5196b9b652143a5f918f78782b36, type: 3}
-    m_AddedGameObjects: []
+    - {fileID: 2765174842860649694, guid: bcfa5196b9b652143a5f918f78782b36, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9036194045410193636, guid: bcfa5196b9b652143a5f918f78782b36,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6227251770980897001}
+    - targetCorrespondingSourceObject: {fileID: 9036194045410193636, guid: bcfa5196b9b652143a5f918f78782b36,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 456215815610866352}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcfa5196b9b652143a5f918f78782b36, type: 3}
 --- !u!4 &4159021574439353939 stripped
@@ -517,6 +620,17 @@ PrefabInstance:
       propertyPath: m_text
       value: "Mariam : Maybe it\u2019s still listening\u2026"
       objectReference: {fileID: 0}
+    - target: {fileID: 555704422061037238, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b7c7eb4c392b50743842bd28c3a46d7a,
+        type: 2}
+    - target: {fileID: 555704422061037238, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1081069108214866761, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
         type: 3}
       propertyPath: m_Name
@@ -593,10 +707,32 @@ PrefabInstance:
       value: "Mariam : I\u2019m definitely not dreaming, \nwhy does this place look
         like my home?\r\n"
       objectReference: {fileID: 0}
+    - target: {fileID: 4462444809497370416, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b7c7eb4c392b50743842bd28c3a46d7a,
+        type: 2}
+    - target: {fileID: 4462444809497370416, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5913091983370359882, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
         type: 3}
       propertyPath: m_text
       value: "Mariam : What would Nastulus do\u2026"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5913091983370359882, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b7c7eb4c392b50743842bd28c3a46d7a,
+        type: 2}
+    - target: {fileID: 5913091983370359882, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5955730944805521578, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
         type: 3}
