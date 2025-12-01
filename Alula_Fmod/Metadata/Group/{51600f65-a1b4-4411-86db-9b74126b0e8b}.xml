@@ -22,6 +22,7 @@
 			<destination>{f14e9094-6a70-4998-9f49-1a295c103d61}</destination>
 			<destination>{c390e98d-72f4-41d8-b75a-4acaf83abd5a}</destination>
 			<destination>{6ba94d7c-0892-4227-8f47-e38406fa7b57}</destination>
+			<destination>{6dc49a83-6f75-4319-b88f-db497a32b1b0}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2921d6e5-b76c-4f5d-8067-dfe27ad0f077}" />
@@ -35,4 +36,15 @@
 		</relationship>
 	</object>
 	<object class="ThreeEQEffect" id="{6ba94d7c-0892-4227-8f47-e38406fa7b57}" />
+	<object class="CompressorEffect" id="{6dc49a83-6f75-4319-b88f-db497a32b1b0}">
+		<property name="threshold">
+			<value>-36</value>
+		</property>
+		<property name="releaseTime">
+			<value>400</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{889b0d31-8c4f-49d0-ad27-f67977315a9a}</destination>
+		</relationship>
+	</object>
 </objects>

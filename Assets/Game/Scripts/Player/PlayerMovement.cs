@@ -13,7 +13,9 @@ public class PlayerMovement : MonoBehaviour
     bool _FreeFallZone = false;
 
     [Header("Movement Modifiers")]
-    [SerializeField, Range(0.0f,2.0f)] float _speedMultiplier = 1.0f;
+    [SerializeField, Range(0.0f, 2.0f)] float _speedMultiplier = 1.0f;
+
+    [SerializeField, Min(0.0f)] private float _stairsSpeedMultiplier = 0.85f;
 
     [Header("Jump")]
     [SerializeField] bool _canJump = true;
@@ -25,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _canCrouch = true;
 
     [Header("Slipping")]
-    [SerializeField] [Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
+    [SerializeField][Range(0.0f, 0.1f)] float _slippingMovementControl = 0.01f;
 
     [Header("GravityRotation")]
     [SerializeField] bool _enableGravityRotation = true;
@@ -76,12 +78,16 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isOnDefaultGround;
 
+    bool _isUncontrolledFalling;
+
     public float defaultSpeed { get; private set; }
     public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
     public bool FreeFallZone { get => _FreeFallZone; set => _FreeFallZone = value; }
 
     private float _timerBeforeNextStep = 0;
+    private PlayerStepDetection _stepDetection;
     public float _timerTNextStep = 1;
+    private bool _isFirstFrame = true;
 
     private void OnEnable()
     {
@@ -100,6 +106,12 @@ public class PlayerMovement : MonoBehaviour
     public void DisableBobbing() => _isViewBobbingEnabled = false;
 
     public void UnParentPlayer() => transform.SetParent(null);
+
+    private void Awake()
+    {
+        _stepDetection = GetComponent<PlayerStepDetection>();
+    }
+
     void Start()
     {
         _gameSettings = GameManager.Instance.Settings;
@@ -127,7 +139,18 @@ public class PlayerMovement : MonoBehaviour
         {
             // player just landed on the ground
             EventManager.TriggerPlayerStopsFalling();
-            Debug.Log("player landed");
+            
+            // Don't play landing sound on first frame (scene load)
+            if (!_isFirstFrame)
+            {
+                _stepDetection.Land();
+            }
+        }
+        
+        // After first frame, allow landing sounds
+        if (_isFirstFrame)
+        {
+            _isFirstFrame = false;
         }
 
         //apply gravity
@@ -149,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
                 _verticalVelocity = Vector3.zero;
             }
         }
-    
+
         if (!_canMove) return;
         /*
         // collect player inputs
@@ -182,6 +205,7 @@ public class PlayerMovement : MonoBehaviour
         if (_jumpInput && (_isGrounded || _currentCoyoteTime > 0f)) {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
             _currentCoyoteTime = -1.0f;
+            _stepDetection.Jump();
         }
 
         if (_isGrounded && !_jumpInput)
@@ -208,15 +232,27 @@ public class PlayerMovement : MonoBehaviour
         _crouchInput = false;
 
         // no clip
-        if(_FreeFallZone == false)
+        if (_FreeFallZone == false)
             _horizontalVelocity += transform.up * _yInput;
-        else 
-            _horizontalVelocity += transform.up*.95f;
+        else
+            _horizontalVelocity += transform.up * .95f;
+
+        if (_isGrounded && _isUncontrolledFalling) _isUncontrolledFalling = false;
+        if (_isUncontrolledFalling) _horizontalVelocity = Vector3.zero; //cancel any non-vertical movement
+
+        bool _isOnStairs = false;
+        if (Physics.Raycast(transform.position, -transform.up, out var hit, 10000, LayerMask.GetMask("Floor")))
+        {
+            if (hit.normal != Vector3.up)
+            {
+                _isOnStairs = true;
+            }
+        }
 
         // apply calculated Movement
-        float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor;
+        float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor * (_isOnStairs ? _stairsSpeedMultiplier : 1);
         if (_hasGravity) {
-            _controller.Move((_horizontalVelocity * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime) + _externallyAppliedMovement)  * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
+            _controller.Move((_horizontalVelocity * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime) + _externallyAppliedMovement) * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
             _controller.Move(_verticalVelocity * Time.deltaTime);
         } else // no clip
         {
@@ -224,7 +260,7 @@ public class PlayerMovement : MonoBehaviour
                              + _externallyAppliedMovement);
         }
 
-        
+
         ExecuteFootStep();
     }
 
@@ -307,9 +343,9 @@ public class PlayerMovement : MonoBehaviour
             if (_startWalkingDuration <= _gameSettings.StartWalkingTransitionDuration) {
                 _stopWalkingDuration = 0.0f;
                 _startWalkingDuration += Time.deltaTime;
-                newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * Mathf.Lerp(_camera.transform.localPosition.y,
+                newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingWalkMultiplier * Mathf.Lerp(_camera.transform.localPosition.y,
                     currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate(0.0f) * _gameSettings.HeadBobbingAmount,
-                    _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration);
+                    _startWalkingDuration / _gameSettings.StartWalkingTransitionDuration));
             } else {
                 _walkingDuration += Time.deltaTime;
 
@@ -317,16 +353,16 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (hit.normal != Vector3.up)
                     {
-                        newCameraHeight = _gameSettings.ViewBobbingStairsMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingStairsCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                        newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingStairsMultiplier * (currentDefaultHeight + _gameSettings.HeadBobbingStairsCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount));
                     }
                     else
                     {
-                        newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                        newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingWalkMultiplier * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount));
                     }
                 }
                 else
                 {
-                    newCameraHeight = _gameSettings.ViewBobbingWalkMultiplier * Vector3.up * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount);
+                    newCameraHeight = Vector3.up * (_gameSettings.ViewBobbingWalkMultiplier * (currentDefaultHeight + _gameSettings.HeadBobbingCurve.Evaluate((_walkingDuration * _gameSettings.HeadBobbingSpeed) % 1) * _gameSettings.HeadBobbingAmount));
                 }
             }
         } else {
@@ -399,6 +435,9 @@ public class PlayerMovement : MonoBehaviour
             _currentGroundType = GroundTypePlayerIsWalkingOn.Default;
         }
     }
+
+    // player will have locked movement until they stop falling (until _isGrounded == true). 
+    public void SetUncontrolledFalling(bool isUncontrolledFalling) { _isUncontrolledFalling = isUncontrolledFalling;}
 
     private void OnDrawGizmos()
     {

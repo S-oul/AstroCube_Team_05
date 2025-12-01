@@ -99,8 +99,14 @@ public class PlayerTrigger : MonoBehaviour
             case "ChangeReset":
                 _reset.ChangeResetFunc(other.GetComponentInChildren<ChangeReset>().NewResetPos);
                 break;
-        }
+            case "ObjectLoader":
+                other.GetComponent<ObjectLoader>().SwitchActivate();
+                break;
 
+            case "UncontrolledFallingTrigger": // to be triggered when the player starts falling though the menger sponge fractal. 
+                _playerMovement.SetUncontrolledFalling(true);
+                break;
+        }
     }
 
     private void OnTriggerStay(Collider other)

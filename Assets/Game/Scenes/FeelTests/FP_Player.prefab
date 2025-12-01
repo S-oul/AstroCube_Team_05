@@ -120,6 +120,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -162,6 +165,7 @@ GameObject:
   - component: {fileID: 2128463034130162547}
   - component: {fileID: 2867457531972925666}
   - component: {fileID: 8271240141020365605}
+  - component: {fileID: -2538416245699631621}
   m_Layer: 10
   m_Name: FP_Player
   m_TagString: Player
@@ -207,10 +211,13 @@ MonoBehaviour:
     m_Bits: 449
   _speedMultiplier: 1
   _canJump: 0
+  _floorDistance: 0.5
+  _coyoteTime: 0
   _canCrouch: 1
   _slippingMovementControl: 0.01
   _enableGravityRotation: 0
   _resetRotationWhenNoClip: 0
+  _isViewBobbingEnabled: 1
   isOnDefaultGround: 0
   _timerTNextStep: 1
 --- !u!143 &7069003786607905744
@@ -228,7 +235,6 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -268,56 +274,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e991587b9a7f5ee42b00849d89fc18f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vcam: {fileID: 0}
+  overlayCamera: {fileID: 0}
+  cameraFocusAttractor: {fileID: 0}
+  valueThatTriggersCamPan: 0.2
   newSpeedMultiplyer: 0.5
-  curveFOV:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  curveAberration:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -3.194798
-      outSlope: -3.194798
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.026536286
-      outWeight: 0.05167598
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.16747232
-      outSlope: -0.16747232
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16899443
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   vol: {fileID: 11400000, guid: 00092a170d586d24b8826f2db0d87ce2, type: 2}
+  portailInt_Material: {fileID: 0}
+  fovMultiplier: 1
+  _victoryZoneEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &390007284634587234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,6 +343,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainCameraAnimator: {fileID: 4767053111584344985}
+--- !u!114 &-2538416245699631621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789224619367204211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3977277b06bea1c42b96eb16adb488d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepFmodEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  jumpFmodEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  landFmodEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  terrainSwitch: PR_FT
+  footstepInterval: 0.5
+  playFootsteps: 1
+  groundCheckDistance: 3
 --- !u!1 &6164784850869254152
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +415,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4767053111584344985
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -421,6 +429,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
