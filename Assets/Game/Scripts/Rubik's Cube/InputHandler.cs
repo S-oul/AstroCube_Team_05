@@ -7,6 +7,7 @@ using static InputSystemManager;
 public class InputHandler : MonoBehaviour
 {
     [SerializeField] PlayerHold _playerHold;
+    [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] PlayerMovement _playerMovement;
     [SerializeField] MouseCamControl _mouseCam;
     [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
@@ -21,7 +22,7 @@ public class InputHandler : MonoBehaviour
     private Vector2 _cameraMovement;
 
     private bool _oneHandActAsNormal = true;
-    
+
     public bool CanMove
     {
         get => _canMove;
@@ -143,7 +144,7 @@ public class InputHandler : MonoBehaviour
         if (!IsInputEnabled(EInputType.COUNTER_CLOCKWISE)) return;
         if (ctx.performed)
             _controller.ActionMakeTurn(true);
-    }    
+    }
 
     public void OnMoveOverlayCube(InputAction.CallbackContext ctx)
     {
@@ -152,6 +153,15 @@ public class InputHandler : MonoBehaviour
         if (ctx.performed)
             _controller.ActionRotateCubeUI(ctx.ReadValue<Vector2>());
     }
+
+    public void OnEscape(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            EventManager.TriggerEscape();
+        }
+    }
+
 
     public void OnResetRoom(InputAction.CallbackContext ctx)
     {
@@ -165,7 +175,7 @@ public class InputHandler : MonoBehaviour
         else if (ctx.canceled && ctx.time - ctx.startTime < 0.5f)
         {
             if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0)
-                EventManager.Instance.TriggerUndo();
+                return; //EventManager.Instance.TriggerUndo();
         }
     }
     public void OnPreviewCancel(InputAction.CallbackContext ctx)
@@ -178,7 +188,7 @@ public class InputHandler : MonoBehaviour
     public void OnSwitchLookMove(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
-        _oneHandActAsNormal = !_oneHandActAsNormal;
+            _oneHandActAsNormal = !_oneHandActAsNormal;
     }
     #endregion
 
@@ -187,7 +197,10 @@ public class InputHandler : MonoBehaviour
     {
         if (!IsInputEnabled(EInputType.INTERACT)) return;
         if (ctx.performed)
+        {
             _playerHold.TryHold();
+            _playerInteraction.Interact();
+        }
     }
 
     public void OnGamePause(InputAction.CallbackContext ctx)
@@ -245,20 +258,18 @@ public class InputHandler : MonoBehaviour
     void OnFakeCamera(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.CAMERA)) return;
-        if (!_controller.ControlledScript.IsReversing)
-            _mouseCam.OnCamera(ctx);
+        if (_controller.ControlledScript.IsReversing) return;
+        if (ctx.performed) _mouseCam.OnCamera(ctx);
     }
 
-
-
-    //Unused
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (!IsInputEnabled(EInputType.MOVEMENT)) return;
-        if (!ctx.performed && !_controller.ControlledScript.IsReversing)
+        if (!IsInputEnabled(EInputType.JUMP)) return;
+        if (ctx.started && !_controller.ControlledScript.IsReversing)
             _playerMovement.ActionJump();
     }
 
+    //Unused
     public void OnCrouch(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.MOVEMENT)) return;

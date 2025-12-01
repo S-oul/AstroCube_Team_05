@@ -12,6 +12,7 @@ namespace Lofelt.NiceVibrations
         public BallDemoBall TargetBall;
         protected Vector2 _direction;
 
+		#if MM_PHYSICS2D
         protected virtual void OnTriggerEnter2D(Collider2D collider)
         {
             if (collider.gameObject != TargetBall.gameObject)
@@ -21,9 +22,10 @@ namespace Lofelt.NiceVibrations
 
             _direction = (collider.transform.position - this.transform.position).normalized;
             _direction.y = 1f;
-            collider.attachedRigidbody.velocity = Vector2.zero;
+            collider.attachedRigidbody.linearVelocity = Vector2.zero;
             collider.attachedRigidbody.AddForce(_direction * Force);
             TargetBall.HitPusher();
         }
+		#endif
     }
 }

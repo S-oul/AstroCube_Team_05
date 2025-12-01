@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public CustomisedSettings CustomSettings => CutomizeSettings;
     [SerializeField] private CustomisedSettings CutomizeSettings;
         
-    [SerializeField][Scene] string nextScene;
+    //[SerializeField][Scene] string nextScene;
 
     [Header("Entity Sequence")]
     [SerializeField] EntitySequenceManager _entitySequenceManager;
@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<GameObject> _objectToDisable;
     [SerializeField] ExitDoor _endPortal;
     CameraAnimator _cameraAnimator;
+    PlayerMovement _player;
 
     public static GameManager Instance => instance;
     private static GameManager instance;
@@ -47,10 +48,13 @@ public class GameManager : MonoBehaviour
 
     public SliceAxis ActualSliceAxis { get => _actualSliceAxis; set => _actualSliceAxis = value; }
 
-    public RubiksMovement RubiksCube => _rubiksCube;
+
+
 
     [SerializeField] private SliceAxis _actualSliceAxis;
     public PositionSaveFile RightActions { get; private set; }
+    public RubiksMovement RubiksCube { get => _rubiksCube; set => _rubiksCube = value; }
+    public PlayerMovement Player { get => _player; set => _player = value; }
 
     private void Awake()
     {
@@ -63,6 +67,7 @@ public class GameManager : MonoBehaviour
         {
             PreviewRubiksCube = FindAnyObjectByType<PreviewRubiksCube>();
         }
+        Player = FindAnyObjectByType<PlayerMovement>();
     }
 
     public enum EScreenshakeMode
@@ -131,9 +136,9 @@ public class GameManager : MonoBehaviour
     {
         EventManager.TriggerSceneStart();
     }
-    void ChangeScene()
+    public void ChangeScene()
     {
-        SceneManager.LoadScene(nextScene);
+        SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
     }
 
     void StopDeltaTime()
@@ -219,6 +224,10 @@ public class GameManager : MonoBehaviour
     private void ToggleRubiksCube(bool isEnabled)
     {
         isUIRubiksCubeEnabled = isEnabled;
-        _rubiksCubeUI.SetActive(isEnabled);
+    }
+
+    public void MakeCutsceneLevelMarkAsFinished()
+    {
+        EventManager.TriggerLevelFinished();
     }
 }

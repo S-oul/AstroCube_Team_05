@@ -14,7 +14,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_HDRP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMFilmGrainShaker_HDRP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Film Grain Shaker HDRP")]
 	public class MMFilmGrainShaker_HDRP : MMShaker
 	{
 		[MMInspectorGroup("Film Grain Intensity", true, 47)]
@@ -112,13 +112,16 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRelativeIntensity = RelativeIntensity;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeIntensity = intensity;
-			RemapIntensityZero = remapMin * attenuation;
-			RemapIntensityOne = remapMax * attenuation;
-			RelativeIntensity = relativeIntensity;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeIntensity = intensity;
+				RemapIntensityZero = remapMin * attenuation;
+				RemapIntensityOne = remapMax * attenuation;
+				RelativeIntensity = relativeIntensity;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

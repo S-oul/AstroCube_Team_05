@@ -25,11 +25,11 @@ public class CrossfadeTransition : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnPlayerWin += StartFade;
+        EventManager.OnLevelFinished += StartFade;
     }
     private void OnDisable()
     {
-        EventManager.OnPlayerWin -= StartFade;
+        EventManager.OnLevelFinished -= StartFade;
     }
 
     void StartFade()

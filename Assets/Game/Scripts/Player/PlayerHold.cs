@@ -22,7 +22,7 @@ public class PlayerHold : MonoBehaviour
     {
         RaycastHit _raycastInfo;
 
-        Debug.DrawRay(_camera.transform.position, _camera.transform.forward * _rayDistance, Color.red, 3);
+        Debug.DrawRay(_camera.transform.position, _camera.transform.forward * _rayDistance, Color.cyan, 3);
 
         if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out _raycastInfo, _rayDistance, _layerMask))
         {

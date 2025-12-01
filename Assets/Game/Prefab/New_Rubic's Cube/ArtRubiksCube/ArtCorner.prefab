@@ -52,14 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
 --- !u!114 &4121892100880605901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,6 +204,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: 'Particle_Coin_V01 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 3772629346150050328, guid: 3ff57ea60bf01844f9e9879718276f2f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4503836458590822711, guid: 3ff57ea60bf01844f9e9879718276f2f,
         type: 3}
@@ -597,7 +595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 27477d173a67daf41b8119a7584af549,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 2de122bc9d535c3459c0ba42c4ee9ba5, type: 2}
     - target: {fileID: 919132149155446097, guid: 27477d173a67daf41b8119a7584af549,
@@ -632,7 +630,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &8275727242386313075
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -646,6 +644,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

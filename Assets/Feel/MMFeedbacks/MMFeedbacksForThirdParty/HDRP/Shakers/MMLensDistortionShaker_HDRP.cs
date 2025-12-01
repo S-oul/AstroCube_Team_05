@@ -14,7 +14,7 @@ namespace MoreMountains.FeedbacksForThirdParty
 	#if MM_HDRP
 	[RequireComponent(typeof(Volume))]
 	#endif
-	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MMLensDistortionShaker_HDRP")]
+	[AddComponentMenu("More Mountains/Feedbacks/Shakers/PostProcessing/MM Lens Distortion Shaker HDRP")]
 	public class MMLensDistortionShaker_HDRP : MMShaker
 	{
 		[MMInspectorGroup("Lens Distortion Intensity", true, 47)]
@@ -129,13 +129,16 @@ namespace MoreMountains.FeedbacksForThirdParty
 				_originalRelativeIntensity = RelativeIntensity;
 			}
 
-			TimescaleMode = timescaleMode;
-			ShakeDuration = duration;
-			ShakeIntensity = intensity;
-			RemapIntensityZero = remapMin * attenuation;
-			RemapIntensityOne = remapMax * attenuation;
-			RelativeIntensity = relativeIntensity;
-			ForwardDirection = forwardDirection;
+			if (!OnlyUseShakerValues)
+			{
+				TimescaleMode = timescaleMode;
+				ShakeDuration = duration;
+				ShakeIntensity = intensity;
+				RemapIntensityZero = remapMin * attenuation;
+				RemapIntensityOne = remapMax * attenuation;
+				RelativeIntensity = relativeIntensity;
+				ForwardDirection = forwardDirection;
+			}
 
 			Play();
 		}

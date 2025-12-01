@@ -15,7 +15,9 @@ namespace Lofelt.NiceVibrations
 
         protected virtual void Start()
         {
+			#if MM_PHYSICS2D
             Physics2D.gravity = Gravity;
+			#endif
         }
     }
 }

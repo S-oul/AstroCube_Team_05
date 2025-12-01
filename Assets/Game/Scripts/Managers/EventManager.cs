@@ -28,6 +28,8 @@ public class EventManager : MonoBehaviour
 
     public UnityEvent Interact;
 
+    public static event Action<int> OnLevelSelected;
+
 
     private void Awake()
     {
@@ -50,6 +52,8 @@ public class EventManager : MonoBehaviour
         OnPlayerUndo += Undo.Invoke;
 
         OnPlayerInteract += Interact.Invoke;
+
+
     }
 
     private void OnDisable()
@@ -72,7 +76,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnSceneStart;
     public static event Action OnSceneEnd;
 
-    public static event Action OnPlayerWin;
+    public static event Action OnLevelFinished;
     public static event Action OnPlayerLose;
 
     public static event Action OnSceneChange;
@@ -80,17 +84,23 @@ public class EventManager : MonoBehaviour
     public static event Action OnGamePause;
     public static event Action OnGameUnpause;
 
+
+
     public static event Action OnSeeExit;
 
     //Rubik's Cube Events
     public static event Action OnStartCubeRotation;
-    public static event Action OnStartCubeSequenceRotation;
 
     public static event Action OnEndCubeRotation;
     public static event Action OnEndCubeSequenceRotation;
 
     public static event Action OnCubeSwitchFace;
     public static event Action OnCubeSwitchAxe;
+
+    //UI Events
+    public static event Action<UIView> OnViewShow;
+    public static event Action<UIView> OnViewHide;
+    public static event Action OnEscape;
 
 
     //Object Events
@@ -112,6 +122,8 @@ public class EventManager : MonoBehaviour
     public static event Action OnPlayerChangeParent;
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
 
+    public static event Action OnPlayerStopsFalling;
+
     //Narrative Events
     public static event Action OnStartNarrativeSequence;
     public static event Action OnEndNarrativeSequence;
@@ -126,6 +138,23 @@ public class EventManager : MonoBehaviour
     public static event Action<bool> OnMotionBlurChange;
     public static event Action<bool> OnPreviewChange;
 
+
+
+
+    public static void TriggerEscape()
+    {
+        OnEscape?.Invoke();
+    }
+
+    public static void TriggerViewShow(UIView uiView)
+    {
+        OnViewShow?.Invoke(uiView);
+    }
+
+    public static void TriggerViewHide(UIView uiView)
+    {
+        OnViewHide?.Invoke(uiView);
+    }
 
     public void DebugTest()
     {
@@ -145,9 +174,9 @@ public class EventManager : MonoBehaviour
     }
 
 
-    public static void TriggerPlayerWin()
+    public static void TriggerLevelFinished()
     {
-        OnPlayerWin?.Invoke();
+        OnLevelFinished?.Invoke();
     }
 
     public void TriggerPlayerLose()
@@ -187,6 +216,11 @@ public class EventManager : MonoBehaviour
         OnButtonReleased?.Invoke();
     }
 
+    public static void TriggerLevelSelected(int levelIndex)
+    {
+        OnLevelSelected?.Invoke(levelIndex);
+    }
+
     public static void TriggerPlayerChangeParent()
     {
         OnPlayerChangeParent?.Invoke();
@@ -195,6 +229,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerPlayerFootSteps(GroundTypePlayerIsWalkingOn _groundTypePlayerIsWalkingOn)
     {
         OnPlayerFootSteps?.Invoke(_groundTypePlayerIsWalkingOn);
+    }
+
+    public static void TriggerPlayerStopsFalling()
+    {
+        OnPlayerStopsFalling?.Invoke();
     }
 
     public void TriggerReset()
@@ -240,10 +279,6 @@ public class EventManager : MonoBehaviour
         OnStartCubeRotation?.Invoke();
     }
 
-    public static void TriggerStartCubeSequenceRotation()
-    {
-        OnStartCubeSequenceRotation?.Invoke();
-    }
     public static void TriggerEndCubeSequenceRotation()
     {
         OnEndCubeSequenceRotation?.Invoke();

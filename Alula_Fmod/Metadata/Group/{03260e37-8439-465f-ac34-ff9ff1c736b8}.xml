@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{03260e37-8439-465f-ac34-ff9ff1c736b8}">
+		<property name="name">
+			<value>FOL</value>
+		</property>
+		<relationship name="masters">
+			<destination>{c1cb68eb-55c5-4a67-95d6-1255d809c5e7}</destination>
+		</relationship>
+		<relationship name="effectChain">
+			<destination>{7fea64e0-0770-4f24-bc06-5d0eb6f0a59d}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{25b1f72d-901e-43be-8ced-86a46ac83692}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{ecc00a5b-b4d3-4ebd-8922-88df8b9982ef}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{7fea64e0-0770-4f24-bc06-5d0eb6f0a59d}">
+		<relationship name="effects">
+			<destination>{864f0939-2850-435b-8310-c14aae380462}</destination>
+			<destination>{e3e91131-8d0a-48da-8c18-16cc921c7fcc}</destination>
+			<destination>{4e829a7c-7613-4b59-bb4a-d65bd767b8d7}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{25b1f72d-901e-43be-8ced-86a46ac83692}" />
+	<object class="MixerBusFader" id="{864f0939-2850-435b-8310-c14aae380462}" />
+	<object class="ThreeEQEffect" id="{e3e91131-8d0a-48da-8c18-16cc921c7fcc}" />
+	<object class="CompressorEffect" id="{4e829a7c-7613-4b59-bb4a-d65bd767b8d7}">
+		<property name="threshold">
+			<value>-36</value>
+		</property>
+		<property name="releaseTime">
+			<value>400</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{889b0d31-8c4f-49d0-ad27-f67977315a9a}</destination>
+		</relationship>
+	</object>
+</objects>

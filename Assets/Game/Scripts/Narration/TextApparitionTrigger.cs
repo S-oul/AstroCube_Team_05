@@ -11,13 +11,22 @@ public class TextApparitionTrigger : MonoBehaviour
     
     private bool _triggered;
 
+    NarraActivationTool _narraActivationTool;
+
     private void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("TextTrigger");
+
+        _narraActivationTool = Object.FindAnyObjectByType<NarraActivationTool>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_narraActivationTool != null)
+        {
+            if (_narraActivationTool.IsNarraActiveTool == false) return;
+        }
+
         if (!other.CompareTag("Player") || _triggered || _texts == null) return;
 
         foreach (TextApparition text in _texts)

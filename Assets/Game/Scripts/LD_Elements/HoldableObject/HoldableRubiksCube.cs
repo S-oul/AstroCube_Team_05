@@ -25,7 +25,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         _originalParent = transform.parent;
         LayerMask maskCube = LayerMask.GetMask("Holdable");
         _rb = GetComponent<Rigidbody>();
-        _exitDoor.SetActive(false);
+        if(_exitDoor) _exitDoor.SetActive(false);
     }
 
     public Transform GetOriginalParent()
@@ -48,7 +48,8 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         inputDisplay.OnResolve?.Invoke();
         PickUpDelegate?.Invoke();
         if(_sequencer != null) _sequencer.Play();
-        StartCoroutine(HoldRubiksCube(newParent));
+        //StartCoroutine(HoldRubiksCube(newParent));
+        DOTween.To(() => _light.intensity, x => _light.intensity = x, 0f, 1).SetEase(Ease.OutCirc);
     }
 
     IEnumerator HoldRubiksCube(Transform newParent)
@@ -64,7 +65,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         transform.parent = newParent;
         Quaternion angle = Quaternion.LookRotation(Camera.main.transform.position - _exitDoor.transform.position); // Look to exit door
         angle.y = Mathf.Round(angle.y / 90) * 90;
-        GameManager.Instance.StartSequence(angle);
+        //GameManager.Instance.StartSequence(angle);
     }
 
     public void OnRelease() { return; }

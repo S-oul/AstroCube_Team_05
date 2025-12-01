@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
+using Debug = FMOD.Debug;
 
 public class RubiksCubeController : MonoBehaviour
 {
-
     [SerializeField] GameObject _controlledCube;
     RubiksMovement _controlledScript;
     RubiksMove _lastInput = null;
@@ -33,7 +33,7 @@ public class RubiksCubeController : MonoBehaviour
     [SerializeField] Transform _player;
     [SerializeField] DetectNewParent _detectParentForGroundRotation;
 
-    SliceAxis _selectedSlice = 0;
+    [SerializeField] SliceAxis _selectedSlice = 0;
     private GameSettings _gameSettings;
 
     bool _canPlayerMoveAxis = true;
@@ -61,8 +61,6 @@ public class RubiksCubeController : MonoBehaviour
                 _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
         _gameSettings = GameManager.Instance.Settings;
-        if (GameManager.Instance.IsUIRubiksCubeEnabled)
-            ActionSwitchLineCols(true);
     }
     private void Start()
     {
@@ -92,39 +90,6 @@ public class RubiksCubeController : MonoBehaviour
         EventManager.OnPlayerChangeParent -= CheckPreview;
     }
 
-    /* OLD
-    public void SetActualCube(Transform newFace)
-    {
-        ShutDownFace();
-        GameObject newCube = null;
-        if (newFace.parent.parent && newFace.parent.parent.CompareTag("Rubiks")) newCube = newFace.parent.parent.gameObject;
-        else if (newFace.parent.CompareTag("Rubiks")) newCube = newFace.parent.gameObject;
-
-        if (newCube && newCube != controlledCube)
-        {
-            if ((ReplicatedCube.Contains(newCube)))
-            {
-                print("bahoui connard");
-                return;
-            }
-            controlledCube = newCube;
-            _controlledScript = controlledCube.GetComponentInChildren<RubiksMovement>();
-        }
-
-        if (_controlledScript == null) return;
-        if (ActualFace) ActualFace.enabled = false;
-        ActualFace = newFace.GetComponent<Outline>();
-
-        IlluminateFace(_selectedSlice, SelectionCube.SelectionMode.CUBE);        
-
-        ActualFace.OutlineColor = Color.red;
-        ActualFace.OutlineWidth = 15;
-        ActualFace.enabled = true;
-
-        _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
-    }
-    */
-
     public void SetActualCube(Transform newFace)
     {
         _ShutDownFace();
@@ -135,11 +100,11 @@ public class RubiksCubeController : MonoBehaviour
 
         if (_controlledScript == null) return;
         if (_controlledScript.IsRotating) return;
-
+        GameManager.Instance.RubiksCube = _controlledScript;
         if (ActualFace) ActualFace.enabled = false;
         ActualFace = newFace.GetComponent<SelectionCube>();
 
-        if (_ShowStripLayerToPlayer && _TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
+        if (ControlledScript.IsTransformInside(_player) && _ShowStripLayerToPlayer && _TryIlluminateFace(_selectedSlice, SelectionCube.SelectionMode.AXIS))
         {
             if (!(_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview))
                 ActualFace.Select(SelectionCube.SelectionMode.CUBE);
@@ -153,7 +118,7 @@ public class RubiksCubeController : MonoBehaviour
         _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice);
     }
 
-    public void ActionSwitchLineCols(bool isLeft)
+    public void ActionSwitchLineCols(bool isLeft, bool playEvent = true)
     {
         EventManager.TriggerCubeSwitchAxe();
         _selectedSlice = (SliceAxis)(((int)_selectedSlice + (isLeft ? -1 : +1) + 3) % 3);
@@ -192,7 +157,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript && !_controlledScript.IsRotating/* && _canPlayerMoveAxis*/)
+        if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
             if (!_canPlayerUseIt) return;
 
@@ -273,6 +238,7 @@ public class RubiksCubeController : MonoBehaviour
                     }
                     _HidePreview();
                     _ShineSelection(_lastInput.orientation, SelectionCube.SelectionMode.AXIS, _lastInput.cube.transform);
+                    _ExteriorCollidersActivation(_lastInput.orientation, _lastInput.cube.transform);
                     _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(_lastInput.cube.transform, _lastInput.orientation), _lastInput.cube.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _lastInput.orientation);
                     _lastInput = null;
                     _isPreviewDisplayed = false;
@@ -288,11 +254,11 @@ public class RubiksCubeController : MonoBehaviour
                     // Get The index of the children 
                     // Find the Other child at the index in other cube
                     // Move it
-
                     cube.RotateAxis(cube.GetAxisFromCube(equivalence, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
                 }
 
                 _ShineSelection(_selectedSlice, SelectionCube.SelectionMode.AXIS, ActualFace.transform);
+                _ExteriorCollidersActivation(_selectedSlice, ActualFace.transform);
                 _controlledScript.RotateAxis(_controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice), ActualFace.transform, clockwise, _gameSettings.RubikscCubeAxisRotationDuration, _selectedSlice);
             }
         }
@@ -392,6 +358,8 @@ public class RubiksCubeController : MonoBehaviour
         }
     */
 
+    List<Transform> OldBlocksInFace = new List<Transform>();
+
     /// <summary>
     /// return True if Player Can Move Axis;
     /// </summary>
@@ -400,12 +368,34 @@ public class RubiksCubeController : MonoBehaviour
     /// <returns></returns>
     bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
+        UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
+        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
+            return false;
+        
         List<SelectionCube> selectionCubes = new List<SelectionCube>();
         bool isOneTileLocked = false;
         bool isPlayerOnATile = false;
         if (_controlledScript != null)
         {
-            foreach (Transform go in _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis))
+            if (_controlledScript.IsRotating || _controlledScript.IsReversing) return false;
+
+
+            var AllBlocksInFace = _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis);
+            bool isSameBlock = OldBlocksInFace == AllBlocksInFace;
+            OldBlocksInFace = AllBlocksInFace;
+
+            foreach (Transform go in _replicatedScript[0].AllBlocks)
+            {
+                if (isSameBlock) break;
+                var anim = go.GetComponentInChildren<ArtRubiksAnimator>();
+                if (anim)
+                {
+                    anim.SetSelectedBool(false);
+                    anim.StopAllCoroutines();
+                }
+            }
+
+            foreach (Transform go in AllBlocksInFace)
             {
                 SelectionCube selection = go.GetComponent<SelectionCube>();
                 if (selection == null) continue;
@@ -415,27 +405,39 @@ public class RubiksCubeController : MonoBehaviour
                 if (selection.IsTileLocked) isOneTileLocked = true;
                 if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
+            foreach (Transform go in AllBlocksInFace)
+            {
+                if (isPlayerOnATile) break;
+                if (isOneTileLocked) break;
+                if (isSameBlock) break;
+
+                //equivalence;
+                //Should Always be artCube
+                var i = go.GetComponentIndex();
+
+                Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
+                if (equivalence) equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.launchWaitForSelected(true);
+
+            }
         }
-        if (_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview) 
+        if (_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview)
             return !(isPlayerOnATile || isOneTileLocked);
 
         foreach (SelectionCube selection in selectionCubes)
         {
-            if (isOneTileLocked)
-            {
-                selection.Select(SelectionCube.SelectionMode.LOCKED);
-            }
-            else if (isPlayerOnATile)
+            if (isPlayerOnATile)
             {
                 selection.Select(SelectionCube.SelectionMode.PLAYERONTILE);
+            }
+            else if (isOneTileLocked)
+            {
+                selection.Select(SelectionCube.SelectionMode.LOCKED);
             }
             else
             {
                 selection.Select(mode);
             }
         }
-
-
         return !(isPlayerOnATile || isOneTileLocked);
     }
 
@@ -458,6 +460,21 @@ public class RubiksCubeController : MonoBehaviour
                 SelectionCube selection = go.GetComponent<SelectionCube>();
                 if (selection == null) continue;
                 selection.StartShineAnim();
+            }
+        }
+    }
+
+    void _ExteriorCollidersActivation(SliceAxis sliceAxis, Transform actualFace)
+    {
+        if (sliceAxis == SliceAxis.Y) return; // if player is snanding on the ground while it rotates. 
+
+        if (_controlledScript != null)
+        {
+            foreach (Transform go in _controlledScript.GetCubesFromFace(actualFace, sliceAxis))
+            {
+                SelectionCube selection = go.GetComponent<SelectionCube>();
+                if (selection == null) continue;
+                selection.StartActivateExteriorColliders();
             }
         }
     }

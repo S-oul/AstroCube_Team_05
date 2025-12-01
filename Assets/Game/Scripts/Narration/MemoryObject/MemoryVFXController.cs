@@ -1,0 +1,128 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
+using NaughtyAttributes;
+using UnityEngine;
+using UnityEngine.VFX;
+using FMODUnity;
+
+public class MemoryVFXController : MonoBehaviour
+{
+    [SerializeField] private VisualEffect _vfx;
+    [SerializeField] private float _animationDuration;
+    [SerializeField] private float _stayDuration;
+    [SerializeField] private bool _spawnsLDElement;
+
+    [Header("FMOD")]
+    [SerializeField] private EventReference _memoryVFXEvent;
+    
+    private Transform _origin;
+    private GameObject _LDElement;
+    private MemoryObject _memoryObject;
+
+    /*
+     Lerp_Delta:
+    0 = At Origin
+    0.5 = At character   STAY DURING _stayDuration
+    1 : At LD Elements     STAY INDEFINITELY
+    */
+
+    void Start()
+    {
+        LinkOriginToVFX();
+        _memoryObject = GetComponentInParent<MemoryObject>();
+    }
+
+    public void StartVFX(GameObject objectToActivate)
+    {
+        _spawnsLDElement = objectToActivate;
+        
+        _LDElement = objectToActivate;
+        _LDElement?.SetActive(false);
+        
+        if (_vfx)
+        {
+            if (!_memoryVFXEvent.IsNull) RuntimeManager.PlayOneShot(_memoryVFXEvent, transform.position);
+            LinkOriginToVFX();
+            StartCoroutine(PlayAnimation());
+            _vfx.Play();
+        }
+    }
+
+    [Button("Link Origin To VFX")]
+    public void LinkOriginToVFX()
+    {
+        _origin = transform.Find("Origin - VFX");
+        _vfx.SetVector3("Origin", _origin.transform.localPosition);
+        if (_LDElement)
+        {
+            Vector3 localPosition = transform.InverseTransformPoint(_LDElement.transform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _LDElement.transform.rotation;
+            Vector3 localScale = new Vector3(
+                _LDElement.transform.lossyScale.x / transform.lossyScale.x,
+                _LDElement.transform.lossyScale.y / transform.lossyScale.y,
+                _LDElement.transform.lossyScale.z / transform.lossyScale.z
+            );
+
+            _vfx.SetVector3("Origin_LD_Element_Position", localPosition);
+            _vfx.SetVector3("Origin_LD_Element_Rotation", localRotation.eulerAngles);
+            _vfx.SetVector3("Origin_LD_Element_Scale", localScale);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (_LDElement)
+        {
+            Vector3 localPosition = transform.InverseTransformPoint(_LDElement.transform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _LDElement.transform.rotation;
+            Vector3 localScale = new Vector3(
+                _LDElement.transform.lossyScale.x / transform.lossyScale.x,
+                _LDElement.transform.lossyScale.y / transform.lossyScale.y,
+                _LDElement.transform.lossyScale.z / transform.lossyScale.z
+            );
+
+            _vfx.SetVector3("Origin_LD_Element_Position", localPosition);
+            _vfx.SetVector3("Origin_LD_Element_Rotation", localRotation.eulerAngles);
+            _vfx.SetVector3("Origin_LD_Element_Scale", localScale);
+        }
+    }
+
+    private IEnumerator PlayAnimation()
+    {
+        yield return DOTween
+            .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 0.5f, _animationDuration)
+            .SetEase(Ease.InOutCubic).WaitForCompletion();
+
+        _memoryObject.OnCharacterAnimationFinished?.Invoke();
+        
+        yield return new WaitForSeconds(_stayDuration);
+        
+        if (_LDElement)
+        {
+            DOTween
+                .To(() => _vfx.GetFloat("ParticleSizeMultiplier"), (t) => _vfx.SetFloat("ParticleSizeMultiplier", t), 0.3f, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+            yield return DOTween
+                .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+            
+            _memoryObject.OnAnimationFinished?.Invoke();
+            _LDElement.SetActive(true);
+        }
+        else
+        {
+            DOTween
+                .To(() => _vfx.GetFloat("ParticleSizeMultiplier"), (t) => _vfx.SetFloat("ParticleSizeMultiplier", t), 0, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        if(_origin)
+            Gizmos.DrawWireSphere(_origin.position, 0.1f);
+    }
+}
