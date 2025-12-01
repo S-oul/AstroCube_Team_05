@@ -87,7 +87,7 @@ public class PlayerStepDetection : MonoBehaviour
                 terrainSwitch = "PR_FT";
             }
             
-            Debug.Log("Footstep on: " + detectedTag);
+            //Debug.Log("Footstep on: " + detectedTag);
 
             instance.setParameterByNameWithLabel(terrainSwitch, detectedTag);
             instance.start();
