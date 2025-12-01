@@ -24,6 +24,7 @@ public class SelectionCube : MonoBehaviour
 {
     [SerializeField] bool _isTileLocked;
     [SerializeField] Material _lockedTileMat;
+    [SerializeField] Material _lockedObjectMat;
     /*
     [SerializeField]
     int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
@@ -31,6 +32,7 @@ public class SelectionCube : MonoBehaviour
     private Renderer[] _renderers;
     private BoxCollider[] _colliders;
     private Material _instancedLockedTileMat;
+    private Material _instancedLockedObjectMat;
 
     public SelectionMode CurrentSelectionMode { get; private set; }
 
@@ -91,7 +93,7 @@ public class SelectionCube : MonoBehaviour
             {
                 if (renderer.transform.CompareTag("Floor"))
                 {
-                    Material baseMat = renderer.material;
+                    Material baseMat = renderer.sharedMaterial;
                     _instancedLockedTileMat = new Material(_lockedTileMat);
 
                     _instancedLockedTileMat.SetTexture("_BaseMap", baseMat.GetTexture("_Texture"));
@@ -100,6 +102,19 @@ public class SelectionCube : MonoBehaviour
                     _instancedLockedTileMat.SetFloat("_RandomValue", UnityEngine.Random.Range(0.0f,1.0f));
 
                     renderer.material = _instancedLockedTileMat;
+                }
+                else if (renderer.transform.CompareTag("LDObject"))
+                {
+                    Material baseMat = renderer.material;
+                    Debug.Log(renderer.gameObject.name + " " + baseMat.name, renderer.gameObject);
+                    _instancedLockedObjectMat = new Material(_lockedObjectMat);
+
+                    _instancedLockedObjectMat.SetTexture("_BaseMap", baseMat.GetTexture("_BaseColorMap"));
+                    _instancedLockedObjectMat.SetTexture("_NormalMap", baseMat.GetTexture("_NormalMap"));
+                    _instancedLockedObjectMat.SetTexture("_MetallicRoughnessMap", baseMat.GetTexture("_MaskMap"));
+                    _instancedLockedObjectMat.SetFloat("_RandomValue", UnityEngine.Random.Range(0.0f, 1.0f));
+
+                    renderer.material = _instancedLockedObjectMat;
                 }
             }
         }
