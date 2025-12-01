@@ -135,6 +135,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7858699919719801469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/FOL_MC_Jump/PR_FT
+  m_EditorClassIdentifier: 
+  Name: PR_FT
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 1
+  ID:
+    data1: 2752802205
+    data2: 3833353354
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Carpet
+  - Tiles
+  - Dirt
+  - Concrete
+  Exists: 1
 --- !u!114 &-7515514511748315884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +298,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-6569514392416007624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SFX_Falling_Velocity/PR_Wind
+  m_EditorClassIdentifier: 
+  Name: PR_Wind
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 48495696
+    data2: 2409386176
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Soft
+  - Medium
+  - High
+  - Hard
+  Exists: 1
 --- !u!114 &-6539469461899191213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +378,62 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 25
+  MaxDistance: 40
+  Length: 0
+--- !u!114 &-5532850470448610219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Whoosh/SFX_Whoosh_Jump_In
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Whoosh/SFX_Whoosh_Jump_In
+  Guid:
+    Data1: -544973348
+    Data2: 1222518202
+    Data3: -528372550
+    Data4: 499254312
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 2.6000001
+  MaxDistance: 12.5
+  Length: 0
+--- !u!114 &-5510011064249645533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/FOL/FOL_MC_Jump
+  m_EditorClassIdentifier: 
+  Path: event:/FOL/FOL_MC_Jump
+  Guid:
+    Data1: 57073111
+    Data2: 1086567808
+    Data3: -153769078
+    Data4: -450100375
+  Banks:
+  - {fileID: 3542634551178861686}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -7858699919719801469}
+  MinDistance: 1
+  MaxDistance: 20
   Length: 0
 --- !u!114 &-5395152650278491002
 MonoBehaviour:
@@ -370,6 +481,33 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+  Length: 0
+--- !u!114 &-5048807930533568883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AMB/SP/AMB_SP_Furnace_LP
+  m_EditorClassIdentifier: 
+  Path: event:/AMB/SP/AMB_SP_Furnace_LP
+  Guid:
+    Data1: 463027803
+    Data2: 1190139176
+    Data3: 778977967
+    Data4: -519002550
+  Banks:
+  - {fileID: -2741725213263076609}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 10
   Length: 0
 --- !u!114 &-4733686082814284559
 MonoBehaviour:
@@ -507,6 +645,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4322715183220326162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/FOL/FOL_MC_Land
+  m_EditorClassIdentifier: 
+  Path: event:/FOL/FOL_MC_Land
+  Guid:
+    Data1: -1981292179
+    Data2: 1298839194
+    Data3: -1358582600
+    Data4: -786807581
+  Banks:
+  - {fileID: 3542634551178861686}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -3218969020389687790}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4288551490174974390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +727,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3218969020389687790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/FOL_MC_Land/PR_FT
+  m_EditorClassIdentifier: 
+  Name: PR_FT
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 1
+  ID:
+    data1: 2752802205
+    data2: 3833353354
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Carpet
+  - Tiles
+  - Dirt
+  - Concrete
+  Exists: 1
 --- !u!114 &-3157338688690909321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,10 +797,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_AMB.bank
   Name: SBK_AMB
   StudioPath: bank:/SBK_AMB
-  lastModified: 638999172320000000
+  lastModified: 639001928520000000
   FileSizes:
   - Name: Desktop
-    Value: 12034624
+    Value: 12385600
   Exists: 1
 --- !u!114 &-2109580018076328103
 MonoBehaviour:
@@ -714,7 +908,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 25
+  MaxDistance: 40
   Length: 0
 --- !u!114 &-1399391422159410051
 MonoBehaviour:
@@ -741,7 +935,34 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 25
+  MaxDistance: 40
+  Length: 0
+--- !u!114 &-1302926208495550003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Whoosh/SFX_Whoosh_Jump_Out
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Whoosh/SFX_Whoosh_Jump_Out
+  Guid:
+    Data1: 721387365
+    Data2: 1148147017
+    Data3: -261193028
+    Data4: -1932576632
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 2.6000001
+  MaxDistance: 12.5
   Length: 0
 --- !u!114 &-1095617839381057122
 MonoBehaviour:
@@ -790,6 +1011,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 712
   Exists: 1
+--- !u!114 &-876931245633538720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Whoosh/SFX_Whoosh_Jump_Space
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Whoosh/SFX_Whoosh_Jump_Space
+  Guid:
+    Data1: 832497094
+    Data2: 1100001900
+    Data3: 1344226691
+    Data4: 1981449489
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 10000
+  MaxDistance: 10000
+  Length: 0
 --- !u!114 &-426890580433824519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -816,6 +1064,34 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+  Length: 0
+--- !u!114 &-303142088243726409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Whoosh/SFX_Falling_Velocity
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Whoosh/SFX_Falling_Velocity
+  Guid:
+    Data1: -25014119
+    Data2: 1093321709
+    Data3: 291894972
+    Data4: 684524676
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -6569514392416007624}
+  MinDistance: 10000
+  MaxDistance: 10000
   Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -888,12 +1164,19 @@ MonoBehaviour:
   - {fileID: -1429924327756141510}
   - {fileID: 5379586256187497617}
   - {fileID: 4735761327526833006}
+  - {fileID: -5048807930533568883}
+  - {fileID: -4322715183220326162}
+  - {fileID: -5510011064249645533}
+  - {fileID: -1302926208495550003}
+  - {fileID: -303142088243726409}
+  - {fileID: -876931245633538720}
+  - {fileID: -5532850470448610219}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5706280087000175338}
   StringsBanks:
   - {fileID: 9030002294759708144}
-  cacheTime: 638999172320000000
+  cacheTime: 639001928520000000
   cacheVersion: 131634
 --- !u!114 &207864852886544073
 MonoBehaviour:
@@ -942,7 +1225,7 @@ MonoBehaviour:
     Data4: 1947969490
   Banks:
   - {fileID: 4634042496156573135}
-  IsStream: 0
+  IsStream: 1
   Is3D: 0
   IsOneShot: 1
   Parameters: []
@@ -1018,10 +1301,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_SFX.bank
   Name: SBK_SFX
   StudioPath: bank:/SBK_SFX
-  lastModified: 638999172320000000
+  lastModified: 639001928520000000
   FileSizes:
   - Name: Desktop
-    Value: 5784960
+    Value: 6966752
   Exists: 1
 --- !u!114 &3162936321437092689
 MonoBehaviour:
@@ -1044,11 +1327,11 @@ MonoBehaviour:
   Banks:
   - {fileID: 4634042496156573135}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 40
   Length: 0
 --- !u!114 &3542634551178861686
 MonoBehaviour:
@@ -1065,10 +1348,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_FOL.bank
   Name: SBK_FOL
   StudioPath: bank:/SBK_FOL
-  lastModified: 638997443360000000
+  lastModified: 639001928520000000
   FileSizes:
   - Name: Desktop
-    Value: 184640
+    Value: 307200
   Exists: 1
 --- !u!114 &3681858465742683175
 MonoBehaviour:
@@ -1132,10 +1415,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_VO.bank
   Name: SBK_VO
   StudioPath: bank:/SBK_VO
-  lastModified: 638999172320000000
+  lastModified: 639001928520000000
   FileSizes:
   - Name: Desktop
-    Value: 3419680
+    Value: 3652352
   Exists: 1
 --- !u!114 &4735761327526833006
 MonoBehaviour:
@@ -1287,10 +1570,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638999172320000000
+  lastModified: 639001928520000000
   FileSizes:
   - Name: Desktop
-    Value: 549748
+    Value: 550206
   Exists: 1
 --- !u!114 &5728133516625084864
 MonoBehaviour:
@@ -1392,7 +1675,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 25
+  MaxDistance: 40
   Length: 0
 --- !u!114 &7305554952928523152
 MonoBehaviour:
@@ -1419,7 +1702,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 25
+  MaxDistance: 40
   Length: 0
 --- !u!114 &7541709344988444188
 MonoBehaviour:
@@ -1550,11 +1833,11 @@ MonoBehaviour:
   Banks:
   - {fileID: 4634042496156573135}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 40
   Length: 0
 --- !u!114 &8349828693638541080
 MonoBehaviour:
@@ -1625,8 +1908,8 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638999172320000000
+  lastModified: 639001928520000000
   FileSizes:
   - Name: Desktop
-    Value: 4342
+    Value: 4710
   Exists: 1
