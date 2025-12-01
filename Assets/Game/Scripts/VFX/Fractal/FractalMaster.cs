@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering;
 
-[ExecuteInEditMode, ImageEffectAllowedInSceneView]
+[ExecuteInEditMode]
 public class FractalMaster : MonoBehaviour
 {
     [Serializable]
@@ -52,10 +52,6 @@ public class FractalMaster : MonoBehaviour
     [SerializeField] private float _darkness = 26f;
     [Header("Fractal Transform")]
     [SerializeField, Range(0.1f, 10f)] private float fractalScale = 1f;
-    [Header("Appearance")]
-    [SerializeField, Range(0f, 3f)] private float brightness = 1f;
-    [SerializeField, Range(0f, 1f)] private float transparencyAmount = 0f;
-
     public MandelbulbParameters CurrentMandelbulbParameters { get => _currentMandelbulbParameters; set => _currentMandelbulbParameters = value; }
     private MandelbulbParameters _currentMandelbulbParameters = new();
 
@@ -225,6 +221,7 @@ public class FractalMaster : MonoBehaviour
 
         fractalShader.SetTexture(handleCSMain, "Destination", target);
         fractalShader.SetFloat("alpha", _extAlpha);
+        fractalShader.SetFloat("totalAlpha", _alpha);
         fractalShader.SetFloat("power", Mathf.Max(_currentMandelbulbParameters.FractalPower, 1.01f));
         fractalShader.SetFloat("darkness", _currentMandelbulbParameters.Darkness);
         fractalShader.SetFloat("blackAndWhite", _currentMandelbulbParameters.BlackAndWhite);

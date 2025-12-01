@@ -8,6 +8,13 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using FMODUnity;
+using static Unity.Collections.AllocatorManager;
+using AmplifyShaderEditor;
+using UnityEngine.Rendering.HighDefinition;
+
+
+
+
 
 
 #if UNITY_EDITOR
@@ -26,7 +33,7 @@ public class RubiksMovement : MonoBehaviour
     [SerializeField] Transform middleGameObject;
 
 
-    [FormerlySerializedAs("Axis")] [SerializeField] List<Transform> _axis = new List<Transform>();
+    [FormerlySerializedAs("Axis")][SerializeField] List<Transform> _axis = new List<Transform>();
     [SerializeField] List<Transform> _allBlocks = new List<Transform>();
     public IReadOnlyList<Transform> Axis => _axis.AsReadOnly();
 
@@ -39,7 +46,7 @@ public class RubiksMovement : MonoBehaviour
 
     [Header("Center Cubes")]
     [SerializeField] private Transform _frontCenterCube;
-    [SerializeField] private Transform _backCenterCube, _rightCenterCube, _leftCenterCube,  _topCenterCube, _bottomCenterCube, _middleCenterCube;
+    [SerializeField] private Transform _backCenterCube, _rightCenterCube, _leftCenterCube, _topCenterCube, _bottomCenterCube, _middleCenterCube;
     public Transform FrontCenterCube => _frontCenterCube;
     public Transform BackCenterCube => _backCenterCube;
     public Transform RightCenterCube => _rightCenterCube;
@@ -78,6 +85,9 @@ public class RubiksMovement : MonoBehaviour
 
     public UnityEvent OnCorrectAction;
 
+    public List<ParticleSystem> allParticle;
+
+
     #region Accessor
     public bool IsPreview { get => _isPreview; set => _isPreview = value; }
     public bool IsRotating { get => _isRotating; }
@@ -96,6 +106,7 @@ public class RubiksMovement : MonoBehaviour
 
     #endregion
 
+
     private void Awake()
     {
         _allBlocks.Clear();
@@ -109,8 +120,38 @@ public class RubiksMovement : MonoBehaviour
         {
             StartAutoMoves();
         }
-
     }
+
+    Coroutine DustCorutine;
+    private void Start()
+    {
+        if (!Application.isPlaying) return;
+        if (IsArtCube || IsPreview) return;
+        allParticle.Clear();
+        List<Tile> tiles = new List<Tile>();
+        AllBlocks.ForEach(t => tiles.AddRange(t.GetComponentsInChildren<Tile>().ToList()));
+        foreach (var tile in tiles)
+        {
+            var ps = Instantiate(_DustParticleAfterRotate).transform.GetComponentInChildren<ParticleSystem>();
+            if (!ps) continue;
+
+            allParticle.Add(ps);
+            ps.transform.root.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (!Application.isPlaying) return;
+        if (IsArtCube || IsPreview) return;
+        foreach (var obj in allParticle)
+        {
+            if(obj != null && obj.transform != null && obj.transform.root != null)
+            GameObject.DestroyImmediate(obj.transform.root.gameObject);
+        }
+        allParticle.Clear();
+    }
+
     private void OnEnable()
     {
         EventManager.OnPlayerReset += ReverseMoves;
@@ -119,15 +160,15 @@ public class RubiksMovement : MonoBehaviour
         {
             EventManager.OnActivateSequence += StartAutoMoves;
         }
-        
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
         _axis.Clear();
         for (int i = 1; i < transform.childCount; i++)
         {
             _axis.Add(transform.GetChild(i));
         }
         UpdateCenterCubes();
-        #endif
+#endif
     }
 
     void OnDisable()
@@ -194,7 +235,7 @@ public class RubiksMovement : MonoBehaviour
         }
         EventManager.TriggerEndCubeSequence();
         _moves.Clear();
-        
+
     }
 
     IEnumerator Scramble()
@@ -211,8 +252,8 @@ public class RubiksMovement : MonoBehaviour
     }
     void ReverseMoves(float timeToReset)
     {
-        _doScramble = false;
-        StartCoroutine(ReverseAllMoves(timeToReset));
+        if (IsTransformInside(GameManager.Instance.Player.transform))
+            StartCoroutine(ReverseAllMoves(timeToReset));
     }
     IEnumerator ReverseAllMoves(float time)
     {
@@ -306,7 +347,7 @@ public class RubiksMovement : MonoBehaviour
         if (!_isPreview && !_isArtCube)
         {
             EventManager.TriggerStartCubeRotation();
-            
+
             // Play FMOD event when cube starts rotating
             if (!_cubeRotationStartEvent.IsNull)
             {
@@ -403,33 +444,37 @@ public class RubiksMovement : MonoBehaviour
 
         axis.localRotation = targetRotation;
 
+        int y = 0;
         foreach (int i in blockIndexs)
         {
             Transform block = _allBlocks[i];
 
             Tile[] tiles = block.GetComponentsInChildren<Tile>();
-            foreach (var tile in tiles)
-            {
-                if (_DustParticleAfterRotate != null && IsPreview != true)
-                {
-                    Vector3 normal = (tile.transform.position - block.position).normalized;
-                    Vector3 spawnPos = tile.transform.position + normal + Vector3.up;
 
+            if (IsArtCube == false && IsPreview == false)
+            {
+
+                foreach (var tile in tiles)
+                {
+                    if (y > allParticle.Count - 1) break;
+                    Vector3 normal = (tile.transform.position - block.position).normalized;
+
+                    Vector3 spawnPos = tile.transform.position + normal + Vector3.up;
                     Quaternion spawnRot = Quaternion.LookRotation(normal) * Quaternion.Euler(-90f, 0f, 0f);
 
-                    GameObject particleInstance = Instantiate(_DustParticleAfterRotate, spawnPos, spawnRot);
 
-                    ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
-                    if (ps != null)
-                    {
-                        ps.Play();
-                        Destroy(particleInstance, ps.main.duration + ps.main.startLifetime.constantMax);
-                    }
-                    else
-                    {
-                        Destroy(particleInstance, 2f);
-                    }
+                    allParticle[y].transform.position = spawnPos;
+                    allParticle[y].transform.rotation = spawnRot;
+
+                    allParticle[y].transform.parent.gameObject.SetActive(true);
+
+                    allParticle[y].Play();
+
+                    y++;
                 }
+
+                if (DustCorutine is not null) StopCoroutine(DustCorutine);
+                DustCorutine = null;
             }
 
             Vector3 pos = block.transform.localPosition;
@@ -439,6 +484,8 @@ public class RubiksMovement : MonoBehaviour
             block.transform.localPosition = pos;
             block.transform.SetParent(this.transform.parent, true);
         }
+
+        if (IsArtCube == false && IsPreview == false) DustCorutine = StartCoroutine(DesacParticle());
 
         if (isMiddle)
         {
@@ -461,15 +508,21 @@ public class RubiksMovement : MonoBehaviour
         if (!_isPreview && !_isArtCube)
         {
             EventManager.TriggerEndCubeRotation();
-            
+
             // Play FMOD event when cube finishes rotating
             if (!_cubeRotationEndEvent.IsNull)
             {
                 RuntimeManager.PlayOneShot(_cubeRotationEndEvent, transform.position);
             }
-            
+
             _CheckCorrectActions(blockIndexs);
         }
+    }
+
+    IEnumerator DesacParticle()
+    {
+        yield return new WaitForSeconds(3f);
+        allParticle.ForEach(t => t.transform.root.gameObject.SetActive(false));
     }
 
     private void _CheckCorrectActions(List<int> blockIndexs)
@@ -690,7 +743,7 @@ public class RubiksMovement : MonoBehaviour
             tile.GetComponent<MeshRenderer>().material = matSol;
         }
     }
-    
+
     public void RotateInEditor(Transform axis, Transform selectedCube, bool clockWise, SliceAxis sliceAxis = SliceAxis.Useless)
     {
         Vector3 rotationAxis = Vector3.zero;
@@ -704,7 +757,7 @@ public class RubiksMovement : MonoBehaviour
         }
 
         bool isMiddle = true;
-        
+
         Vector3 localRefPos = selectedCube.localPosition;
 
         List<int> blockIndexs = new List<int>();
@@ -735,13 +788,13 @@ public class RubiksMovement : MonoBehaviour
 
         Quaternion startRotation = axis.localRotation;
         Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) * startRotation;
-        
+
         axis.localRotation = targetRotation;
 
         foreach (int i in blockIndexs)
         {
             Transform block = _allBlocks[i];
-            
+
             Vector3 pos = block.transform.localPosition;
             pos.x = Mathf.Round(pos.x);
             pos.y = Mathf.Round(pos.y);
@@ -768,7 +821,7 @@ public class RubiksMovement : MonoBehaviour
         //    };
         //    _moves.Add(move);
         //}
-        
+
         UpdateCenterCubes();
     }
 
@@ -784,12 +837,12 @@ public class RubiksMovement : MonoBehaviour
             { "Bottom", Vector3.down }
         };
 
-        foreach(var pair in unitVectors)
+        foreach (var pair in unitVectors)
         {
             string faceName = pair.Key;
             Vector3 direction = pair.Value;
-            
-            if (Physics.Raycast(transform.position, direction,  out RaycastHit hitInfo, float.MaxValue, LayerMask.GetMask("Cube")))
+
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, float.MaxValue, LayerMask.GetMask("Cube")))
             {
                 switch (faceName)
                 {
@@ -819,7 +872,7 @@ public class RubiksMovement : MonoBehaviour
     public bool IsTransformInside(Transform t)
     {
         Vector3 localPos = t.InverseTransformPoint(transform.position);
-        Vector3 halfSize = (transform.parent.localScale*3)/2;
+        Vector3 halfSize = (transform.parent.localScale * 3.1f) / 2;
         bool isInside =
             Mathf.Abs(localPos.x) <= halfSize.x &&
             Mathf.Abs(localPos.y) <= halfSize.y &&
@@ -835,7 +888,7 @@ public class RubiksMovement : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, transform.parent.localScale*3);
+        Gizmos.DrawWireCube(transform.position, transform.parent.localScale * 3);
     }
 
 }
@@ -881,7 +934,7 @@ namespace RubiksStatic
             return !(x == y);
         }
     }
-    
+
     public enum SliceAxis { X, Y, Z, Useless }
 
 }

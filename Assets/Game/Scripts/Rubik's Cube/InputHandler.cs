@@ -258,8 +258,8 @@ public class InputHandler : MonoBehaviour
     void OnFakeCamera(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.CAMERA)) return;
-        if (!_controller.ControlledScript.IsReversing)
-            _mouseCam.OnCamera(ctx);
+        if (_controller.ControlledScript.IsReversing) return;
+        if (ctx.performed) _mouseCam.OnCamera(ctx);
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
