@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
+using Debug = FMOD.Debug;
 
 public class RubiksCubeController : MonoBehaviour
 {
@@ -156,7 +157,7 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_controlledScript && !_controlledScript.IsRotating  && ControlledScript.IsTransformInside(_player))
+        if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
             if (!_canPlayerUseIt) return;
 
@@ -367,6 +368,10 @@ public class RubiksCubeController : MonoBehaviour
     /// <returns></returns>
     bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
+        UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
+        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
+            return false;
+        
         List<SelectionCube> selectionCubes = new List<SelectionCube>();
         bool isOneTileLocked = false;
         bool isPlayerOnATile = false;
@@ -374,7 +379,7 @@ public class RubiksCubeController : MonoBehaviour
         {
             if (_controlledScript.IsRotating || _controlledScript.IsReversing) return false;
 
-       
+
             var AllBlocksInFace = _controlledScript.GetCubesFromFace(ActualFace.transform, sliceAxis);
             bool isSameBlock = OldBlocksInFace == AllBlocksInFace;
             OldBlocksInFace = AllBlocksInFace;
@@ -382,7 +387,12 @@ public class RubiksCubeController : MonoBehaviour
             foreach (Transform go in _replicatedScript[0].AllBlocks)
             {
                 if (isSameBlock) break;
-                go.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(false);
+                var anim = go.GetComponentInChildren<ArtRubiksAnimator>();
+                if (anim)
+                {
+                    anim.SetSelectedBool(false);
+                    anim.StopAllCoroutines();
+                }
             }
 
             foreach (Transform go in AllBlocksInFace)

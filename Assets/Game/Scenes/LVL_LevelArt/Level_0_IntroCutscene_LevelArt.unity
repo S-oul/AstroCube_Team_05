@@ -1673,6 +1673,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneStarterPack_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5253443225514921485, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9712993
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253443225514921485, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.22424212
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253443225514921485, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.07729579
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253443225514921485, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.017845139
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253443225514921485, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253443225514921485, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 9.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5793586721786351662, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_IsActive
@@ -1746,22 +1776,27 @@ PrefabInstance:
     - target: {fileID: 7913572249979157548, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9712993
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7913572249979157548, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.22424212
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7913572249979157548, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.07729579
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7913572249979157548, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.017845139
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7913572249979157548, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8000146156961380552, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
@@ -1868,6 +1903,12 @@ Animator:
 --- !u!95 &62883207 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7678176497916135867, guid: e0c85bf540713094da1c4173f8b550de,
+    type: 3}
+  m_PrefabInstance: {fileID: 62883204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &62883208 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5224602921108679464, guid: e0c85bf540713094da1c4173f8b550de,
     type: 3}
   m_PrefabInstance: {fileID: 62883204}
   m_PrefabAsset: {fileID: 0}
@@ -9144,6 +9185,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 156301445}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &156647701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268669584911910181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -993254595
+      Data2: 1077363281
+      Data3: -1579759939
+      Data4: -219805347
+    Path: event:/VO/Intro/VO_Intro_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &156889162
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10544,7 +10616,7 @@ GameObject:
   - component: {fileID: 289972719}
   - component: {fileID: 289972720}
   m_Layer: 0
-  m_Name: '- wait 0,2s'
+  m_Name: '- wait 0.2s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41643,6 +41715,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1134512863}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1135095588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268669584911910180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -993254595
+      Data2: 1077363281
+      Data3: -1579759939
+      Data4: -219805347
+    Path: event:/VO/Intro/VO_Intro_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &1135272656
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43666,7 +43769,7 @@ GameObject:
   - component: {fileID: 1209744434}
   - component: {fileID: 1209744435}
   m_Layer: 0
-  m_Name: '- wait 0,2s'
+  m_Name: '- wait 0.2s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50807,7 +50910,7 @@ GameObject:
   - component: {fileID: 1579766372}
   - component: {fileID: 1579766373}
   m_Layer: 0
-  m_Name: '- wait 1,5s'
+  m_Name: '- wait 1.5s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51300,7 +51403,7 @@ GameObject:
   - component: {fileID: 1628801039}
   - component: {fileID: 1628801040}
   m_Layer: 0
-  m_Name: '- wait 2,5s'
+  m_Name: '- wait 2.5s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68240,7 +68343,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SceneBindings.Array.data[5].value
       value: 
-      objectReference: {fileID: 62883206}
+      objectReference: {fileID: 62883208}
     - target: {fileID: 1743299621856978816, guid: 4c4701c6a92c83840b9a95723e19a66f,
         type: 3}
       propertyPath: m_IsActive
@@ -68472,6 +68575,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Subtitles Introduction
       objectReference: {fileID: 0}
+    - target: {fileID: 8002517177458887565, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      propertyPath: EventReference.Path
+      value: event:/VO/Intro/VO_Intro_Mariam
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002517177458887565, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -993254595
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002517177458887565, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1077363281
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002517177458887565, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -1579759939
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002517177458887565, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -219805347
+      objectReference: {fileID: 0}
     - target: {fileID: 8035840112528927922, guid: 4c4701c6a92c83840b9a95723e19a66f,
         type: 3}
       propertyPath: m_Name
@@ -68555,7 +68683,35 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 636512707}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4254278797512220177, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7268669584911910190}
+    - targetCorrespondingSourceObject: {fileID: 2454259982030705127, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7268669584911910189}
+    - targetCorrespondingSourceObject: {fileID: 2625668052144823373, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7268669584911910188}
+    - targetCorrespondingSourceObject: {fileID: 5546434402161690462, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7268669584911910187}
+    - targetCorrespondingSourceObject: {fileID: 4045621523136966309, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 156647701}
+    - targetCorrespondingSourceObject: {fileID: 2113765869169127358, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1135095588}
+    - targetCorrespondingSourceObject: {fileID: 4598563948215355901, guid: 4c4701c6a92c83840b9a95723e19a66f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7268669584911910191}
   m_SourcePrefab: {fileID: 100100000, guid: 4c4701c6a92c83840b9a95723e19a66f, type: 3}
 --- !u!4 &7268669584911910179 stripped
 Transform:
@@ -68563,6 +68719,203 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7268669584911910178}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268669584911910180 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2113765869169127358, guid: 4c4701c6a92c83840b9a95723e19a66f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7268669584911910178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268669584911910181 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4045621523136966309, guid: 4c4701c6a92c83840b9a95723e19a66f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7268669584911910178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268669584911910182 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5546434402161690462, guid: 4c4701c6a92c83840b9a95723e19a66f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7268669584911910178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268669584911910183 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2625668052144823373, guid: 4c4701c6a92c83840b9a95723e19a66f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7268669584911910178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268669584911910184 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2454259982030705127, guid: 4c4701c6a92c83840b9a95723e19a66f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7268669584911910178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268669584911910185 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4254278797512220177, guid: 4c4701c6a92c83840b9a95723e19a66f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7268669584911910178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268669584911910186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4598563948215355901, guid: 4c4701c6a92c83840b9a95723e19a66f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7268669584911910178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7268669584911910187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268669584911910182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -993254595
+      Data2: 1077363281
+      Data3: -1579759939
+      Data4: -219805347
+    Path: event:/VO/Intro/VO_Intro_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &7268669584911910188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268669584911910183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -993254595
+      Data2: 1077363281
+      Data3: -1579759939
+      Data4: -219805347
+    Path: event:/VO/Intro/VO_Intro_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &7268669584911910189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268669584911910184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -993254595
+      Data2: 1077363281
+      Data3: -1579759939
+      Data4: -219805347
+    Path: event:/VO/Intro/VO_Intro_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &7268669584911910190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268669584911910185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -993254595
+      Data2: 1077363281
+      Data3: -1579759939
+      Data4: -219805347
+    Path: event:/VO/Intro/VO_Intro_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &7268669584911910191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268669584911910186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -993254595
+      Data2: 1077363281
+      Data3: -1579759939
+      Data4: -219805347
+    Path: event:/VO/Intro/VO_Intro_Mariam
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

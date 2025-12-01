@@ -64,10 +64,12 @@ public class ArtRubiksAnimator : MonoBehaviour
     {
         StartCoroutine(waitforXToStartSelected(IsSelected));
     }
+    float timeSinceLastAnim = 0;
     IEnumerator waitforXToStartSelected(bool IsSelected)
     {
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(0f/*(Time.timeSinceLevelLoad - timeSinceLastAnim)%1*/);
         SetSelectedBool(IsSelected);
+        timeSinceLastAnim = Time.timeSinceLevelLoad;
     }
 
     public void SetSelectedBool(bool isIt)

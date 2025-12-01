@@ -46,13 +46,13 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
     private void OnValidate()
     {
-        for (var index = 0; index < _gameObjectsToActivate.Count; index++)
+        foreach (GameObject obj in _gameObjectsToActivate)
         {
-            var gameObjectToActivate = _gameObjectsToActivate[index];
-
-            gameObjectToActivate.transform.SetParent(_memories.Count > index
-                ? _memories[index].transform
-                : _memories[^1].transform);
+            if (obj.TryGetComponent(out MeshRenderer mesh))
+            {
+                mesh.materials = new Material[] { AssetDatabase.LoadAssetAtPath<Material>("Assets/Game/Art/VFX/Memories/Materials/M_MemoryElement.mat") };
+                mesh.enabled = true;
+            }
         }
     }
 
