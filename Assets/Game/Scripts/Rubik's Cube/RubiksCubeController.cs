@@ -37,7 +37,8 @@ public class RubiksCubeController : MonoBehaviour
     private GameSettings _gameSettings;
 
     bool _canPlayerMoveAxis = true;
-
+    bool _doesCurrentAxisHaveLockedTile;
+    int _numOfLockedTileRotationAttempts = 0;
 
     #region Accesseur
 
@@ -157,6 +158,16 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
+        if (_doesCurrentAxisHaveLockedTile)
+        {
+            _numOfLockedTileRotationAttempts++;
+            if (_numOfLockedTileRotationAttempts >= 5)
+            {
+                EventManager.TriggerPlayerTriesToRotateLockedTiles();
+                _numOfLockedTileRotationAttempts = 0;
+            }
+        }
+        
         if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
             if (!_canPlayerUseIt) return;
@@ -368,7 +379,7 @@ public class RubiksCubeController : MonoBehaviour
     /// <returns></returns>
     bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
-        UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
+        //UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
         if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return false;
         
@@ -417,9 +428,11 @@ public class RubiksCubeController : MonoBehaviour
 
                 Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
                 if (equivalence) equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.launchWaitForSelected(true);
-
             }
         }
+
+        _doesCurrentAxisHaveLockedTile = isOneTileLocked;
+
         if (_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview)
             return !(isPlayerOnATile || isOneTileLocked);
 
