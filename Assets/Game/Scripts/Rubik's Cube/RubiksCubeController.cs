@@ -158,16 +158,17 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
-        if (_doesCurrentAxisHaveLockedTile)
+        #region Locked tiles audio event
+        if (_doesCurrentAxisHaveLockedTile && _numOfLockedTileRotationAttempts < 11)
         {
             _numOfLockedTileRotationAttempts++;
-            if (_numOfLockedTileRotationAttempts >= 5)
+            if (_numOfLockedTileRotationAttempts == 2 || _numOfLockedTileRotationAttempts == 5 || _numOfLockedTileRotationAttempts == 10)
             {
                 EventManager.TriggerPlayerTriesToRotateLockedTiles();
-                _numOfLockedTileRotationAttempts = 0;
             }
         }
-        
+        #endregion
+
         if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
             if (!_canPlayerUseIt) return;
