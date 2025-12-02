@@ -40,6 +40,9 @@ public class RubiksCubeController : MonoBehaviour
     bool _doesCurrentAxisHaveLockedTile;
     int _numOfLockedTileRotationAttempts = 0;
 
+
+    public Dictionary<int, Transform> replicatedMap = new();
+
     #region Accesseur
 
     public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
@@ -61,6 +64,12 @@ public class RubiksCubeController : MonoBehaviour
             if (go)
                 _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
+
+        for(int i = 0; i < 26; i++)
+        {
+            replicatedMap.Add(_controlledScript.AllBlocks[i].gameObject.GetInstanceID(), _replicatedScript[0].AllBlocks[i]);
+        }
+
         _gameSettings = GameManager.Instance.Settings;
     }
     private void Start()
@@ -398,13 +407,7 @@ public class RubiksCubeController : MonoBehaviour
 
             foreach (Transform go in _replicatedScript[0].AllBlocks)
             {
-                if (isSameBlock) break;
-                var anim = go.GetComponentInChildren<ArtRubiksAnimator>();
-                if (anim)
-                {
-                    anim.SetSelectedBool(false);
-                    anim.StopAllCoroutines();
-                }
+                go.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(false);
             }
 
             foreach (Transform go in AllBlocksInFace)
@@ -417,18 +420,13 @@ public class RubiksCubeController : MonoBehaviour
                 if (selection.IsTileLocked) isOneTileLocked = true;
                 if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
-            foreach (Transform go in AllBlocksInFace)
+            for(int i = 0; i < 9; i++)
             {
                 if (isPlayerOnATile) break;
                 if (isOneTileLocked) break;
-                if (isSameBlock) break;
 
-                //equivalence;
-                //Should Always be artCube
-                var i = go.GetComponentIndex();
-
-                Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
-                if (equivalence) equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.launchWaitForSelected(true);
+                var caca = replicatedMap[AllBlocksInFace[i].gameObject.GetInstanceID()];    
+                if(caca) caca.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(true);
             }
         }
 

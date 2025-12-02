@@ -21,18 +21,8 @@ public class ArtRubiksAnimator : MonoBehaviour
         animatorCube = GetComponent<Animator>();
         //StartCoroutine(waitforXToStartIdle(_delay));
     }
-
-    private void OnEnable()
-    {
-    }
-    private void OnDisable()
-    {
-    }
-
     public void StartAnimRota()
     {
-        //animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
-        //animatorFx.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
         animatorCube.SetTrigger("DoRotation");
 
         switch (_type)
@@ -50,48 +40,29 @@ public class ArtRubiksAnimator : MonoBehaviour
         }
     }
 
-    public void StartAnimIdle()
-    {
-        animatorCube.SetTrigger("StartAnim");
-    }
-    IEnumerator waitforXToStartIdle(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        StartAnimIdle();
-    }
-
-    public void launchWaitForSelected(bool IsSelected)
-    {
-        StartCoroutine(waitforXToStartSelected(IsSelected));
-    }
-    float timeSinceLastAnim = 0;
-    IEnumerator waitforXToStartSelected(bool IsSelected)
-    {
-        yield return new WaitForSeconds(0f/*(Time.timeSinceLevelLoad - timeSinceLastAnim)%1*/);
-        SetSelectedBool(IsSelected);
-        timeSinceLastAnim = Time.timeSinceLevelLoad;
-    }
-
+    bool isSelected = false;
     public void SetSelectedBool(bool isIt)
     {
         animatorCube.SetBool("IsSelected2", isIt);
-        if (!isIt) return;
-
-        if (animatorCube.GetCurrentAnimatorStateInfo(0).IsTag("Select")) return;
-        
-        switch (_type)
+        if (isIt && isSelected == false)
         {
-            case TypeFace.Face:
-                animatorCube.Play("Cube_Face_Selected", 0, 0);
-                break;
-            case TypeFace.Edge:
-                animatorCube.Play("Cube_Cote_Selected", 0, 0);
-                break;
-            case TypeFace.Coin:
-                animatorCube.Play("Cube_Coin_Selected", 0, 0);
-                break;
-
+            isSelected = true;
+            switch (_type)
+            {
+                case TypeFace.Face:
+                    animatorCube.Play("Cube_Face_Selected");
+                    break;
+                case TypeFace.Edge:
+                    animatorCube.Play("Cube_Cote_Selected");
+                    break;
+                case TypeFace.Coin:
+                    animatorCube.Play("Cube_Coin_Selected");
+                    break;
+            }
+        }
+        else
+        {
+            isSelected = false;
         }
     }
-
 }
