@@ -12,14 +12,10 @@ public class EventManager : MonoBehaviour
 
     public static bool gamePaused = false;
 
-
-
-
-
     public UnityEvent RotatingFace;
 
     public UnityEvent RotatingEnd;
-    
+
     public UnityEvent SelectFace;
     public UnityEvent SwitchtRotation;
 
@@ -97,6 +93,8 @@ public class EventManager : MonoBehaviour
     public static event Action OnCubeSwitchFace;
     public static event Action OnCubeSwitchAxe;
 
+    public static event Action OnPlayerTriesToRotateLockedTiles;
+
     //UI Events
     public static event Action<UIView> OnViewShow;
     public static event Action<UIView> OnViewHide;
@@ -168,6 +166,12 @@ public class EventManager : MonoBehaviour
     {
         OnCubeSwitchAxe?.Invoke();
     }
+
+    public static void TriggerPlayerTriesToRotateLockedTiles()
+    {
+        OnPlayerTriesToRotateLockedTiles?.Invoke();
+    }
+
     public static void TriggerPlayerInteract()
     {
         OnPlayerInteract?.Invoke();

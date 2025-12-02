@@ -19,6 +19,7 @@ public class MemoryObject : MonoBehaviour, IInteractable
     [SerializeField] private List<MemoryVFXController> _memories = new();
     [SerializeField] private List<GameObject> _gameObjectsToActivate;
     [SerializeField] private List<SubtitleData> _subtitles = new();
+    [SerializeField] private Material _memoryMat;
 
     [Header("FMOD")]
     [SerializeField] private EventReference _startMemoryEvent;
@@ -50,7 +51,7 @@ public class MemoryObject : MonoBehaviour, IInteractable
         {
             if (obj.TryGetComponent(out MeshRenderer mesh))
             {
-                mesh.materials = new Material[] { AssetDatabase.LoadAssetAtPath<Material>("Assets/Game/Art/VFX/Memories/Materials/M_MemoryElement.mat") };
+                mesh.material = new Material( _memoryMat);
                 mesh.enabled = true;
             }
         }
