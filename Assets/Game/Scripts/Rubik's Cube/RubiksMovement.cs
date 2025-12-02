@@ -9,7 +9,6 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using FMODUnity;
 using static Unity.Collections.AllocatorManager;
-using AmplifyShaderEditor;
 using UnityEngine.Rendering.HighDefinition;
 
 
