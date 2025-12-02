@@ -37,7 +37,8 @@ public class RubiksCubeController : MonoBehaviour
     private GameSettings _gameSettings;
 
     bool _canPlayerMoveAxis = true;
-
+    bool _doesCurrentAxisHaveLockedTile;
+    int _numOfLockedTileRotationAttempts = 0;
 
     #region Accesseur
 
@@ -157,8 +158,21 @@ public class RubiksCubeController : MonoBehaviour
 
     public void ActionMakeTurn(bool clockwise)
     {
+        #region Locked tiles audio event
+        if (_doesCurrentAxisHaveLockedTile && _numOfLockedTileRotationAttempts < 11)
+        {
+            _numOfLockedTileRotationAttempts++;
+            if (_numOfLockedTileRotationAttempts == 2 || _numOfLockedTileRotationAttempts == 5 || _numOfLockedTileRotationAttempts == 10)
+            {
+                EventManager.TriggerPlayerTriesToRotateLockedTiles();
+            }
+        }
+        #endregion
+
         if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
+            if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return;
+
             if (!_canPlayerUseIt) return;
 
             if (!_canPlayerMoveAxis && (!_previewControlledScript || !_isPreviewDisplayed))
@@ -368,7 +382,9 @@ public class RubiksCubeController : MonoBehaviour
     /// <returns></returns>
     bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
-        UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
+        if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return false;
+
+        //UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
         if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return false;
         
@@ -417,9 +433,11 @@ public class RubiksCubeController : MonoBehaviour
 
                 Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
                 if (equivalence) equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.launchWaitForSelected(true);
-
             }
         }
+
+        _doesCurrentAxisHaveLockedTile = isOneTileLocked;
+
         if (_previewControlledScript && _isPreviewDisplayed && GameManager.Instance.CustomSettings.customPreview)
             return !(isPlayerOnATile || isOneTileLocked);
 
