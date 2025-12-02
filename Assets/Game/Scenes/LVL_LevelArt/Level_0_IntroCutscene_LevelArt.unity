@@ -1783,6 +1783,16 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7638291209327855393, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: EventPlayTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7638291209327855393, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      propertyPath: EventStopTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7913572249979157548, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -1873,6 +1883,10 @@ PrefabInstance:
     - {fileID: 6166720992553777210, guid: e0c85bf540713094da1c4173f8b550de, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1782339065611762700, guid: e0c85bf540713094da1c4173f8b550de,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 961776683}
     - targetCorrespondingSourceObject: {fileID: 5936920862025894717, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       insertIndex: -1
@@ -10688,7 +10702,7 @@ GameObject:
   - component: {fileID: 289972719}
   - component: {fileID: 289972720}
   m_Layer: 0
-  m_Name: '- wait 0,2s'
+  m_Name: '- wait 0.2s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37783,6 +37797,43 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 960069846}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &961776680 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1782339065611762700, guid: e0c85bf540713094da1c4173f8b550de,
+    type: 3}
+  m_PrefabInstance: {fileID: 62883204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &961776683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961776680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1024624432
+      Data2: 1107729776
+      Data3: 1810023356
+      Data4: -1054653940
+    Path: event:/MUS/MUS_1st_CINEMATIC_95
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &972188681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43640,7 +43691,7 @@ GameObject:
   - component: {fileID: 1209744434}
   - component: {fileID: 1209744435}
   m_Layer: 0
-  m_Name: '- wait 0,2s'
+  m_Name: '- wait 0.2s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50527,7 +50578,7 @@ GameObject:
   - component: {fileID: 1579766372}
   - component: {fileID: 1579766373}
   m_Layer: 0
-  m_Name: '- wait 1,5s'
+  m_Name: '- wait 1.5s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50946,7 +50997,7 @@ GameObject:
   - component: {fileID: 1628801039}
   - component: {fileID: 1628801040}
   m_Layer: 0
-  m_Name: '- wait 2,5s'
+  m_Name: '- wait 2.5s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
