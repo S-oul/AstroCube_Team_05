@@ -425,8 +425,12 @@ public class RubiksCubeController : MonoBehaviour
                 if (isPlayerOnATile) break;
                 if (isOneTileLocked) break;
 
-                var caca = replicatedMap[AllBlocksInFace[i].gameObject.GetInstanceID()];    
-                if(caca) caca.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(true);
+                var iii = AllBlocksInFace[i].gameObject.GetInstanceID();
+                if (replicatedMap.ContainsKey(iii))
+                {
+                    replicatedMap[iii].GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(true);
+
+                }
             }
         }
 
