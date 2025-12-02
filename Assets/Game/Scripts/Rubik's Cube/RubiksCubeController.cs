@@ -171,6 +171,8 @@ public class RubiksCubeController : MonoBehaviour
 
         if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
+            if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return;
+
             if (!_canPlayerUseIt) return;
 
             if (!_canPlayerMoveAxis && (!_previewControlledScript || !_isPreviewDisplayed))
@@ -380,6 +382,8 @@ public class RubiksCubeController : MonoBehaviour
     /// <returns></returns>
     bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
+        if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return false;
+
         //UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
         if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return false;
