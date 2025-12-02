@@ -372,7 +372,6 @@ Shader "Shader_Tile"
             #define _SPECULAR_OCCLUSION_FROM_AO 1
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
-            #define ASE_BENT_NORMAL 1
             #define _AMBIENT_OCCLUSION 1
             #define ASE_VERSION 19904
             #define ASE_SRP_VERSION 170004
@@ -1193,8 +1192,8 @@ Shader "Shader_Tile"
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
 				surfaceDescription.BaseColor = lerpResult327.rgb;
-				surfaceDescription.Normal = float3( 0, 0, 1 );
-				surfaceDescription.BentNormal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
 				surfaceDescription.Metallic = tex2DNode96.r;
 
@@ -1202,7 +1201,7 @@ Shader "Shader_Tile"
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Smoothness = tex2DNode96.a;
 				surfaceDescription.Occlusion = tex2DNode96.g;
 				surfaceDescription.Emission = lerpResult328.rgb;
 				surfaceDescription.Alpha = lerpResult344;
@@ -1315,7 +1314,6 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
-			#define ASE_BENT_NORMAL 1
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
@@ -2110,8 +2108,8 @@ Shader "Shader_Tile"
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
 				surfaceDescription.BaseColor = lerpResult327.rgb;
-				surfaceDescription.Normal = float3( 0, 0, 1 );
-				surfaceDescription.BentNormal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
 				surfaceDescription.Metallic = tex2DNode96.r;
 
@@ -2119,7 +2117,7 @@ Shader "Shader_Tile"
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Smoothness = tex2DNode96.a;
 				surfaceDescription.Occlusion = tex2DNode96.g;
 				surfaceDescription.Emission = lerpResult328.rgb;
 				surfaceDescription.Alpha = lerpResult344;
@@ -2215,7 +2213,6 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
-			#define ASE_BENT_NORMAL 1
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
@@ -2936,7 +2933,6 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
-			#define ASE_BENT_NORMAL 1
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
@@ -3629,7 +3625,6 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
-			#define ASE_BENT_NORMAL 1
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
@@ -3801,6 +3796,7 @@ Shader "Shader_Tile"
 			int _PassValue;
             #endif
 
+			sampler2D _Normal;
 			sampler2D _MetallicRoughness;
 			sampler2D _DissolveText;
 			sampler2D _JointText;
@@ -4273,6 +4269,8 @@ Shader "Shader_Tile"
 					BitangentWS = input.tangentToWorld[ 1 ];
 				#endif
 
+				float2 uv_Normal = packedInput.ase_texcoord3.xy * _Normal_ST.xy + _Normal_ST.zw;
+				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord3.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
@@ -4311,8 +4309,8 @@ Shader "Shader_Tile"
 
 				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
 
-				surfaceDescription.Normal = float3( 0, 0, 1 );
-				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.Smoothness = tex2DNode96.a;
 				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
@@ -4404,7 +4402,6 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
-			#define ASE_BENT_NORMAL 1
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
@@ -4580,6 +4577,7 @@ Shader "Shader_Tile"
 			int _PassValue;
             #endif
 
+			sampler2D _Normal;
 			sampler2D _MetallicRoughness;
 			sampler2D _DissolveText;
 			sampler2D _JointText;
@@ -5096,6 +5094,8 @@ Shader "Shader_Tile"
 
 				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
 
+				float2 uv_Normal = packedInput.ase_texcoord3.xy * _Normal_ST.xy + _Normal_ST.zw;
+				
 				float2 uv_MetallicRoughness = packedInput.ase_texcoord3.xy * _MetallicRoughness_ST.xy + _MetallicRoughness_ST.zw;
 				float4 tex2DNode96 = tex2D( _MetallicRoughness, uv_MetallicRoughness );
 				
@@ -5132,8 +5132,8 @@ Shader "Shader_Tile"
 				float lerpResult344 = lerp( clampResult230 , ( tex2DNode10.a * _Alpha_shader ) , (float)_IsOverlay);
 				
 
-				surfaceDescription.Normal = float3( 0, 0, 1 );
-				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.Smoothness = tex2DNode96.a;
 				surfaceDescription.Alpha = lerpResult344;
 
 				#ifdef _ALPHATEST_ON
@@ -5240,7 +5240,6 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
-			#define ASE_BENT_NORMAL 1
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
@@ -6195,8 +6194,8 @@ Shader "Shader_Tile"
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 
 				surfaceDescription.BaseColor = lerpResult327.rgb;
-				surfaceDescription.Normal = float3( 0, 0, 1 );
-				surfaceDescription.BentNormal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
+				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
 				surfaceDescription.Metallic = tex2DNode96.r;
 
@@ -6204,7 +6203,7 @@ Shader "Shader_Tile"
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Smoothness = tex2DNode96.b;
+				surfaceDescription.Smoothness = tex2DNode96.a;
 				surfaceDescription.Occlusion = tex2DNode96.g;
 				surfaceDescription.Emission = lerpResult328.rgb;
 				surfaceDescription.Alpha = lerpResult344;
@@ -6413,7 +6412,6 @@ Shader "Shader_Tile"
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
-			#define ASE_BENT_NORMAL 1
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
 			#define ASE_SRP_VERSION 170004
@@ -7600,11 +7598,11 @@ WireConnection;362;2;360;1
 WireConnection;364;0;76;5
 WireConnection;364;1;363;5
 WireConnection;117;0;327;0
-WireConnection;117;2;341;0
+WireConnection;117;1;341;0
 WireConnection;117;4;96;1
-WireConnection;117;7;96;3
+WireConnection;117;7;96;4
 WireConnection;117;8;96;2
 WireConnection;117;6;328;0
 WireConnection;117;9;344;0
 ASEEND*/
-//CHKSM=ECD8A87AFADF0CB1266E9C79C6394D5E4C9FFFE4
+//CHKSM=FD587F7B82BC7CFEAAC42166DF57360613633278
