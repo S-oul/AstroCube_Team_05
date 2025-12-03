@@ -280,6 +280,8 @@ public class SettingsMenuScreenView : UIView
         if (isInGameplay)
         {
             EventManager.OnGameUnpause += CloseMenu;
+            _cancelAction.performed += OnCancelPerformed;
+
         }
 
         if (!isInGameplay)
@@ -293,6 +295,8 @@ public class SettingsMenuScreenView : UIView
         if (isInGameplay)
         {
             EventManager.OnGameUnpause -= CloseMenu;
+            _cancelAction.performed -= OnCancelPerformed;
+
         }
 
         if (!isInGameplay)
@@ -303,8 +307,7 @@ public class SettingsMenuScreenView : UIView
 
     private void OnCancelPerformed(InputAction.CallbackContext ctx)
     {
-        Hide();
-        _uiManager.Show<MainMenuView>();
+        _uiManager.ShowInGameExclusive<PauseMenuView>();
     }
 
     private void CloseMenu()
