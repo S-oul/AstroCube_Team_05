@@ -50,8 +50,8 @@ public class MainMenuView : UIView
         if (popup == null) return;
 
         popup.ShowPopup(new PopUpData(
-            title: "Nouvelle Partie",
-            message: "Une sauvegarde existe déjà.\nVoulez-vous recommencer ?",
+            title: "New Game",
+            message: "A save already exists \n do you wanna erase the previous one",
             type: PopUpType.Warning,
             confirm: "Oui",
             cancel: "Non",
