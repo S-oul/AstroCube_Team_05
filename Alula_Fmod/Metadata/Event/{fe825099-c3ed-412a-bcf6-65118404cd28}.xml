@@ -139,8 +139,12 @@
 		<property name="isCutoff">
 			<value>true</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{90606a22-3b04-4fa9-8901-7efa86124b8e}</destination>
+			<destination>{f098df5b-6af4-4bf1-bfa8-764c5e23e824}</destination>
 		</relationship>
 		<relationship name="audioFile">
 			<destination>{88485b31-11df-45fd-aa8b-34b027fbd5ae}</destination>
@@ -156,11 +160,15 @@
 		<property name="start">
 			<value>1</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="pitch">
 			<value>1</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{71f02c6c-518c-4c1d-bdfa-15f85e5a1569}</destination>
+			<destination>{f04b6cac-3424-4c2d-b0e7-bea8ed3e1e62}</destination>
 		</relationship>
 		<relationship name="audioFile">
 			<destination>{6ab7f4dd-5cc8-4c8a-857a-99223ba42568}</destination>
@@ -176,11 +184,15 @@
 		<property name="start">
 			<value>2</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="pitch">
 			<value>3</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{a7bf31e2-863e-4734-a5a0-766aaa97863e}</destination>
+			<destination>{807929e0-8aef-4904-8f32-b404744fda27}</destination>
 		</relationship>
 		<relationship name="audioFile">
 			<destination>{6269946b-1298-415a-a5b8-b98fafba4cc5}</destination>
@@ -196,11 +208,15 @@
 		<property name="start">
 			<value>3</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="pitch">
 			<value>6</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{d8cd8648-e483-4542-869c-99331e0a9af1}</destination>
+			<destination>{7d309e34-53f1-47c1-94c2-265222e93b5a}</destination>
 		</relationship>
 		<relationship name="audioFile">
 			<destination>{58523e37-cc14-43b3-b944-bca707b99460}</destination>
@@ -241,10 +257,13 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>350</value>
+			<value>700</value>
 		</property>
 		<property name="attackShape">
 			<value>-0.162485585</value>
+		</property>
+		<property name="peakValue">
+			<value>-6</value>
 		</property>
 		<property name="holdTime">
 			<value>740</value>
@@ -263,6 +282,14 @@
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{f098df5b-6af4-4bf1-bfa8-764c5e23e824}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
 		</property>
 	</object>
 	<object class="ADSRModulator" id="{71f02c6c-518c-4c1d-bdfa-15f85e5a1569}">
@@ -273,10 +300,13 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>350</value>
+			<value>700</value>
 		</property>
 		<property name="attackShape">
 			<value>-0.162485585</value>
+		</property>
+		<property name="peakValue">
+			<value>-6</value>
 		</property>
 		<property name="holdTime">
 			<value>740</value>
@@ -295,6 +325,14 @@
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{f04b6cac-3424-4c2d-b0e7-bea8ed3e1e62}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
 		</property>
 	</object>
 	<object class="ADSRModulator" id="{a7bf31e2-863e-4734-a5a0-766aaa97863e}">
@@ -305,10 +343,13 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>350</value>
+			<value>700</value>
 		</property>
 		<property name="attackShape">
 			<value>-0.162485585</value>
+		</property>
+		<property name="peakValue">
+			<value>-6</value>
 		</property>
 		<property name="holdTime">
 			<value>740</value>
@@ -329,6 +370,14 @@
 			<value>-80</value>
 		</property>
 	</object>
+	<object class="RandomizerModulator" id="{807929e0-8aef-4904-8f32-b404744fda27}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="ADSRModulator" id="{d8cd8648-e483-4542-869c-99331e0a9af1}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>volume</value>
@@ -337,10 +386,13 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>350</value>
+			<value>700</value>
 		</property>
 		<property name="attackShape">
 			<value>-0.162485585</value>
+		</property>
+		<property name="peakValue">
+			<value>-6</value>
 		</property>
 		<property name="holdTime">
 			<value>740</value>
@@ -359,6 +411,14 @@
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{7d309e34-53f1-47c1-94c2-265222e93b5a}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
 		</property>
 	</object>
 	<object class="Automator" id="{f444fee7-bdb1-4a3e-a571-448e5a523ae3}">
