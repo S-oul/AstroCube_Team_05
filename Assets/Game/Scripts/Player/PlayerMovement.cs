@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isOnDefaultGround;
 
-    bool _isUncontrolledFalling;
+    bool _isUncontrolledFalling = false;
 
     public float defaultSpeed { get; private set; }
     public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
