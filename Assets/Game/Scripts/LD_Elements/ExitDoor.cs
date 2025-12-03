@@ -93,7 +93,6 @@ public class ExitDoor : MonoBehaviour
         float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
         //_VFXAnimator.SetTrigger("Open");
         
-        // Stocker le tween pour vérifier s'il est actif
         _currentTween = DOTween.To(() => _currentLerp, x => _currentLerp = x, lerp, 1.5f).OnComplete(() =>
         {
             _isCurrentlyOpened = true;
@@ -109,23 +108,18 @@ public class ExitDoor : MonoBehaviour
         }
         _VFXAnimator.PlayInFixedTime("ZelligeDoorAnim_Open", 0, _currentLerp);
         
-        // 1. Détection de mouvement (Tween actif OU changement de valeur)
         bool isTweenActive = _currentTween != null && _currentTween.IsActive() && _currentTween.IsPlaying();
         bool isLerpChanging = Mathf.Abs(_currentLerp - _previousLerp) > 0.0001f;
         bool isMoving = isTweenActive || isLerpChanging;
         
-        // 2. Mise à jour du timer de mouvement
         if (isMoving)
         {
             _lastMoveTime = Time.time;
         }
         
-        // 3. Décision de jouer le son
-        // On joue si : Porte pas fermée (> 0.01) ET (Bouge actuellement OU a bougé récemment)
         bool recentlyMoved = (Time.time - _lastMoveTime) < STOP_DELAY;
         bool shouldPlaySound = _currentLerp > 0.01f && recentlyMoved;
         
-        // 4. Gestion FMOD
         if (shouldPlaySound && !_isDoorSoundPlaying)
         {
             _doorSoundInstance = RuntimeManager.CreateInstance(_zelligeDoorFXEvent);

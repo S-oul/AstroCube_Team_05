@@ -8,7 +8,7 @@
 			<value>SFX_ExitdoorZellige_LP</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{64f65dbb-3ed1-4049-9b4a-40669cf451b6}</destination>
@@ -72,6 +72,12 @@
 		<property name="priority">
 			<value>3</value>
 		</property>
+		<property name="minimumDistance">
+			<value>4</value>
+		</property>
+		<property name="maximumDistance">
+			<value>30</value>
+		</property>
 	</object>
 	<object class="MarkerTrack" id="{21c4a09d-e770-4a76-989e-2b8f1682fb46}" />
 	<object class="Timeline" id="{9f3a55f3-b736-449f-b4a9-2565c2ce17d9}">
@@ -109,6 +115,7 @@
 	<object class="MixerBusEffectChain" id="{831cac4f-7aed-406c-93bd-c7e3b02fea36}">
 		<relationship name="effects">
 			<destination>{083b1569-2812-4e03-9b4e-87a96fc30439}</destination>
+			<destination>{a89f9fd4-ff3f-46e3-b891-8ab0c3247f43}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a7caaca3-f07f-43c7-8f97-e68252f77ccf}" />
@@ -135,6 +142,7 @@
 	</object>
 	<object class="MixerBusFader" id="{3ee8550a-9842-489d-b3a7-e7dcd6f91cda}" />
 	<object class="MixerBusFader" id="{083b1569-2812-4e03-9b4e-87a96fc30439}" />
+	<object class="SpatialiserEffect" id="{a89f9fd4-ff3f-46e3-b891-8ab0c3247f43}" />
 	<object class="RandomizerModulator" id="{94ced32f-1c5f-43c5-9bc2-f8d0bf0f677e}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>startOffset</value>
@@ -151,7 +159,7 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>500</value>
+			<value>200</value>
 		</property>
 		<property name="attackShape">
 			<value>-0.312405944</value>
