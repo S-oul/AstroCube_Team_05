@@ -18,7 +18,7 @@ public class PlayerStepDetection : MonoBehaviour
     private CharacterController _characterController;
     private Vector3 _lastPosition;
 
-    private float timer = 0f;
+    private float _timer;
 
     //Use this 
     public bool PlayFootsteps { get => playFootsteps; set => playFootsteps = value; }
@@ -27,9 +27,10 @@ public class PlayerStepDetection : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _lastPosition = transform.position;
+        _timer = footstepInterval;
     }
 
-    private void Update()
+    private void  FixedUpdate()
     {
         Vector3 currentPosition = transform.position;
         float velocity = (currentPosition - _lastPosition).magnitude;
@@ -40,16 +41,16 @@ public class PlayerStepDetection : MonoBehaviour
         
         if (velocity < 0.15f)
         {
-            timer = 0;
+            _timer = footstepInterval;
             return;
         }
 
-        timer += Time.deltaTime;
+        _timer += Time.deltaTime;
 
-        if (timer >= footstepInterval)
+        if (_timer >= footstepInterval)
         {
             PlayFootstep();
-            timer = 0f;
+            _timer = 0f;
         }
     }
 
@@ -58,23 +59,22 @@ public class PlayerStepDetection : MonoBehaviour
         if (footstepFmodEvent.IsNull)
             return;
 
-        int layerMask = LayerMask.GetMask("Floor", "Tile");
+        int layerMask = LayerMask.GetMask("Floor");
         
         Vector3 startPoint = transform.position + transform.up * 0.5f;
         
         if (Physics.Raycast(startPoint, -transform.up, out RaycastHit hit, groundCheckDistance, layerMask))
         {
             FloorType floorType;
-            hit.collider.TryGetComponent<FloorType>(out floorType);
+            hit.collider.TryGetComponent(out floorType);
             
-            if (floorType == null) 
+            if (!floorType) 
             {
                 floorType = hit.collider.GetComponentInParent<FloorType>();
             }
 
             string detectedTag = "Concrete";
-            
-            if (floorType != null) 
+            if (floorType) 
             {
                 detectedTag = floorType.FloorTypeTag;
             }
@@ -86,6 +86,8 @@ public class PlayerStepDetection : MonoBehaviour
             {
                 terrainSwitch = "PR_FT";
             }
+            
+            //Debug.Log("Footstep on: " + detectedTag);
 
             instance.setParameterByNameWithLabel(terrainSwitch, detectedTag);
             instance.start();

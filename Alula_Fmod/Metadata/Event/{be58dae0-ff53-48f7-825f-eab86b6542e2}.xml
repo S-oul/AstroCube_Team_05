@@ -117,11 +117,12 @@
 			<value>Purple Light 1</value>
 		</property>
 		<property name="volume">
-			<value>-9</value>
+			<value>-12</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{feb0b9ce-883d-400d-9b06-cf18d1d371aa}</destination>
 			<destination>{99438faa-1f9d-4750-97ad-798bd1a530ea}</destination>
+			<destination>{2d850ad9-b7d3-417b-8e58-3be6b5a3f0e1}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{333e994a-715d-4ffd-8b5c-4629cda37844}</destination>
@@ -147,6 +148,29 @@
 		</property>
 		<property name="amount">
 			<value>3</value>
+		</property>
+	</object>
+	<object class="ADSRModulator" id="{2d850ad9-b7d3-417b-8e58-3be6b5a3f0e1}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>380</value>
+		</property>
+		<property name="attackShape">
+			<value>-0.675193012</value>
+		</property>
+		<property name="releaseTime">
+			<value>300</value>
+		</property>
+		<property name="releaseShape">
+			<value>-0.252500981</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{333e994a-715d-4ffd-8b5c-4629cda37844}">

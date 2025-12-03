@@ -36,6 +36,8 @@ public class PlayerTrigger : MonoBehaviour
 
     private Reseter _reset;
 
+    public  bool IsPlayerInLockRotationZone { get; private set; }
+
 
     private void Awake()
     {
@@ -99,6 +101,9 @@ public class PlayerTrigger : MonoBehaviour
             case "ChangeReset":
                 _reset.ChangeResetFunc(other.GetComponentInChildren<ChangeReset>().NewResetPos);
                 break;
+            case "ObjectLoader":
+                other.GetComponent<ObjectLoader>().SwitchActivate();
+                break;
 
             case "UncontrolledFallingTrigger": // to be triggered when the player starts falling though the menger sponge fractal. 
                 _playerMovement.SetUncontrolledFalling(true);
@@ -115,6 +120,11 @@ public class PlayerTrigger : MonoBehaviour
         {
             var belt = other.GetComponent<ConveyerBeltManager>();
             _playerMovement.SetExternallyAppliedMovement(belt.direction, belt.speed);
+        }
+
+        if (other.CompareTag("LockAllCubeRotationZone"))
+        {
+            IsPlayerInLockRotationZone = true;
         }
     }
 
@@ -141,6 +151,10 @@ public class PlayerTrigger : MonoBehaviour
             case "FreeFallZone":
                 print("GETOUT OF HERE");
                 _playerMovement.FreeFallZone = false;
+                break;
+
+            case "LockAllCubeRotationZone":
+                IsPlayerInLockRotationZone = false;
                 break;
         }
     }

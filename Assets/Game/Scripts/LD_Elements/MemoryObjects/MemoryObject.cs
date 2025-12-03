@@ -19,6 +19,7 @@ public class MemoryObject : MonoBehaviour, IInteractable
     [SerializeField] private List<MemoryVFXController> _memories = new();
     [SerializeField] private List<GameObject> _gameObjectsToActivate;
     [SerializeField] private List<SubtitleData> _subtitles = new();
+    [SerializeField] private Material _memoryMat;
 
     [Header("FMOD")]
     [SerializeField] private EventReference _startMemoryEvent;
@@ -46,13 +47,13 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
     private void OnValidate()
     {
-        for (var index = 0; index < _gameObjectsToActivate.Count; index++)
+        foreach (GameObject obj in _gameObjectsToActivate)
         {
-            var gameObjectToActivate = _gameObjectsToActivate[index];
-
-            gameObjectToActivate.transform.SetParent(_memories.Count > index
-                ? _memories[index].transform
-                : _memories[^1].transform);
+            if (obj.TryGetComponent(out MeshRenderer mesh))
+            {
+                mesh.material = new Material( _memoryMat);
+                mesh.enabled = true;
+            }
         }
     }
 

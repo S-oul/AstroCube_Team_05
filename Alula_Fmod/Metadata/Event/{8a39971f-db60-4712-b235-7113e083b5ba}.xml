@@ -8,7 +8,7 @@
 			<value>VO_Level_13_Memory_Mariam</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{a84dba6d-fc65-43e5-94b2-751f82909920}</destination>
@@ -62,7 +62,14 @@
 			<destination>{fd8d9d6e-2ff5-40d9-9bb7-3d3fc72e03ef}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{df26b784-63ef-4bd9-b2de-e1281c7d20c6}" />
+	<object class="EventAutomatableProperties" id="{df26b784-63ef-4bd9-b2de-e1281c7d20c6}">
+		<property name="minimumDistance">
+			<value>8</value>
+		</property>
+		<property name="maximumDistance">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{78efdae3-f52d-48d4-9e10-12ac17600da0}" />
 	<object class="Timeline" id="{091e9fd0-dc03-41ca-affe-b20ce87c9ab2}">
 		<property name="isProxyEnabled">
@@ -102,6 +109,7 @@
 	<object class="MixerBusEffectChain" id="{c72226ac-c0cf-46da-ab8b-1d7dd8d6dfa5}">
 		<relationship name="effects">
 			<destination>{526de294-d3f1-4b87-9fe5-89dda6e2c894}</destination>
+			<destination>{c6d462c5-9de3-41e3-a01e-7758222143b8}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{7ad3eef7-31ec-4c04-9e91-3aaf33e757d5}" />
@@ -124,6 +132,7 @@
 	</object>
 	<object class="MixerBusFader" id="{13a7ef4a-5a5b-478b-9ac1-aca21886ab2b}" />
 	<object class="MixerBusFader" id="{526de294-d3f1-4b87-9fe5-89dda6e2c894}" />
+	<object class="SpatialiserEffect" id="{c6d462c5-9de3-41e3-a01e-7758222143b8}" />
 	<object class="SingleSound" id="{292df7f1-5b78-4ace-8569-ff7aa3880392}">
 		<relationship name="audioFile">
 			<destination>{fbc38b5e-38e9-48f8-8615-c8610c82baea}</destination>
