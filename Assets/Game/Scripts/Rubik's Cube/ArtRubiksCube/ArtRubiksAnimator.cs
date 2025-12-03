@@ -4,7 +4,7 @@ using UnityEngine;
 public class ArtRubiksAnimator : MonoBehaviour
 {
     [SerializeField] float _delay = .1f;
-    [SerializeField] Animator animatorCube;
+    public Animator animatorCube;
 
     [SerializeField] Animator animatorFx;
 
@@ -43,8 +43,8 @@ public class ArtRubiksAnimator : MonoBehaviour
     public float TimeLeftBeforeEndAnim()
     {
         var info = animatorCube.GetCurrentAnimatorStateInfo(0);
-        //Switch might be more effective but idk
-        bool isName = isName = 
+        //Switch might be more effective but idk idgaf ikms
+        bool isName =
                info.IsName("Cube_Face_Selected")
             || info.IsName("Cube_Cote_Selected")
             || info.IsName("Cube_Coin_Selected");
@@ -63,7 +63,7 @@ public class ArtRubiksAnimator : MonoBehaviour
         animatorCube.SetBool("IsSelected2", isIt);
         if (isIt && isSelected == false)
         {
-/*            switch (_type)
+            switch (_type)
             {
                 case TypeFace.Face:
                     animatorCube.Play("Cube_Face_Selected");
@@ -74,10 +74,10 @@ public class ArtRubiksAnimator : MonoBehaviour
                 case TypeFace.Coin:
                     animatorCube.Play("Cube_Coin_Selected");
                     break;
-            }*/
+            }
 
         }
-
         isSelected = isIt;
+
     }
 }
