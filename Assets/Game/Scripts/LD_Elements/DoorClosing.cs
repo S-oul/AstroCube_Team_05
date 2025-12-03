@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoorClosing : MonoBehaviour
 {
-
+    [SerializeField] private Collider _triggerCollider;
     [SerializeField] private Collider _blockCollider;
     [SerializeField] private GameObject _cube;
     
@@ -12,6 +12,7 @@ public class DoorClosing : MonoBehaviour
     {
         if (other.TryGetComponent(out PlayerMovement player))
         {
+            Destroy(_triggerCollider);
             _blockCollider.enabled = true;
             _cube.transform.DOLocalMoveY(0f, 6f).SetEase(Ease.InCubic);
         }
