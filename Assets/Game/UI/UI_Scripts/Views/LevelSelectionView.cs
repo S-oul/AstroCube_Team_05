@@ -238,7 +238,7 @@ public class LevelSelectionView : UIView
 
     private void OnBackClicked()
     {
-        Hide();
+        HideImmediate();
         uiManager.Show<MainMenuView>();
     }
 }
