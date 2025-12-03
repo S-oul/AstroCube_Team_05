@@ -421,7 +421,6 @@ public class RubiksCubeController : MonoBehaviour
     {
         if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return false;
 
-        //UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
         if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return false;
 
@@ -455,7 +454,7 @@ public class RubiksCubeController : MonoBehaviour
             float amountToSpeed = 0;
 
             oldReplicatedFace.Clear();
-
+            bool doOnce = true;
             for (int i = 0; i < 9; i++)
             {
                 if (isPlayerOnATile) break;
@@ -473,9 +472,10 @@ public class RubiksCubeController : MonoBehaviour
                     }
                     
                     
-                    if (animToSpeedUp.Count > 0 && !animToSpeedUp.Contains(anim.animatorCube))
+                    if (doOnce && animToSpeedUp.Count > 0 && !animToSpeedUp.Contains(anim.animatorCube))
                     {
-                        amountToSpeed = ArtCubeSync.CalculateMultValue(anim.animatorCube, animToSpeedUp[0]);
+                        doOnce = false;
+                        amountToSpeed = ArtCubeSync.CalculateMultValue(anim.animatorCube,animToSpeedUp[0]);
                     }
 
                     anim?.SetSelectedBool(true);
