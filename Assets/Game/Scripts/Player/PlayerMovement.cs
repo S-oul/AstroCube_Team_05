@@ -205,6 +205,7 @@ public class PlayerMovement : MonoBehaviour
         if (_jumpInput && (_isGrounded || _currentCoyoteTime > 0f)) {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
             _currentCoyoteTime = -1.0f;
+            _horizontalVelocity *= 1.1f;
             _stepDetection.Jump();
         }
 

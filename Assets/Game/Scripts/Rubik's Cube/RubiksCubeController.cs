@@ -40,7 +40,7 @@ public class RubiksCubeController : MonoBehaviour
     bool _doesCurrentAxisHaveLockedTile;
     int _numOfLockedTileRotationAttempts = 0;
 
-
+    ArtAnimatorSync sync;
     public Dictionary<int, Transform> replicatedMap = new();
 
     #region Accesseur
@@ -69,6 +69,8 @@ public class RubiksCubeController : MonoBehaviour
         {
             replicatedMap.Add(_controlledScript.AllBlocks[i].gameObject.GetInstanceID(), _replicatedScript[0].AllBlocks[i]);
         }
+
+        sync = FindAnyObjectByType<ArtAnimatorSync>();
 
         _gameSettings = GameManager.Instance.Settings;
     }
@@ -420,16 +422,19 @@ public class RubiksCubeController : MonoBehaviour
                 if (selection.IsTileLocked) isOneTileLocked = true;
                 if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
-            for(int i = 0; i < 9; i++)
+
+            
+            float maxTime = sync.CheckMaxTime();
+            
+            for (int i = 0; i < 9; i++)
             {
                 if (isPlayerOnATile) break;
                 if (isOneTileLocked) break;
 
-                var iii = AllBlocksInFace[i].gameObject.GetInstanceID();
-                if (replicatedMap.ContainsKey(iii))
+                var ObjectID = AllBlocksInFace[i].gameObject.GetInstanceID();
+                if (replicatedMap.ContainsKey(ObjectID))
                 {
-                    replicatedMap[iii].GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(true);
-
+                    replicatedMap[ObjectID].GetComponentInChildren<ArtRubiksAnimator>()?.LaunchAnimCoroutine(true,maxTime);
                 }
             }
         }

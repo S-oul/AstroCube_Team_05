@@ -19,7 +19,6 @@ public class ArtRubiksAnimator : MonoBehaviour
     void Start()
     {
         animatorCube = GetComponent<Animator>();
-        //StartCoroutine(waitforXToStartIdle(_delay));
     }
     public void StartAnimRota()
     {
@@ -40,14 +39,31 @@ public class ArtRubiksAnimator : MonoBehaviour
         }
     }
 
-    bool isSelected = false;
+    [SerializeField] bool isSelected = false;
+    public float TimeLeftBeforeEndAnim()
+    {
+        var info = animatorCube.GetCurrentAnimatorStateInfo(0);
+        //Switch might be more effective but idk
+        bool isName = isName = 
+               info.IsName("Cube_Face_Selected")
+            || info.IsName("Cube_Cote_Selected")
+            || info.IsName("Cube_Coin_Selected");
+        
+        return isName ? info.normalizedTime%2f/2f: -1f;
+    }
+
+    public void LaunchAnimCoroutine(bool select, float timetoWait) => StartCoroutine(waitForToSelect(select, timetoWait));
+    IEnumerator waitForToSelect(bool select, float timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+        SetSelectedBool(select);
+    }
     public void SetSelectedBool(bool isIt)
     {
         animatorCube.SetBool("IsSelected2", isIt);
         if (isIt && isSelected == false)
         {
-            isSelected = true;
-            switch (_type)
+/*            switch (_type)
             {
                 case TypeFace.Face:
                     animatorCube.Play("Cube_Face_Selected");
@@ -58,11 +74,10 @@ public class ArtRubiksAnimator : MonoBehaviour
                 case TypeFace.Coin:
                     animatorCube.Play("Cube_Coin_Selected");
                     break;
-            }
+            }*/
+
         }
-        else
-        {
-            isSelected = false;
-        }
+
+        isSelected = isIt;
     }
 }
