@@ -258,7 +258,7 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(true, renderer, 0.1f);
+                _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
 
                 if (_selectionCurrentValues.ContainsKey(renderer))
                 {
@@ -277,7 +277,7 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(false, renderer, 0.5f);
+                _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
 
                 if (_selectionCurrentValues.ContainsKey(renderer))
                 {
@@ -308,7 +308,8 @@ public class SelectionCube : MonoBehaviour
                 _selectionCurrentValues[renderer].EnableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 1.0f, duration).SetEase(Ease.InOutSine);
             }
         }
-        else{
+        else
+        {
             if (_selectionCurrentValues.ContainsKey(renderer))
             {
                 if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
