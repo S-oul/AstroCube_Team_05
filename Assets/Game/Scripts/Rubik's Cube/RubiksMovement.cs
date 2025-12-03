@@ -934,6 +934,6 @@ namespace RubiksStatic
         }
     }
 
-    public enum SliceAxis { X, Y, Z, Useless }
+    public enum SliceAxis { Y, X, Z, Useless }
 
 }
