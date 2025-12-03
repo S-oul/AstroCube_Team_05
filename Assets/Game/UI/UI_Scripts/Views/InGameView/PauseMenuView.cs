@@ -87,9 +87,26 @@ public class PauseMenuView : UIView
 
     private void OnQuitClicked()
     {
-        Debug.Log("Quitting to Main Menu");
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("GameEntry");
+        var popup = _uiManager.ShowAndReturn<PopUpView>();
+        if (popup == null) return;
+
+        popup.ShowPopup(new PopUpData(
+            title: "Quit Game ?",
+            message: "",
+            type: PopUpType.Warning,
+            confirm: "Oui",
+            cancel: "Non",
+            onConfirm: () =>
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene("GameEntry");
+            },
+            onCancel: () =>
+            {
+                _uiManager.ShowInGameExclusive<PauseMenuView>();
+
+            }
+        ));
 
     }
 
