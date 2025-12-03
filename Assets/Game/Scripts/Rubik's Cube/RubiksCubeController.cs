@@ -1,3 +1,4 @@
+using System;
 using RubiksStatic;
 using System.Collections;
 using System.Collections.Generic;
@@ -176,7 +177,18 @@ public class RubiksCubeController : MonoBehaviour
             if (!_canPlayerUseIt) return;
 
             if (!_canPlayerMoveAxis && (!_previewControlledScript || !_isPreviewDisplayed))
+            {
+                RubiksMove failedInput = new()
+                {
+                    Axis = _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice),
+                    cube = ActualFace.transform,
+                    orientation = _selectedSlice,
+                    clockWise = clockwise
+                };
+                
+                _controlledScript.RotateAxisFailed(failedInput.Axis, failedInput.cube, clockwise, 1f, failedInput.orientation);
                 return;
+            }
             if (_previewControlledScript && _previewControlledScript.IsRotating)
                 return;
             if (_cameraPlayerReversed)
