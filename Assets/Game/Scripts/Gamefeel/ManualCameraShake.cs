@@ -36,6 +36,8 @@ public class CameraShake : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0) return;
+
         if (bigShakeDurationHolder > 0)
         {
             float tempShakeAmount = intencityCurve.Evaluate(1 - bigShakeDurationHolder/ bigShakeDuration) * bigShakeAmount;

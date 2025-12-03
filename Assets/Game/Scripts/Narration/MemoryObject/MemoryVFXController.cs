@@ -20,6 +20,7 @@ public class MemoryVFXController : MonoBehaviour
     private Transform _origin;
     private GameObject _LDElement;
     private MemoryObject _memoryObject;
+    private Material _material;
 
     /*
      Lerp_Delta:
@@ -75,6 +76,8 @@ public class MemoryVFXController : MonoBehaviour
     {
         if (_LDElement)
         {
+            _material = _LDElement.GetComponent<MeshRenderer>().material;
+            
             Vector3 localPosition = transform.InverseTransformPoint(_LDElement.transform.position);
             Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _LDElement.transform.rotation;
             Vector3 localScale = new Vector3(
@@ -103,10 +106,14 @@ public class MemoryVFXController : MonoBehaviour
         {
             DOTween
                 .To(() => _vfx.GetFloat("ParticleSizeMultiplier"), (t) => _vfx.SetFloat("ParticleSizeMultiplier", t), 0.3f, _animationDuration)
-                .SetEase(Ease.InOutCubic).WaitForCompletion();
+                .SetEase(Ease.InOutCubic);
             yield return DOTween
                 .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
                 .SetEase(Ease.InOutCubic).WaitForCompletion();
+            
+            DOTween
+                .To(() => _material.GetFloat(Shader.PropertyToID("_Alpha")), (t) => _material.SetFloat(Shader.PropertyToID("_Alpha"), t), 1f, 0.5f)
+                .SetEase(Ease.InOutCubic);
             
             _memoryObject.OnAnimationFinished?.Invoke();
             _LDElement.SetActive(true);
