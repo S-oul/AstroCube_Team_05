@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 5367755984854055569}
   - component: {fileID: 334504763519136070}
   m_Layer: 0
-  m_Name: '- wait 1s'
+  m_Name: '- wait 1,5s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   durationMode: 1
-  waitTime: 1
+  waitTime: 1.5
 --- !u!1 &2546568348925718303
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,6 +376,76 @@ MonoBehaviour:
   durationMode: 0
   waitTime: 1
   _targetGameObject: {fileID: 1699124808061705343}
+--- !u!1 &4065422211549358501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8197977489459367070}
+  - component: {fileID: 7307511939326254765}
+  - component: {fileID: 1036796573161485971}
+  m_Layer: 13
+  m_Name: Trigger Seq (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8197977489459367070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4065422211549358501}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.0000004917384, z: -0, w: 1}
+  m_LocalPosition: {x: -14.67, y: -8.825553, z: 23.995}
+  m_LocalScale: {x: 1.4667, y: 1.4667, z: 0.15837426}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5119681937304042676}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7307511939326254765
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4065422211549358501}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6, y: 5, z: 24.999998}
+  m_Center: {x: 4.2632553e-13, y: 0, z: 11.999999}
+--- !u!114 &1036796573161485971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4065422211549358501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac032304b3d2e6041b504645221b03f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sequencer: {fileID: 8064215083435398036}
+  _onEnter: 0
+  _onExit: 1
+  _once: 1
 --- !u!1 &4777381322570835647
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +457,7 @@ GameObject:
   - component: {fileID: 9159783626377427049}
   - component: {fileID: 5915981102212371413}
   m_Layer: 0
-  m_Name: '- wait 120s'
+  m_Name: '- wait 4s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -421,7 +491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   durationMode: 1
-  waitTime: 120
+  waitTime: 4
 --- !u!1 &5374671857658480782
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +503,7 @@ GameObject:
   - component: {fileID: 5196907096489367815}
   - component: {fileID: 3981553181894291032}
   m_Layer: 0
-  m_Name: '- wait 1s'
+  m_Name: '- wait 1,5s'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -467,7 +537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   durationMode: 1
-  waitTime: 1
+  waitTime: 1.5
 --- !u!1 &5795602684788690619
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,7 +772,8 @@ GameObject:
   - component: {fileID: 1124062615896302616}
   - component: {fileID: 8631377088788346244}
   m_Layer: 5
-  m_Name: Hello? Can you- are you still there?
+  m_Name: "It is this prototype\u2019s whole purpose, within these walls, I have
+    defeated death."
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -755,10 +826,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "??? : It is this prototype\u2019s whole\npurpose, within these walls,
-    I have\ndefeated death."
+  m_text: "??? : It is this prototype\u2019s whole purpose,\nwithin these walls,
+    I have defeated death."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b7c7eb4c392b50743842bd28c3a46d7a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -790,7 +861,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 17
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -824,7 +895,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &8631377088788346244
@@ -926,7 +997,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "??? : We\u2019re connected now. I can hear you,\nyou can hear me."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b7c7eb4c392b50743842bd28c3a46d7a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -958,7 +1029,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 17
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -992,7 +1063,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &3951906116857058155
@@ -1047,7 +1118,7 @@ PrefabInstance:
     - target: {fileID: 5492140372315180911, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
       propertyPath: waitTime
-      value: 2.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5516452332900493197, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
@@ -1102,7 +1173,7 @@ PrefabInstance:
     - target: {fileID: 6207687124455334666, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
       propertyPath: m_Name
-      value: '- wait 2,5s'
+      value: '- wait 1s'
       objectReference: {fileID: 0}
     - target: {fileID: 6207687124455334666, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
@@ -1112,7 +1183,7 @@ PrefabInstance:
     - target: {fileID: 7236012843812161709, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
       propertyPath: autoPlay
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7424122907031662767, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
@@ -1137,7 +1208,7 @@ PrefabInstance:
     - target: {fileID: 8304043599338549592, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
       propertyPath: waitTime
-      value: 4.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8304043599338549592, guid: 16c496bf33c6378498d05d522d19047a,
         type: 3}
@@ -1194,6 +1265,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3476828279447726164}
+    - targetCorrespondingSourceObject: {fileID: 5516452332900493197, guid: 16c496bf33c6378498d05d522d19047a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8197977489459367070}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16c496bf33c6378498d05d522d19047a, type: 3}
 --- !u!4 &5119681937304042676 stripped
@@ -1202,6 +1277,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 829405273152363321}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8064215083435398036 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7236012843812161709, guid: 16c496bf33c6378498d05d522d19047a,
+    type: 3}
+  m_PrefabInstance: {fileID: 829405273152363321}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bddcdcc41a3cb4049ab643e88179b53c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7990825230746970936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1308,6 +1395,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8668037244736144456, guid: 7769f124731a2434585d829d21d273e7,
         type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b7c7eb4c392b50743842bd28c3a46d7a,
+        type: 2}
+    - target: {fileID: 8668037244736144456, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
       propertyPath: m_fontStyle
       value: 0
       objectReference: {fileID: 0}
@@ -1326,6 +1419,16 @@ PrefabInstance:
       propertyPath: m_fontColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8668037244736144456, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8668037244736144456, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9193480473441562049, guid: 7769f124731a2434585d829d21d273e7,
         type: 3}
       propertyPath: m_text
@@ -1335,8 +1438,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9193480473441562049, guid: 7769f124731a2434585d829d21d273e7,
         type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b7c7eb4c392b50743842bd28c3a46d7a,
+        type: 2}
+    - target: {fileID: 9193480473441562049, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
       propertyPath: m_fontStyle
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9193480473441562049, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9193480473441562049, guid: 7769f124731a2434585d829d21d273e7,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

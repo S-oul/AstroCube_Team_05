@@ -1,3 +1,4 @@
+using System;
 using RubiksStatic;
 using System.Collections;
 using System.Collections.Generic;
@@ -171,10 +172,23 @@ public class RubiksCubeController : MonoBehaviour
 
         if (_controlledScript && !_controlledScript.IsRotating && ControlledScript.IsTransformInside(_player))
         {
+            if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return;
+
             if (!_canPlayerUseIt) return;
 
             if (!_canPlayerMoveAxis && (!_previewControlledScript || !_isPreviewDisplayed))
+            {
+                RubiksMove failedInput = new()
+                {
+                    Axis = _controlledScript.GetAxisFromCube(ActualFace.transform, _selectedSlice),
+                    cube = ActualFace.transform,
+                    orientation = _selectedSlice,
+                    clockWise = clockwise
+                };
+                
+                _controlledScript.RotateAxisFailed(failedInput.Axis, failedInput.cube, clockwise, 1f, failedInput.orientation);
                 return;
+            }
             if (_previewControlledScript && _previewControlledScript.IsRotating)
                 return;
             if (_cameraPlayerReversed)
@@ -380,6 +394,8 @@ public class RubiksCubeController : MonoBehaviour
     /// <returns></returns>
     bool _TryIlluminateFace(SliceAxis sliceAxis, SelectionCube.SelectionMode mode)
     {
+        if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return false;
+
         //UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
         if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return false;

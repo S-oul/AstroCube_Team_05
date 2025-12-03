@@ -95,7 +95,7 @@ public class MouseCamControl : MonoBehaviour
         transform.localRotation = Quaternion.Slerp(pitchRotation, _externalRotationInfluence, _rotationInfluenceAmount);
 
         float desiredYaw = _playerTransform.eulerAngles.y + _mousePos.x;
-        float blendedYaw = Mathf.LerpAngle(desiredYaw,_externalYawInfluence,_yawInfluenceAmount);
+        float blendedYaw = Mathf.LerpAngle(desiredYaw, _externalYawInfluence, _yawInfluenceAmount);
 
 
         _playerTransform.rotation = Quaternion.Euler(0f, blendedYaw, 0f);
@@ -112,7 +112,7 @@ public class MouseCamControl : MonoBehaviour
     private void UpdateSelection(bool forceNewSelection = false)
     {
 
-        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
+        if (GameManager.Instance != null && !GameManager.Instance.IsUIRubiksCubeEnabled)
             return;
 
         RaycastHit _raycastInfo;
@@ -166,18 +166,12 @@ public class MouseCamControl : MonoBehaviour
 
         if (forceNewSelection)
         {
-            if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
-            {
-                rubiksCubeController.SetActualCube(_oldTile.parent);
-            }
+            rubiksCubeController.SetActualCube(_oldTile.parent);
         }
         else
         {
-            if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
-            {
-                EventManager.TriggerCubeSwitchFace();
-                rubiksCubeController.SetActualCube(_oldTile.parent);
-            }
+            EventManager.TriggerCubeSwitchFace();
+            rubiksCubeController.SetActualCube(_oldTile.parent);
         }
 
     }
