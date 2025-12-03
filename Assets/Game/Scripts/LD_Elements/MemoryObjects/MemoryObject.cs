@@ -22,6 +22,7 @@ public class MemoryObject : MonoBehaviour, IInteractable
     
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private MeshRenderer _teapotRenderer;
+    [SerializeField] private GameObject _outlineObject;
     public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
@@ -93,9 +94,17 @@ public class MemoryObject : MonoBehaviour, IInteractable
     {
         if (!_wasPlayed)
         {
+            gameObject.layer = LayerMask.NameToLayer("MemoryObject");
+            
             StartCoroutine(StartMemory());
+            Destroy(_outlineObject);
             OnMemoryInteracted?.Invoke();
         }
+    }
+
+    public void SetOutline(bool state)
+    {
+        _outlineObject.SetActive(state);
     }
 }
 

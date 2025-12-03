@@ -1372,6 +1372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 768704691471954310}
   - component: {fileID: 7040711777437602634}
+  - component: {fileID: 1465126445966827498}
   m_Layer: 0
   m_Name: CustomPassVolume
   m_TagString: Untagged
@@ -1430,6 +1431,47 @@ MonoBehaviour:
         _handsLayer:
           serializedVersion: 2
           m_Bits: 131072
+--- !u!114 &1465126445966827498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9029884393117349412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  fadeRadius: 0
+  priority: 0
+  customPasses:
+  - rid: 1147196434638438480
+  injectionPoint: 3
+  m_TargetCamera: {fileID: 0}
+  useTargetCamera: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1147196434638438480
+      type: {class: OutlinePass, ns: Modules.Rendering.Outline, asm: Assembly-CSharp}
+      data:
+        m_Name: Custom Pass
+        enabled: 1
+        targetColorBuffer: 0
+        targetDepthBuffer: 0
+        clearFlags: 0
+        passFoldout: 0
+        m_Version: 0
+        OutlineLayer:
+          serializedVersion: 2
+          m_Bits: 1048576
+        OutlineColor: {r: 1, g: 0.52619636, b: 0, a: 1}
+        Threshold: 1
+        Thickness: 10
+        OutlineIntensity: 1
+        OutlineShader: {fileID: 4800000, guid: 7da18a75fcd840745b07c129e2c9b721, type: 3}
 --- !u!1 &9218266382643915987
 GameObject:
   m_ObjectHideFlags: 0
