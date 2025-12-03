@@ -317,6 +317,11 @@ public class RubiksMovement : MonoBehaviour
     {
         StartCoroutine(RotateAxisCoroutine(axis, selectedCube, clockWise, duration, sliceAxis));
     }
+    
+    public void RotateAxisFailed(Transform failedInputAxis, Transform failedInputCube, bool clockwise, float duration, SliceAxis failedInputOrientation = SliceAxis.Useless)
+    {
+        StartCoroutine(RotateAxisFailedCoroutine(failedInputAxis, failedInputCube, clockwise, duration, failedInputOrientation));
+    }
 
     /// <summary>
     /// Fonction qui permet de faire tourner n'importe quelle partie du cube.
@@ -516,6 +521,108 @@ public class RubiksMovement : MonoBehaviour
 
             _CheckCorrectActions(blockIndexs);
         }
+    }
+    
+    public IEnumerator RotateAxisFailedCoroutine(Transform axis, Transform selectedCube, bool clockWise, float duration = 0.5f, SliceAxis sliceAxis = SliceAxis.Useless)
+    {
+        if(_isRotating)
+            yield break;
+        _isRotating = true;
+        
+        Vector3 rotationAxis = Vector3.zero;
+        {
+            if (Mathf.Abs(axis.localPosition.x) > 0.5f)
+                rotationAxis = Vector3.right;
+            else if (Mathf.Abs(axis.localPosition.y) > 0.5f)
+                rotationAxis = Vector3.up;
+            else if (Mathf.Abs(axis.localPosition.z) > 0.5f)
+                rotationAxis = Vector3.forward;
+        }
+        bool isMiddle = true;
+
+        Vector3 localAxisPos = axis.localPosition;
+        Vector3 localRefPos = selectedCube.localPosition;
+
+        List<int> blockIndexs = new List<int>();
+        foreach (var block in _allBlocks)
+        {
+            Vector3 localBlockPos = block.transform.localPosition;
+
+            bool isOnSamePlane =
+                          (rotationAxis == Vector3.forward && Mathf.Abs(localBlockPos.z - localRefPos.z) < 0.5f)
+                       || (rotationAxis == Vector3.up && Mathf.Abs(localBlockPos.y - localRefPos.y) < 0.5f)
+                       || (rotationAxis == Vector3.right && Mathf.Abs(localBlockPos.x - localRefPos.x) < 0.5f);
+
+            if (isOnSamePlane)
+            {
+                if (_isArtCube)
+                {
+                    block.GetComponentInChildren<ArtRubiksAnimator>()?.StartAnimRota();
+                }
+
+                if (block.name == "Corner") isMiddle = false;
+                block.transform.SetParent(axis, true);
+                blockIndexs.Add(_allBlocks.IndexOf(block));
+            }
+        }
+
+        if (isMiddle) middleGameObject.parent = axis;
+        int direction = clockWise ? 1 : -1;
+
+        Quaternion startRotation = axis.localRotation;
+        Quaternion targetRotation = Quaternion.AngleAxis(direction * 90, rotationAxis) * startRotation;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float percent = GameManager.Instance.Settings.FailedRotationCurve.Evaluate(elapsedTime / duration);
+            axis.localRotation = Quaternion.LerpUnclamped(startRotation, targetRotation, percent);
+            yield return null;
+        }
+
+        int y = 0;
+        foreach (int i in blockIndexs)
+        {
+            Transform block = _allBlocks[i];
+
+            Tile[] tiles = block.GetComponentsInChildren<Tile>();
+
+            if (IsArtCube == false && IsPreview == false)
+            {
+
+                foreach (var tile in tiles)
+                {
+                    if (y > allParticle.Count - 1) break;
+                    Vector3 normal = (tile.transform.position - block.position).normalized;
+
+                    Vector3 spawnPos = tile.transform.position + normal + Vector3.up;
+                    Quaternion spawnRot = Quaternion.LookRotation(normal) * Quaternion.Euler(-90f, 0f, 0f);
+
+
+                    allParticle[y].transform.position = spawnPos;
+                    allParticle[y].transform.rotation = spawnRot;
+
+                    allParticle[y].transform.parent.gameObject.SetActive(true);
+
+                    allParticle[y].Play();
+
+                    y++;
+                }
+
+                if (DustCorutine is not null) StopCoroutine(DustCorutine);
+                DustCorutine = null;
+            }
+
+            Vector3 pos = block.transform.localPosition;
+            pos.x = Mathf.Round(pos.x);
+            pos.y = Mathf.Round(pos.y);
+            pos.z = Mathf.Round(pos.z);
+            block.transform.localPosition = pos;
+            block.transform.SetParent(this.transform.parent, true);
+        }
+
+        _isRotating = false;
     }
 
     IEnumerator DesacParticle()

@@ -55,6 +55,7 @@ public class GameSettings : ScriptableObject
     public AnimationCurve CurveAberration => curveAberration;
 
     public AnimationCurve C_MIN => C_Min;
+    public AnimationCurve FailedRotationCurve => _failedRotationCurve;
 
     [Header("-- PLAYER --")]
 
@@ -99,6 +100,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private bool _aimAtObject = false;
 
     [SerializeField] AnimationCurve _AnimationSpeedCurve = new AnimationCurve();
+    [SerializeField] AnimationCurve _failedRotationCurve = new AnimationCurve();
 
     [SerializeField][InfoBox("Duration, Strength, Vibrato, Randomness", EInfoBoxType.Normal)] 
     private Vector4 _rubiksEndCubeRotationscreenshakeSettings = new(2.0f, 0.4f, 10.0f, 90.0f);
