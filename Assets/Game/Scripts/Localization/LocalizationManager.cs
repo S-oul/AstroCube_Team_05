@@ -97,22 +97,20 @@ public class LocalizationManager : MonoBehaviour
         _textAutoSizing.SetText("", null);
         _locutor.gameObject.SetActive(false);
     }
-
-    [Button("Toggle Strips")]
-    public void ToggleStrips()
+    
+    public void SetStrips(bool state, float animationDuration)
     {
-        if (_stripsActive)
+        _stripsActive = state;
+        if (!state)
         {
-            _upStrip.DOAnchorPosY(110f, 3f);
-            _downStrip.DOAnchorPosY(-110f, 3f);
+            _upStrip.DOAnchorPosY(110f, animationDuration);
+            _downStrip.DOAnchorPosY(-110f, animationDuration);
         }
         else
         {
-            _upStrip.DOAnchorPosY(-65.745f, 3f);
-            _downStrip.DOAnchorPosY(65.745f, 3f);
+            _upStrip.DOAnchorPosY(-65.745f, animationDuration);
+            _downStrip.DOAnchorPosY(65.745f, animationDuration);
         }
-        
-        _stripsActive = !_stripsActive;
     }
 }
 
