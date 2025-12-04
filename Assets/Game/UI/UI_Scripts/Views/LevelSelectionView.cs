@@ -66,7 +66,7 @@ public class LevelSelectionView : UIView
             var item = Instantiate(itemPrefab, contentRoot);
             bool unlocked = LevelProgressionSystem.IsUnlocked(i);
 
-            item.Setup(i, levelNames[i], unlocked, OnLevelClicked);
+            item.Setup(i, levelNames[i], /*unlocked*/true, OnLevelClicked);
             items.Add(item);
         }
     }
