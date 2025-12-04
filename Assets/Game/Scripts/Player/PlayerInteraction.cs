@@ -21,8 +21,13 @@ public class PlayerInteraction : MonoBehaviour
         
         if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward, out RaycastHit hit, _interactionDistance, LayerMask.GetMask("Interactable")))
         {
-            Debug.Log(hit.collider.gameObject.name);
             _currentInteractable = hit.collider.GetComponent<IInteractable>();
+            _currentInteractable.SetOutline(true);
+        }
+        else if(_currentInteractable != null)
+        {
+            _currentInteractable.SetOutline(false);
+            _currentInteractable = null;
         }
     }
 
@@ -35,4 +40,6 @@ public class PlayerInteraction : MonoBehaviour
 public interface IInteractable
 {
     public void OnInteract();
+
+    public void SetOutline(bool state);
 }

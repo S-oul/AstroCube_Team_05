@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
@@ -7,11 +9,17 @@ public class LocalizationManager : MonoBehaviour
 {
     public static LocalizationManager Instance { get; private set; }
 
+    [Header("Localization")]
     [SerializeField] private ELanguage _currentLanguage = ELanguage.ENGLISH;
-    private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
-    
     [SerializeField] private TMP_Text _locutor;
     [SerializeField] private TextAutoSizing _textAutoSizing;
+    
+    [Header("Cutscene")]
+    [SerializeField] RectTransform _upStrip;
+    [SerializeField] RectTransform _downStrip;
+    
+    private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
+    private bool _stripsActive = false;
 
     private void Awake()
     {
@@ -88,6 +96,23 @@ public class LocalizationManager : MonoBehaviour
     {
         _textAutoSizing.SetText("", null);
         _locutor.gameObject.SetActive(false);
+    }
+
+    [Button("Toggle Strips")]
+    public void ToggleStrips()
+    {
+        if (_stripsActive)
+        {
+            _upStrip.DOAnchorPosY(110f, 3f);
+            _downStrip.DOAnchorPosY(-110f, 3f);
+        }
+        else
+        {
+            _upStrip.DOAnchorPosY(-65.745f, 3f);
+            _downStrip.DOAnchorPosY(65.745f, 3f);
+        }
+        
+        _stripsActive = !_stripsActive;
     }
 }
 
