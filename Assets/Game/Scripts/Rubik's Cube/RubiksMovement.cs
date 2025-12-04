@@ -81,6 +81,7 @@ public class RubiksMovement : MonoBehaviour
     [Header("FMOD Audio")]
     [SerializeField] EventReference _cubeRotationStartEvent;
     [SerializeField] EventReference _cubeRotationEndEvent;
+    [SerializeField] EventReference _cubeRotationBlockedEvent;
 
     public UnityEvent OnCorrectAction;
 
@@ -528,6 +529,11 @@ public class RubiksMovement : MonoBehaviour
         if(_isRotating)
             yield break;
         _isRotating = true;
+        
+        if (!_isPreview && !_isArtCube && !_cubeRotationBlockedEvent.IsNull)
+        {
+            RuntimeManager.PlayOneShot(_cubeRotationBlockedEvent, transform.position);
+        }
         
         Vector3 rotationAxis = Vector3.zero;
         {
@@ -1041,6 +1047,6 @@ namespace RubiksStatic
         }
     }
 
-    public enum SliceAxis { X, Y, Z, Useless }
+    public enum SliceAxis { Y, X, Z, Useless }
 
 }

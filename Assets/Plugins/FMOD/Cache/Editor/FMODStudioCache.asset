@@ -27,6 +27,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-8983199492665504055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MUS_Manager/PR_MusicProgress
+  m_EditorClassIdentifier: 
+  Name: PR_MusicProgress
+  StudioPath: 
+  Min: 0
+  Max: 10
+  Default: 0
+  ID:
+    data1: 1333606260
+    data2: 3186179478
+  Type: 1
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-8564734236059396390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,6 +377,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 30
   Length: 0
+--- !u!114 &-5679193992165105537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/VO/LVLER/VO_Level_ER_Silpha
+  m_EditorClassIdentifier: 
+  Path: event:/VO/LVLER/VO_Level_ER_Silpha
+  Guid:
+    Data1: -1853666986
+    Data2: 1123507410
+    Data3: 579531908
+    Data4: 1929174304
+  Banks:
+  - {fileID: 4634042496156573135}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-5669339040887158507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,8 +428,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
+  MinDistance: 8
+  MaxDistance: 100
   Length: 0
 --- !u!114 &-5532850470448610219
 MonoBehaviour:
@@ -782,6 +833,30 @@ MonoBehaviour:
   MinDistance: 3
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3033668334387107296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PR_MusicProgress
+  m_EditorClassIdentifier: 
+  Name: PR_MusicProgress
+  StudioPath: parameter:/Parameter/PR_MusicProgress
+  Min: 0
+  Max: 10
+  Default: 0
+  ID:
+    data1: 1333606260
+    data2: 3186179478
+  Type: 1
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-2741725213263076609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,10 +872,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_AMB.bank
   Name: SBK_AMB
   StudioPath: bank:/SBK_AMB
-  lastModified: 639001928520000000
+  lastModified: 639002627326687478
   FileSizes:
   - Name: Desktop
-    Value: 12385600
+    Value: 12732064
   Exists: 1
 --- !u!114 &-2109580018076328103
 MonoBehaviour:
@@ -907,8 +982,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
+  MinDistance: 10
+  MaxDistance: 100
   Length: 0
 --- !u!114 &-1399391422159410051
 MonoBehaviour:
@@ -934,8 +1009,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
+  MinDistance: 10
+  MaxDistance: 100
   Length: 0
 --- !u!114 &-1302926208495550003
 MonoBehaviour:
@@ -1171,12 +1246,17 @@ MonoBehaviour:
   - {fileID: -303142088243726409}
   - {fileID: -876931245633538720}
   - {fileID: -5532850470448610219}
-  EditorParameters: []
+  - {fileID: 3219174231805109658}
+  - {fileID: 2131313152866609657}
+  - {fileID: -5679193992165105537}
+  - {fileID: 8616976553024604336}
+  EditorParameters:
+  - {fileID: -3033668334387107296}
   MasterBanks:
   - {fileID: 5706280087000175338}
   StringsBanks:
   - {fileID: 9030002294759708144}
-  cacheTime: 639001928520000000
+  cacheTime: 639003500757511017
   cacheVersion: 131634
 --- !u!114 &207864852886544073
 MonoBehaviour:
@@ -1225,7 +1305,7 @@ MonoBehaviour:
     Data4: 1947969490
   Banks:
   - {fileID: 4634042496156573135}
-  IsStream: 1
+  IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
@@ -1286,6 +1366,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 8
   Length: 22000
+--- !u!114 &2131313152866609657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Cube/SFX_Cube_Map_Lock
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Cube/SFX_Cube_Map_Lock
+  Guid:
+    Data1: -312424575
+    Data2: 1239952615
+    Data3: 474502802
+    Data4: 483908378
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 15
+  MaxDistance: 100
+  Length: 0
 --- !u!114 &2492418420151825702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1301,10 +1408,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_SFX.bank
   Name: SBK_SFX
   StudioPath: bank:/SBK_SFX
-  lastModified: 639001928520000000
+  lastModified: 639003500757261931
   FileSizes:
   - Name: Desktop
-    Value: 6966752
+    Value: 8635136
   Exists: 1
 --- !u!114 &3162936321437092689
 MonoBehaviour:
@@ -1330,9 +1437,37 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
+  MinDistance: 8
+  MaxDistance: 100
   Length: 0
+--- !u!114 &3219174231805109658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/MUS/MUS_Manager
+  m_EditorClassIdentifier: 
+  Path: event:/MUS/MUS_Manager
+  Guid:
+    Data1: -1024624432
+    Data2: 1107729776
+    Data3: 1810023356
+    Data4: -1054653940
+  Banks:
+  - {fileID: 5728133516625084864}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -8983199492665504055}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1816978
 --- !u!114 &3542634551178861686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1348,10 +1483,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_FOL.bank
   Name: SBK_FOL
   StudioPath: bank:/SBK_FOL
-  lastModified: 639001928520000000
+  lastModified: 639002627326778791
   FileSizes:
   - Name: Desktop
-    Value: 307200
+    Value: 313632
   Exists: 1
 --- !u!114 &3681858465742683175
 MonoBehaviour:
@@ -1368,7 +1503,7 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_UI.bank
   Name: SBK_UI
   StudioPath: bank:/SBK_UI
-  lastModified: 638997443360000000
+  lastModified: 638997686047612542
   FileSizes:
   - Name: Desktop
     Value: 494
@@ -1415,10 +1550,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_VO.bank
   Name: SBK_VO
   StudioPath: bank:/SBK_VO
-  lastModified: 639001928520000000
+  lastModified: 639003500757511017
   FileSizes:
   - Name: Desktop
-    Value: 3652352
+    Value: 3928512
   Exists: 1
 --- !u!114 &4735761327526833006
 MonoBehaviour:
@@ -1570,10 +1705,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639001928520000000
+  lastModified: 639003500755027861
   FileSizes:
   - Name: Desktop
-    Value: 550206
+    Value: 550718
   Exists: 1
 --- !u!114 &5728133516625084864
 MonoBehaviour:
@@ -1590,10 +1725,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_MUS.bank
   Name: SBK_MUS
   StudioPath: bank:/SBK_MUS
-  lastModified: 638999172320000000
+  lastModified: 639003500756693197
   FileSizes:
   - Name: Desktop
-    Value: 494
+    Value: 25516800
   Exists: 1
 --- !u!114 &5935336360228526934
 MonoBehaviour:
@@ -1674,8 +1809,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
+  MinDistance: 10
+  MaxDistance: 100
   Length: 0
 --- !u!114 &7305554952928523152
 MonoBehaviour:
@@ -1701,8 +1836,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
+  MinDistance: 8
+  MaxDistance: 100
   Length: 0
 --- !u!114 &7541709344988444188
 MonoBehaviour:
@@ -1724,6 +1859,7 @@ MonoBehaviour:
     Data4: -138529400
   Banks:
   - {fileID: -2741725213263076609}
+  - {fileID: 2492418420151825702}
   IsStream: 1
   Is3D: 1
   IsOneShot: 0
@@ -1836,8 +1972,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
+  MinDistance: 8
+  MaxDistance: 100
   Length: 0
 --- !u!114 &8349828693638541080
 MonoBehaviour:
@@ -1866,6 +2002,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 24000
+--- !u!114 &8616976553024604336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/VO/LVLER/VO_Level_ER_Mariam
+  m_EditorClassIdentifier: 
+  Path: event:/VO/LVLER/VO_Level_ER_Mariam
+  Guid:
+    Data1: 143866719
+    Data2: 1335698489
+    Data3: -625962613
+    Data4: 772658256
+  Banks:
+  - {fileID: 4634042496156573135}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8674857091535289716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1908,8 +2071,8 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639001928520000000
+  lastModified: 639003500755037636
   FileSizes:
   - Name: Desktop
-    Value: 4710
+    Value: 4948
   Exists: 1
