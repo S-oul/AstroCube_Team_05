@@ -154,6 +154,8 @@ public class RubiksMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        EventManager.OnPlayerResetLose += DeathReverse;
+
         EventManager.OnPlayerReset += ReverseMoves;
         EventManager.OnPlayerUndo += UndoMove;
         if (_PlayOnEvent && AutoMovesSequence.Count > 0)
@@ -173,6 +175,8 @@ public class RubiksMovement : MonoBehaviour
 
     void OnDisable()
     {
+
+        EventManager.OnPlayerResetLose -= DeathReverse;
         EventManager.OnPlayerReset -= ReverseMoves;
         EventManager.OnPlayerUndo -= UndoMove;
         EventManager.OnActivateSequence -= StartAutoMoves;
@@ -255,13 +259,19 @@ public class RubiksMovement : MonoBehaviour
         if (IsTransformInside(GameManager.Instance.Player.transform))
             StartCoroutine(ReverseAllMoves(timeToReset));
     }
+
+    void DeathReverse(float timeToReset)
+    {
+        StartCoroutine(ReverseAllMoves(timeToReset));
+    }
+
     IEnumerator ReverseAllMoves(float time)
     {
         while (_isRotating) yield return null;
         if (_moves.Count() != 0)
             time /= _moves.Count();
         else
-            time = 0.0f;
+            time = .5f;
         _isReversing = true;
         while (_moves.Count > 0)
         {
