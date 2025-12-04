@@ -37,7 +37,6 @@ public class ArtAnimatorSync : MonoBehaviour
 
         while (Mathf.Abs(anims[0].GetCurrentAnimatorStateInfo(0).normalizedTime % 1 - animToFollow.GetCurrentAnimatorStateInfo(0).normalizedTime % 1) > 0.01)
         {
-            print(Mathf.Abs(anims[0].GetCurrentAnimatorStateInfo(0).normalizedTime % 1 - animToFollow.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
             yield return null;
         }
 
