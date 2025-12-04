@@ -107,6 +107,8 @@ public class EventManager : MonoBehaviour
 
     //Player Events
     public static event Action<float> OnPlayerReset;
+    public static event Action<float> OnPlayerResetLose;
+
     public static event Action<float> OnPlayerUndo;
     public static event Action<RubiksMove> OnMoveReset;
     public static event Action OnPreviewCancel;
@@ -186,7 +188,7 @@ public class EventManager : MonoBehaviour
     public void TriggerPlayerLose()
     {
         OnPlayerLose?.Invoke();
-        TriggerReset();
+        TriggerResetOnLose();
     }
 
     public static void TriggerSceneChange()
@@ -240,6 +242,12 @@ public class EventManager : MonoBehaviour
         OnPlayerStopsFalling?.Invoke();
     }
 
+    public void TriggerResetOnLose()
+    {
+        float resetTime = _gameSettings.ResetCurve.Evaluate(GameManager.Instance.RubiksCube.Moves.Count);
+        print("############# " + resetTime);
+        OnPlayerResetLose?.Invoke(resetTime);
+    }
     public void TriggerReset()
     {
         float resetTime = _gameSettings.ResetCurve.Evaluate(GameManager.Instance.RubiksCube.Moves.Count);
