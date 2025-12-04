@@ -3,6 +3,7 @@ using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
+using FMODUnity;
 
 public class ExitDoor : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class ExitDoor : MonoBehaviour
     [Header("FOV")]
     [SerializeField] private float _MaxFOV_END = 150.0f;
 
+    [Header("Audio")]
+    [SerializeField] private EventReference _zelligeDoorFXEvent;
+
     private Transform _playerTransform;
     private GameSettings _gameSettings;
     private bool _isShowing = false;
@@ -33,6 +37,12 @@ public class ExitDoor : MonoBehaviour
     
     private bool _isCurrentlyOpened;
     private float _currentLerp;
+    private float _previousLerp;
+    private Tween _currentTween;
+    private float _lastMoveTime;
+    private const float STOP_DELAY = 0.15f; // Délai avant coupure pour éviter le hachage
+    private FMOD.Studio.EventInstance _doorSoundInstance;
+    private bool _isDoorSoundPlaying = false;
 
     private void Awake()
     {
@@ -82,7 +92,8 @@ public class ExitDoor : MonoBehaviour
         float distance = (_zelligeDoorTransform.position - _playerTransform.position).magnitude;
         float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
         //_VFXAnimator.SetTrigger("Open");
-        DOTween.To(() => _currentLerp, x => _currentLerp = x, lerp, 1.5f).OnComplete(() =>
+        
+        _currentTween = DOTween.To(() => _currentLerp, x => _currentLerp = x, lerp, 1.5f).OnComplete(() =>
         {
             _isCurrentlyOpened = true;
         });
@@ -96,6 +107,39 @@ public class ExitDoor : MonoBehaviour
             _currentLerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
         }
         _VFXAnimator.PlayInFixedTime("ZelligeDoorAnim_Open", 0, _currentLerp);
+        
+        bool isTweenActive = _currentTween != null && _currentTween.IsActive() && _currentTween.IsPlaying();
+        bool isLerpChanging = Mathf.Abs(_currentLerp - _previousLerp) > 0.0001f;
+        bool isMoving = isTweenActive || isLerpChanging;
+        
+        if (isMoving)
+        {
+            _lastMoveTime = Time.time;
+        }
+        
+        bool recentlyMoved = (Time.time - _lastMoveTime) < STOP_DELAY;
+        bool shouldPlaySound = _currentLerp > 0.01f && recentlyMoved;
+        
+        if (shouldPlaySound && !_isDoorSoundPlaying)
+        {
+            _doorSoundInstance = RuntimeManager.CreateInstance(_zelligeDoorFXEvent);
+            _doorSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(_zelligeDoorTransform.position));
+            _doorSoundInstance.start();
+            _isDoorSoundPlaying = true;
+        }
+        else if (!shouldPlaySound && _isDoorSoundPlaying)
+        {
+            _doorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _doorSoundInstance.release();
+            _isDoorSoundPlaying = false;
+        }
+        
+        if (_isDoorSoundPlaying)
+        {
+            _doorSoundInstance.setParameterByName("DoorProgress", _currentLerp);
+        }
+        
+        _previousLerp = _currentLerp;
         
         #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.I))
