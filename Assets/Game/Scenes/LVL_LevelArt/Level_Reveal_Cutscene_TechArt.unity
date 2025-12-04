@@ -2071,6 +2071,18 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 1630515824}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &319948798 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4706625323449551650, guid: 8964c059afd2d1a4c8a5fcbb5bb7ceea,
+    type: 3}
+  m_PrefabInstance: {fileID: 9034919631596522142}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bddcdcc41a3cb4049ab643e88179b53c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &443305382
 GameObject:
   m_ObjectHideFlags: 0
@@ -3200,6 +3212,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1581924764}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1601952074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 631107967829146568, guid: 13f62fb648dcc0e4e974003356314fa9,
+    type: 3}
+  m_PrefabInstance: {fileID: 192859781862202724}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bddcdcc41a3cb4049ab643e88179b53c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1630515824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3437,6 +3461,30 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1902913725}
         m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1601952074}
+        m_TargetAssemblyTypeName: GameActionsSequencer, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 319948798}
+        m_TargetAssemblyTypeName: GameActionsSequencer, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -4047,6 +4095,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 631107967829146568, guid: 13f62fb648dcc0e4e974003356314fa9,
+        type: 3}
+      propertyPath: autoPlay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1085789111901042231, guid: 13f62fb648dcc0e4e974003356314fa9,
+        type: 3}
+      propertyPath: m_Name
+      value: 'CHANGE LIGHT '
+      objectReference: {fileID: 0}
     - target: {fileID: 3166183455098512941, guid: 13f62fb648dcc0e4e974003356314fa9,
         type: 3}
       propertyPath: m_Name
@@ -4102,15 +4160,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8065592281727712863, guid: 13f62fb648dcc0e4e974003356314fa9,
+    - target: {fileID: 4568174112460515251, guid: 13f62fb648dcc0e4e974003356314fa9,
         type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 12.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065592281727712863, guid: 13f62fb648dcc0e4e974003356314fa9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -17.51
+      propertyPath: autoPlay
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4301,6 +4354,11 @@ PrefabInstance:
       propertyPath: _events.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
       objectReference: {fileID: 1043392475}
+    - target: {fileID: 4706625323449551650, guid: 8964c059afd2d1a4c8a5fcbb5bb7ceea,
+        type: 3}
+      propertyPath: autoPlay
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5022073826611746210, guid: 8964c059afd2d1a4c8a5fcbb5bb7ceea,
         type: 3}
       propertyPath: m_Name
