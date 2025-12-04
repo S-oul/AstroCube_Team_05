@@ -855,6 +855,7 @@ GameObject:
   - component: {fileID: 7095265082154391340}
   - component: {fileID: 9071821452928314510}
   - component: {fileID: 6954303874344039422}
+  - component: {fileID: 5543494786619867387}
   m_Layer: 0
   m_Name: 'CHANGE LIGHT '
   m_TagString: Untagged
@@ -909,7 +910,35 @@ MonoBehaviour:
   _light: {fileID: 0}
   _easeMode: 1
   _changeIntensity: 1
-  _endIntensity: 34250.45
+  _endIntensity: 32000
+  _fadeIntensityDuration: 1
+  _changeColor: 0
+  _endColor: {r: 1, g: 1, b: 1, a: 1}
+  _fadeColorDuration: 1
+  _changeRange: 0
+  _endRange: 1
+  _fadeRangeDuration: 1
+  _changeShadowStrength: 0
+  _endShadowStrength: 1
+  _fadeShadowStrengthDuration: 1
+--- !u!114 &5543494786619867387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085789111901042231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a136a832db46a4fa8e6895fb98dda4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationMode: 0
+  waitTime: 1
+  _light: {fileID: 0}
+  _easeMode: 1
+  _changeIntensity: 1
+  _endIntensity: 25000
   _fadeIntensityDuration: 1
   _changeColor: 0
   _endColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1106,7 +1135,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: reach the heart
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -1492849697426303558, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
     type: 2}
   m_fontSharedMaterials: []
@@ -2949,7 +2978,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Eternity
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -1492849697426303558, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
     type: 2}
   m_fontSharedMaterials: []
@@ -3751,7 +3780,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: You need to will it.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -1492849697426303558, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
     type: 2}
   m_fontSharedMaterials: []
@@ -4538,7 +4567,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 60}
-  m_SizeDelta: {x: 1040.38, y: 76.259995}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5705878542780816206
 CanvasRenderer:
@@ -5617,7 +5646,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: my prototype
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -1492849697426303558, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
     type: 2}
   m_fontSharedMaterials: []
@@ -6501,7 +6530,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: a place among the stars
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -1492849697426303558, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
     type: 2}
   m_fontSharedMaterials: []
@@ -7264,10 +7293,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 818836744273221466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 520.19, y: -38.129997}
-  m_SizeDelta: {x: 1020.38, y: 56.26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3839679130875222705
 CanvasRenderer:
@@ -9616,7 +9645,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: immortality
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -1492849697426303558, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
     type: 2}
   m_fontSharedMaterials: []
@@ -9848,7 +9877,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: I am its architect
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -1492849697426303558, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
     type: 2}
   m_fontSharedMaterials: []
@@ -10195,8 +10224,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 80e0499d9bc86af419dabaeef6bd6ffe,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 7979380617697508702, guid: 9c5fd65cda76ef64bbed511a18e5cac4,
         type: 3}
       propertyPath: m_fontStyle

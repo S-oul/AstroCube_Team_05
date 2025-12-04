@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 [ExecuteInEditMode]
 public class FractalMaster : MonoBehaviour
@@ -96,6 +97,8 @@ public class FractalMaster : MonoBehaviour
 
     Matrix4x4 cameraToWorldMatrix;
     Matrix4x4 projectionMatrixInverse;
+
+    [SerializeField] Material _mandelbulbMat;
 
     void Start()
     {
@@ -221,7 +224,8 @@ public class FractalMaster : MonoBehaviour
 
         fractalShader.SetTexture(handleCSMain, "Destination", target);
         fractalShader.SetFloat("alpha", _extAlpha);
-        fractalShader.SetFloat("totalAlpha", _alpha);
+        _mandelbulbMat.SetFloat("_Alpha", _alpha);
+
         fractalShader.SetFloat("power", Mathf.Max(_currentMandelbulbParameters.FractalPower, 1.01f));
         fractalShader.SetFloat("darkness", _currentMandelbulbParameters.Darkness);
         fractalShader.SetFloat("blackAndWhite", _currentMandelbulbParameters.BlackAndWhite);
