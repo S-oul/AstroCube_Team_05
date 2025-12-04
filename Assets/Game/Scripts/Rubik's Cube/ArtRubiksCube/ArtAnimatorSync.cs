@@ -11,43 +11,39 @@ public class ArtAnimatorSync : MonoBehaviour
         AnimatorStateInfo stateA = A.GetCurrentAnimatorStateInfo(0);
         AnimatorStateInfo stateB = B.GetCurrentAnimatorStateInfo(0);
 
-        if (stateA.length <= 0 || stateB.length <= 0 || syncInNSeconds <= 0)
-        {
-            return 1.0f;
-        }
-
-        float clipDuration = stateA.length;
+        print("####### " + stateA.normalizedTime + " " + stateB.normalizedTime);
 
         float PA = stateA.normalizedTime % 1.0f;
         float PB = stateB.normalizedTime % 1.0f;
 
-        float normalizedDiff = PA - PB;
 
-        if (normalizedDiff < 0)
-        {
-            normalizedDiff += 1.0f;
-        }
+        float normalizedDiff = Mathf.Abs(PA - PB);
 
-        float T_diff = normalizedDiff * clipDuration;
+
+        float T_diff = normalizedDiff + (PB + Time.deltaTime * syncInNSeconds);
 
         float S_B_new = T_diff / syncInNSeconds;
 
         return Mathf.Clamp(S_B_new, 0.01f, 10f);
     }
 
-    public IEnumerator ChangeAnimatorSpeeds(List<Animator> anims, float amount)
+    public IEnumerator ChangeAnimatorSpeeds(List<Animator> anims, Animator animToFollow)
     {
+
         foreach (var a in anims)
         {
-            a.speed = amount;
+            a.speed = 1.8f;
         }
 
-        yield return new WaitForSeconds(syncInNSeconds);
+        while (Mathf.Abs(anims[0].GetCurrentAnimatorStateInfo(0).normalizedTime % 1 - animToFollow.GetCurrentAnimatorStateInfo(0).normalizedTime % 1) > 0.01)
+        {
+            print(Mathf.Abs(anims[0].GetCurrentAnimatorStateInfo(0).normalizedTime % 1 - animToFollow.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
+            yield return null;
+        }
 
         foreach (var a in anims)
         {
             a.speed = 1f;
         }
-        Debug.Log($"Animators synced! Speed: {amount:F2} over {syncInNSeconds:F2} seconds.");
     }
 }

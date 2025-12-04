@@ -452,7 +452,7 @@ public class RubiksCubeController : MonoBehaviour
 
             List<Animator> animToSpeedUp = new();
             float amountToSpeed = 0;
-
+            Animator otherAnim = null;
             oldReplicatedFace.Clear();
             bool doOnce = true;
             for (int i = 0; i < 9; i++)
@@ -470,12 +470,16 @@ public class RubiksCubeController : MonoBehaviour
                     {
                         animToSpeedUp.Add(anim.animatorCube);
                     }
-                    
-                    
+                    else
+                    {
+                        otherAnim = anim.animatorCube;
+                    }
+
+
                     if (doOnce && animToSpeedUp.Count > 0 && !animToSpeedUp.Contains(anim.animatorCube))
                     {
                         doOnce = false;
-                        amountToSpeed = ArtCubeSync.CalculateMultValue(anim.animatorCube,animToSpeedUp[0]);
+                        //amountToSpeed = ArtCubeSync.CalculateMultValue(anim.animatorCube,animToSpeedUp[0]);
                     }
 
                     anim?.SetSelectedBool(true);
@@ -486,7 +490,7 @@ public class RubiksCubeController : MonoBehaviour
 
             if (animToSpeedUp.Count > 0 && animToSpeedUp.Count < 4)
             {
-                StartCoroutine(ArtCubeSync.ChangeAnimatorSpeeds(animToSpeedUp, amountToSpeed));
+                StartCoroutine(ArtCubeSync.ChangeAnimatorSpeeds(animToSpeedUp, otherAnim));
             }
 
         }
