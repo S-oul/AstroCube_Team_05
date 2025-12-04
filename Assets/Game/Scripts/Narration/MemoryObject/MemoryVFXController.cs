@@ -46,6 +46,7 @@ public class MemoryVFXController : MonoBehaviour
         {
             if (!_memoryVFXEvent.IsNull) RuntimeManager.PlayOneShot(_memoryVFXEvent, transform.position);
             LinkOriginToVFX();
+            _vfx.SetFloat("Lerp_Delta", 0.0f);
             StartCoroutine(PlayAnimation());
             _vfx.Play();
         }
