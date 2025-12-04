@@ -2,8 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.UIElements;
-using static CameraFocusAttractor;
 using FMODUnity;
 
 public class PlayerTrigger : MonoBehaviour
