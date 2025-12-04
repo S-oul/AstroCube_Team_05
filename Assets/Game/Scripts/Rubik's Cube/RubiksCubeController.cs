@@ -41,6 +41,9 @@ public class RubiksCubeController : MonoBehaviour
     bool _doesCurrentAxisHaveLockedTile;
     int _numOfLockedTileRotationAttempts = 0;
 
+    ArtAnimatorSync ArtCubeSync;
+    public Dictionary<int, Transform> replicatedMap = new();
+
     #region Accesseur
 
     public bool CameraPlayerReversed { get => _cameraPlayerReversed; set => _cameraPlayerReversed = value; }
@@ -62,6 +65,14 @@ public class RubiksCubeController : MonoBehaviour
             if (go)
                 _replicatedScript.Add(go.GetComponentInChildren<RubiksMovement>());
         }
+
+        for (int i = 0; i < 26; i++)
+        {
+            replicatedMap.Add(_controlledScript.AllBlocks[i].gameObject.GetInstanceID(), _replicatedScript[0].AllBlocks.Find(x => x.localPosition == _controlledScript.AllBlocks[i].localPosition));
+        }
+
+        ArtCubeSync = FindAnyObjectByType<ArtAnimatorSync>();
+
         _gameSettings = GameManager.Instance.Settings;
     }
     private void Start()
@@ -90,6 +101,15 @@ public class RubiksCubeController : MonoBehaviour
         EventManager.OnPlayerUndo -= ResetPreview;
         EventManager.OnPreviewCancel -= ResetPreview;
         EventManager.OnPlayerChangeParent -= CheckPreview;
+    }
+
+    public void ReMapArtCube()
+    {
+        replicatedMap.Clear();
+        for (int i = 0; i < 26; i++)
+        {
+            replicatedMap.Add(_controlledScript.AllBlocks[i].gameObject.GetInstanceID(), _replicatedScript[0].AllBlocks.Find(x => x.localPosition == _controlledScript.AllBlocks[i].localPosition));
+        }
     }
 
     public void SetActualCube(Transform newFace)
@@ -154,9 +174,23 @@ public class RubiksCubeController : MonoBehaviour
                 }
                 break;
         }
+
+
+        foreach (var go in _replicatedScript[0].AllBlocks)
+        {
+            go.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(false);
+        }
+
+
         if (ActualFace) SetActualCube(ActualFace.transform);
     }
-
+    private void LateUpdate()
+    {
+        foreach (var go in _replicatedScript[0].AllBlocks)
+        {
+            go.GetComponentInChildren<ArtRubiksAnimator>()?.SetSelectedBool(false);
+        }
+    }
     public void ActionMakeTurn(bool clockwise)
     {
         #region Locked tiles audio event
@@ -396,10 +430,9 @@ public class RubiksCubeController : MonoBehaviour
     {
         if (_player.GetComponent<PlayerTrigger>().IsPlayerInLockRotationZone) return false;
 
-        //UnityEngine.Debug.Log(GameManager.Instance.IsUIRubiksCubeEnabled);
         if (!GameManager.Instance.IsUIRubiksCubeEnabled)
             return false;
-        
+
         List<SelectionCube> selectionCubes = new List<SelectionCube>();
         bool isOneTileLocked = false;
         bool isPlayerOnATile = false;
@@ -412,17 +445,6 @@ public class RubiksCubeController : MonoBehaviour
             bool isSameBlock = OldBlocksInFace == AllBlocksInFace;
             OldBlocksInFace = AllBlocksInFace;
 
-            foreach (Transform go in _replicatedScript[0].AllBlocks)
-            {
-                if (isSameBlock) break;
-                var anim = go.GetComponentInChildren<ArtRubiksAnimator>();
-                if (anim)
-                {
-                    anim.SetSelectedBool(false);
-                    anim.StopAllCoroutines();
-                }
-            }
-
             foreach (Transform go in AllBlocksInFace)
             {
                 SelectionCube selection = go.GetComponent<SelectionCube>();
@@ -433,19 +455,57 @@ public class RubiksCubeController : MonoBehaviour
                 if (selection.IsTileLocked) isOneTileLocked = true;
                 if (_detectParentForGroundRotation.CurrentParent == selection && sliceAxis != SliceAxis.Y) isPlayerOnATile = true;
             }
-            foreach (Transform go in AllBlocksInFace)
+
+
+            var previousFace = new List<Transform>(oldReplicatedFace);
+
+            List<Animator> animToSpeedUp = new();
+            float amountToSpeed = 0;
+            Animator otherAnim = null;
+            
+            if(!isPlayerOnATile && !isOneTileLocked)
+            oldReplicatedFace.Clear();
+            
+            
+            bool doOnce = true;
+            for (int i = 0; i < 9; i++)
             {
                 if (isPlayerOnATile) break;
                 if (isOneTileLocked) break;
-                if (isSameBlock) break;
 
-                //equivalence;
-                //Should Always be artCube
-                var i = go.GetComponentIndex();
+                var objectID = AllBlocksInFace[i].gameObject.GetInstanceID();
 
-                Transform equivalence = _replicatedScript[0].AllBlocks.Find(x => x.localPosition == go.localPosition);
-                if (equivalence) equivalence.GetComponentInChildren<ArtRubiksAnimator>()?.launchWaitForSelected(true);
+                if (replicatedMap.TryGetValue(objectID, out var obj))
+                {
+                    var anim = obj.GetComponentInChildren<ArtRubiksAnimator>();
+
+                    if (previousFace.Contains(obj))
+                    {
+                        animToSpeedUp.Add(anim.animatorCube);
+                    }
+                    else
+                    {
+                        otherAnim = anim.animatorCube;
+                    }
+
+
+                    if (doOnce && animToSpeedUp.Count > 0 && !animToSpeedUp.Contains(anim.animatorCube))
+                    {
+                        doOnce = false;
+                        //amountToSpeed = ArtCubeSync.CalculateMultValue(anim.animatorCube,animToSpeedUp[0]);
+                    }
+
+                    anim?.SetSelectedBool(true);
+
+                    oldReplicatedFace.Add(obj);
+                }
             }
+
+            if (animToSpeedUp.Count > 0 && animToSpeedUp.Count < 4)
+            {
+                StartCoroutine(ArtCubeSync.ChangeAnimatorSpeeds(animToSpeedUp, otherAnim));
+            }
+
         }
 
         _doesCurrentAxisHaveLockedTile = isOneTileLocked;
@@ -470,6 +530,8 @@ public class RubiksCubeController : MonoBehaviour
         }
         return !(isPlayerOnATile || isOneTileLocked);
     }
+
+    List<Transform> oldReplicatedFace = new();
 
     void _ShutDownFace()
     {

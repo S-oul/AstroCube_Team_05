@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isOnDefaultGround;
 
-    bool _isUncontrolledFalling;
+    bool _isUncontrolledFalling = false;
 
     public float defaultSpeed { get; private set; }
     public bool HasGravity { get => _hasGravity; set => _hasGravity = value; }
@@ -183,10 +183,20 @@ public class PlayerMovement : MonoBehaviour
         */
 
         // movePlayer (walking around)
-        if (_isSlipping) _pastHorizontalVelocity = _horizontalVelocity;
-        _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
+        if (_isGrounded)
+        {
+            _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
 
-        if (_isSlipping) {
+        }
+        else
+        {
+            float mag = _horizontalVelocity.magnitude;
+            if (mag != 0) _horizontalVelocity = (transform.right * _xInput + transform.forward * _zInput).normalized * mag * 1.002f;
+            else _horizontalVelocity = (transform.right * _xInput + transform.forward * _zInput);
+        }
+
+        if (_isSlipping)
+        {
             _horizontalVelocity = _horizontalVelocity * _gameSettings.SlippingMovementControl + _pastHorizontalVelocity;
 
             //clamp
@@ -205,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
         if (_jumpInput && (_isGrounded || _currentCoyoteTime > 0f)) {
             _verticalVelocity = transform.up * Mathf.Sqrt(_gameSettings.MaxJumpHeight * -2f * _gameSettings.Gravity);
             _currentCoyoteTime = -1.0f;
+            _horizontalVelocity = _pastHorizontalVelocity * 1.1f;
             _stepDetection.Jump();
         }
 
@@ -260,7 +271,8 @@ public class PlayerMovement : MonoBehaviour
                              + _externallyAppliedMovement);
         }
 
-
+        _pastHorizontalVelocity = _horizontalVelocity;
+        print(_horizontalVelocity.magnitude);
         ExecuteFootStep();
     }
 
