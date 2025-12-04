@@ -103,6 +103,15 @@ public class RubiksCubeController : MonoBehaviour
         EventManager.OnPlayerChangeParent -= CheckPreview;
     }
 
+    public void ReMapArtCube()
+    {
+        replicatedMap.Clear();
+        for (int i = 0; i < 26; i++)
+        {
+            replicatedMap.Add(_controlledScript.AllBlocks[i].gameObject.GetInstanceID(), _replicatedScript[0].AllBlocks.Find(x => x.localPosition == _controlledScript.AllBlocks[i].localPosition));
+        }
+    }
+
     public void SetActualCube(Transform newFace)
     {
         _ShutDownFace();
