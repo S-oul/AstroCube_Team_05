@@ -48,11 +48,11 @@ public class UIToggleButton : MonoBehaviour
     {
         if (isEnable)
         {
-            stateText.text = "< Enable >";
+            stateText.text = "< Enabled >";
         }
         else
         {
-            stateText.text = "< Disable >";
+            stateText.text = "< Disabled >";
         }
     }
 
