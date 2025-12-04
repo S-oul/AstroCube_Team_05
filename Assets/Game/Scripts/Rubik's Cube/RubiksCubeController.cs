@@ -453,7 +453,11 @@ public class RubiksCubeController : MonoBehaviour
             List<Animator> animToSpeedUp = new();
             float amountToSpeed = 0;
             Animator otherAnim = null;
+            
+            if(!isPlayerOnATile && !isOneTileLocked)
             oldReplicatedFace.Clear();
+            
+            
             bool doOnce = true;
             for (int i = 0; i < 9; i++)
             {
