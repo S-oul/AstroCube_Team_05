@@ -1,15 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using NaughtyAttributes;
-using NUnit.Framework;
-using TMPro;
-using UnityEditor;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
-using Path = DG.Tweening.Plugins.Core.PathCore.Path;
 using FMODUnity;
 
 public class MemoryObject : MonoBehaviour, IInteractable
@@ -25,26 +19,16 @@ public class MemoryObject : MonoBehaviour, IInteractable
     [SerializeField] private EventReference _startMemoryEvent;
     [SerializeField] private EventReference _stopMemoryEvent;
     [SerializeField] private float _delayBeforeStopEvent = 3f;
-
-    [SerializeField] public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
+    
+    [SerializeField] private ParticleSystem _particleSystem;
+    [SerializeField] private MeshRenderer _teapotRenderer;
+    [SerializeField] private GameObject _outlineObject;
+    public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
 
     private bool _wasPlayed;
     
-    private void Awake()
-    {
-        /*
-        foreach (Vector3 position in _characterPositions)
-        {
-            MemoryCharacter memChar = Instantiate(_memoryCharacterPrefab, transform.position + position, Quaternion.identity);
-            memChar.Init(transform.position, transform.position + position);
-            memChar.gameObject.SetActive(false);
-            _characters.Add(memChar);
-        }
-        */
-    }
-
     private void OnValidate()
     {
         foreach (GameObject obj in _gameObjectsToActivate)
@@ -52,6 +36,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
             if (obj.TryGetComponent(out MeshRenderer mesh))
             {
                 mesh.material = new Material( _memoryMat);
+                _teapotRenderer.materials[1] = new Material(_teapotRenderer.materials[1]);
+                _teapotRenderer.materials[1].SetFloat("_Alpha", 1.0f);
                 mesh.enabled = true;
             }
         }
@@ -63,6 +49,11 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         if (!_startMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_startMemoryEvent, transform.position);
 
+        DOTween.To(() => _teapotRenderer.materials[1].GetFloat("_Alpha"),
+            (x) => _teapotRenderer.materials[1].SetFloat("_Alpha", x), 1.2f, 0.5f).SetEase(Ease.InOutExpo);
+        DOTween.To(() => _teapotRenderer.materials[1].GetFloat("_FresnelPower"),
+            (x) => _teapotRenderer.materials[1].SetFloat("_FresnelPower", x), 3.0f, 0.5f).SetEase(Ease.InOutExpo);
+        
         for (var index = 0; index < _memories.Count; index++)
         {
             var mem = _memories[index];
@@ -92,27 +83,28 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         yield return new WaitForSeconds(_delayBeforeStopEvent);
 
+        DOTween.To(() => _teapotRenderer.materials[1].GetFloat("_Alpha"),
+            (x) => _teapotRenderer.materials[1].SetFloat("_Alpha", x), 0f, 1f).SetEase(Ease.InOutExpo);
+        _particleSystem.Stop();
+        
         if (!_stopMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_stopMemoryEvent, transform.position);
-    }
-
-    private void OnDrawGizmos()
-    {
-        /*
-        foreach (Vector3 characterPosition in _characterPositions)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position + characterPosition, 0.1f);
-        }
-        */
     }
 
     public void OnInteract()
     {
         if (!_wasPlayed)
         {
+            gameObject.layer = LayerMask.NameToLayer("MemoryObject");
+            
             StartCoroutine(StartMemory());
+            Destroy(_outlineObject);
             OnMemoryInteracted?.Invoke();
         }
+    }
+
+    public void SetOutline(bool state)
+    {
+        _outlineObject.SetActive(state);
     }
 }
 
