@@ -6,6 +6,8 @@ using static InputSystemManager;
 
 public class InputHandler : MonoBehaviour
 {
+
+
     [SerializeField] PlayerHold _playerHold;
     [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] PlayerMovement _playerMovement;
@@ -165,19 +167,30 @@ public class InputHandler : MonoBehaviour
 
     public void OnResetRoom(InputAction.CallbackContext ctx)
     {
-        if (!IsInputEnabled(EInputType.RESET_ROOM)) return;
+        if (!IsInputEnabled(EInputType.RESET_ROOM))
+            return;
+
+        if (ctx.started)
+        {
+            if (!_controller.ControlledScript.IsReversing)
+                ReseterUI.Instance.StartReset();
+            return;
+        }
 
         if (ctx.performed)
         {
             if (!_controller.ControlledScript.IsReversing)
-                EventManager.Instance.TriggerReset();
+                ReseterUI.Instance.ForceConfirmReset();
+            return;
         }
-        else if (ctx.canceled && ctx.time - ctx.startTime < 0.5f)
+
+        if (ctx.canceled)
         {
-            if (!_controller.ControlledScript.IsReversing && _controller.ControlledScript.Moves.Count > 0)
-                return; //EventManager.Instance.TriggerUndo();
+            ReseterUI.Instance.CancelReset();
+            return;
         }
     }
+
     public void OnPreviewCancel(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.PREVIEW_CANCEL)) return;
