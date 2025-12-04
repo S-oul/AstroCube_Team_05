@@ -26,9 +26,13 @@ public class Reseter : MonoBehaviour
         
         EventManager.OnStartCubeRotation += SavePose;
 
+        EventManager.OnPlayerResetLose += OnReset;
+
     }
     private void OnDisable()
     {
+        EventManager.OnPlayerResetLose -= OnReset;
+
         EventManager.OnPlayerReset -= OnReset;
         EventManager.OnPlayerUndo -= Undo;
 
