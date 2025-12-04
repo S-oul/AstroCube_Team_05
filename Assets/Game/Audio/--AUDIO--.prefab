@@ -833,7 +833,6 @@ GameObject:
   - component: {fileID: 3993632711586278445}
   - component: {fileID: 5378025168674933419}
   - component: {fileID: 5592908291288307311}
-  - component: {fileID: 5328946517180989482}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_12'
   m_TagString: Untagged
@@ -977,27 +976,6 @@ MonoBehaviour:
   nextTrigger: {fileID: 4227461664977327227}
   playerTag: Player
   disableSelfAfterTrigger: 1
---- !u!114 &5328946517180989482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551414884775066055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player
-  Emitters:
-  - Target: {fileID: 232361930005937961}
-    Params:
-    - Name: PR_Wind
-      Value: 0
-  - Target: {fileID: 5864320452258834316}
-    Params: []
-  TriggerEvent: 3
 --- !u!1 &1681782204379116576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,6 +1182,54 @@ MonoBehaviour:
   Parameter: PR_MusicProgress
   TriggerEvent: 3
   Value: 7
+--- !u!1 &2923451099594705888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5560267698678347782}
+  - component: {fileID: 468042422871803995}
+  m_Layer: 0
+  m_Name: PR_MusicProgress
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5560267698678347782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2923451099594705888}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -489.9806, y: -2896.8367, z: 273.8698}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2796755792373189456}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &468042422871803995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2923451099594705888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Parameter: PR_MusicProgress
+  TriggerEvent: 1
+  Value: 7
 --- !u!1 &3012867921205837577
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,7 +1244,6 @@ GameObject:
   - component: {fileID: 4655741244820526032}
   - component: {fileID: 171905099081143644}
   - component: {fileID: 8748451630097401222}
-  - component: {fileID: 5611345288558551572}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_11'
   m_TagString: Untagged
@@ -1362,27 +1387,6 @@ MonoBehaviour:
   nextTrigger: {fileID: 1551414884775066055}
   playerTag: Player
   disableSelfAfterTrigger: 1
---- !u!114 &5611345288558551572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3012867921205837577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player
-  Emitters:
-  - Target: {fileID: 232361930005937961}
-    Params:
-    - Name: PR_Wind
-      Value: 2
-  - Target: {fileID: 5864320452258834316}
-    Params: []
-  TriggerEvent: 3
 --- !u!1 &3787807569791786628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1711,7 +1715,6 @@ GameObject:
   - component: {fileID: 3757117042176818273}
   - component: {fileID: 2495295529241897767}
   - component: {fileID: 409074676256786272}
-  - component: {fileID: 6873773427092688270}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_28'
   m_TagString: Untagged
@@ -1855,27 +1858,6 @@ MonoBehaviour:
   nextTrigger: {fileID: 468200080125882053}
   playerTag: Player
   disableSelfAfterTrigger: 1
---- !u!114 &6873773427092688270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4227461664977327227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player
-  Emitters:
-  - Target: {fileID: 232361930005937961}
-    Params:
-    - Name: PR_Wind
-      Value: 3
-  - Target: {fileID: 5864320452258834316}
-    Params: []
-  TriggerEvent: 3
 --- !u!1 &4243614518588830215
 GameObject:
   m_ObjectHideFlags: 0
@@ -1890,7 +1872,6 @@ GameObject:
   - component: {fileID: 457768289555628963}
   - component: {fileID: 8161025425093665951}
   - component: {fileID: 5594485070953853771}
-  - component: {fileID: 5185352727308018636}
   m_Layer: 4
   m_Name: ' SFX_Whoosh_PassBy_06'
   m_TagString: Untagged
@@ -2034,27 +2015,6 @@ MonoBehaviour:
   nextTrigger: {fileID: 296111250299434205}
   playerTag: Player
   disableSelfAfterTrigger: 1
---- !u!114 &5185352727308018636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4243614518588830215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player
-  Emitters:
-  - Target: {fileID: 232361930005937961}
-    Params:
-    - Name: PR_Wind
-      Value: 1
-  - Target: {fileID: 5864320452258834316}
-    Params: []
-  TriggerEvent: 3
 --- !u!1 &7421876013810726918
 GameObject:
   m_ObjectHideFlags: 0
@@ -2572,6 +2532,7 @@ Transform:
   - {fileID: 8809053637632317777}
   - {fileID: 6945201144723473157}
   - {fileID: 6097826170951375617}
+  - {fileID: 5560267698678347782}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8956965019621490002

@@ -1,32 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9022647448425516180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/VO/LVL09/VO_Level_09_Nastulus
-  m_EditorClassIdentifier: 
-  Path: event:/VO/LVL09/VO_Level_09_Nastulus
-  Guid:
-    Data1: -196004437
-    Data2: 1115795435
-    Data3: 793094316
-    Data4: 1994505612
-  Banks:
-  - {fileID: 4634042496156573135}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-8983199492665504055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,7 +49,7 @@ MonoBehaviour:
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
-  MaxDistance: 10
+  MaxDistance: 25
   Length: 0
 --- !u!114 &-8174710385830023278
 MonoBehaviour:
@@ -322,34 +295,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-6569514392416007624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/SFX_Falling_Velocity/PR_Wind
-  m_EditorClassIdentifier: 
-  Name: PR_Wind
-  StudioPath: 
-  Min: 0
-  Max: 3
-  Default: 0
-  ID:
-    data1: 48495696
-    data2: 2409386176
-  Type: 2
-  IsGlobal: 0
-  Labels:
-  - Soft
-  - Medium
-  - High
-  - Hard
-  Exists: 1
 --- !u!114 &-6539469461899191213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,10 +817,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_AMB.bank
   Name: SBK_AMB
   StudioPath: bank:/SBK_AMB
-  lastModified: 639002638800000000
+  lastModified: 639004344380000000
   FileSizes:
   - Name: Desktop
-    Value: 12732064
+    Value: 13058784
   Exists: 1
 --- !u!114 &-2109580018076328103
 MonoBehaviour:
@@ -1162,9 +1107,8 @@ MonoBehaviour:
   - {fileID: 2492418420151825702}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
-  Parameters:
-  - {fileID: -6569514392416007624}
+  IsOneShot: 0
+  Parameters: []
   MinDistance: 10000
   MaxDistance: 10000
   Length: 0
@@ -1232,7 +1176,6 @@ MonoBehaviour:
   - {fileID: -5669339040887158507}
   - {fileID: 3162936321437092689}
   - {fileID: -7515514511748315884}
-  - {fileID: -9022647448425516180}
   - {fileID: -2109580018076328103}
   - {fileID: -4331528683560404253}
   - {fileID: -1575683404053997438}
@@ -1250,13 +1193,19 @@ MonoBehaviour:
   - {fileID: 2131313152866609657}
   - {fileID: -5679193992165105537}
   - {fileID: 8616976553024604336}
+  - {fileID: 4265338303165855095}
+  - {fileID: 7439261583030719271}
+  - {fileID: 593154405876645024}
+  - {fileID: 3707934488167742066}
+  - {fileID: 2102082121005415356}
+  - {fileID: 6092075868607682921}
   EditorParameters:
   - {fileID: -3033668334387107296}
   MasterBanks:
   - {fileID: 5706280087000175338}
   StringsBanks:
   - {fileID: 9030002294759708144}
-  cacheTime: 639003474940000000
+  cacheTime: 639004344380000000
   cacheVersion: 131634
 --- !u!114 &207864852886544073
 MonoBehaviour:
@@ -1312,6 +1261,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &593154405876645024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ExitDoor/SFX_Exitdoor_Close_LP
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ExitDoor/SFX_Exitdoor_Close_LP
+  Guid:
+    Data1: -1512292461
+    Data2: 1178822822
+    Data3: 1080498834
+    Data4: -1380974744
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 4
+  MaxDistance: 30
+  Length: 0
 --- !u!114 &1648359088916763487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1366,6 +1342,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 8
   Length: 22000
+--- !u!114 &2102082121005415356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/VO/Intro/VO_Intro_Letter_Mariam
+  m_EditorClassIdentifier: 
+  Path: event:/VO/Intro/VO_Intro_Letter_Mariam
+  Guid:
+    Data1: -270840162
+    Data2: 1320686859
+    Data3: 745062824
+    Data4: -451938669
+  Banks:
+  - {fileID: 4634042496156573135}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &2131313152866609657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1408,10 +1411,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_SFX.bank
   Name: SBK_SFX
   StudioPath: bank:/SBK_SFX
-  lastModified: 639003474940000000
+  lastModified: 639004344380000000
   FileSizes:
   - Name: Desktop
-    Value: 8635136
+    Value: 8622368
   Exists: 1
 --- !u!114 &3162936321437092689
 MonoBehaviour:
@@ -1467,7 +1470,7 @@ MonoBehaviour:
   - {fileID: -8983199492665504055}
   MinDistance: 1
   MaxDistance: 20
-  Length: 1816978
+  Length: 1832682
 --- !u!114 &3542634551178861686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1483,7 +1486,7 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_FOL.bank
   Name: SBK_FOL
   StudioPath: bank:/SBK_FOL
-  lastModified: 639002638800000000
+  lastModified: 639004344380000000
   FileSizes:
   - Name: Desktop
     Value: 313632
@@ -1508,6 +1511,60 @@ MonoBehaviour:
   - Name: Desktop
     Value: 494
   Exists: 1
+--- !u!114 &3707934488167742066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ExitDoor/SFX_ExitdoorZellige_LP
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ExitDoor/SFX_ExitdoorZellige_LP
+  Guid:
+    Data1: -1323239740
+    Data2: 1203322783
+    Data3: -2000742247
+    Data4: -1881077509
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 4
+  MaxDistance: 30
+  Length: 0
+--- !u!114 &4265338303165855095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ExitDoor/SFX_Exitdoor_Close_Stop
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ExitDoor/SFX_Exitdoor_Close_Stop
+  Guid:
+    Data1: 309154592
+    Data2: 1247392870
+    Data3: -934026345
+    Data4: -1623851981
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 4
+  MaxDistance: 30
+  Length: 0
 --- !u!114 &4516326325809099388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1550,10 +1607,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_VO.bank
   Name: SBK_VO
   StudioPath: bank:/SBK_VO
-  lastModified: 639003474940000000
+  lastModified: 639004344380000000
   FileSizes:
   - Name: Desktop
-    Value: 3928512
+    Value: 4397504
   Exists: 1
 --- !u!114 &4735761327526833006
 MonoBehaviour:
@@ -1673,9 +1730,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/ExitDoor/SFX_ExitDoor_Transition
+  m_Name: event:/SFX/ExitDoor/SFX_Exitdoor_Transition
   m_EditorClassIdentifier: 
-  Path: event:/SFX/ExitDoor/SFX_ExitDoor_Transition
+  Path: event:/SFX/ExitDoor/SFX_Exitdoor_Transition
   Guid:
     Data1: -1972174673
     Data2: 1340888280
@@ -1725,10 +1782,10 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/SBK_MUS.bank
   Name: SBK_MUS
   StudioPath: bank:/SBK_MUS
-  lastModified: 639003474940000000
+  lastModified: 639004344380000000
   FileSizes:
   - Name: Desktop
-    Value: 25516800
+    Value: 16074592
   Exists: 1
 --- !u!114 &5935336360228526934
 MonoBehaviour:
@@ -1785,6 +1842,33 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
+--- !u!114 &6092075868607682921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/VO/LVL11/VO_Level_11_Nastulus
+  m_EditorClassIdentifier: 
+  Path: event:/VO/LVL11/VO_Level_11_Nastulus
+  Guid:
+    Data1: -196004437
+    Data2: 1115795435
+    Data3: 793094316
+    Data4: 1994505612
+  Banks:
+  - {fileID: 4634042496156573135}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &6285440808693290948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1838,6 +1922,33 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 8
   MaxDistance: 100
+  Length: 0
+--- !u!114 &7439261583030719271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ExitDoor/SFX_Exitdoor_Close_Start
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ExitDoor/SFX_Exitdoor_Close_Start
+  Guid:
+    Data1: -2095063434
+    Data2: 1213704666
+    Data3: 635962785
+    Data4: 2129366150
+  Banks:
+  - {fileID: 2492418420151825702}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 4
+  MaxDistance: 30
   Length: 0
 --- !u!114 &7541709344988444188
 MonoBehaviour:
@@ -2071,8 +2182,8 @@ MonoBehaviour:
   Path: Alula_Fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639003474940000000
+  lastModified: 639004344380000000
   FileSizes:
   - Name: Desktop
-    Value: 4948
+    Value: 5154
   Exists: 1

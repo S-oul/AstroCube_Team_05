@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isTileLocked: 0
   _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!1 &1265017607081402230
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,12 +733,12 @@ MonoBehaviour:
   middle: {fileID: 5279238479075063523}
   middleGameObject: {fileID: 2643478692873961536}
   _axis:
-  - {fileID: 8736786780861327006, guid: e0c85bf540713094da1c4173f8b550de, type: 3}
-  - {fileID: 7601655687296484659, guid: e0c85bf540713094da1c4173f8b550de, type: 3}
-  - {fileID: 7604554690564542125, guid: e0c85bf540713094da1c4173f8b550de, type: 3}
-  - {fileID: 608747501457115945, guid: e0c85bf540713094da1c4173f8b550de, type: 3}
-  - {fileID: 8883572996492974456, guid: e0c85bf540713094da1c4173f8b550de, type: 3}
-  - {fileID: 8709366916643886890, guid: e0c85bf540713094da1c4173f8b550de, type: 3}
+  - {fileID: 1494674226617449104}
+  - {fileID: 360264404136433981}
+  - {fileID: 290945280105697955}
+  - {fileID: 7346461308573030183}
+  - {fileID: 1642021183896470902}
+  - {fileID: 1539254786212137764}
   _allBlocks:
   - {fileID: 5605144175561793152}
   - {fileID: 5541397953562568294}
@@ -803,6 +804,13 @@ MonoBehaviour:
       Data3: 1569376915
       Data4: 349618708
     Path: event:/SFX/Cube/SFX_Cube_Map_Rotation
+  _cubeRotationBlockedEvent:
+    Guid:
+      Data1: -312424575
+      Data2: 1239952615
+      Data3: 474502802
+      Data4: 483908378
+    Path: event:/SFX/Cube/SFX_Cube_Map_Lock
   OnCorrectAction:
     m_PersistentCalls:
       m_Calls:
@@ -818,6 +826,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  allParticle: []
   matPlafond: {fileID: 2100000, guid: 555fa1d42ca20b74eaece9979538e56d, type: 2}
   matEtage3: {fileID: 2100000, guid: 4d89b6d2da3693b45af16057ae317113, type: 2}
   matEtage3Alt: {fileID: 2100000, guid: e9437fabfc7bae745b5d12d4ddd641f3, type: 2}
