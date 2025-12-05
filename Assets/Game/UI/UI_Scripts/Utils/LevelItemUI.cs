@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelItemUI : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class LevelItemUI : MonoBehaviour
         levelIndex = index;
         onClicked = callback;
 
-        levelNameText.text = levelName;
+        levelNameText.text = SceneUtility.GetScenePathByBuildIndex(levelIndex).Split('/')[^1].Split('.')[0];
 
         button.interactable = unlocked;
 

@@ -84,7 +84,7 @@ public class LocalizationManager : MonoBehaviour
         );
         _locutor.text = locutor;
         _locutor.color = color ?? Color.white;
-        _locutor.gameObject.SetActive(true);
+        //_locutor.gameObject.SetActive(true);
     }
 
     public void PrintStringFromID(string csvName, string id, string locutor, Color? color = null)
