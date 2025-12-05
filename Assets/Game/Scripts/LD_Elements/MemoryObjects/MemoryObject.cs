@@ -75,7 +75,7 @@ public class MemoryObject : MonoBehaviour, IInteractable
                 soundPos = _memories[subtitle.characterIndex].transform.position;
             }
 
-            if (!subtitle._voiceLineEvent.IsNull) RuntimeManager.PlayOneShot(subtitle._voiceLineEvent, soundPos);
+            if (!string.IsNullOrEmpty(subtitle.audioKey)) AUDIO_ProgrammerInstrument.Instance.PlayVoiceLine(subtitle.audioKey, soundPos);
             LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
@@ -116,6 +116,6 @@ public struct SubtitleData
     public string localizationID;
     public float duration;
     public Color color;
-    public EventReference _voiceLineEvent;
+    public string audioKey;
     public int characterIndex;
 }
