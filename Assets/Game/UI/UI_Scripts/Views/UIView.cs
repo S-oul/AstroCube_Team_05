@@ -36,7 +36,19 @@ public abstract class UIView : MonoBehaviour
         }));
     }
 
+    public virtual void ShowImmediate()
+    {
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
 
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        gameObject.SetActive(true);
+
+        if (firstSelected != null && EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
+    }
 
     public virtual void Hide()
     {

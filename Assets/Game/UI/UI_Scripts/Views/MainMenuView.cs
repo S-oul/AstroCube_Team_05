@@ -48,16 +48,19 @@ public class MainMenuView : UIView
 
         var popup = _uiManager.ShowAndReturn<PopUpView>();
         if (popup == null) return;
-
+        Hide();
         popup.ShowPopup(new PopUpData(
             title: "New Game",
             message: "A save already exists \n do you wanna erase the previous one",
             type: PopUpType.Warning,
-            confirm: "Oui",
-            cancel: "Non",
+            confirm: "Yes",
+            cancel: "No",
             onConfirm: () =>
             {
                 StartFreshGame();
+            }
+            , onCancel: () => {
+                _uiManager.ShowImmediate<MainMenuView>();
             }
         ));
     }
