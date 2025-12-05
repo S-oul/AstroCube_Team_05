@@ -24,7 +24,7 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
     {
         if (string.IsNullOrEmpty(key)) return;
 
-        UnityEngine.Debug.Log($"PlayVoiceLine called for key: '{key}' at position: {position}");
+        //UnityEngine.Debug.Log($"PlayVoiceLine called for key: '{key}' at position: {position}");
 
         dialogueInstance = RuntimeManager.CreateInstance(voiceLineEvent);
         
@@ -56,7 +56,7 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
         {
             case EVENT_CALLBACK_TYPE.CREATE_PROGRAMMER_SOUND:
                 {
-                    UnityEngine.Debug.Log($"FMOD Callback: Creating sound for key '{key}'");
+                    //UnityEngine.Debug.Log($"FMOD Callback: Creating sound for key '{key}'");
                     var parameter = (FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES));
                     FMOD.Studio.SOUND_INFO soundInfo;
 
@@ -64,7 +64,7 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
 
                     if (keyResult != FMOD.RESULT.OK)
                     {
-                        UnityEngine.Debug.LogWarning($"FMOD: Clé '{key}' introuvable dans l'Audio Table. Result: {keyResult}");
+                        //UnityEngine.Debug.LogWarning($"FMOD: Clé '{key}' introuvable dans l'Audio Table. Result: {keyResult}");
                         break;
                     }
 
@@ -81,18 +81,18 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
                         parameter.sound = dialogueSound.handle;
                         parameter.subsoundIndex = soundInfo.subsoundindex;
                         Marshal.StructureToPtr(parameter, parameterPtr, false);
-                        UnityEngine.Debug.Log($"FMOD Callback: Sound created successfully for key '{key}'");
+                        //UnityEngine.Debug.Log($"FMOD Callback: Sound created successfully for key '{key}'");
                     }
                     else
                     {
-                        UnityEngine.Debug.LogError($"FMOD Callback: Failed to create sound for key '{key}'. Result: {soundResult}");
+                        //UnityEngine.Debug.LogError($"FMOD Callback: Failed to create sound for key '{key}'. Result: {soundResult}");
                     }
                 }
                 break;
 
             case EVENT_CALLBACK_TYPE.DESTROY_PROGRAMMER_SOUND:
                 {
-                    UnityEngine.Debug.Log($"FMOD Callback: Destroying sound for key '{key}'");
+                    //UnityEngine.Debug.Log($"FMOD Callback: Destroying sound for key '{key}'");
                     var parameter = (FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES));
                     var sound = new FMOD.Sound(parameter.sound);
                     sound.release();
