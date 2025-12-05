@@ -186,7 +186,6 @@ void CSMain(uint3 groupID : SV_GroupID, uint3 groupThreadID : SV_GroupThreadID, 
 
     float rim = marchSteps / darkness;
     float4 dest = lerp(float4(result.xyz, 0), result, blackAndWhite * rim);
-    dest.a = dest.a * totalAlpha;
     Destination[id.xy] = dest;
 
     rowMinData[groupIndex].xMin = 0;
