@@ -9,7 +9,8 @@ public class GameActionScreenDistortion : AGameAction
     {
         PULSE,
         TO_DISTORT,
-        TO_NORMAL
+        TO_NORMAL,
+        SHOCK
     }
 
     [SerializeField] private EDistortAction _distortAction = EDistortAction.PULSE;
@@ -37,6 +38,9 @@ public class GameActionScreenDistortion : AGameAction
             case EDistortAction.PULSE:
                 StartCoroutine(_Pulse());
                 break;
+            case EDistortAction.SHOCK:
+                _Shock();
+                break;
             case EDistortAction.TO_DISTORT:
                 _postProcessManager.SetScreenDistortion(_targetValue, _duration, _easeIn);
                 break;
@@ -50,9 +54,15 @@ public class GameActionScreenDistortion : AGameAction
 
     IEnumerator _Pulse()
     {
-        _StartDistort(_duration / 2, _easeIn);
-        yield return new WaitForSeconds(_duration/2);
-        _StopDistort(_duration / 2, _easeOut);
+        _StartDistort(_duration / 3, _easeIn);
+        yield return new WaitForSeconds(_duration/3);
+        _StopDistort(_duration / 3, _easeOut);
+    }
+    
+    void _Shock()
+    {
+        _StartDistort(0);
+        _StopDistort(_duration, _easeOut);
     }
 
     private void _StartDistort(float duration, Ease ease = Ease.Linear) => _postProcessManager.SetScreenDistortion(_targetValue, duration, ease);
