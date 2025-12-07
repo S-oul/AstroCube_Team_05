@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class AUDIO_VoiceLineTrigger : MonoBehaviour
 {
-    [Tooltip("La clé (ID) telle qu'elle est écrite dans la FMOD Audio Table")]
+    [Tooltip("ID of the voice line")]
     public string voiceLineKey;
 
-    [Tooltip("Si coché, le son se jouera à chaque fois que l'objet est activé. Sinon, seulement au lancement du jeu.")]
+    [Tooltip("Replay onEnable")]
     public bool playOnEnable = true;
 
     private void Start()
@@ -28,14 +28,9 @@ public class AUDIO_VoiceLineTrigger : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(voiceLineKey))
         {
-            if (AUDIO_ProgrammerInstrument.Instance != null)
-            {
-                AUDIO_ProgrammerInstrument.Instance.PlayVoiceLine(voiceLineKey);
-            }
-            else
-            {
-                Debug.LogWarning("AUDIO_ProgrammerInstrument introuvable ! Vérifiez qu'il y a bien un GameObject 'AudioManager' avec le script dans la scène.");
-            }
+            var charVoice = GetComponent<AUDIO_CharacterVoice>();
+            if (charVoice != null)
+                charVoice.PlayVoice(voiceLineKey);
         }
     }
 }

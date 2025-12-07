@@ -4,29 +4,23 @@ using FMODUnity;
 using FMOD.Studio;
 using System.Runtime.InteropServices;
 
-public class AUDIO_ProgrammerInstrument : MonoBehaviour
+public class AUDIO_CharacterVoice : MonoBehaviour
 {
-    public static AUDIO_ProgrammerInstrument Instance { get; private set; }
-
-    [Header("Event 2D Global")]
-    [Tooltip("2D Subtitles")]
-    [SerializeField] private EventReference voiceLineEvent2D;
+    [Header("Event 3D du Personnage")]
+    [Tooltip("3D Subtitles")]
+    [SerializeField] private EventReference voiceLineEvent3D;
 
     private static EVENT_CALLBACK dialogueCallback = new EVENT_CALLBACK(DialogueEventCallback);
-
-    private void Awake()
+    public void PlayVoice(string key)
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
+        if (string.IsNullOrEmpty(key) || voiceLineEvent3D.IsNull) return;
 
-    public void PlayVoiceLine(string key)
-    {
-        if (string.IsNullOrEmpty(key) || voiceLineEvent2D.IsNull) return;
-
-        EventDescription description = RuntimeManager.GetEventDescription(voiceLineEvent2D);
+        EventDescription description = RuntimeManager.GetEventDescription(voiceLineEvent3D);
         EventInstance dialogueInstance;
         description.createInstance(out dialogueInstance);
+
+        // Applique la position 3D du personnage
+        dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
 
         GCHandle stringHandle = GCHandle.Alloc(key, GCHandleType.Normal);
         dialogueInstance.setUserData(GCHandle.ToIntPtr(stringHandle));

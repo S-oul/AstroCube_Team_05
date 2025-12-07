@@ -13,7 +13,7 @@ public class AUDIO_VoiceManager : MonoBehaviour
 
     public List<DialogueEntry> dialogues;
 
-    [Tooltip("Si vrai, le son pourra être rejoué si l'objet est désactivé puis réactivé.")]
+    [Tooltip("Replay onEnable")]
     public bool replayOnReenable = true;
 
     void Update()
@@ -28,10 +28,9 @@ public class AUDIO_VoiceManager : MonoBehaviour
 
                 if (isActive && !entry.hasPlayed)
                 {
-                    if (AUDIO_ProgrammerInstrument.Instance != null)
-                    {
-                        AUDIO_ProgrammerInstrument.Instance.PlayVoiceLine(entry.VO_ID);
-                    }
+                    var charVoice = entry.targetObject.GetComponent<AUDIO_CharacterVoice>();
+                    if (charVoice != null)
+                        charVoice.PlayVoice(entry.VO_ID);
                     
                     entry.hasPlayed = true;
                 }

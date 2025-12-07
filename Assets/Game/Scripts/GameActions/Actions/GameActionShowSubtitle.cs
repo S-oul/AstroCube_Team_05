@@ -21,7 +21,8 @@ public class GameActionShowSubtitle : AGameAction
     {
         _isFinished = false;
         LocalizationManager.Instance.PrintStringFromID(_csvName, _localizationID, _locutor, _color);
-        AUDIO_ProgrammerInstrument.Instance.PlayVoiceLine(_localizationID);
+        if (AUDIO_ProgrammerInstrument.Instance != null)
+            AUDIO_ProgrammerInstrument.Instance.PlayVoiceLine(_localizationID);
         yield return new WaitForSeconds(_duration);
         LocalizationManager.Instance.ClearString();
         _isFinished = true;

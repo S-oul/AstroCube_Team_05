@@ -69,13 +69,15 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
-            Vector3 soundPos = transform.position;
             if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
             {
-                soundPos = _memories[subtitle.characterIndex].transform.position;
+                var characterVoice = _memories[subtitle.characterIndex].GetComponent<AUDIO_CharacterVoice>();
+                if (characterVoice != null && !string.IsNullOrEmpty(subtitle.audioKey))
+                {
+                    characterVoice.PlayVoice(subtitle.audioKey);
+                }
             }
 
-            if (!string.IsNullOrEmpty(subtitle.audioKey)) AUDIO_ProgrammerInstrument.Instance.PlayVoiceLine(subtitle.audioKey, soundPos);
             LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
         }
