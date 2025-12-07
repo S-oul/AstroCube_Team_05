@@ -13,6 +13,8 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
     [SerializeField] private EventReference voiceLineEvent2D;
 
     private static EVENT_CALLBACK dialogueCallback = new EVENT_CALLBACK(DialogueEventCallback);
+    
+    private EventInstance currentInstance;
 
     private void Awake()
     {
@@ -24,16 +26,34 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
     {
         if (string.IsNullOrEmpty(key) || voiceLineEvent2D.IsNull) return;
 
+        // Stop previous if still playing
+        if (currentInstance.isValid())
+        {
+            currentInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            currentInstance.release();
+        }
+
         EventDescription description = RuntimeManager.GetEventDescription(voiceLineEvent2D);
-        EventInstance dialogueInstance;
-        description.createInstance(out dialogueInstance);
+        description.createInstance(out currentInstance);
 
         GCHandle stringHandle = GCHandle.Alloc(key, GCHandleType.Normal);
-        dialogueInstance.setUserData(GCHandle.ToIntPtr(stringHandle));
-        dialogueInstance.setCallback(dialogueCallback);
+        currentInstance.setUserData(GCHandle.ToIntPtr(stringHandle));
+        currentInstance.setCallback(dialogueCallback);
 
-        dialogueInstance.start();
-        dialogueInstance.release();
+        currentInstance.start();
+        // PAS de release() pour garder la référence
+    }
+
+    public void Pause()
+    {
+        if (currentInstance.isValid())
+            currentInstance.setPaused(true);
+    }
+
+    public void Resume()
+    {
+        if (currentInstance.isValid())
+            currentInstance.setPaused(false);
     }
 
     [AOT.MonoPInvokeCallback(typeof(EVENT_CALLBACK))]
@@ -78,6 +98,12 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
                     var parameter = (FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES));
                     var sound = new FMOD.Sound(parameter.sound);
                     sound.release();
+                }
+                break;
+
+            case EVENT_CALLBACK_TYPE.STOPPED:
+                {
+                    instance.release();
                 }
                 break;
 

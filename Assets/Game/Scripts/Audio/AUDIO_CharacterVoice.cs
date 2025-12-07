@@ -11,23 +11,42 @@ public class AUDIO_CharacterVoice : MonoBehaviour
     [SerializeField] private EventReference voiceLineEvent3D;
 
     private static EVENT_CALLBACK dialogueCallback = new EVENT_CALLBACK(DialogueEventCallback);
+    
+    private EventInstance currentInstance;
+
     public void PlayVoice(string key)
     {
         if (string.IsNullOrEmpty(key) || voiceLineEvent3D.IsNull) return;
 
-        EventDescription description = RuntimeManager.GetEventDescription(voiceLineEvent3D);
-        EventInstance dialogueInstance;
-        description.createInstance(out dialogueInstance);
+        // Stop previous if still playing
+        if (currentInstance.isValid())
+        {
+            currentInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            currentInstance.release();
+        }
 
-        // Applique la position 3D du personnage
-        dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
+        EventDescription description = RuntimeManager.GetEventDescription(voiceLineEvent3D);
+        description.createInstance(out currentInstance);
+
+        currentInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
 
         GCHandle stringHandle = GCHandle.Alloc(key, GCHandleType.Normal);
-        dialogueInstance.setUserData(GCHandle.ToIntPtr(stringHandle));
-        dialogueInstance.setCallback(dialogueCallback);
+        currentInstance.setUserData(GCHandle.ToIntPtr(stringHandle));
+        currentInstance.setCallback(dialogueCallback);
 
-        dialogueInstance.start();
-        dialogueInstance.release();
+        currentInstance.start();
+    }
+
+    public void Pause()
+    {
+        if (currentInstance.isValid())
+            currentInstance.setPaused(true);
+    }
+
+    public void Resume()
+    {
+        if (currentInstance.isValid())
+            currentInstance.setPaused(false);
     }
 
     [AOT.MonoPInvokeCallback(typeof(EVENT_CALLBACK))]
@@ -72,6 +91,12 @@ public class AUDIO_CharacterVoice : MonoBehaviour
                     var parameter = (FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES));
                     var sound = new FMOD.Sound(parameter.sound);
                     sound.release();
+                }
+                break;
+
+            case EVENT_CALLBACK_TYPE.STOPPED:
+                {
+                    instance.release();
                 }
                 break;
 
