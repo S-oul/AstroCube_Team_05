@@ -1,6 +1,7 @@
 using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
+using FMODUnity;
 using UnityEngine;
 
 public class GameActionScreenDistortion : AGameAction
@@ -16,6 +17,7 @@ public class GameActionScreenDistortion : AGameAction
     [SerializeField] private EDistortAction _distortAction = EDistortAction.PULSE;
     [SerializeField, HideIf("_distortAction", EDistortAction.TO_NORMAL), Range(0.0f, 1.0f)] private float _targetValue = 0.5f;
     [SerializeField] private float _duration = 1.0f;
+    [SerializeField] private EventReference _distortionSound;
 
     [SerializeField, HideIf("_distortAction", EDistortAction.TO_NORMAL)] private Ease _easeIn = Ease.Linear;
     [SerializeField, HideIf("_distortAction", EDistortAction.TO_DISTORT)] private Ease _easeOut = Ease.Linear;
@@ -33,13 +35,14 @@ public class GameActionScreenDistortion : AGameAction
         if(_postProcessManager == null)
             return;
 
+        RuntimeManager.PlayOneShot(_distortionSound, GameManager.Instance.Player.transform.position);
         switch (_distortAction)
         {
             case EDistortAction.PULSE:
                 StartCoroutine(_Pulse());
                 break;
             case EDistortAction.SHOCK:
-                _Shock();
+                StartCoroutine(_Shock());
                 break;
             case EDistortAction.TO_DISTORT:
                 _postProcessManager.SetScreenDistortion(_targetValue, _duration, _easeIn);
@@ -59,10 +62,11 @@ public class GameActionScreenDistortion : AGameAction
         _StopDistort(_duration / 3, _easeOut);
     }
     
-    void _Shock()
+    IEnumerator _Shock()
     {
         _StartDistort(0);
-        _StopDistort(_duration, _easeOut);
+        yield return new WaitForSeconds(_duration / 2f);
+        _StopDistort(_duration / 2f, _easeOut);
     }
 
     private void _StartDistort(float duration, Ease ease = Ease.Linear) => _postProcessManager.SetScreenDistortion(_targetValue, duration, ease);
