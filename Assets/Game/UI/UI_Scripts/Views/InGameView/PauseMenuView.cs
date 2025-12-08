@@ -16,9 +16,12 @@ public class PauseMenuView : UIView
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private EventReference menuPauseSnapshot;
+    [SerializeField] private EventReference openPauseMenu;
+    [SerializeField] private EventReference closePauseMenu;
 
     private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
     private InputAction _cancelAction;
+    private bool _isInitialized = false;
 
 
     private void Awake()
@@ -45,6 +48,13 @@ public class PauseMenuView : UIView
             _menuPauseSnapshotInstance = RuntimeManager.CreateInstance(menuPauseSnapshot);
             _menuPauseSnapshotInstance.start();
         }
+        
+        if (_isInitialized)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(openPauseMenu);
+        }
+        _isInitialized = true;
+
     }
 
     private void OnDisable()
@@ -121,6 +131,7 @@ public class PauseMenuView : UIView
     private void CloseMenu()
     {
         _uiManager.ShowInGameExclusive<PlayingView>();
+        FMODUnity.RuntimeManager.PlayOneShot(closePauseMenu);
     }
 
 
