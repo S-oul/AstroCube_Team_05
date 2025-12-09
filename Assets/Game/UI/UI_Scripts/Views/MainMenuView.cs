@@ -59,7 +59,8 @@ public class MainMenuView : UIView
             {
                 StartFreshGame();
             }
-            , onCancel: () => {
+            , onCancel: () =>
+            {
                 _uiManager.ShowImmediate<MainMenuView>();
             }
         ));
@@ -112,7 +113,7 @@ public class MainMenuView : UIView
     {
         var popup = _uiManager.ShowAndReturn<PopUpView>();
         if (popup == null) return;
-
+        Hide();
         popup.ShowPopup(new PopUpData(
             title: "Quit Game",
             message: "Are you sure you want to quit the game?",
@@ -126,7 +127,11 @@ public class MainMenuView : UIView
 #else
                 Application.Quit();
 #endif
-            }
+            },
+            onCancel: () =>
+                        {
+                            _uiManager.ShowImmediate<MainMenuView>();
+                        }
         ));
     }
 }

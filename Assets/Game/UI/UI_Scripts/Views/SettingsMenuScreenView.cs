@@ -274,6 +274,8 @@ public class SettingsMenuScreenView : UIView
 
     private void OnEnable()
     {
+        base.OnEnable(); 
+
         var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
         _cancelAction = uiModule.cancel;
 
@@ -281,29 +283,29 @@ public class SettingsMenuScreenView : UIView
         {
             EventManager.OnGameUnpause += CloseMenu;
             _cancelAction.performed += OnCancelPerformed;
-
         }
-
-        if (!isInGameplay)
+        else
         {
             _cancelAction.performed += OnCancelPerformed;
         }
     }
 
+
     private void OnDisable()
     {
+        base.OnDisable(); 
+
         if (isInGameplay)
         {
             EventManager.OnGameUnpause -= CloseMenu;
             _cancelAction.performed -= OnCancelPerformed;
-
         }
-
-        if (!isInGameplay)
+        else
         {
             _cancelAction.performed -= OnCancelPerformed;
         }
     }
+
 
     private void OnCancelPerformed(InputAction.CallbackContext ctx)
     {
