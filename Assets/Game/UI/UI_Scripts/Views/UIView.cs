@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public abstract class UIView : MonoBehaviour
 {
@@ -16,11 +18,42 @@ public abstract class UIView : MonoBehaviour
 
     private Coroutine fadeCoroutine;
 
+    private InputAction navigateAction;
+
+
     protected virtual void Awake()
     {
         if (canvasGroup == null)
             canvasGroup = GetComponent<CanvasGroup>();
     }
+
+    protected virtual void OnEnable()
+    {
+        var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
+        navigateAction = uiModule.move; 
+
+        navigateAction.performed += OnNavigatePerformed;
+    }
+
+    protected virtual void OnDisable()
+    {
+        if (navigateAction != null)
+            navigateAction.performed -= OnNavigatePerformed;
+    }
+
+
+    private void OnNavigatePerformed(InputAction.CallbackContext ctx)
+    {
+        if (!gameObject.activeInHierarchy)
+            return;
+
+        if (EventSystem.current.currentSelectedGameObject != null)
+            return;
+
+        if (firstSelected != null)
+            EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
+    }
+
 
     public virtual void Show()
     {
@@ -36,7 +69,19 @@ public abstract class UIView : MonoBehaviour
         }));
     }
 
+    public virtual void ShowImmediate()
+    {
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
 
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        gameObject.SetActive(true);
+
+        if (firstSelected != null && EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
+    }
 
     public virtual void Hide()
     {
@@ -80,7 +125,7 @@ public abstract class UIView : MonoBehaviour
 
         while (elapsed < viewFadeDuration)
         {
-            elapsed += Time.unscaledDeltaTime; 
+            elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / viewFadeDuration);
             canvasGroup.alpha = Mathf.Lerp(from, to, t);
             yield return null;
