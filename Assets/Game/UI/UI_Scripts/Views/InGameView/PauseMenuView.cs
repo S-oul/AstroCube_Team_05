@@ -104,8 +104,8 @@ public class PauseMenuView : UIView
             title: "Quit Game ?",
             message: "",
             type: PopUpType.Warning,
-            confirm: "Oui",
-            cancel: "Non",
+            confirm: "Yes",
+            cancel: "No",
             onConfirm: () =>
             {
                 Time.timeScale = 1f;
