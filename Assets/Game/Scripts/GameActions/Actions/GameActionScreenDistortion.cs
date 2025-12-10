@@ -1,7 +1,6 @@
 using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
-using FMODUnity;
 using UnityEngine;
 
 public class GameActionScreenDistortion : AGameAction
@@ -17,7 +16,6 @@ public class GameActionScreenDistortion : AGameAction
     [SerializeField] private EDistortAction _distortAction = EDistortAction.PULSE;
     [SerializeField, HideIf("_distortAction", EDistortAction.TO_NORMAL), Range(0.0f, 1.0f)] private float _targetValue = 0.5f;
     [SerializeField] private float _duration = 1.0f;
-    [SerializeField] private EventReference _distortionSound;
 
     [SerializeField, HideIf("_distortAction", EDistortAction.TO_NORMAL)] private Ease _easeIn = Ease.Linear;
     [SerializeField, HideIf("_distortAction", EDistortAction.TO_DISTORT)] private Ease _easeOut = Ease.Linear;
@@ -35,7 +33,6 @@ public class GameActionScreenDistortion : AGameAction
         if(_postProcessManager == null)
             return;
 
-        RuntimeManager.PlayOneShot(_distortionSound, GameManager.Instance.Player.transform.position);
         switch (_distortAction)
         {
             case EDistortAction.PULSE:
