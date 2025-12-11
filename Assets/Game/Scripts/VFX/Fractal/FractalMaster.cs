@@ -8,36 +8,8 @@ using UnityEngine.Rendering.HighDefinition;
 [ExecuteInEditMode]
 public class FractalMaster : MonoBehaviour
 {
-    [Serializable]
-    public class MandelbulbParameters
-    {
-        public MandelbulbParameters()
-        {
-            _fractalPower = 7;
-            _alpha = 1f;
-            _colorA = new Color(0.5f, 0F, 0.5f);
-            _colorB = new Color(1f, 0.5f, 0f);
-            _blackAndWhite = 0.7f;
-            _darkness = 26f;
-        }
 
-        public float FractalPower { get => _fractalPower; set => _fractalPower = value; }
-        public float Alpha { get => _alpha; set => _alpha = value; }
-        public Color ColorA { get => _colorA; set => _colorA = value; }
-        public Color ColorB { get => _colorB; set => _colorB = value; }
-        public float BlackAndWhite { get => _blackAndWhite; set => _blackAndWhite = value; }
-        public float Darkness { get => _darkness; set => _darkness = value; }
-
-        [SerializeField, Range(1, 20)] private float _fractalPower;
-        [SerializeField, Range(0f, 1f)] private float _alpha;
-        [SerializeField] private Color _colorA;
-        [SerializeField] private Color _colorB;
-        [SerializeField, Range(0f, 1f)] private float _blackAndWhite;
-        [SerializeField] private float _darkness;
-    }
-
-
-    // For Animation (yes this is not sexy, complex problems mean dirty fixes)
+    // For Animation
     public float FractalPower { get => _fractalPower; set => _fractalPower = value; }
     public float Alpha { get => _alpha; set => _alpha = value; }
     public Color ColorA { get => _colorA; set => _colorA = value; }
@@ -53,6 +25,7 @@ public class FractalMaster : MonoBehaviour
     [SerializeField] private float _darkness = 26f;
     [Header("Fractal Transform")]
     [SerializeField, Range(0.1f, 10f)] private float fractalScale = 1f;
+
     public MandelbulbParameters CurrentMandelbulbParameters { get => _currentMandelbulbParameters; set => _currentMandelbulbParameters = value; }
     private MandelbulbParameters _currentMandelbulbParameters = new();
 
@@ -60,57 +33,42 @@ public class FractalMaster : MonoBehaviour
     [SerializeField] private ComputeShader fractalShader;
     [SerializeField] private RenderTexture rt;
 
+    [Range(-50, 1)] private float _extAlpha;
+    [SerializeField] private Vector3 positionOffset;
+
+    [Header("Simulation Settings")]
     [SerializeField] private float drawDistance = 2f;
+    [SerializeField] private float minDist = 120;
+    [SerializeField] private int maxStepCount = 120;
+    [SerializeField] private int maxIterations = 10;
+    [SerializeField] private Light directionalLight;
+    [SerializeField] private bool useTargetFPS = false;
+    [SerializeField] private float targetFPS = 20.0f;
 
-    [Range(-50, 1)] public float _extAlpha;
-
-    public Vector3 positionOffset;
-
-    RenderTexture target;
     Camera cam;
-    [SerializeField]
-    Light directionalLight;
-
-    [Header("Animation Settings")]
-    public float powerIncreaseRate = 0.2f;
-    public float oscillationRate = 0.2f;
-    public float oscillationRange = 5f;
-    private float t = 0;
 
     private int handleCSMain = -1;
-
-    public float[] groupMinData;
-    public int groupMin;
-
-    private ComputeBuffer groupMinBuffer;
 
     private int threadGroupsX;
     private int threadGroupsY;
 
-    public float minDist;
-
-    private int maxStepCount = 500;
-
-    public int maxIterations;
-
-    public bool LODChangeWithDist;
+    private int renderWidth = 1344;
+    private int renderHeight = 756;
 
     Matrix4x4 cameraToWorldMatrix;
     Matrix4x4 projectionMatrixInverse;
 
     [SerializeField] Material _mandelbulbMat;
+    private float fractalUpdateTimer;
 
     void Start()
     {
-        Application.targetFrameRate = 60;
-
         if (null == fractalShader)
         {
             Debug.LogError("Fractal Shader missing!");
             return;
         }
 
-        // Trouver le kernel une seule fois au démarrage
         handleCSMain = fractalShader.FindKernel("CSMain");
 
         if (handleCSMain < 0)
@@ -119,6 +77,8 @@ public class FractalMaster : MonoBehaviour
             enabled = false;
             return;
         }
+
+        Init();
     }
 
     void Init()
@@ -131,25 +91,28 @@ public class FractalMaster : MonoBehaviour
             return;
         }
 
-        threadGroupsX = Mathf.CeilToInt(cam.pixelWidth / 64.0f);
-        threadGroupsY = Mathf.CeilToInt(cam.pixelHeight / 1.0f);
-    }
-
-    void InitBuffer()
-    {
-        if (groupMinBuffer != null)
-        {
-            groupMinBuffer.Release();
-        }
-
-        groupMinBuffer = new ComputeBuffer(threadGroupsX, (sizeof(uint) * 2) + (sizeof(float) * 1));
-        groupMinData = new float[threadGroupsX * 3];
+        threadGroupsX = Mathf.CeilToInt(renderWidth / 8.0f);
+        threadGroupsY = Mathf.CeilToInt(renderHeight / 8.0f);
     }
 
     void LateUpdate()
     {
-        UpdateValues();
-        UpdateTexture();
+        if (useTargetFPS)
+        {
+            fractalUpdateTimer += Time.deltaTime;
+
+            if (fractalUpdateTimer >= 1.0f / targetFPS)
+            {
+                fractalUpdateTimer -= 1.0f / targetFPS;
+                UpdateValues();
+                UpdateTexture();
+            }
+        }
+        else
+        {
+            UpdateValues();
+            UpdateTexture();
+        }
     }
 
     void UpdateValues()
@@ -164,65 +127,19 @@ public class FractalMaster : MonoBehaviour
 
     void UpdateTexture()
     {
-        if (fractalShader == null || handleCSMain < 0)
-        {
-            return;
-        }
+        if (fractalShader == null || handleCSMain < 0 || cam == null) return;
 
-        Init();
-
-        if (cam == null)
-        {
-            return;
-        }
-
-        InitRenderTexture();
-        InitBuffer();
         SetParameters();
 
-        // Vérifier que tout est bien initialisé avant le dispatch
-        if (groupMinBuffer == null || target == null)
-        {
-            Debug.LogError("Buffers not properly initialized!");
-            return;
-        }
-
         fractalShader.Dispatch(handleCSMain, threadGroupsX, threadGroupsY, 1);
-
-        // get minima of groups
-        groupMinBuffer.GetData(groupMinData);
-
-        // find minimum of all groups
-        groupMin = 0;
-        for (int group = 1; group < threadGroupsX; group++)
-        {
-            if (groupMinData[3 * group + 2] < groupMinData[3 * groupMin + 2])
-            {
-                groupMin = group;
-            }
-        }
-
-        minDist = groupMinData[3 * groupMin + 2];
-
-        Graphics.Blit(target, rt);
-
-        CleanupBuffers();
     }
 
     void SetParameters()
     {
-        cam.fieldOfView = cam.fieldOfView;
-        //cam.fieldOfView = cam.fieldOfView;
         cameraToWorldMatrix = cam.cameraToWorldMatrix;
         projectionMatrixInverse = cam.projectionMatrix.inverse;
 
-
-        if (Application.isPlaying)
-        { //animation
-            _fractalPower += Time.deltaTime * 0.2f;
-        }
-
-        fractalShader.SetTexture(handleCSMain, "Destination", target);
+        fractalShader.SetTexture(handleCSMain, "Destination", rt);
         fractalShader.SetFloat("alpha", _extAlpha);
         _mandelbulbMat.SetFloat("_Alpha", _alpha);
 
@@ -232,71 +149,44 @@ public class FractalMaster : MonoBehaviour
         fractalShader.SetFloat("maxDst", drawDistance);
         fractalShader.SetVector("colourAMix", _currentMandelbulbParameters.ColorA);
         fractalShader.SetVector("colourBMix", _currentMandelbulbParameters.ColorB);
-        //fractalShader.SetVector("positionOffset", positionOffset);
         fractalShader.SetVector("positionOffset", transform.position);
         fractalShader.SetFloat("fractalScale", fractalScale);
         fractalShader.SetVector("fractalRotation", transform.eulerAngles);
-
-        // Calculer la distance entre la caméra et la fractale
-        float distToFractal = Vector3.Distance(cam.transform.position, transform.position);
-        // Adapter le nombre de pas en fonction de la distance
-        maxStepCount = Mathf.Max(250, Mathf.CeilToInt(distToFractal * 100));
-        fractalShader.SetInt("maxStepCount", maxStepCount);
-
-        if (LODChangeWithDist)
-        {
-            maxIterations = Mathf.FloorToInt(5f / minDist);
-        }
-        else maxIterations = 15;
-
         fractalShader.SetInt("maxIterations", maxIterations);
-
+        fractalShader.SetInt("maxStepCount", maxStepCount);
         fractalShader.SetMatrix("_CameraToWorld", cameraToWorldMatrix);
         fractalShader.SetMatrix("_CameraInverseProjection", projectionMatrixInverse);
 
         if (directionalLight)
             fractalShader.SetVector("_LightDirection", directionalLight.transform.forward);
-
-        fractalShader.SetBuffer(handleCSMain, "GroupMinBuffer", groupMinBuffer);
     }
 
-    void InitRenderTexture()
+}
+
+[Serializable]
+public class MandelbulbParameters
+{
+    public MandelbulbParameters()
     {
-        if (target == null || target.width != cam.pixelWidth || target.height != cam.pixelHeight)
-        {
-            if (target != null)
-            {
-                target.Release();
-            }
-
-            target = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
-            target.enableRandomWrite = true;
-            target.Create();
-        }
+        _fractalPower = 7;
+        _alpha = 1f;
+        _colorA = new Color(0.5f, 0F, 0.5f);
+        _colorB = new Color(1f, 0.5f, 0f);
+        _blackAndWhite = 0.7f;
+        _darkness = 26f;
     }
 
-    void CleanupBuffers()
-    {
-        if (groupMinBuffer != null)
-        {
-            groupMinBuffer.Release();
-            groupMinBuffer = null;
-        }
-    }
+    public float FractalPower { get => _fractalPower; set => _fractalPower = value; }
+    public float Alpha { get => _alpha; set => _alpha = value; }
+    public Color ColorA { get => _colorA; set => _colorA = value; }
+    public Color ColorB { get => _colorB; set => _colorB = value; }
+    public float BlackAndWhite { get => _blackAndWhite; set => _blackAndWhite = value; }
+    public float Darkness { get => _darkness; set => _darkness = value; }
 
-    void OnDestroy()
-    {
-        CleanupBuffers();
-
-        if (target != null)
-        {
-            target.Release();
-            target = null;
-        }
-    }
-
-    void OnDisable()
-    {
-        CleanupBuffers();
-    }
+    [SerializeField, Range(1, 20)] private float _fractalPower;
+    [SerializeField, Range(0f, 1f)] private float _alpha;
+    [SerializeField] private Color _colorA;
+    [SerializeField] private Color _colorB;
+    [SerializeField, Range(0f, 1f)] private float _blackAndWhite;
+    [SerializeField] private float _darkness;
 }
