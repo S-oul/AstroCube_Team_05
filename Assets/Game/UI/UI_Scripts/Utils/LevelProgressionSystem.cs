@@ -55,6 +55,12 @@ public static class LevelProgressionSystem
         PlayerPrefs.Save();
     }
 
+    public static int LogicalToSceneIndex(int logicalLevel)
+    {
+        return logicalLevel + 1;
+    }
+
+
     public static int GetLastLevel()
     {
         return PlayerPrefs.GetInt(LastLevelKey, -1);

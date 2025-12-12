@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using FMODUnity;
+using NaughtyAttributes;
 
 public class MemoryObject : MonoBehaviour, IInteractable
 {
@@ -31,6 +32,9 @@ public class MemoryObject : MonoBehaviour, IInteractable
     
     private void OnValidate()
     {
+        if (_gameObjectsToActivate == null || _gameObjectsToActivate.Count == 0)
+            return;
+        
         foreach (GameObject obj in _gameObjectsToActivate)
         {
             if (obj.TryGetComponent(out MeshRenderer mesh))
@@ -69,16 +73,19 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
-            if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
+            if (subtitle.isEmpty == false)
             {
-                var characterVoice = _memories[subtitle.characterIndex].GetComponent<AUDIO_CharacterVoice>();
-                if (characterVoice != null && !string.IsNullOrEmpty(subtitle.audioKey))
+                if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
                 {
-                    characterVoice.PlayVoice(subtitle.audioKey);
+                    var characterVoice = _memories[subtitle.characterIndex].GetComponent<AUDIO_CharacterVoice>();
+                    if (characterVoice != null && !string.IsNullOrEmpty(subtitle.audioKey))
+                    {
+                        characterVoice.PlayVoice(subtitle.audioKey);
+                    }
                 }
-            }
 
-            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
+                LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
+            }
             yield return new WaitForSeconds(subtitle.duration);
         }
         LocalizationManager.Instance.ClearString();
@@ -113,11 +120,14 @@ public class MemoryObject : MonoBehaviour, IInteractable
 [Serializable]
 public struct SubtitleData
 {
-    public string locutor;
-    public string csvName;
-    public string localizationID;
+    public bool isEmpty;
+    private bool MustShowParameter => !isEmpty;
+    
+    [ShowIf("MustShowParameter")] public string locutor;
+    [ShowIf("MustShowParameter")] public string csvName;
+    [ShowIf("MustShowParameter")] public string localizationID;
     public float duration;
-    public Color color;
-    public string audioKey;
-    public int characterIndex;
+    [ShowIf("MustShowParameter")] public Color color;
+    [ShowIf("MustShowParameter")] public string audioKey;
+    [ShowIf("MustShowParameter")] public int characterIndex;
 }
