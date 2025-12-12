@@ -79,11 +79,19 @@ public class MainMenuView : UIView
 
     public void OnContinueClicked()
     {
-        int last = LevelProgressionSystem.GetLastLevel();
+        int logicalLast = LevelProgressionSystem.GetLastLevel();
 
-        if (last != -1)
-            SceneManager.LoadScene(last);
+        if (logicalLast < 0)
+            return;
+
+        int sceneIndex = LevelProgressionSystem.LogicalToSceneIndex(logicalLast);
+
+        if (sceneIndex <= 0 || sceneIndex >= SceneManager.sceneCountInBuildSettings)
+            return;
+
+        SceneManager.LoadScene(sceneIndex);
     }
+
 
     private void OnLevelsClicked()
     {
