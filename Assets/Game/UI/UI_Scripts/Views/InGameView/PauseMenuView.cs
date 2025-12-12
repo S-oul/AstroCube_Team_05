@@ -16,9 +16,13 @@ public class PauseMenuView : UIView
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private EventReference menuPauseSnapshot;
+    [SerializeField] private EventReference openPauseMenu;
+    [SerializeField] private EventReference closePauseMenu;
 
     private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
     private InputAction _cancelAction;
+    private bool _isInitialized = false;
+    private bool _keepSnapshotActive = false;
 
 
     private void Awake()
@@ -40,11 +44,18 @@ public class PauseMenuView : UIView
         EventManager.OnGameUnpause += CloseMenu;
         _cancelAction.performed += OnCancelPerformed;
 
-        if (!menuPauseSnapshot.IsNull)
+        if (!menuPauseSnapshot.IsNull && !_menuPauseSnapshotInstance.isValid())
         {
             _menuPauseSnapshotInstance = RuntimeManager.CreateInstance(menuPauseSnapshot);
             _menuPauseSnapshotInstance.start();
         }
+        
+        if (_isInitialized)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(openPauseMenu);
+        }
+        _isInitialized = true;
+
     }
 
     private void OnDisable()
@@ -58,11 +69,13 @@ public class PauseMenuView : UIView
         EventManager.OnGameUnpause -= CloseMenu;
         _cancelAction.performed -= OnCancelPerformed;
 
-        if (_menuPauseSnapshotInstance.isValid())
+        if (!_keepSnapshotActive && _menuPauseSnapshotInstance.isValid())
         {
             _menuPauseSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             _menuPauseSnapshotInstance.release();
         }
+        
+        _keepSnapshotActive = false;
     }
 
     private void OnCancelPerformed(InputAction.CallbackContext ctx)
@@ -81,6 +94,7 @@ public class PauseMenuView : UIView
     private void OnSettingsClicked()
     {
         Debug.Log("Opening Settings Menu");
+        _keepSnapshotActive = true;
         _uiManager.ShowInGameExclusive<SettingsMenuScreenView>();
     }
 
@@ -94,8 +108,8 @@ public class PauseMenuView : UIView
             title: "Quit Game ?",
             message: "",
             type: PopUpType.Warning,
-            confirm: "Oui",
-            cancel: "Non",
+            confirm: "Yes",
+            cancel: "No",
             onConfirm: () =>
             {
                 Time.timeScale = 1f;
@@ -121,6 +135,7 @@ public class PauseMenuView : UIView
     private void CloseMenu()
     {
         _uiManager.ShowInGameExclusive<PlayingView>();
+        FMODUnity.RuntimeManager.PlayOneShot(closePauseMenu);
     }
 
 

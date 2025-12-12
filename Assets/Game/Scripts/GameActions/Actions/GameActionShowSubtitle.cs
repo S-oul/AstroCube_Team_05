@@ -9,9 +9,6 @@ public class GameActionShowSubtitle : AGameAction
     [SerializeField] private string _localizationID;
     [SerializeField] private float _duration;
     [SerializeField] private Color _color;
-    
-    [SerializeField] private EventReference _startSubtitleEvent;
-    [SerializeField] private EventReference _stopSubtitleEvent;
 
     private bool _isFinished = true;
     
@@ -23,11 +20,11 @@ public class GameActionShowSubtitle : AGameAction
     private IEnumerator PrintSubtitle()
     {
         _isFinished = false;
-        if (!_startSubtitleEvent.IsNull) RuntimeManager.PlayOneShot(_startSubtitleEvent, transform.position);
         LocalizationManager.Instance.PrintStringFromID(_csvName, _localizationID, _locutor, _color);
+        if (AUDIO_ProgrammerInstrument.Instance != null)
+            AUDIO_ProgrammerInstrument.Instance.PlayVoiceLine(_localizationID);
         yield return new WaitForSeconds(_duration);
         LocalizationManager.Instance.ClearString();
-        if (!_stopSubtitleEvent.IsNull) RuntimeManager.PlayOneShot(_stopSubtitleEvent, transform.position);
         _isFinished = true;
     }
 

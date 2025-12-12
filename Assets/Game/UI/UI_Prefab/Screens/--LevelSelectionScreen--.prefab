@@ -411,8 +411,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenuButtonFuntionalities, Assembly-CSharp
-        m_MethodName: OnQuitButtonClick
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -440,12 +440,12 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: AkEvent, AK.Wwise.Unity.MonoBehaviour
-          m_MethodName: HandleEvent
-          m_Mode: 2
+          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+          m_MethodName: Play
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -521,6 +521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7357150895387974929}
   - component: {fileID: 3067778827890342371}
+  - component: {fileID: 5188878242828419578}
   m_Layer: 0
   m_Name: Viewport
   m_TagString: Untagged
@@ -562,6 +563,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: -25}
   m_Softness: {x: 0, y: 100}
+--- !u!225 &5188878242828419578
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3084353236322187161}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3223554218682893407
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +734,7 @@ GameObject:
   - component: {fileID: 2722342249739649703}
   - component: {fileID: 3288533678786496693}
   - component: {fileID: 268933343289252761}
+  - component: {fileID: 6071621895576720545}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -842,6 +856,47 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6071621895576720545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094163658651167255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4325515651953220651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,7 +1439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 4363876784872930155}
-  viewFadeDuration: 0.4
+  viewFadeDuration: 0.1
   cameraPosition: {fileID: 0}
   firstSelected: {fileID: 0}
   scrollRect: {fileID: 8015324099452582581}
@@ -1410,6 +1465,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: a67e13961e338eb469dd0727e925d56e, type: 2}
   lockedPreviewMaterial: {fileID: 2100000, guid: c1ea39800f971a14abb7bae5351d175f,
     type: 2}
+  levelListCanvasGroup: {fileID: 5188878242828419578}
   levelNames:
   - 1 - Lost
   - 2 - Discovered

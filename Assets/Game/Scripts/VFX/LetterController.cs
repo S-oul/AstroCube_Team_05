@@ -5,7 +5,8 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class LetterController : MonoBehaviour
 {
-    [SerializeField] private float _fxSlider = 0.0f;
+    [SerializeField] private float _lineWriteState = 0.0f;
+    [SerializeField] private float _lineDistortState = 0.0f;
     [SerializeField] private Image _letter;
     private Material _mat;
 
@@ -16,6 +17,7 @@ public class LetterController : MonoBehaviour
 
     void Update()
     {
-        _mat.SetFloat("_DebugSlider", _fxSlider);
+        _mat.SetFloat("_LineWrite", _lineWriteState);
+        _mat.SetFloat("_LineDistortion", _lineDistortState);
     }
 }
