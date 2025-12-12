@@ -17,7 +17,7 @@ public class ChangeUiControllerMaterial : MonoBehaviour
     {
         _image = GetComponent<Image>();
 
-        InputSystem.onEvent += OnInputEvent;   // <--- LA BONNE MÉTHODE
+        InputSystem.onEvent += OnInputEvent;  
     }
 
     private void OnDisable()

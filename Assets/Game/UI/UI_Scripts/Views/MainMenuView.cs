@@ -61,7 +61,7 @@ public class MainMenuView : UIView
             }
             , onCancel: () =>
             {
-                _uiManager.ShowImmediate<MainMenuView>();
+                _uiManager.ShowInGameExclusive<MainMenuView>();
             }
         ));
     }
@@ -130,7 +130,7 @@ public class MainMenuView : UIView
             },
             onCancel: () =>
                         {
-                            _uiManager.ShowImmediate<MainMenuView>();
+                            _uiManager.ShowInGameExclusive<MainMenuView>();
                         }
         ));
     }
