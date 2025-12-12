@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
             view.Hide();
             view.HideImmediate();
         }
+        Time.timeScale = 1f;
     }
 
     public T GetView<T>() where T : UIView

@@ -1,15 +1,15 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using FMODUnity;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
+using FMODUnity;
 
 public class PauseMenuView : UIView
 {
-    UIManager _uiManager;
-
+    private UIManager _uiManager;
 
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button restartButton;
@@ -21,79 +21,95 @@ public class PauseMenuView : UIView
 
     private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
     private InputAction _cancelAction;
-    private bool _isInitialized = false;
-    private bool _keepSnapshotActive = false;
+    private bool _isInitialized;
+    private bool _keepSnapshotActive;
+    private bool _ignoreCancelThisFrame;
 
-
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         _uiManager = FindObjectOfType<UIManager>();
-
-
     }
 
     private void OnEnable()
     {
-        var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
-        _cancelAction = uiModule.cancel;
-
         resumeButton.onClick.AddListener(OnResumeClicked);
         settingsButton.onClick.AddListener(OnSettingsClicked);
         quitButton.onClick.AddListener(OnQuitClicked);
         restartButton.onClick.AddListener(OnRestartClicked);
+
         EventManager.OnGameUnpause += CloseMenu;
-        _cancelAction.performed += OnCancelPerformed;
+
+        var uiModule = EventSystem.current != null
+            ? EventSystem.current.GetComponent<InputSystemUIInputModule>()
+            : null;
+
+        if (uiModule != null)
+        {
+            _cancelAction = uiModule.cancel;
+            _cancelAction.performed += OnCancelPerformed;
+        }
 
         if (!menuPauseSnapshot.IsNull && !_menuPauseSnapshotInstance.isValid())
         {
             _menuPauseSnapshotInstance = RuntimeManager.CreateInstance(menuPauseSnapshot);
             _menuPauseSnapshotInstance.start();
         }
-        
+
         if (_isInitialized)
-        {
-            FMODUnity.RuntimeManager.PlayOneShot(openPauseMenu);
-        }
+            RuntimeManager.PlayOneShot(openPauseMenu);
+
         _isInitialized = true;
+
+        _ignoreCancelThisFrame = true;
+        StartCoroutine(AllowCancelNextFrame());
+
+        Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-
     }
-
-    
 
     private void OnDisable()
     {
-
-
         resumeButton.onClick.RemoveListener(OnResumeClicked);
         settingsButton.onClick.RemoveListener(OnSettingsClicked);
         quitButton.onClick.RemoveListener(OnQuitClicked);
         restartButton.onClick.RemoveListener(OnRestartClicked);
+
         EventManager.OnGameUnpause -= CloseMenu;
-        _cancelAction.performed -= OnCancelPerformed;
+
+        if (_cancelAction != null)
+            _cancelAction.performed -= OnCancelPerformed;
+
+        _cancelAction = null;
 
         if (!_keepSnapshotActive && _menuPauseSnapshotInstance.isValid())
         {
             _menuPauseSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             _menuPauseSnapshotInstance.release();
         }
-        
+
         _keepSnapshotActive = false;
+    }
+
+    private IEnumerator AllowCancelNextFrame()
+    {
+        yield return null;
+        _ignoreCancelThisFrame = false;
     }
 
     private void OnCancelPerformed(InputAction.CallbackContext ctx)
     {
+        if (_ignoreCancelThisFrame)
+            return;
+
         Time.timeScale = 1f;
         _uiManager.ShowInGameExclusive<PlayingView>();
     }
 
     private void OnResumeClicked()
     {
-        Debug.Log("Resuming Game");
-        _uiManager.ShowInGameExclusive<PauseMenuView>();
+        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         EventManager.TriggerGameUnpause();
@@ -101,16 +117,15 @@ public class PauseMenuView : UIView
 
     private void OnSettingsClicked()
     {
-        Debug.Log("Opening Settings Menu");
         _keepSnapshotActive = true;
         _uiManager.ShowInGameExclusive<SettingsMenuScreenView>();
     }
 
-
     private void OnQuitClicked()
     {
         var popup = _uiManager.ShowAndReturn<PopUpView>();
-        if (popup == null) return;
+        if (popup == null)
+            return;
 
         popup.ShowPopup(new PopUpData(
             title: "Quit Game ?",
@@ -128,28 +143,21 @@ public class PauseMenuView : UIView
             onCancel: () =>
             {
                 _uiManager.ShowInGameExclusive<PauseMenuView>();
-
             }
         ));
-
     }
 
     private void OnRestartClicked()
     {
-        Debug.Log("Restarting Level");
-        var currentScene = SceneManager.GetActiveScene();
         Time.timeScale = 1f;
-        SceneManager.LoadScene(currentScene.name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void CloseMenu()
     {
-        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _uiManager.ShowInGameExclusive<PlayingView>();
-        FMODUnity.RuntimeManager.PlayOneShot(closePauseMenu);
+        RuntimeManager.PlayOneShot(closePauseMenu);
     }
-
-
 }
