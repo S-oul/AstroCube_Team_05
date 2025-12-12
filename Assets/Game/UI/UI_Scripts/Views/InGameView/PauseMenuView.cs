@@ -30,6 +30,7 @@ public class PauseMenuView : UIView
         base.Awake();
         _uiManager = FindObjectOfType<UIManager>();
 
+
     }
 
     private void OnEnable()
@@ -55,8 +56,13 @@ public class PauseMenuView : UIView
             FMODUnity.RuntimeManager.PlayOneShot(openPauseMenu);
         }
         _isInitialized = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
 
     }
+
+    
 
     private void OnDisable()
     {
@@ -88,6 +94,8 @@ public class PauseMenuView : UIView
     {
         Debug.Log("Resuming Game");
         _uiManager.ShowInGameExclusive<PauseMenuView>();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         EventManager.TriggerGameUnpause();
     }
 
@@ -113,6 +121,8 @@ public class PauseMenuView : UIView
             onConfirm: () =>
             {
                 Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 SceneManager.LoadScene("GameEntry");
             },
             onCancel: () =>
@@ -134,6 +144,9 @@ public class PauseMenuView : UIView
 
     private void CloseMenu()
     {
+        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         _uiManager.ShowInGameExclusive<PlayingView>();
         FMODUnity.RuntimeManager.PlayOneShot(closePauseMenu);
     }
