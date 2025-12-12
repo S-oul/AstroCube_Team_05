@@ -272,7 +272,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _pastHorizontalVelocity = _horizontalVelocity;
-        print(_horizontalVelocity.magnitude);
         ExecuteFootStep();
     }
 

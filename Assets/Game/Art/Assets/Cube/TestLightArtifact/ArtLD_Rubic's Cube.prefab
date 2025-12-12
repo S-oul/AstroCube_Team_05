@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 69587340886311806}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: 0.49999994, y: -0.50000006, z: 0.5, w: 0.5}
   m_LocalPosition: {x: -1, y: -1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -36,7 +36,7 @@ Transform:
   - {fileID: 7386549795641105050}
   - {fileID: 4075921136455039340}
   - {fileID: 2910866873737044791}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3914284391418256941
 MonoBehaviour:
@@ -51,14 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &5097292168563613910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +176,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -361,6 +358,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -540,6 +540,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -688,15 +691,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423281889073117455}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.70710784, y: -0.0000020862658, z: 0.70710576, w: 0.000002086272}
-  m_LocalPosition: {x: 0, y: -1, z: 1}
+  m_LocalRotation: {x: 0.70710784, y: -0.0000020843, z: 0.7071058, w: 0.0000020880252}
+  m_LocalPosition: {x: -0, y: -1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3389207897720568356}
   - {fileID: 8832720390730101423}
   - {fileID: 4242806450236392391}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 180, y: -90, z: 0}
 --- !u!114 &2740372201136411505
 MonoBehaviour:
@@ -711,14 +714,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &1274991840927317929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,7 +808,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431778956591679601}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0.7071068, w: -0}
+  m_LocalRotation: {x: -0.7071068, y: -0.0000000065192585, z: 0.7071068, w: 0.0000000037252907}
   m_LocalPosition: {x: 0, y: -1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -819,7 +816,7 @@ Transform:
   - {fileID: 2965663461341089085}
   - {fileID: 6977348959412136779}
   - {fileID: 4593507629014854932}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 180, y: -270, z: 0}
 --- !u!114 &387680289976447158
 MonoBehaviour:
@@ -834,14 +831,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &7815374873170056173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -965,6 +956,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1017,14 +1011,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 466026420983421448}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0.0000000037252903, y: -0.000000014901161, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8492121632957979407}
   - {fileID: 969470228876134170}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6837377065731933817
 MonoBehaviour:
@@ -1039,14 +1033,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &8189038699422145991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,6 +1158,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1253,6 +1244,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1336,6 +1330,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1419,6 +1416,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1502,6 +1502,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1585,6 +1588,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1706,6 +1712,63 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!1 &957400370466738327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8408280649608195333}
+  m_Layer: 0
+  m_Name: CubeRender
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8408280649608195333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957400370466738327}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 379558496693186961}
+  - {fileID: 270057953487519492}
+  - {fileID: 8893209386176852038}
+  - {fileID: 7786423217646355677}
+  - {fileID: 3588879731627422622}
+  - {fileID: 2110431789448475140}
+  - {fileID: 8825161650886474955}
+  - {fileID: 1833326117083237371}
+  - {fileID: 4406083873937953008}
+  - {fileID: 4101395750054177833}
+  - {fileID: 2332413217887596278}
+  - {fileID: 7916897526925740265}
+  - {fileID: 7246532378362036302}
+  - {fileID: 5691897524458548784}
+  - {fileID: 9045554882639255099}
+  - {fileID: 5936796701950006845}
+  - {fileID: 7934374492415384032}
+  - {fileID: 6135387116258229014}
+  - {fileID: 6638972230298992529}
+  - {fileID: 132324518922697801}
+  - {fileID: 6476695090429171038}
+  - {fileID: 5375701668085402733}
+  - {fileID: 532936791524848363}
+  - {fileID: 6643780722315631516}
+  - {fileID: 8215588712376680917}
+  - {fileID: 238790476075706180}
+  m_Father: {fileID: 6939471894025662584}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &991791612473243143
 GameObject:
   m_ObjectHideFlags: 0
@@ -2021,14 +2084,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459809809960313857}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalRotation: {x: -0.000000006519258, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -1, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3418718210040935825}
   - {fileID: 1053999202875859217}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &6428898582558396088
 MonoBehaviour:
@@ -2043,14 +2106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &3569633437525272036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2270,6 +2327,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2353,6 +2413,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2436,6 +2499,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2615,6 +2681,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2698,6 +2767,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2942,14 +3014,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878855802764279304}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.000000007450581, y: 0.7071068, z: -0.0000000037252903, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 263623819637177263}
   - {fileID: 6694896339864168257}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3515426734280882066
 MonoBehaviour:
@@ -2964,14 +3036,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &8036810056016531290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3256,7 +3322,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964562836371001027}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.50000006, y: 0.5, z: -0.5, w: 0.50000006}
   m_LocalPosition: {x: 1, y: -1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3265,7 +3331,7 @@ Transform:
   - {fileID: 6150333879106350977}
   - {fileID: 8803606302692188605}
   - {fileID: 5014490797914217854}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7928928498331310241
 MonoBehaviour:
@@ -3280,14 +3346,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &8180499893703018306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3411,6 +3471,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3686,6 +3749,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3738,7 +3804,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2249450067889320470}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
+  m_LocalRotation: {x: -0.000000011175871, y: 0.7071068, z: -0.7071068, w: 0}
   m_LocalPosition: {x: -1, y: -1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3747,7 +3813,7 @@ Transform:
   - {fileID: 5973503325525095036}
   - {fileID: 3440453086147059731}
   - {fileID: 2653572936600342848}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8842411057590060675
 MonoBehaviour:
@@ -3762,14 +3828,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &202260637764126078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3893,6 +3953,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3945,7 +4008,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2522586597849980163}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.7071079}
+  m_LocalRotation: {x: 0.70710576, y: -0, z: 0.0000000027939677, w: 0.7071079}
   m_LocalPosition: {x: 1, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3953,7 +4016,7 @@ Transform:
   - {fileID: 7559982080197510270}
   - {fileID: 519292944260968188}
   - {fileID: 1309338522964943463}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &6505584611906604723
 MonoBehaviour:
@@ -3968,14 +4031,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &5432891733146059854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4099,6 +4156,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4151,15 +4211,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2764849526785530316}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000020489097, y: -0.7071057, z: 0.70710796, w: 0.0000021010637}
-  m_LocalPosition: {x: -1, y: 0, z: -1}
+  m_LocalRotation: {x: -0.000002042856, y: -0.70710576, z: 0.7071079, w: 0.0000020861626}
+  m_LocalPosition: {x: -1, y: -0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1450602145801128293}
   - {fileID: 447877023167963083}
   - {fileID: 119596509477985650}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!114 &6597500743479172732
 MonoBehaviour:
@@ -4174,14 +4234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &4579420494743692954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4305,6 +4359,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4388,6 +4445,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4471,6 +4531,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4619,7 +4682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2863878659480443648}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0.000000014901161, y: -0.000000014901161, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 1, y: -1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4628,7 +4691,7 @@ Transform:
   - {fileID: 8666436907437837960}
   - {fileID: 7846899448328944496}
   - {fileID: 2017809625355173900}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5159350839835238120
 MonoBehaviour:
@@ -4643,14 +4706,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &1252565640277311386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4774,6 +4831,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4857,6 +4917,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4940,6 +5003,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5023,6 +5089,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5075,14 +5144,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3202403987128804032}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalRotation: {x: 0.0000000037252903, y: -0.7071068, z: -0.0000000037252903,
+    w: 0.70710677}
+  m_LocalPosition: {x: -0, y: -0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3142782545238195696}
   - {fileID: 2160006390688199474}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6713645070755417240
 MonoBehaviour:
@@ -5097,14 +5167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &1031000331632634646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5420,6 +5484,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5503,6 +5570,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5586,6 +5656,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5765,6 +5838,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5848,6 +5924,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5931,6 +6010,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5983,15 +6065,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3822890960926570706}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1, y: 0, z: -1}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: 0.000000011175871, w: 0.7071068}
+  m_LocalPosition: {x: 1, y: -0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7518115704930036982}
   - {fileID: 8271882779120172911}
   - {fileID: 8703403365765292574}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &8802660821039931423
 MonoBehaviour:
@@ -6006,14 +6088,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &3211083689170422099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6137,6 +6213,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6316,6 +6395,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6687,6 +6769,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6962,6 +7047,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7141,6 +7229,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7224,6 +7315,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7403,6 +7497,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7486,6 +7583,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7569,6 +7669,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7748,6 +7851,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7831,6 +7937,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7914,6 +8023,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7997,6 +8109,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8145,7 +8260,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4618254652632188172}
   serializedVersion: 2
-  m_LocalRotation: {x: 1, y: -0, z: -0, w: 0.0000029504295}
+  m_LocalRotation: {x: 1, y: -0.000000007916242, z: 0.0000000020954758, w: 0.0000029522926}
   m_LocalPosition: {x: 1, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8153,7 +8268,7 @@ Transform:
   - {fileID: 6979354124815617076}
   - {fileID: 3219562749158432372}
   - {fileID: 4039049632474476954}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!114 &9004591648404623698
 MonoBehaviour:
@@ -8168,14 +8283,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &5583204107921112912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8395,6 +8504,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8478,6 +8590,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8561,6 +8676,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8644,6 +8762,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8696,14 +8817,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5163587904629009728}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000000006519258, w: 1}
+  m_LocalPosition: {x: 1, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8419071000833357479}
   - {fileID: 7081038211534337510}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2690989284079352313
 MonoBehaviour:
@@ -8718,14 +8839,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &4928841783901100106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8849,6 +8964,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8932,6 +9050,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8984,7 +9105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5334395513355306678}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000000006519258, w: 1}
   m_LocalPosition: {x: 1, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8993,7 +9114,7 @@ Transform:
   - {fileID: 7006763133659799584}
   - {fileID: 8489413243499810909}
   - {fileID: 871019361627592206}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2265395526881388244
 MonoBehaviour:
@@ -9008,14 +9129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &5017791029978189329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9139,6 +9254,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9510,6 +9628,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9593,6 +9714,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9772,6 +9896,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10143,6 +10270,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10226,6 +10356,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10309,6 +10442,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10392,6 +10528,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10444,15 +10583,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6057325889853568191}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0.0000029653306}
-  m_LocalPosition: {x: -1, y: -1, z: 0}
+  m_LocalRotation: {x: -0.0000000018626451, y: 0.0000000037252903, z: -1, w: 0.0000029783696}
+  m_LocalPosition: {x: -1, y: -1, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2907986761812915282}
   - {fileID: 3558870685710742433}
   - {fileID: 6931155214727426621}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
 --- !u!114 &8474446743016947753
 MonoBehaviour:
@@ -10467,14 +10606,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &6547313794847493382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10694,6 +10827,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10777,6 +10913,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10956,6 +11095,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11231,6 +11373,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11314,6 +11459,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11493,6 +11641,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11545,15 +11696,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7040366762881438562}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: -1, y: 1, z: 0}
+  m_LocalRotation: {x: 0.000000006519258, y: 1, z: -0, w: 0.00000295043}
+  m_LocalPosition: {x: -1, y: 1, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 247256670183956944}
   - {fileID: 3353204745653450312}
   - {fileID: 3686342649576902382}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &4920272790104834336
 MonoBehaviour:
@@ -11568,14 +11719,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &2044385990266860509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11668,7 +11813,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7080724734800896370}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000000006519258, w: 1}
   m_LocalPosition: {x: 1, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11676,7 +11821,7 @@ Transform:
   - {fileID: 3536079414336737269}
   - {fileID: 1807617262499464452}
   - {fileID: 8146056958075025381}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7679266482504313532
 MonoBehaviour:
@@ -11691,14 +11836,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &5758624070389707265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11983,7 +12122,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7134847869261147102}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.000000007450581, y: 0.7071068, z: -0.0000000037252903, w: 0.7071068}
   m_LocalPosition: {x: 1, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11992,7 +12131,7 @@ Transform:
   - {fileID: 1037236225648777197}
   - {fileID: 1612484601986698580}
   - {fileID: 3581937839364044599}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8688505498696207584
 MonoBehaviour:
@@ -12007,14 +12146,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &395153554928605153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12491,7 +12624,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7803472808646411843}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071057, z: -0, w: 0.70710796}
+  m_LocalRotation: {x: -0.0000000018626451, y: 0.7071057, z: 9.313226e-10, w: 0.70710796}
   m_LocalPosition: {x: 0, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12499,7 +12632,7 @@ Transform:
   - {fileID: 969339230074719465}
   - {fileID: 3218987843582050434}
   - {fileID: 3614526067708304097}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &8786263424435940712
 MonoBehaviour:
@@ -12514,14 +12647,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &4549832285753090903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12645,6 +12772,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12728,6 +12858,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12782,32 +12915,7 @@ Transform:
   m_LocalScale: {x: 0.28, y: 0.28, z: 0.28}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 379558496693186961}
-  - {fileID: 270057953487519492}
-  - {fileID: 8893209386176852038}
-  - {fileID: 7786423217646355677}
-  - {fileID: 3588879731627422622}
-  - {fileID: 2110431789448475140}
-  - {fileID: 8825161650886474955}
-  - {fileID: 1833326117083237371}
-  - {fileID: 4406083873937953008}
-  - {fileID: 4101395750054177833}
-  - {fileID: 2332413217887596278}
-  - {fileID: 7916897526925740265}
-  - {fileID: 7246532378362036302}
-  - {fileID: 5691897524458548784}
-  - {fileID: 9045554882639255099}
-  - {fileID: 5936796701950006845}
-  - {fileID: 7934374492415384032}
-  - {fileID: 6135387116258229014}
-  - {fileID: 6638972230298992529}
-  - {fileID: 132324518922697801}
-  - {fileID: 6476695090429171038}
-  - {fileID: 5375701668085402733}
-  - {fileID: 532936791524848363}
-  - {fileID: 6643780722315631516}
-  - {fileID: 8215588712376680917}
-  - {fileID: 238790476075706180}
+  - {fileID: 8408280649608195333}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8008071583625169858
@@ -12837,7 +12945,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8008071583625169858}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.49999997, y: -0.50000006, z: 0.4999985, w: 0.50000155}
+  m_LocalRotation: {x: 0.49999997, y: -0.50000006, z: 0.49999845, w: 0.50000155}
   m_LocalPosition: {x: -1, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12845,7 +12953,7 @@ Transform:
   - {fileID: 418045917295544180}
   - {fileID: 6468844405251803576}
   - {fileID: 706211389821633818}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
 --- !u!114 &1193333211246814515
 MonoBehaviour:
@@ -12860,14 +12968,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &8648133044665421497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13087,6 +13189,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13266,6 +13371,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13349,6 +13457,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13497,7 +13608,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8396534447469023776}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.50000006, w: 0.5}
   m_LocalPosition: {x: -1, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13506,7 +13617,7 @@ Transform:
   - {fileID: 941711928723144796}
   - {fileID: 9169762152390445281}
   - {fileID: 5315537496099446631}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2048368202502618232
 MonoBehaviour:
@@ -13521,14 +13632,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &5195644491197203747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13748,6 +13853,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13831,6 +13939,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13914,6 +14025,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13966,14 +14080,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8644445836396381759}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalRotation: {x: 0.000000014901161, y: -0.000000014901161, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4857969197965779075}
   - {fileID: 4750626957999463607}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8136183249942746258
 MonoBehaviour:
@@ -13988,14 +14102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &8779402496600091511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14088,7 +14196,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8684389379700174719}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.0000000037252903, y: -0.7071068, z: -0.0000000037252903,
+    w: 0.70710677}
   m_LocalPosition: {x: -1, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14097,7 +14206,7 @@ Transform:
   - {fileID: 3070733129215444108}
   - {fileID: 5148961694520882822}
   - {fileID: 8100122219253633565}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6442079536645164720
 MonoBehaviour:
@@ -14112,14 +14221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &4835270266189410406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14243,6 +14346,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14326,6 +14432,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14378,15 +14487,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8810713289794874602}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 1}
+  m_LocalRotation: {x: -0.0000000037252903, y: 0.7071068, z: 0.0000000037252903, w: -0.70710677}
+  m_LocalPosition: {x: -0, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8131214875261016380}
   - {fileID: 4717366306208720001}
   - {fileID: 5156439340793942929}
-  m_Father: {fileID: 6939471894025662584}
+  m_Father: {fileID: 8408280649608195333}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!114 &666066462033249306
 MonoBehaviour:
@@ -14401,14 +14510,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isTileLocked: 0
-  _defaultRenderingLayerMask: 0
-  _cubeObjectSelectionRenderingLayerMask: 9
-  _axisObjectSelectionRenderingLayerMask: 10
-  _cubeSelectionRenderingLayerMask: 7
-  _axisSelectionRenderingLayerMask: 8
-  _axisLockRenderingLayerMask: 6
-  _playerOnTileRenderingLayerMask: 5
-  _objectLockRenderingLayerMask: 11
+  _lockedTileMat: {fileID: 0}
+  _lockedObjectMat: {fileID: 0}
 --- !u!114 &256777398364528828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14724,6 +14827,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14807,6 +14913,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14890,6 +14999,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14973,6 +15085,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -15056,6 +15171,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

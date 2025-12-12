@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8483433183005802046}
-  - component: {fileID: 7583800233847535489}
+  - component: {fileID: 4573926420396293149}
   m_Layer: 0
   m_Name: AMB_SP_TorchLight_LP
   m_TagString: Untagged
@@ -32,33 +32,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8610308206429134047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &7583800233847535489
-Rigidbody:
+--- !u!114 &4573926420396293149
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260680339650169259}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 118819217
+      Data2: 1229030740
+      Data3: -953491283
+      Data4: 1103308362
+    Path: event:/AMB/SP/AMB_SP_TorchLight_LP
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 14
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 8
 --- !u!1 &3816998853808901752
 GameObject:
   m_ObjectHideFlags: 0

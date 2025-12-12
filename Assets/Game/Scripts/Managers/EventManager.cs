@@ -200,12 +200,26 @@ public class EventManager : MonoBehaviour
     {
         OnGamePause?.Invoke();
         gamePaused = true;
+
+        // Pause audio
+        if (AUDIO_ProgrammerInstrument.Instance != null)
+            AUDIO_ProgrammerInstrument.Instance.Pause();
+        
+        foreach (var voice in FindObjectsOfType<AUDIO_CharacterVoice>())
+            voice.Pause();
     }
 
     public static void TriggerGameUnpause()
     {
         OnGameUnpause?.Invoke();
         gamePaused = false;
+
+        // Resume audio
+        if (AUDIO_ProgrammerInstrument.Instance != null)
+            AUDIO_ProgrammerInstrument.Instance.Resume();
+        
+        foreach (var voice in FindObjectsOfType<AUDIO_CharacterVoice>())
+            voice.Resume();
     }
     public static void TriggerSeeExit()
     {

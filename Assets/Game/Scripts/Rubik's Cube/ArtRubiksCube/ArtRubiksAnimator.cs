@@ -60,6 +60,9 @@ public class ArtRubiksAnimator : MonoBehaviour
     }
     public void SetSelectedBool(bool isIt)
     {
+        if (!animatorCube)
+            return;
+        
         animatorCube.SetBool("IsSelected2", isIt);
         if (isIt && isSelected == false)
         {
