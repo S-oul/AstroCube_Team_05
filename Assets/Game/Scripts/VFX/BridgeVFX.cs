@@ -32,7 +32,7 @@ public class BridgeVFX : MonoBehaviour
 
     void Update()
     {
-        _vfx.SetVector3("PlayerPos", _player.localPosition);
+        _vfx.SetVector3("PlayerPos", _player.position);
 
         float moveDist = Vector3.Distance(_player.position, _lastPlayerPos);
         bool isMoving = moveDist > 0.001f;
