@@ -28,7 +28,24 @@ public class MemoryObject : MonoBehaviour, IInteractable
     //private List<MemoryCharacter> _characters = new();
 
     private bool _wasPlayed;
-    
+    private bool _cutsceneHasBeenSkipped = false;
+
+    private void OnEnable()
+    {
+        EventManager.OnSkipNarraSequence += SkipNarraSequence;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnSkipNarraSequence -= SkipNarraSequence;
+    }
+
+    public void SkipNarraSequence()
+    {
+        _cutsceneHasBeenSkipped = true;
+        Debug.Log("cutScene is skipped");
+    }
+
     private void OnValidate()
     {
         foreach (GameObject obj in _gameObjectsToActivate)
@@ -46,7 +63,9 @@ public class MemoryObject : MonoBehaviour, IInteractable
     private IEnumerator StartMemory()
     {
         _wasPlayed = true;
-        
+        _cutsceneHasBeenSkipped = false;
+
+
         if (!_startMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_startMemoryEvent, transform.position);
 
         DOTween.To(() => _teapotRenderer.materials[1].GetFloat("_Alpha"),
@@ -80,6 +99,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
 
             LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             yield return new WaitForSeconds(subtitle.duration);
+
+            if (_cutsceneHasBeenSkipped) break;
         }
         LocalizationManager.Instance.ClearString();
         
