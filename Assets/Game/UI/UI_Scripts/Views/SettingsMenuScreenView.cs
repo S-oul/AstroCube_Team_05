@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using FMOD.Studio;
+using FMODUnity;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
@@ -37,6 +38,11 @@ public class SettingsMenuScreenView : UIView
 
     [Header("Settings References")]
     [SerializeField] private CustomisedSettings _customisedSettings;
+
+    [Header("FMOD References")]
+    [SerializeField] private FMODUnity.EventReference menuPauseSnapshot;
+    private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
+
 
     private bool _isInitializing = false;
     private UIManager _uiManager;
@@ -274,36 +280,52 @@ public class SettingsMenuScreenView : UIView
 
     private void OnEnable()
     {
+        base.OnEnable(); 
+
         var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
         _cancelAction = uiModule.cancel;
+
+        // Ne pas créer le snapshot si on vient du jeu (pause menu), car il est déjà actif
+        if (!isInGameplay && !menuPauseSnapshot.IsNull)
+        {
+            _menuPauseSnapshotInstance = RuntimeManager.CreateInstance(menuPauseSnapshot);
+            _menuPauseSnapshotInstance.start();
+        }
 
         if (isInGameplay)
         {
             EventManager.OnGameUnpause += CloseMenu;
             _cancelAction.performed += OnCancelPerformed;
-
         }
-
-        if (!isInGameplay)
+        else
         {
             _cancelAction.performed += OnCancelPerformed;
         }
     }
 
+
     private void OnDisable()
     {
+        base.OnDisable(); 
+
+        // Ne pas stopper le snapshot si on est en gameplay (on retourne au pause menu)
+        if (!isInGameplay && _menuPauseSnapshotInstance.isValid())
+        {
+            _menuPauseSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _menuPauseSnapshotInstance.release();
+        }
+
         if (isInGameplay)
         {
             EventManager.OnGameUnpause -= CloseMenu;
             _cancelAction.performed -= OnCancelPerformed;
-
         }
-
-        if (!isInGameplay)
+        else
         {
             _cancelAction.performed -= OnCancelPerformed;
         }
     }
+
 
     private void OnCancelPerformed(InputAction.CallbackContext ctx)
     {

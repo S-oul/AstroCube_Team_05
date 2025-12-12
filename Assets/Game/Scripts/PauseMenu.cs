@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -12,12 +11,12 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject _UIHolder;
     [SerializeField] GameObject _firstSelected;
-    PostProcessManager _kaleidoscopeManager;
-    [SerializeReference] GameObject SettingsUIHolder;
     [SerializeField] TextMeshProUGUI _sceneName;
+    [SerializeReference] GameObject SettingsUIHolder;
     [SerializeField] GameObject ControlsUIHolder;
     [SerializeField] EventReference menuPauseSnapshot;
-
+    
+    PostProcessManager _kaleidoscopeManager;
     private FMOD.Studio.EventInstance _menuPauseSnapshotInstance;
 
     private void Start()
