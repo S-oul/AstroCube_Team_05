@@ -8,12 +8,6 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using FMODUnity;
-using static Unity.Collections.AllocatorManager;
-using UnityEngine.Rendering.HighDefinition;
-
-
-
-
 
 
 #if UNITY_EDITOR
