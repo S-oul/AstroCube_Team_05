@@ -27,9 +27,13 @@ public class MemoryObject : MonoBehaviour, IInteractable
     public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
-
-    private bool _wasPlayed;
+    private bool _isSkipped = false;
+    public bool IsSkipped => _isSkipped;
     
+    private bool _wasPlayed;
+    private bool _skipState;
+    private float _skipDelay;
+
     private void OnValidate()
     {
         if (_gameObjectsToActivate == null || _gameObjectsToActivate.Count == 0)
@@ -50,6 +54,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
     private IEnumerator StartMemory()
     {
         _wasPlayed = true;
+
+        EventManager.OnSkipCutscene += SetSkipCutsceneState;
         
         if (!_startMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_startMemoryEvent, transform.position);
 
@@ -73,6 +79,9 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
+            if (_isSkipped)
+                continue;
+            
             if (subtitle.isEmpty == false)
             {
                 if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
@@ -82,11 +91,16 @@ public class MemoryObject : MonoBehaviour, IInteractable
                     {
                         characterVoice.PlayVoice(subtitle.audioKey);
                     }
+                    
+                    LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
+                    yield return new WaitUntil(() => IsSkipped, new TimeSpan(0, 0, 0, (int) subtitle.duration, (int)(subtitle.duration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);
+                    characterVoice.Cancel();
                 }
-
-                LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             }
-            yield return new WaitForSeconds(subtitle.duration);
+            else
+            {
+                yield return new WaitUntil(() => IsSkipped, new TimeSpan(0, 0, 0, (int) subtitle.duration, (int)(subtitle.duration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);   
+            }
         }
         LocalizationManager.Instance.ClearString();
         
@@ -96,8 +110,32 @@ public class MemoryObject : MonoBehaviour, IInteractable
             (x) => _teapotRenderer.materials[1].SetFloat("_Alpha", x), 0f, 1f).SetEase(Ease.InOutExpo);
         _particleSystem.Stop();
         
+        EventManager.OnSkipCutscene -= SetSkipCutsceneState;
+        
         if (!_stopMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_stopMemoryEvent, transform.position);
     }
+
+    private void Update()
+    {
+        if (_isSkipped)
+            return;
+        
+        if (_skipState)
+            _skipDelay += Time.deltaTime;
+        else
+            _skipDelay = 0.0f;
+        LocalizationManager.Instance.SetSkipValue(_skipDelay / GameManager.Instance.Settings.SkipCutsceneDuration);
+        
+        if(_skipDelay >= GameManager.Instance.Settings.SkipCutsceneDuration)
+            SkipCutscene();
+    }
+
+    private void SetSkipCutsceneState(bool state)
+    {
+        _skipState = state;
+    }
+
+    private void SkipCutscene() => _isSkipped = true;
 
     public void OnInteract()
     {
