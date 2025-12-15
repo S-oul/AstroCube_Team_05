@@ -3,6 +3,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using System.Runtime.InteropServices;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class AUDIO_CharacterVoice : MonoBehaviour
 {
@@ -35,6 +36,12 @@ public class AUDIO_CharacterVoice : MonoBehaviour
         currentInstance.setCallback(dialogueCallback);
 
         currentInstance.start();
+    }
+
+    public void Cancel()
+    {
+        if (currentInstance.isValid())
+            currentInstance.stop(STOP_MODE.ALLOWFADEOUT);
     }
 
     public void Pause()
