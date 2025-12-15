@@ -25,6 +25,7 @@ public class SelectionCube : MonoBehaviour
     [SerializeField] bool _isTileLocked;
     [SerializeField] Material _lockedTileMat;
     [SerializeField] Material _lockedObjectMat;
+    [SerializeField] AnimationCurve _bizmuthShineCurve;
     /*
     [SerializeField]
     int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
@@ -322,6 +323,19 @@ public class SelectionCube : MonoBehaviour
                     _selectionCurrentValues[renderer].EnableSelectionTween.Kill();
 
                 _selectionCurrentValues[renderer].DisableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 0.0f, duration).SetEase(Ease.InOutSine);
+            }
+        }
+    }
+
+    public void BizmuthShineAnim()
+    {
+        if (!_isTileLocked) return;
+
+        foreach (Renderer renderer in _renderers)
+        {
+            if (renderer.transform.CompareTag("Floor"))
+            {
+                DOTween.To(() => 0.0f, x => renderer.material.SetFloat("_AnimDelta", x), 1.0f, 1.0f).SetEase(_bizmuthShineCurve);
             }
         }
     }
