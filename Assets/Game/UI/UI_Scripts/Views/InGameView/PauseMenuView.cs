@@ -126,7 +126,7 @@ public class PauseMenuView : UIView
         var popup = _uiManager.ShowAndReturn<PopUpView>();
         if (popup == null)
             return;
-
+        Hide();
         popup.ShowPopup(new PopUpData(
             title: "Quit Game ?",
             message: "",
