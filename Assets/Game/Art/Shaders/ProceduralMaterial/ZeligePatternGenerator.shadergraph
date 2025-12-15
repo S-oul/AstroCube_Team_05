@@ -227,6 +227,9 @@
         },
         {
             "m_Id": "f44589c0837848009b93ac68dab24b14"
+        },
+        {
+            "m_Id": "8350c68dd4ff451f85d7df4c94757afd"
         }
     ],
     "m_GroupDatas": [
@@ -986,6 +989,9 @@
             },
             {
                 "m_Id": "779c609c4f4743b48ef623a62a693dfd"
+            },
+            {
+                "m_Id": "8350c68dd4ff451f85d7df4c94757afd"
             }
         ]
     },
@@ -1557,7 +1563,7 @@
     "m_DepthOffset": false,
     "m_ConservativeDepthOffset": false,
     "m_TransparencyFog": true,
-    "m_AlphaTestShadow": false,
+    "m_AlphaTestShadow": true,
     "m_BackThenFrontRendering": false,
     "m_TransparentDepthPrepass": false,
     "m_TransparentDepthPostpass": false,
@@ -3161,6 +3167,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "673e42a2c8a0474c83bceac2f4f7d62f",
+    "m_Id": 0,
+    "m_DisplayName": "Alpha Clip Threshold Shadow",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "AlphaClipThresholdShadow",
+    "m_StageCapability": 2,
+    "m_Value": 0.5,
+    "m_DefaultValue": 0.5,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "6822628890be4d239d20ed7dd9769506",
     "m_Id": 1,
@@ -3286,9 +3307,9 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.Rendering.HighDefinition.ShaderGraph.SystemData",
     "m_ObjectId": "7058b19fcefc45778208fcde9e91b926",
-    "m_MaterialNeedsUpdateHash": 279841,
-    "m_SurfaceType": 1,
-    "m_RenderingPass": 4,
+    "m_MaterialNeedsUpdateHash": 292008,
+    "m_SurfaceType": 0,
+    "m_RenderingPass": 1,
     "m_BlendMode": 0,
     "m_ZTest": 4,
     "m_ZWrite": false,
@@ -3894,6 +3915,40 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "8350c68dd4ff451f85d7df4c94757afd",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.AlphaClipThresholdShadow",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "673e42a2c8a0474c83bceac2f4f7d62f"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.AlphaClipThresholdShadow"
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "8563f4b215554be587da06c5926c76cd",
     "m_Id": 3,
@@ -4004,8 +4059,8 @@
     "m_ObjectId": "889a3e25c15644a88370b18e4e9d16b4",
     "m_Title": "Zellige Outline",
     "m_Position": {
-        "x": -1525.60009765625,
-        "y": 10.399986267089844
+        "x": -1525.0,
+        "y": 11.0
     }
 }
 
@@ -5020,10 +5075,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 2180.000244140625,
-            "y": 1254.4000244140625,
-            "width": 208.0,
-            "height": 325.60009765625
+            "x": 2151.999755859375,
+            "y": 1240.7998046875,
+            "width": 208.000244140625,
+            "height": 325.5999755859375
         }
     },
     "m_Slots": [
@@ -5892,10 +5947,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1912.8638916015625,
-            "y": 235.9340057373047,
-            "width": 0.0,
-            "height": 0.0
+            "x": -1775.199951171875,
+            "y": 111.99999237060547,
+            "width": 107.2000732421875,
+            "height": 33.59998321533203
         }
     },
     "m_Slots": [

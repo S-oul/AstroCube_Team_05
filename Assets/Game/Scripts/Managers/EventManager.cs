@@ -12,14 +12,10 @@ public class EventManager : MonoBehaviour
 
     public static bool gamePaused = false;
 
-
-
-
-
     public UnityEvent RotatingFace;
 
     public UnityEvent RotatingEnd;
-    
+
     public UnityEvent SelectFace;
     public UnityEvent SwitchtRotation;
 
@@ -76,7 +72,7 @@ public class EventManager : MonoBehaviour
     public static event Action OnSceneStart;
     public static event Action OnSceneEnd;
 
-    public static event Action OnPlayerWin;
+    public static event Action OnLevelFinished;
     public static event Action OnPlayerLose;
 
     public static event Action OnSceneChange;
@@ -84,11 +80,12 @@ public class EventManager : MonoBehaviour
     public static event Action OnGamePause;
     public static event Action OnGameUnpause;
 
+
+
     public static event Action OnSeeExit;
 
     //Rubik's Cube Events
     public static event Action OnStartCubeRotation;
-    public static event Action OnStartCubeSequenceRotation;
 
     public static event Action OnEndCubeRotation;
     public static event Action OnEndCubeSequenceRotation;
@@ -96,9 +93,12 @@ public class EventManager : MonoBehaviour
     public static event Action OnCubeSwitchFace;
     public static event Action OnCubeSwitchAxe;
 
+    public static event Action OnPlayerTriesToRotateLockedTiles;
+
     //UI Events
     public static event Action<UIView> OnViewShow;
     public static event Action<UIView> OnViewHide;
+    public static event Action OnEscape;
 
 
     //Object Events
@@ -107,6 +107,8 @@ public class EventManager : MonoBehaviour
 
     //Player Events
     public static event Action<float> OnPlayerReset;
+    public static event Action<float> OnPlayerResetLose;
+
     public static event Action<float> OnPlayerUndo;
     public static event Action<RubiksMove> OnMoveReset;
     public static event Action OnPreviewCancel;
@@ -117,12 +119,17 @@ public class EventManager : MonoBehaviour
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
 
+    public static event Action OnSkipNarraSequence;
+
     public static event Action OnPlayerChangeParent;
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
+
+    public static event Action OnPlayerStopsFalling;
 
     //Narrative Events
     public static event Action OnStartNarrativeSequence;
     public static event Action OnEndNarrativeSequence;
+    public static event Action<bool> OnSkipCutscene;
 
     public static Delegate[] OnGamePauseCallStack => OnGamePause.GetInvocationList();
     public static Delegate[] OnGameUnpauseCallStack => OnGameUnpause.GetInvocationList();
@@ -133,6 +140,14 @@ public class EventManager : MonoBehaviour
     public static event Action<bool> OnVibrationChange;
     public static event Action<bool> OnMotionBlurChange;
     public static event Action<bool> OnPreviewChange;
+
+
+
+
+    public static void TriggerEscape()
+    {
+        OnEscape?.Invoke();
+    }
 
     public static void TriggerViewShow(UIView uiView)
     {
@@ -156,21 +171,27 @@ public class EventManager : MonoBehaviour
     {
         OnCubeSwitchAxe?.Invoke();
     }
+
+    public static void TriggerPlayerTriesToRotateLockedTiles()
+    {
+        OnPlayerTriesToRotateLockedTiles?.Invoke();
+    }
+
     public static void TriggerPlayerInteract()
     {
         OnPlayerInteract?.Invoke();
     }
 
 
-    public static void TriggerPlayerWin()
+    public static void TriggerLevelFinished()
     {
-        OnPlayerWin?.Invoke();
+        OnLevelFinished?.Invoke();
     }
 
     public void TriggerPlayerLose()
     {
         OnPlayerLose?.Invoke();
-        TriggerReset();
+        TriggerResetOnLose();
     }
 
     public static void TriggerSceneChange()
@@ -182,12 +203,26 @@ public class EventManager : MonoBehaviour
     {
         OnGamePause?.Invoke();
         gamePaused = true;
+
+        // Pause audio
+        if (AUDIO_ProgrammerInstrument.Instance != null)
+            AUDIO_ProgrammerInstrument.Instance.Pause();
+        
+        foreach (var voice in FindObjectsOfType<AUDIO_CharacterVoice>())
+            voice.Pause();
     }
 
     public static void TriggerGameUnpause()
     {
         OnGameUnpause?.Invoke();
         gamePaused = false;
+
+        // Resume audio
+        if (AUDIO_ProgrammerInstrument.Instance != null)
+            AUDIO_ProgrammerInstrument.Instance.Resume();
+        
+        foreach (var voice in FindObjectsOfType<AUDIO_CharacterVoice>())
+            voice.Resume();
     }
     public static void TriggerSeeExit()
     {
@@ -219,6 +254,17 @@ public class EventManager : MonoBehaviour
         OnPlayerFootSteps?.Invoke(_groundTypePlayerIsWalkingOn);
     }
 
+    public static void TriggerPlayerStopsFalling()
+    {
+        OnPlayerStopsFalling?.Invoke();
+    }
+
+    public void TriggerResetOnLose()
+    {
+        float resetTime = _gameSettings.ResetCurve.Evaluate(GameManager.Instance.RubiksCube.Moves.Count);
+        print("############# " + resetTime);
+        OnPlayerResetLose?.Invoke(resetTime);
+    }
     public void TriggerReset()
     {
         float resetTime = _gameSettings.ResetCurve.Evaluate(GameManager.Instance.RubiksCube.Moves.Count);
@@ -262,10 +308,6 @@ public class EventManager : MonoBehaviour
         OnStartCubeRotation?.Invoke();
     }
 
-    public static void TriggerStartCubeSequenceRotation()
-    {
-        OnStartCubeSequenceRotation?.Invoke();
-    }
     public static void TriggerEndCubeSequenceRotation()
     {
         OnEndCubeSequenceRotation?.Invoke();
@@ -284,6 +326,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerEndCubeSequence()
     {
         OnEndSequence?.Invoke();
+    }
+
+    public static void TriggerOnSkipCutscene(bool state)
+    {
+        OnSkipCutscene?.Invoke(state);
     }
 
     // Custom Settings Events

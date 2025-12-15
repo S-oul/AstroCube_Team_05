@@ -19,14 +19,14 @@ public class TrackerTestDesign : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnSceneStart += StartTimer;
-        EventManager.OnPlayerWin += StopTimer;
+        EventManager.OnLevelFinished += StopTimer;
         EventManager.OnStartCubeRotation += IncrementRotation;
     }
 
     private void OnDisable()
     {
         EventManager.OnSceneStart -= StartTimer;
-        EventManager.OnPlayerWin -= StopTimer;
+        EventManager.OnLevelFinished -= StopTimer;
         EventManager.OnStartCubeRotation -= IncrementRotation;
     }
 

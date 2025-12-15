@@ -38,6 +38,7 @@ public class MouseCamControl : MonoBehaviour
     InputHandler _inputHandler;
 
     Vector2 _mousePos;
+    public Vector2 GetMousePos { get => _mousePos; }
     private Quaternion _externalRotationInfluence = Quaternion.identity;
     private float _rotationInfluenceAmount = 0f;
 
@@ -50,7 +51,11 @@ public class MouseCamControl : MonoBehaviour
 
     CinemachineVirtualCamera _cinemashineCam;
     LayerMask _detectableLayer;
+    private void Awake()
+    {
+        transform.localPosition = Vector3.zero;
 
+    }
     void Start()
     {
         _cinemashineCam = GetComponent<CinemachineVirtualCamera>();
@@ -60,7 +65,7 @@ public class MouseCamControl : MonoBehaviour
         UpdateCameraFOV(_customSettings.customFov);
         _inputHandler = InputHandler.Instance;
         ForceResetSelection();
-        _detectableLayer = GameManager.Instance.Settings.AimAtObject? _detectableObjectLayer : _detectableTileLayer;
+        _detectableLayer = GameManager.Instance.Settings.AimAtObject ? _detectableObjectLayer : _detectableTileLayer;
     }
 
     public void OnCamera(InputAction.CallbackContext callbackContext)
@@ -70,11 +75,35 @@ public class MouseCamControl : MonoBehaviour
                                rawInput.y * pitchSensitivity * Time.deltaTime);
     }
 
+    private void LateUpdate()
+    {
+        UpdateCameraPos();
+    }
+
+    private void UpdateCameraPos()
+    {
+        if (_inputHandler == null || !_inputHandler.CanMove)
+            return;
+
+        if (!_isExternalPitchForced)
+        {
+            _yRotation = Mathf.Clamp(_yRotation - _mousePos.y, -90f, 90f);
+        }
+
+        Quaternion pitchRotation = Quaternion.Euler(_yRotation, 0f, 0f);
+
+        transform.localRotation = Quaternion.Slerp(pitchRotation, _externalRotationInfluence, _rotationInfluenceAmount);
+
+        float desiredYaw = _playerTransform.eulerAngles.y + _mousePos.x;
+        float blendedYaw = Mathf.LerpAngle(desiredYaw, _externalYawInfluence, _yawInfluenceAmount);
+
+
+        _playerTransform.rotation = Quaternion.Euler(0f, blendedYaw, 0f);
+    }
     void Update()
     {
         UpdateSelection(false);
     }
-
     private void ForceResetSelection()
     {
         UpdateSelection(true);
@@ -82,26 +111,8 @@ public class MouseCamControl : MonoBehaviour
 
     private void UpdateSelection(bool forceNewSelection = false)
     {
-        if (_inputHandler == null || !_inputHandler.CanMove)
-            return;
 
-        if (!_isExternalPitchForced)
-        {
-            _yRotation -= _mousePos.y;
-            _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
-        }
-
-        Quaternion baseRotation = Quaternion.Euler(_yRotation, 0f, 0f);
-        transform.localRotation = Quaternion.Slerp(baseRotation, _externalRotationInfluence, _rotationInfluenceAmount);
-
-        float yawInput = _mousePos.x;
-
-        float targetYaw = _playerTransform.eulerAngles.y + yawInput;
-        float newYaw = Mathf.LerpAngle(targetYaw, _externalYawInfluence, _yawInfluenceAmount);
-
-        _playerTransform.rotation = Quaternion.Euler(0f, newYaw, 0f);
-
-        if (!GameManager.Instance.IsUIRubiksCubeEnabled)
+        if (GameManager.Instance != null && !GameManager.Instance.IsUIRubiksCubeEnabled)
             return;
 
         RaycastHit _raycastInfo;
@@ -154,14 +165,13 @@ public class MouseCamControl : MonoBehaviour
             return;
 
         if (forceNewSelection)
+        {
             rubiksCubeController.SetActualCube(_oldTile.parent);
+        }
         else
         {
-            if (rubiksCubeController.ActualFace == null || rubiksCubeController.ActualFace.transform != _oldTile.parent)
-            {
-                EventManager.TriggerCubeSwitchFace();
-                rubiksCubeController.SetActualCube(_oldTile.parent);
-            }
+            EventManager.TriggerCubeSwitchFace();
+            rubiksCubeController.SetActualCube(_oldTile.parent);
         }
 
     }

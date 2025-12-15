@@ -46,11 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96824fbe518f3344e90cfaa66165952d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previewChangeEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 4b2bd40a6ba7ef14088db79b9aaee636,
-      type: 2}
   _controlledCube: {fileID: 0}
   _previewControlledScript: {fileID: 0}
   _overlayTransform: {fileID: 0}
@@ -59,6 +54,7 @@ MonoBehaviour:
   _ShowStripLayerToPlayer: 1
   _player: {fileID: 0}
   _detectParentForGroundRotation: {fileID: 0}
+  _selectedSlice: 1
   <ActualFace>k__BackingField: {fileID: 0}
 --- !u!114 &3706481031665168761
 MonoBehaviour:
@@ -73,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerHold: {fileID: 0}
+  _playerInteraction: {fileID: 0}
   _playerMovement: {fileID: 0}
   _mouseCam: {fileID: 0}
   _cameraFocusAttractor: {fileID: 0}
@@ -233,6 +230,11 @@ PrefabInstance:
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3706481031665168761}
+    - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3706481031665168761}
     - target: {fileID: 1015289478191035849, guid: 5ae33d4637f53ff4ab8bb3cbc26741ed,

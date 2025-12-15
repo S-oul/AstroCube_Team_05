@@ -8,28 +8,28 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Inter-Regular SDF Material
-  m_Shader: {fileID: -6465566751694194690, guid: f8605069e61e60e4685c8e97ead17a56, type: 3}
+  m_Shader: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
   - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
-  m_InvalidKeywords: []
+  - _TRANSPARENT_WRITES_MOTION_VEC
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2750
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
-    RenderType: Transparent
   disabledShaderPasses:
-  - TransparentDepthPrepass
+  - MOTIONVECTORS
   - TransparentDepthPostpass
   - TransparentBackface
   - RayTracingPrepass
-  - MOTIONVECTORS
+  - TransparentDepthPrepass
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -101,6 +101,8 @@ Material:
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
     - _Ambient: 0.5
+    - _BUILTIN_QueueControl: -1
+    - _BUILTIN_QueueOffset: 0
     - _Bevel: 0.5
     - _BevelClamp: 0
     - _BevelOffset: 0
@@ -123,6 +125,7 @@ Material:
     - _Emission_Intensity: 0
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
+    - _ExcludeFromTUAndAA: 0
     - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
@@ -154,9 +157,9 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 3
     - _RequireSplitLighting: 0
-    - _ScaleRatioA: 0.8333333
+    - _ScaleRatioA: 0.75
     - _ScaleRatioB: 0.6770833
-    - _ScaleRatioC: 0.6770833
+    - _ScaleRatioC: 0.609375
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -188,7 +191,7 @@ Material:
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 0
     - _TransparentSortPriority: 0
-    - _TransparentWritingMotionVec: 0
+    - _TransparentWritingMotionVec: 1
     - _TransparentZWrite: 0
     - _UnderlayDilate: 0
     - _UnderlayOffsetX: 0

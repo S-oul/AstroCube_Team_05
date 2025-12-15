@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -26,50 +23,86 @@ public class MainMenuView : UIView
 
     private void Start()
     {
-        if (newGameButton != null)
-            newGameButton.onClick.AddListener(OnNewGameClicked);
-        if (continueButton != null)
-            continueButton.onClick.AddListener(OnContinueClicked);
-        if (LevelsButton != null)
-            LevelsButton.onClick.AddListener(OnLevelsClicked);
-        if (settingsButton != null)
-            settingsButton.onClick.AddListener(OnSettingsClicked);
-        if (quitButton != null)
-            quitButton.onClick.AddListener(OnQuitClicked);
-        if (titleButton != null)
-            titleButton.onClick.AddListener(OnTitleClicked);
-
+        newGameButton.onClick.AddListener(OnNewGameClicked);
+        continueButton.onClick.AddListener(OnContinueClicked);
+        LevelsButton.onClick.AddListener(OnLevelsClicked);
+        settingsButton.onClick.AddListener(OnSettingsClicked);
+        quitButton.onClick.AddListener(OnQuitClicked);
+        titleButton.onClick.AddListener(OnTitleClicked);
     }
 
+    public override void Show()
+    {
+        base.Show();
 
+        continueButton.interactable = LevelProgressionSystem.HasProgression();
+    }
 
     private void OnNewGameClicked()
     {
-        //TODO
-        //Si Save deja présente faire un popup de confirmation pour ecraser la save
-        SceneManager.LoadScene(firstLevelName);
+        if (!LevelProgressionSystem.HasProgression())
+        {
+            StartFreshGame();
+            return;
+        }
 
+        var popup = _uiManager.ShowAndReturn<PopUpView>();
+        if (popup == null) return;
+        Hide();
+        popup.ShowPopup(new PopUpData(
+            title: "New Game",
+            message: "A save already exists \n do you wanna erase the previous one",
+            type: PopUpType.Warning,
+            confirm: "Yes",
+            cancel: "No",
+            onConfirm: () =>
+            {
+                StartFreshGame();
+            }
+            , onCancel: () =>
+            {
+                _uiManager.ShowInGameExclusive<MainMenuView>();
+            }
+        ));
     }
 
-    private void OnContinueClicked()
+    private void StartFreshGame()
     {
-        //TODO
-        //Charger la scene du dernier atteint
+        int totalLevels = SceneManager.sceneCountInBuildSettings;
+
+        LevelProgressionSystem.ResetProgression(totalLevels);
+        LevelProgressionSystem.LockAllLevelsExceptFirst(totalLevels);
+        LevelProgressionSystem.ResetLastLevel();
+
         SceneManager.LoadScene(firstLevelName);
     }
+
+    public void OnContinueClicked()
+    {
+        int logicalLast = LevelProgressionSystem.GetLastLevel();
+
+        if (logicalLast < 0)
+            return;
+
+        int sceneIndex = LevelProgressionSystem.LogicalToSceneIndex(logicalLast);
+
+        if (sceneIndex <= 0 || sceneIndex >= SceneManager.sceneCountInBuildSettings)
+            return;
+
+        SceneManager.LoadScene(sceneIndex);
+    }
+
 
     private void OnLevelsClicked()
     {
         Hide();
-        var uiManager = FindObjectOfType<UIManager>();
-        uiManager?.Show<LevelSelectionPlaceHolderView>();
+        _uiManager.Show<LevelSelectionView>();
     }
 
     private void OnSettingsClicked()
     {
         Hide();
-        var uiManager = FindObjectOfType<UIManager>();
-        uiManager?.Show<SettingsMenuScreenView>();
+        _uiManager.Show<SettingsMenuScreenView>();
     }
 
     private int c = 0;
@@ -81,38 +114,32 @@ public class MainMenuView : UIView
             c = 0;
             _uiManager.Show<AlternateScreenView>();
         }
-        else
-        {
-            c++;
-        }
+        else c++;
     }
 
     private void OnQuitClicked()
     {
         var popup = _uiManager.ShowAndReturn<PopUpView>();
-        if (popup==null)
-        {
-            return; 
-        }
-
+        if (popup == null) return;
+        Hide();
         popup.ShowPopup(new PopUpData(
-            title :"Quit Game",
+            title: "Quit Game",
             message: "Are you sure you want to quit the game?",
-            type : PopUpType.QuitGamePopUp,
+            type: PopUpType.QuitGamePopUp,
             confirm: "Yes",
-            cancel : "No",
-            onConfirm: () => { Application.Quit(); },
-            onCancel: () => 
+            cancel: "No",
+            onConfirm: () =>
             {
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #else
                 Application.Quit();
 #endif
-
-            }
-            ));
-
+            },
+            onCancel: () =>
+                        {
+                            _uiManager.ShowInGameExclusive<MainMenuView>();
+                        }
+        ));
     }
-
 }

@@ -12,19 +12,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aade57aac0ab35b42971e2561a7bf92f, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  _playerMoveSpeed: 3.5
+  _playerMoveSpeed: 3.8
   _stepHeightMax: 0.3
   _gravity: -20
-  _maxJumpHeight: 2
-  _airControl: 1
+  _maxJumpHeight: 1.8
+  _airControl: 0.8
   _crouchSpeed: 0.5
   _crouchHeight: 0.5
   _slippingMovementControl: 0.01
   _headBobbingAmount: 0.05
-  _headBobbingSpeed: 2
+  _headBobbingSpeed: 1.5
   _startWalkingTransitionDuration: 0.1
   _stopWalkingTransitionDuration: 1
+  viewBobbingWalkMultiplier: 1
   _headBobbingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -1
+      inSlope: 4.565366
+      outSlope: 4.565366
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.06442239
+    - serializedVersion: 3
+      time: 1
+      value: -1
+      inSlope: -9.124189
+      outSlope: -9.124189
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.031104207
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  viewBobbingStairsMultiplier: 0.8
+  _headBobbingStairsCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -48,21 +74,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _headBobbingStairsAmount: 2
-  _headBobbingStairsSpeed: 3
-  _startStairsTransitionDuration: 0.5
-  _stopStairsTransitionDuration: 0.5
-  _headBobbingStairsCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   _enableGravityRotation: 0
   _rubikscCubeAxisRotationDuration: 1.35
   _previewRubikscCubeAxisRotationDuration: 0.2
   _uiRubikscCubeRotationDuration: 1.35
-  _aimAtObject: 1
+  _aimAtObject: 0
   _AnimationSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -87,10 +103,79 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _failedRotationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.21836181
+      outSlope: 0.21836181
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1021137
+    - serializedVersion: 3
+      time: 0.28581625
+      value: 0.023269292
+      inSlope: 0.05586895
+      outSlope: 0.05586895
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5005369
+      value: 0.029780574
+      inSlope: 0
+      outSlope: -0.4913057
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.13853176
+      outWeight: 0.22187634
+    - serializedVersion: 3
+      time: 0.65
+      value: -0.02
+      inSlope: 0
+      outSlope: 0.51767844
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2534997
+    - serializedVersion: 3
+      time: 0.80057985
+      value: -0.00019836426
+      inSlope: -0.11069482
+      outSlope: -0.2500589
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.24399965
+      outWeight: 0.4571379
+    - serializedVersion: 3
+      time: 0.8516794
+      value: 0
+      inSlope: 0.4252999
+      outSlope: 0.20227717
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.8051465
+      outWeight: 0.81322956
+    - serializedVersion: 3
+      time: 0.9
+      value: 0
+      inSlope: -0.31530207
+      outSlope: 0.008007932
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.7129921
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _rubiksEndCubeRotationscreenshakeSettings: {x: 0, y: 0, z: 0, w: 0}
   _rubiksStartCubeRotationscreenshakeSettings: {x: 0, y: 0, z: 0, w: 0}
-  _axisSelectionFadeInDuration: 0.6
-  _axisSelectionFadeOutDuration: 0.6
+  _axisSelectionFadeInDuration: 0.2
+  _axisSelectionFadeOutDuration: 0.2
   _resetCurve:
     serializedVersion: 2
     m_Curve:
@@ -209,3 +294,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _skipCutsceneDuration: 3

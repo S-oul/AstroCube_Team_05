@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{51600f65-a1b4-4411-86db-9b74126b0e8b}">
+		<property name="name">
+			<value>AMB</value>
+		</property>
+		<relationship name="masters">
+			<destination>{b50fc547-cd14-42ff-8211-bb339f9f2ab8}</destination>
+		</relationship>
+		<relationship name="effectChain">
+			<destination>{a3b878d9-0eb6-4518-9617-ef46f6333806}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{2921d6e5-b76c-4f5d-8067-dfe27ad0f077}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{ecc00a5b-b4d3-4ebd-8922-88df8b9982ef}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{a3b878d9-0eb6-4518-9617-ef46f6333806}">
+		<relationship name="effects">
+			<destination>{f14e9094-6a70-4998-9f49-1a295c103d61}</destination>
+			<destination>{c390e98d-72f4-41d8-b75a-4acaf83abd5a}</destination>
+			<destination>{6ba94d7c-0892-4227-8f47-e38406fa7b57}</destination>
+			<destination>{6dc49a83-6f75-4319-b88f-db497a32b1b0}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{2921d6e5-b76c-4f5d-8067-dfe27ad0f077}" />
+	<object class="MixerBusFader" id="{f14e9094-6a70-4998-9f49-1a295c103d61}" />
+	<object class="CompressorEffect" id="{c390e98d-72f4-41d8-b75a-4acaf83abd5a}">
+		<property name="threshold">
+			<value>-40</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{9b7cce5f-b378-4fec-be94-03c079df3569}</destination>
+		</relationship>
+	</object>
+	<object class="ThreeEQEffect" id="{6ba94d7c-0892-4227-8f47-e38406fa7b57}" />
+	<object class="CompressorEffect" id="{6dc49a83-6f75-4319-b88f-db497a32b1b0}">
+		<property name="threshold">
+			<value>-36</value>
+		</property>
+		<property name="releaseTime">
+			<value>400</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{889b0d31-8c4f-49d0-ad27-f67977315a9a}</destination>
+		</relationship>
+	</object>
+</objects>

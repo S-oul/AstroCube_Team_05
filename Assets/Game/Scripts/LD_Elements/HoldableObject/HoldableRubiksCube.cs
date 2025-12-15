@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class HoldableRubiksCube : MonoBehaviour, IHoldable
+public class HoldableRubiksCube : MonoBehaviour, IInteractable
 {
     [SerializeField] private UnityEvent _onHold;
     [SerializeField] private GameObject _exitDoor;
     [SerializeField] private Light _light;
     [SerializeField] private InputDisplay inputDisplay;
     [SerializeField] private GameActionsSequencer _sequencer;
+    [SerializeField] private GameObject _outlineObject;
     private Transform _originalParent;
     private Transform _originalTransform;
     private Rigidbody _rb;
@@ -25,7 +26,7 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         _originalParent = transform.parent;
         LayerMask maskCube = LayerMask.GetMask("Holdable");
         _rb = GetComponent<Rigidbody>();
-        _exitDoor.SetActive(false);
+        if(_exitDoor) _exitDoor.SetActive(false);
     }
 
     public Transform GetOriginalParent()
@@ -38,8 +39,11 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
         return transform;
     }
 
-    public void OnHold(Transform newParent)
+    public void OnInteract()
     {
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        Destroy(_outlineObject);
+        
         //_exitDoor.SetActive(true);
         _onHold?.Invoke();
         if (_hasDoneOnce) return;
@@ -69,4 +73,9 @@ public class HoldableRubiksCube : MonoBehaviour, IHoldable
     }
 
     public void OnRelease() { return; }
+
+    public void SetOutline(bool state)
+    {
+        _outlineObject.SetActive(state);
+    }
 }

@@ -38,6 +38,8 @@ public class InputSystemManager : MonoBehaviour
         CAMERA = 1 << 11,
         SEE_EXIT = 1 << 12,
         PREVIEW_CANCEL = 1 << 13,
+        JUMP = 1 << 14, 
+        SKIP_NARRA = 1 << 15, 
     }
 
     private void Awake()
@@ -93,6 +95,10 @@ public class InputSystemManager : MonoBehaviour
                 return("SeeExit");          
             case EInputType.PREVIEW_CANCEL:
                 return("PreviewCancel");
+            case EInputType.JUMP:
+                return ("Jump");            
+            case EInputType.SKIP_NARRA:
+                return ("SkipCutscene");
         }
     }
 
@@ -110,11 +116,11 @@ public class InputSystemManager : MonoBehaviour
 
     void DeactivateActionMap()
     {
-        _playerInputs.currentActionMap.Disable();
+        //_playerInputs.currentActionMap.Disable();
     }    
     void ActivateActionMap()
     {
-        _playerInputs.currentActionMap.Enable();
+       // _playerInputs.currentActionMap.Enable();
     }
     
 }

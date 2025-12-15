@@ -1,15 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 public class SkyboxAnimator : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 10.0f; // degrees per second
-    [SerializeField] private float _startAngle = 180.0f; 
+    [Header("Rotation Settings")]
+    [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private float startAngle = 180f;
+
+    [Header("HDRP Volume")]
+    [SerializeField] private Volume volume;  // Assign in Inspector!
+
+    private HDRISky hdriSky;
+
+    private void Start()
+    {
+        if (volume == null)
+        {
+            Debug.LogError("[SkyboxAnimator] No Volume assigned.");
+            enabled = false;
+            return;
+        }
+
+        // Try to fetch HDRI Sky override
+        if (!volume.profile.TryGet(out hdriSky))
+        {
+            Debug.LogError("[SkyboxAnimator] No HDRISky override found in the Volume.");
+            enabled = false;
+            return;
+        }
+
+        // Enable override if not already
+        hdriSky.rotation.overrideState = true;
+
+        // Set initial angle
+        hdriSky.rotation.value = startAngle;
+    }
 
     private void Update()
     {
-        //RenderSettings.skybox.SetFloat("_Rotation", (Time.time * rotationSpeed)+_startAngle
-        // THIS DOESNT WORK WITH HDRP (SKYBOXES ARE IN POST PROCESS VOLUME ON CAMERA)
+        if (hdriSky == null)
+            return;
+
+        hdriSky.rotation.value = (startAngle + Time.time * rotationSpeed) % 360f;
     }
 }

@@ -2,6 +2,7 @@ using DG.Tweening;
 using NaughtyAttributes;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,7 +27,7 @@ public class InputDisplay : MonoBehaviour
     [InfoBox("If false, input display should be stopped by code", EInfoBoxType.Normal)]
     [SerializeField] bool _resolveAutomaticallyOnInput = true;
     [SerializeField] bool _resolveOnLeaveTrigger = false;
-    [SerializeField, ShowIf("_resolveAutomaticallyOnInput")] EInputType _expectedInput;
+    [SerializeField, ShowIf("_resolveAutomaticallyOnInput")] List<EInputType> _expectedInput1;
 
     [SerializeField] UnityEvent _onStartShowText;
     [SerializeField] UnityEvent _onEndShowText;
@@ -69,7 +70,10 @@ public class InputDisplay : MonoBehaviour
         {
             if (InputSystemManager.Instance == null)
                 return;
-            InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed += _End;
+            foreach (var _expectedInput in _expectedInput1)
+            {
+                InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed += _End;
+            }
         }
         else
             OnResolve += _End;
@@ -80,7 +84,12 @@ public class InputDisplay : MonoBehaviour
         if (!_canvasGroup) return;
 
         if (_resolveAutomaticallyOnInput)
-            InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed -= _End;
+        {
+            foreach (var _expectedInput in _expectedInput1)
+            {
+                InputSystemManager.Instance.GetInputActionFromName(InputSystemManager.Instance.GetNameFromType(_expectedInput)).performed -= _End;
+            }
+        }
         else
             OnResolve -= _End;       
     }

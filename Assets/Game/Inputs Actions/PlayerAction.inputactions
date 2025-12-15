@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerAction",
     "maps": [
         {
@@ -47,7 +48,7 @@
                     "id": "78276d6b-79fd-420a-8476-517d456cada6",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "Hold(duration=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -81,6 +82,15 @@
                     "name": "SwitchMoveLook",
                     "type": "Button",
                     "id": "e7962162-59ac-4f06-a944-d6b896556ea8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "ec496cd1-0c7f-483e-a732-b616d4071ecb",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -307,6 +317,28 @@
                     "action": "SwitchMoveLook",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4183d870-e7b0-422a-8e70-f37f896b4dc2",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c4185538-3986-49bd-8cfc-aa509ffbfeca",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -349,6 +381,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SkipCutscene",
+                    "type": "Button",
+                    "id": "543bcfbe-65c2-4e8c-87c7-845666007375",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -366,10 +407,21 @@
                 {
                     "name": "",
                     "id": "18b6dee6-397f-4fbd-9e56-70de2d7e02bd",
-                    "path": "<Gamepad>/dpad/down",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b1c2606-e658-4a7d-b1f3-f3bcc4ca74f3",
+                    "path": "<Keyboard>/semicolon",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -437,6 +489,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "SwitchMoveCam",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ae2a4b0c-e269-42d9-8067-0c38b931fa3f",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipCutscene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd4e0205-28be-497b-84b0-3cbed51f6430",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipCutscene",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

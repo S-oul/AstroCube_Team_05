@@ -9,8 +9,12 @@ public class FloorSFXTypeGenerator : MonoBehaviour
     {
         foreach (GameObject obj in FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID))
         {
-            if (obj.layer != LayerMask.NameToLayer("Floor"))
+            int floorLayer = LayerMask.NameToLayer("Floor");
+            
+            if (obj.layer != floorLayer)
                 continue;
+            
+            EditorUtility.SetDirty(obj);
             
             if (obj.GetComponent<FloorType>() != null)
                 continue;
@@ -22,6 +26,8 @@ public class FloorSFXTypeGenerator : MonoBehaviour
             
             BoxCollider col = obj.AddComponent<BoxCollider>();
             col.isTrigger = true;
+            
+            AssetDatabase.SaveAssetIfDirty(obj);
         }
     }
 }

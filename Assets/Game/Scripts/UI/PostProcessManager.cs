@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
@@ -19,13 +20,11 @@ public class PostProcessManager : MonoBehaviour
 
     [Header("Distortion Effect")]
     [SerializeField] private Material _distortMat;
-    [SerializeField] private UniversalRendererData _data;
     [SerializeField, MinMaxSlider(0.0f, 100.0f)] private Vector2 _minMaxDistortionValue = new(1.0f, 5.0f);
 
     Image _kalScreen;
     bool _isKalEnabled = false;
     float _currentKalOpacity = 0;
-    FullScreenPassRendererFeature _distortionRenderFeature;
     DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> _distortTween;
 
     private void Awake()
@@ -37,8 +36,8 @@ public class PostProcessManager : MonoBehaviour
     {
         _kalScreen = GetComponent<Image>();
         _isKalEnabled = false;
-        _distortionRenderFeature = _data.rendererFeatures.First(x => x.name == "Distort") as FullScreenPassRendererFeature;
-        _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", 1f);
+        var fullscreenPass = (FullScreenCustomPass)GetComponent<CustomPassVolume>().customPasses[0];
+        _distortMat = fullscreenPass.fullscreenPassMaterial;
     }
 
     void Update()
@@ -83,15 +82,16 @@ public class PostProcessManager : MonoBehaviour
     {
         if(_distortTween != null)
             _distortTween.Kill();
-        _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", Mathf.Lerp(_minMaxDistortionValue.x, _minMaxDistortionValue.y, value));
+
+        _distortMat.SetFloat("_DistortionAmount", Mathf.Lerp(_minMaxDistortionValue.x, _minMaxDistortionValue.y, value));
     }
 
     public void SetScreenDistortion(float value, float duration, Ease ease = Ease.Linear)
     {
         if (_distortTween != null)
             _distortTween.Kill();
-        _distortTween = DOTween.To(() => _distortionRenderFeature.passMaterial.GetFloat("_DistortionAmount"), 
-                        x => _distortionRenderFeature.passMaterial.SetFloat("_DistortionAmount", x), 
+        _distortTween = DOTween.To(() => _distortMat.GetFloat("_DistortionAmount"), 
+                        x => _distortMat.SetFloat("_DistortionAmount", x), 
                         Mathf.Lerp(_minMaxDistortionValue.x, _minMaxDistortionValue.y, value), duration).SetEase(ease);        
     }
 

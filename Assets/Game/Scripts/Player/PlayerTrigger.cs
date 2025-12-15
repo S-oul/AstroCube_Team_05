@@ -2,8 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.UIElements;
-using static CameraFocusAttractor;
+using FMODUnity;
 
 public class PlayerTrigger : MonoBehaviour
 {
@@ -27,8 +26,16 @@ public class PlayerTrigger : MonoBehaviour
     [SerializeField] private Material portailInt_Material;
     [SerializeField] float fovMultiplier = 1.0f;
 
+    [Header("FMOD")]
+    [SerializeField] private EventReference _victoryZoneEvent;
+
     private bool isInExitFocusState = false;
     private Coroutine _fovCoroutine;
+
+    private Reseter _reset;
+
+    public  bool IsPlayerInLockRotationZone { get; private set; }
+
 
     private void Awake()
     {
@@ -56,31 +63,49 @@ public class PlayerTrigger : MonoBehaviour
         portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(1));
         if (vcam)
             vcam.m_Lens.FieldOfView = GameManager.Instance.CustomSettings.customFov;
+
+        _reset = GetComponent<Reseter>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("VictoryZone"))
+        switch (other.tag)
         {
-            EventManager.TriggerPlayerWin();
-            Destroy(other.gameObject);
-        }
-        else if (other.CompareTag("DeathZone"))
-        {
-            EventManager.Instance.TriggerPlayerLose();
-        }
-        else if (other.CompareTag("SlipperyZone"))
-        {
-            _playerMovement.SetSlippingState(true);
-        }
-        else if (other.CompareTag("SpeedZone"))
-        {
-            _playerMovement.SetSpeed(_playerMovement.defaultSpeed * newSpeedMultiplyer);
-        }
-        else if (other.CompareTag("GravityZone"))
-        {
-            _playerMovement.HasGravity = false;
-            _flotingZone = other.transform.GetComponent<FloatingZone>();
+            case "VictoryZone":
+                EventManager.TriggerLevelFinished();
+
+                if (!_victoryZoneEvent.IsNull) RuntimeManager.PlayOneShot(_victoryZoneEvent);
+                break;
+
+            case "DeathZone":
+                EventManager.Instance.TriggerPlayerLose();
+                break;
+
+            case "SlipperyZone":
+                _playerMovement.SetSlippingState(true);
+                break;
+
+            case "SpeedZone":
+                _playerMovement.SetSpeed(_playerMovement.defaultSpeed * newSpeedMultiplyer);
+                break;
+
+            case "GravityZone":
+                _playerMovement.HasGravity = false;
+                _flotingZone = other.transform.GetComponent<FloatingZone>();
+                break;
+            case "FreeFallZone":
+                _playerMovement.FreeFallZone = true;
+                break;
+            case "ChangeReset":
+                _reset.ChangeResetFunc(other.GetComponentInChildren<ChangeReset>().NewResetPos);
+                break;
+            case "ObjectLoader":
+                other.GetComponent<ObjectLoader>().SwitchActivate();
+                break;
+
+            case "UncontrolledFallingTrigger": // to be triggered when the player starts falling though the menger sponge fractal. 
+                _playerMovement.SetUncontrolledFalling(true);
+                break;
         }
     }
 
@@ -95,66 +120,40 @@ public class PlayerTrigger : MonoBehaviour
             _playerMovement.SetExternallyAppliedMovement(belt.direction, belt.speed);
         }
 
-        if (other.CompareTag("Portal"))
+        if (other.CompareTag("LockAllCubeRotationZone"))
         {
-            float toEvaluate = Vector3.Distance(transform.position, other.transform.position) / 4f;
-            float cameraFOV = Mathf.Lerp(32f, GameManager.Instance.CustomSettings.customFov * fovMultiplier, _gameSettings.CurveFOV.Evaluate(toEvaluate));
-            float overlayFOV = Mathf.Lerp(15f, 43f, _gameSettings.CurveFOV.Evaluate(toEvaluate));
-            float chroma = Mathf.Lerp(.1f, 50f, _gameSettings.CurveAberration.Evaluate(toEvaluate));
-
-            if (vol && vol.TryGet<ChromaticAberration>(out var ca))
-                ca.intensity.Override(chroma);
-
-            if (toEvaluate > valueThatTriggersCamPan && !isInExitFocusState)
-            {
-                cameraFocusAttractor.StopAllFocus();
-                isInExitFocusState = true;
-            }
-
-            cameraFocusAttractor.StartContinuousFocus(new CameraFocusParameters
-            {
-                PointOfInterest = other.transform,
-                InDuration = 0.05f,
-                Strength = 1.5f,
-                DoIn = true
-            });
-
-            portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(toEvaluate));
-            SmoothCameraTransition(cameraFOV, 0.1f);
-
-            if (Camera.allCameras.Length > 1)
-                overlayCamera.fieldOfView = overlayFOV;
+            IsPlayerInLockRotationZone = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("SlipperyZone"))
-            _playerMovement.SetSlippingState(false);
-
-        if (other.CompareTag("SpeedZone"))
-            _playerMovement.SetSpeedToDefault();
-
-        if (other.CompareTag("GravityZone"))
+        switch (other.tag)
         {
-            _flotingZone = null;
-            _playerMovement.HasGravity = true;
-        }
+            case "SlipperyZone":
+                _playerMovement.SetSlippingState(false);
+                break;
 
-        if (other.CompareTag("ConveyerBelt"))
-            _playerMovement.SetExternallyAppliedMovement(Vector3.zero);
+            case "SpeedZone":
+                _playerMovement.SetSpeedToDefault();
+                break;
 
-        if (other.CompareTag("Portal"))
-        {
-            SmoothCameraTransition(GameManager.Instance.CustomSettings.customFov, 1f);
-            overlayCamera.fieldOfView = 43f;
-            portailInt_Material.SetFloat("_C_Min", _gameSettings.C_MIN.Evaluate(1));
+            case "GravityZone":
+                _flotingZone = null;
+                _playerMovement.HasGravity = true;
+                break;
 
-            if (vol && vol.TryGet<ChromaticAberration>(out var ca))
-                ca.intensity.Override(.1f);
+            case "ConveyerBelt":
+                _playerMovement.SetExternallyAppliedMovement(Vector3.zero);
+                break;
+            case "FreeFallZone":
+                print("GETOUT OF HERE");
+                _playerMovement.FreeFallZone = false;
+                break;
 
-            cameraFocusAttractor.StopAllFocus();
-            isInExitFocusState = false;
+            case "LockAllCubeRotationZone":
+                IsPlayerInLockRotationZone = false;
+                break;
         }
     }
 

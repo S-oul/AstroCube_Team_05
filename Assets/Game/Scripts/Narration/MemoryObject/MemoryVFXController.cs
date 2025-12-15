@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.VFX;
+using FMODUnity;
 
 public class MemoryVFXController : MonoBehaviour
 {
@@ -10,27 +13,34 @@ public class MemoryVFXController : MonoBehaviour
     [SerializeField] private float _animationDuration;
     [SerializeField] private float _stayDuration;
     [SerializeField] private bool _spawnsLDElement;
+
+    [Header("FMOD")]
+    [SerializeField] private EventReference _memoryVFXEvent;
     
     private Transform _origin;
     private GameObject _LDElement;
-
-    /*
-     Lerp_Delta:
-    0 = At Origin
-    0.5 = At character   STAY DURING _stayDuration
-    1 : At LD Elements     STAY INDEFINITELY
-    */
+    private MemoryObject _memoryObject;
+    private Material _material;
 
     void Start()
     {
         LinkOriginToVFX();
-        _LDElement.SetActive(false);
+        _memoryObject = GetComponentInParent<MemoryObject>();
     }
 
     public void StartVFX(GameObject objectToActivate)
     {
+        _spawnsLDElement = objectToActivate;
+        
+        _LDElement = objectToActivate;
+        _LDElement?.SetActive(false);
+        
         if (_vfx)
         {
+            if (!_memoryVFXEvent.IsNull) RuntimeManager.PlayOneShot(_memoryVFXEvent, transform.position);
+            LinkOriginToVFX();
+            _vfx.SetFloat("Lerp_Delta", 0.0f);
+            StartCoroutine(PlayAnimation());
             _vfx.Play();
         }
     }
@@ -38,27 +48,41 @@ public class MemoryVFXController : MonoBehaviour
     [Button("Link Origin To VFX")]
     public void LinkOriginToVFX()
     {
-        _LDElement = GetComponentInParent<MemoryObject>().GameObjectToActivate;
         _origin = transform.Find("Origin - VFX");
         _vfx.SetVector3("Origin", _origin.transform.localPosition);
         if (_LDElement)
         {
-            _vfx.SetVector3("Origin_LD_Element_Position", _LDElement.transform.localPosition);
-            _vfx.SetVector3("Origin_LD_Element_Rotation", _LDElement.transform.rotation.eulerAngles);
-            _vfx.SetVector3("Origin_LD_Element_Scale", _LDElement.transform.localScale);
-        }
-        
-        //mettre l'objet en enfant pour avoir la bonne position (local ?)
-        
-        
-        // desactiver le mesh renderer et activer le collider apr�s toute l'animation
-        
-        
-        //Il faut que les models 3D soient READABLE
+            Vector3 localPosition = transform.InverseTransformPoint(_LDElement.transform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _LDElement.transform.rotation;
+            Vector3 localScale = new Vector3(
+                _LDElement.transform.lossyScale.x / transform.lossyScale.x,
+                _LDElement.transform.lossyScale.y / transform.lossyScale.y,
+                _LDElement.transform.lossyScale.z / transform.lossyScale.z
+            );
 
-        if (Application.isPlaying)
+            _vfx.SetVector3("Origin_LD_Element_Position", localPosition);
+            _vfx.SetVector3("Origin_LD_Element_Rotation", localRotation.eulerAngles);
+            _vfx.SetVector3("Origin_LD_Element_Scale", localScale);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (_LDElement)
         {
-            StartCoroutine(PlayAnimation());
+            _material = _LDElement.GetComponent<MeshRenderer>().material;
+            
+            Vector3 localPosition = transform.InverseTransformPoint(_LDElement.transform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _LDElement.transform.rotation;
+            Vector3 localScale = new Vector3(
+                _LDElement.transform.lossyScale.x / transform.lossyScale.x,
+                _LDElement.transform.lossyScale.y / transform.lossyScale.y,
+                _LDElement.transform.lossyScale.z / transform.lossyScale.z
+            );
+
+            _vfx.SetVector3("Origin_LD_Element_Position", localPosition);
+            _vfx.SetVector3("Origin_LD_Element_Rotation", localRotation.eulerAngles);
+            _vfx.SetVector3("Origin_LD_Element_Scale", localScale);
         }
     }
 
@@ -67,15 +91,33 @@ public class MemoryVFXController : MonoBehaviour
         yield return DOTween
             .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 0.5f, _animationDuration)
             .SetEase(Ease.InOutCubic).WaitForCompletion();
+
+        _memoryObject.OnCharacterAnimationFinished?.Invoke();
         
-        yield return new WaitForSeconds(_stayDuration);
+        yield return new WaitUntil(() => _memoryObject.IsSkipped, new TimeSpan(0, 0, 0, (int) _stayDuration, (int)(_stayDuration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);
         
-        yield return DOTween
-            .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
-            .SetEase(Ease.InOutCubic).WaitForCompletion();
-        
-        _LDElement.GetComponent<MeshRenderer>().enabled = false;
-        _LDElement.SetActive(true);
+        if (_LDElement)
+        {
+            DOTween
+                .To(() => _vfx.GetFloat("ParticleSizeMultiplier"), (t) => _vfx.SetFloat("ParticleSizeMultiplier", t), 0.3f, _animationDuration)
+                .SetEase(Ease.InOutCubic);
+            yield return DOTween
+                .To(() => _vfx.GetFloat("Lerp_Delta"), (t) => _vfx.SetFloat("Lerp_Delta", t), 1f, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+            
+            DOTween
+                .To(() => _material.GetFloat(Shader.PropertyToID("_Alpha")), (t) => _material.SetFloat(Shader.PropertyToID("_Alpha"), t), 1f, 0.5f)
+                .SetEase(Ease.InOutCubic);
+            
+            _memoryObject.OnAnimationFinished?.Invoke();
+            _LDElement.SetActive(true);
+        }
+        else
+        {
+            DOTween
+                .To(() => _vfx.GetFloat("ParticleSizeMultiplier"), (t) => _vfx.SetFloat("ParticleSizeMultiplier", t), 0, _animationDuration)
+                .SetEase(Ease.InOutCubic).WaitForCompletion();
+        }
     }
 
     private void OnDrawGizmos()

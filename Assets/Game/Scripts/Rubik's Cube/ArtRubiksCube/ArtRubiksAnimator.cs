@@ -4,7 +4,7 @@ using UnityEngine;
 public class ArtRubiksAnimator : MonoBehaviour
 {
     [SerializeField] float _delay = .1f;
-    [SerializeField] Animator animatorCube;
+    public Animator animatorCube;
 
     [SerializeField] Animator animatorFx;
 
@@ -18,22 +18,10 @@ public class ArtRubiksAnimator : MonoBehaviour
 
     void Start()
     {
-        //EventManager.OnEndCubeRotation += StartAnimIdle;
-
         animatorCube = GetComponent<Animator>();
-        StartCoroutine(waitforXToStartIdle(_delay));
     }
-
-    ///Try to Reync da idle anim but failed miserably
-    ///*private void OnDisable()
-    //{
-    //    EventManager.OnEndCubeRotation -= StartAnimIdle;
-    //}*/
-
     public void StartAnimRota()
     {
-        animatorCube.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
-        animatorFx.speed = 1 / GameManager.Instance.Settings.RubikscCubeAxisRotationDuration;
         animatorCube.SetTrigger("DoRotation");
 
         switch (_type)
@@ -51,14 +39,48 @@ public class ArtRubiksAnimator : MonoBehaviour
         }
     }
 
-    void StartAnimIdle()
+    [SerializeField] bool isSelected = false;
+    public float TimeLeftBeforeEndAnim()
     {
-        animatorCube.SetTrigger("StartAnim");
-    }
-    IEnumerator waitforXToStartIdle(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        StartAnimIdle();
+        var info = animatorCube.GetCurrentAnimatorStateInfo(0);
+        //Switch might be more effective but idk idgaf ikms
+        bool isName =
+               info.IsName("Cube_Face_Selected")
+            || info.IsName("Cube_Cote_Selected")
+            || info.IsName("Cube_Coin_Selected");
+        
+        return isName ? info.normalizedTime%2f/2f: -1f;
     }
 
+    public void LaunchAnimCoroutine(bool select, float timetoWait) => StartCoroutine(waitForToSelect(select, timetoWait));
+    IEnumerator waitForToSelect(bool select, float timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+        SetSelectedBool(select);
+    }
+    public void SetSelectedBool(bool isIt)
+    {
+        if (!animatorCube)
+            return;
+        
+        animatorCube.SetBool("IsSelected2", isIt);
+        if (isIt && isSelected == false)
+        {
+            switch (_type)
+            {
+                case TypeFace.Face:
+                    animatorCube.Play("Cube_Face_Selected");
+                    break;
+                case TypeFace.Edge:
+                    animatorCube.Play("Cube_Cote_Selected");
+                    break;
+                case TypeFace.Coin:
+                    animatorCube.Play("Cube_Coin_Selected");
+                    break;
+            }
+
+        }
+        isSelected = isIt;
+
+    }
 }

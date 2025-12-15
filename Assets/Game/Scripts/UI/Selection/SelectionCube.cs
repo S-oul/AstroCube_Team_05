@@ -22,14 +22,18 @@ using UnityEngine.ProBuilder.MeshOperations;
 [DisallowMultipleComponent]
 public class SelectionCube : MonoBehaviour
 {
-    [SerializeField]
-    bool _isTileLocked;
+    [SerializeField] bool _isTileLocked;
+    [SerializeField] Material _lockedTileMat;
+    [SerializeField] Material _lockedObjectMat;
+    [SerializeField] AnimationCurve _bizmuthShineCurve;
     /*
     [SerializeField]
     int _defaultRenderingLayerMask, _cubeObjectSelectionRenderingLayerMask = 9, _axisObjectSelectionRenderingLayerMask = 10, _cubeSelectionRenderingLayerMask, _axisSelectionRenderingLayerMask, _axisLockRenderingLayerMask = 6, _playerOnTileRenderingLayerMask = 5, _objectLockRenderingLayerMask = 11;
     */
     private Renderer[] _renderers;
-    private BoxCollider[] _colliders;
+    private List<BoxCollider> _colliders = new();
+    private Material _instancedLockedTileMat;
+    private Material _instancedLockedObjectMat;
 
     public SelectionMode CurrentSelectionMode { get; private set; }
 
@@ -62,13 +66,20 @@ public class SelectionCube : MonoBehaviour
         DISABLE,
         NOT_SELECTED
     }
-    
+
     void Awake()
     {
         _renderers = GetComponentsInChildren<Renderer>();
-        _colliders = GetComponentsInChildren<BoxCollider>();
 
-        foreach (Renderer renderer in _renderers) 
+        foreach (var col in GetComponentsInChildren<BoxCollider>())
+        {
+            if (col.transform.CompareTag("ExteriorTileCollider"))
+            {
+                _colliders.Add(col);
+            }
+        }
+
+        foreach (Renderer renderer in _renderers)
         {
             if (renderer.transform.CompareTag("Floor") || renderer.transform.CompareTag("SelectionShine"))
             {
@@ -83,7 +94,50 @@ public class SelectionCube : MonoBehaviour
 
         CurrentSelectionMode = SelectionMode.NOT_SELECTED;
 
-        if (_isTileLocked) Select(SelectionMode.LOCKED);
+        if (_isTileLocked)
+        {
+            Select(SelectionMode.LOCKED);
+            foreach (var renderer in _renderers)
+            {
+                if (renderer.transform.CompareTag("Floor"))
+                {
+                    Material baseMat = renderer.sharedMaterial;
+                    _instancedLockedTileMat = new Material(_lockedTileMat);
+
+                    _instancedLockedTileMat.SetTexture("_BaseMap", baseMat.GetTexture("_Texture"));
+                    _instancedLockedTileMat.SetTexture("_NormalMap", baseMat.GetTexture("_Normal"));
+                    _instancedLockedTileMat.SetTexture("_MetallicRoughnessMap", baseMat.GetTexture("_MetallicRoughness"));
+                    _instancedLockedTileMat.SetFloat("_RandomValue", UnityEngine.Random.Range(0.0f, 1.0f));
+
+                    renderer.material = _instancedLockedTileMat;
+                }
+                else if (renderer.transform.CompareTag("LDObject"))
+                {
+                    Material baseMat = renderer.material;
+                    Debug.Log(renderer.gameObject.name + " " + baseMat.name, renderer.gameObject);
+                    _instancedLockedObjectMat = new Material(_lockedObjectMat);
+
+                    _instancedLockedObjectMat.SetTexture("_BaseMap", baseMat.GetTexture("_BaseColorMap"));
+                    _instancedLockedObjectMat.SetTexture("_NormalMap", baseMat.GetTexture("_NormalMap"));
+                    _instancedLockedObjectMat.SetTexture("_MetallicRoughnessMap", baseMat.GetTexture("_MaskMap"));
+                    _instancedLockedObjectMat.SetFloat("_RandomValue", UnityEngine.Random.Range(0.0f, 1.0f));
+
+                    renderer.material = _instancedLockedObjectMat;
+                }
+            }
+        }
+
+        var vfx = GetComponentsInChildren<ParticleSystem>().Where(r => r.tag == "BizmuthFX").ToArray();
+        foreach (var v in vfx)
+        {
+            if (v != null)
+            {
+                if (_isTileLocked)
+                    v.Play();
+                else
+                    v.gameObject.SetActive(false); //Temp ? Idk why editor forces to play VFX sometimes
+            }
+        }
     }
 
     public void ExteriorColiderEnabled(bool isEnabled)
@@ -91,10 +145,7 @@ public class SelectionCube : MonoBehaviour
         // when enabled, the collider will prevent the player from accessing the tile.
         foreach (BoxCollider collider in _colliders)
         {
-            if (collider.transform.CompareTag("ExteriorTileCollider"))
-            {
-                collider.enabled = isEnabled;
-            }
+            collider.enabled = isEnabled;
         }
     }
 
@@ -102,9 +153,8 @@ public class SelectionCube : MonoBehaviour
     {
         if (_renderers == null)
             return;
-        if(mode == CurrentSelectionMode)
+        if (mode == CurrentSelectionMode)
             return;
-
         foreach (var renderer in _renderers)
         {
             switch (mode)
@@ -122,7 +172,7 @@ public class SelectionCube : MonoBehaviour
                     {
                         renderer.material.SetFloat("_State", 1f);
                         _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
-                    } 
+                    }
                     break;
                 case SelectionMode.PLAYERONTILE:
                     if (renderer.transform.CompareTag("Floor"))
@@ -144,11 +194,11 @@ public class SelectionCube : MonoBehaviour
 
     public void Unselect()
     {
-        if(CurrentSelectionMode == SelectionMode.NOT_SELECTED)
+        if (CurrentSelectionMode == SelectionMode.NOT_SELECTED)
             return;
         foreach (var renderer in _renderers)
         {
-            if((CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE || CurrentSelectionMode == SelectionMode.LOCKED || CurrentSelectionMode == SelectionMode.PLAYERONTILE)
+            if ((CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE || CurrentSelectionMode == SelectionMode.LOCKED || CurrentSelectionMode == SelectionMode.PLAYERONTILE)
                 && (renderer.transform.CompareTag("Floor")))
             {
                 _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
@@ -180,7 +230,7 @@ public class SelectionCube : MonoBehaviour
             {
                 _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
             }
-        }        
+        }
         yield return new WaitForSeconds(GameManager.Instance.Settings.RubikscCubeAxisRotationDuration);
         foreach (var renderer in _renderers)
         {
@@ -213,7 +263,7 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(true, renderer, 0.1f);
+                _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
 
                 if (_selectionCurrentValues.ContainsKey(renderer))
                 {
@@ -232,7 +282,7 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(false, renderer, 0.5f);
+                _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
 
                 if (_selectionCurrentValues.ContainsKey(renderer))
                 {
@@ -256,14 +306,15 @@ public class SelectionCube : MonoBehaviour
             {
                 if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
                     return;
-                           
+
                 if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
                     _selectionCurrentValues[renderer].DisableSelectionTween.Kill();
 
                 _selectionCurrentValues[renderer].EnableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 1.0f, duration).SetEase(Ease.InOutSine);
             }
         }
-        else{
+        else
+        {
             if (_selectionCurrentValues.ContainsKey(renderer))
             {
                 if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
@@ -275,6 +326,18 @@ public class SelectionCube : MonoBehaviour
             }
         }
     }
+
+    public void BizmuthShineAnim()
+    {
+        if (!_isTileLocked) return;
+
+        foreach (Renderer renderer in _renderers)
+        {
+            if (renderer.transform.CompareTag("Floor"))
+            {
+                DOTween.To(() => 0.0f, x => renderer.material.SetFloat("_AnimDelta", x), 1.0f, 1.0f).SetEase(_bizmuthShineCurve);
+            }
+        }
+    }
 }
 
- 

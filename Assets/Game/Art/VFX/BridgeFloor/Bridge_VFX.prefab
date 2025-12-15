@@ -47,6 +47,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa847b99b0640243a6f060c675797f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _BridgeSound:
+    Guid:
+      Data1: 1462974628
+      Data2: 1275546678
+      Data3: 257598109
+      Data4: 618935253
+    Path: event:/SFX/Cube/SFX_Bridge_LP
+  BoxExtent:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 32.19, y: 9.2, z: 5.74}
+  _stopDelay: 0.1
+  _maxDistanceUpdate: 25
+  ShouldPlaySound: 0
 --- !u!2083052967 &8014484811135101520
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -74,13 +87,13 @@ VisualEffect:
       - m_Value: 3
         m_Name: Gap
         m_Overridden: 1
-      - m_Value: 1.4
+      - m_Value: 3
         m_Name: DebrisScale
         m_Overridden: 1
-      - m_Value: 0.8
+      - m_Value: 0.9
         m_Name: DebrisGapHeight
         m_Overridden: 1
-      - m_Value: 0.7
+      - m_Value: 0.5
         m_Name: DebrisGapWidth
         m_Overridden: 1
     m_Vector2f:
@@ -93,7 +106,7 @@ VisualEffect:
       - m_Value: {x: 0, y: 0, z: 0}
         m_Name: PlayerPos
         m_Overridden: 1
-      - m_Value: {x: 5, y: 0.79, z: 35}
+      - m_Value: {x: 10, y: 0.1, z: 100}
         m_Name: BridgeScale
         m_Overridden: 1
     m_Vector4f:
@@ -103,7 +116,7 @@ VisualEffect:
       - m_Value: 200
         m_Name: Count
         m_Overridden: 1
-      - m_Value: 300
+      - m_Value: 150
         m_Name: DebrisCount
         m_Overridden: 1
     m_Int:
@@ -111,7 +124,15 @@ VisualEffect:
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
-      m_Array: []
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 0
+          m_PostInfinity: 0
+          m_RotationOrder: 0
+        m_Name: MoveUnderPlayerCurve
+        m_Overridden: 0
     m_Gradient:
       m_Array: []
     m_NamedObject:
@@ -173,6 +194,7 @@ GameObject:
   - component: {fileID: 919376900052853266}
   - component: {fileID: 6460646183887508814}
   - component: {fileID: 8396549698925952198}
+  - component: {fileID: 1759550831989399712}
   m_Layer: 7
   m_Name: BridgeCollision
   m_TagString: Untagged
@@ -189,8 +211,8 @@ Transform:
   m_GameObject: {fileID: 4046719029663417083}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6.1, y: 1, z: 35.37108}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 335698435797019469}
@@ -266,5 +288,18 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 10, y: 1, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1759550831989399712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4046719029663417083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bccbe512c3d1684db94f06d486d2c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _surfaceType: 3
