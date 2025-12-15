@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="MixerGroup" id="{981aaa05-4d80-4d57-9cda-18124d1bd493}">
 		<property name="name">
-			<value>New Group</value>
+			<value>VO_Memory</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{56ab45ce-f410-427e-a64b-cbaa1ae0e3c4}</destination>
@@ -18,9 +18,21 @@
 		<relationship name="effects">
 			<destination>{82d05fcf-101c-4603-94ff-edbef05bc112}</destination>
 			<destination>{54500ba8-a186-4410-9ee6-74ef2600f2bd}</destination>
+			<destination>{9a30ab6f-9619-4b46-8da0-5ca89daeb731}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{381b2ade-797b-40aa-bcc2-3c7182c776a6}" />
 	<object class="MixerBusFader" id="{82d05fcf-101c-4603-94ff-edbef05bc112}" />
 	<object class="Sidechain" id="{54500ba8-a186-4410-9ee6-74ef2600f2bd}" />
+	<object class="MixerSend" id="{9a30ab6f-9619-4b46-8da0-5ca89daeb731}">
+		<property name="level">
+			<value>-52</value>
+		</property>
+		<property name="inputFormat">
+			<value>2</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{85efe001-a8cb-40f6-b983-4d199921ff26}</destination>
+		</relationship>
+	</object>
 </objects>

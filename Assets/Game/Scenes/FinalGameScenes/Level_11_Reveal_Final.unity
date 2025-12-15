@@ -836,7 +836,7 @@ PrefabInstance:
     - target: {fileID: 8712723803623528132, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
       propertyPath: m_Name
-      value: 'ACTIVATE [GameObject]'
+      value: 'DISABLE [GameObject]'
       objectReference: {fileID: 0}
     - target: {fileID: 8800044661878763375, guid: e0c85bf540713094da1c4173f8b550de,
         type: 3}
@@ -7158,6 +7158,8 @@ PlayableDirector:
     value: {fileID: 92346341}
   - key: {fileID: -242822241938290035, guid: 6143cbc77c2d59242946a81f4022c71e, type: 2}
     value: {fileID: 2120060935}
+  - key: {fileID: -338504408220893496, guid: 6143cbc77c2d59242946a81f4022c71e, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &471576261
@@ -17173,7 +17175,7 @@ PrefabInstance:
     - target: {fileID: 4431837876002657976, guid: d5a83ff84f883574b9c16b152434fa3f,
         type: 3}
       propertyPath: m_Name
-      value: 'ACTIVATE [GameObject]'
+      value: 'DISABLE [GameObject]'
       objectReference: {fileID: 0}
     - target: {fileID: 4460097391980955254, guid: d5a83ff84f883574b9c16b152434fa3f,
         type: 3}
@@ -17253,7 +17255,7 @@ PrefabInstance:
     - target: {fileID: 5371739018127692864, guid: d5a83ff84f883574b9c16b152434fa3f,
         type: 3}
       propertyPath: m_Name
-      value: 'ACTIVATE [GameObject]'
+      value: 'DISABLE [GameObject]'
       objectReference: {fileID: 0}
     - target: {fileID: 5676572587607521994, guid: d5a83ff84f883574b9c16b152434fa3f,
         type: 3}
@@ -20492,6 +20494,7 @@ GameObject:
   - component: {fileID: 1902913727}
   - component: {fileID: 1902913726}
   - component: {fileID: 1902913729}
+  - component: {fileID: 1902913730}
   m_Layer: 18
   m_Name: Artifact
   m_TagString: Untagged
@@ -20612,6 +20615,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1902913730}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _exitDoor: {fileID: 0}
   _light: {fileID: 0}
   inputDisplay: {fileID: 715339314}
@@ -20641,6 +20656,37 @@ MonoBehaviour:
   Parameter: PR_MusicProgress
   TriggerEvent: 0
   Value: 13
+--- !u!114 &1902913730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902913723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1757528551
+      Data2: 1324118375
+      Data3: 1085001642
+      Data4: 2001571082
+    Path: event:/SFX/Cube/SFX_Tile_Correct
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!224 &1909854441 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9067813692967913725, guid: e0c85bf540713094da1c4173f8b550de,
@@ -22689,6 +22735,68 @@ VisualEffect:
     type: 3}
   m_PrefabInstance: {fileID: 1941936993688928263}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1949216260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949216255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1676470726
+      Data2: 1259972406
+      Data3: 1790394003
+      Data4: -1793603654
+    Path: event:/SFX/Cube/SFX_Golem_LP
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 15
+--- !u!114 &1949216261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949216255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1983911177
+      Data2: 1152302150
+      Data3: -56785250
+      Data4: -562252827
+    Path: event:/SFX/Cube/SFX_Golem_Start
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 50
+  OverrideMaxDistance: 700
 --- !u!1 &1954405324 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1783698957607350559, guid: e0c85bf540713094da1c4173f8b550de,
@@ -26448,7 +26556,23 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3573743386908760225, guid: 49c54062011617a4e9e38a029b346ef9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3120073588015707155}
+    - targetCorrespondingSourceObject: {fileID: 3573743386908760225, guid: 49c54062011617a4e9e38a029b346ef9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3120073588015707156}
+    - targetCorrespondingSourceObject: {fileID: 3129473011045127403, guid: 49c54062011617a4e9e38a029b346ef9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1949216261}
+    - targetCorrespondingSourceObject: {fileID: 3129473011045127403, guid: 49c54062011617a4e9e38a029b346ef9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1949216260}
   m_SourcePrefab: {fileID: 100100000, guid: 49c54062011617a4e9e38a029b346ef9, type: 3}
 --- !u!95 &3120073588015707151 stripped
 Animator:
@@ -26456,6 +26580,68 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 1941936993688928263}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3120073588015707155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194760418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1445413072
+      Data2: 1315564827
+      Data3: 534226851
+      Data4: -1393152531
+    Path: event:/SFX/Cube/SFX_Entity_Reveal
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &3120073588015707156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194760418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1664819263
+      Data2: 1282637701
+      Data3: -2116980343
+      Data4: -1152722387
+    Path: event:/SFX/Cube/SFX_Entity_Reveal_LP
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 5
+  OverrideMaxDistance: 100
 --- !u!2083052967 &4710122809660126380 stripped
 VisualEffect:
   m_CorrespondingSourceObject: {fileID: 3301062697303668906, guid: 49c54062011617a4e9e38a029b346ef9,
