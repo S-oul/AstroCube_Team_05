@@ -2,6 +2,7 @@ using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
+using FMODUnity;
 
 public class GameActionScreenDistortion : AGameAction
 {
@@ -12,6 +13,9 @@ public class GameActionScreenDistortion : AGameAction
         TO_NORMAL,
         SHOCK
     }
+
+    [Header("FMOD")]
+    [SerializeField] private EventReference _distortionSound;
 
     [SerializeField] private EDistortAction _distortAction = EDistortAction.PULSE;
     [SerializeField, HideIf("_distortAction", EDistortAction.TO_NORMAL), Range(0.0f, 1.0f)] private float _targetValue = 0.5f;
@@ -32,6 +36,11 @@ public class GameActionScreenDistortion : AGameAction
     {
         if(_postProcessManager == null)
             return;
+
+        if (!_distortionSound.IsNull)
+        {
+            RuntimeManager.PlayOneShot(_distortionSound);
+        }
 
         switch (_distortAction)
         {
