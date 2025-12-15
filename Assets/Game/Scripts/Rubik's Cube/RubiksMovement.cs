@@ -573,6 +573,8 @@ public class RubiksMovement : MonoBehaviour
                 if (block.name == "Corner") isMiddle = false;
                 block.transform.SetParent(axis, true);
                 blockIndexs.Add(_allBlocks.IndexOf(block));
+                var selection = block.GetComponent<SelectionCube>();
+                selection.BizmuthShineAnim();
             }
         }
 
@@ -630,6 +632,7 @@ public class RubiksMovement : MonoBehaviour
             pos.z = Mathf.Round(pos.z);
             block.transform.localPosition = pos;
             block.transform.SetParent(this.transform.parent, true);
+
         }
 
         _isRotating = false;

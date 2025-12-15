@@ -216,6 +216,15 @@ public class InputHandler : MonoBehaviour
         }
     }
 
+    public void OnSkipCutscene(InputAction.CallbackContext ctx)
+    {
+        if (!IsInputEnabled(EInputType.SKIP_NARRA)) return;
+        if (ctx.started || ctx.canceled)
+        {
+            EventManager.TriggerOnSkipCutscene(ctx.started);
+        }
+    }
+
     public void OnGamePause(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.GAME_PAUSE)) return;
