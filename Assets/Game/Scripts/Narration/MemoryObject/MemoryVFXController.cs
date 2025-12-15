@@ -22,13 +22,6 @@ public class MemoryVFXController : MonoBehaviour
     private MemoryObject _memoryObject;
     private Material _material;
 
-    /*
-     Lerp_Delta:
-    0 = At Origin
-    0.5 = At character   STAY DURING _stayDuration
-    1 : At LD Elements     STAY INDEFINITELY
-    */
-
     void Start()
     {
         LinkOriginToVFX();
@@ -101,7 +94,7 @@ public class MemoryVFXController : MonoBehaviour
 
         _memoryObject.OnCharacterAnimationFinished?.Invoke();
         
-        yield return new WaitForSeconds(_stayDuration);
+        yield return new WaitUntil(() => _memoryObject.IsSkipped, new TimeSpan(0, 0, 0, (int) _stayDuration, (int)(_stayDuration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);
         
         if (_LDElement)
         {
