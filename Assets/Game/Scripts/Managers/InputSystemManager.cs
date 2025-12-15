@@ -98,7 +98,7 @@ public class InputSystemManager : MonoBehaviour
             case EInputType.JUMP:
                 return ("Jump");            
             case EInputType.SKIP_NARRA:
-                return ("SkipNarraSequence");
+                return ("SkipCutscene");
         }
     }
 

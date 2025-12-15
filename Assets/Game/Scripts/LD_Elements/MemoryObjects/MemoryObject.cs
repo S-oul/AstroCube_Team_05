@@ -27,29 +27,12 @@ public class MemoryObject : MonoBehaviour, IInteractable
     public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
-
+    private bool _isSkipped = false;
+    public bool IsSkipped => _isSkipped;
+    
     private bool _wasPlayed;
-
-    // is set to false at the start of the cutscene. Is checked at the end of each line of dialogue. 
-    private bool _cutsceneHasBeenSkipped = false;
-
-    private void OnEnable()
-    {
-        // event triggered when the player holds down the 'Interact' button. (F on keyboard.)
-        EventManager.OnSkipNarraSequence += SkipNarraSequence;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.OnSkipNarraSequence -= SkipNarraSequence;
-    }
-
-    public void SkipNarraSequence()
-    // Sets _cutsceneHasBeenSkipped to true. This will skip any narraMemoryObjectCutscene that is currenlty active. If no sutscenes in progress, it will do nothing. 
-    {
-        _cutsceneHasBeenSkipped = true;
-        Debug.Log("cutScene is skipped");
-    }
+    private bool _skipState;
+    private float _skipDelay;
 
     private void OnValidate()
     {
@@ -72,10 +55,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
     {
         _wasPlayed = true;
 
-        // set to false by default.
-        _cutsceneHasBeenSkipped = false;
-
-
+        EventManager.OnSkipCutscene += SetSkipCutsceneState;
+        
         if (!_startMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_startMemoryEvent, transform.position);
 
         DOTween.To(() => _teapotRenderer.materials[1].GetFloat("_Alpha"),
@@ -98,6 +79,9 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
+            if (_isSkipped)
+                continue;
+            
             if (subtitle.isEmpty == false)
             {
                 if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
@@ -107,15 +91,16 @@ public class MemoryObject : MonoBehaviour, IInteractable
                     {
                         characterVoice.PlayVoice(subtitle.audioKey);
                     }
+                    
+                    LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
+                    yield return new WaitUntil(() => IsSkipped, new TimeSpan(0, 0, 0, (int) subtitle.duration, (int)(subtitle.duration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);
+                    characterVoice.Cancel();
                 }
-
-                LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
             }
-            yield return new WaitForSeconds(subtitle.duration);
-
-            // if _cutsceneHasBeenSkipped is changes to true, the cutscene is ended after the end of the current line of dialogue. 
-            if (_cutsceneHasBeenSkipped) break;
-            // TO DO : Character animations are not interupted, so the characters remain frozen (instead of becoming stairs) even though the cutscene is 'ended'. 
+            else
+            {
+                yield return new WaitUntil(() => IsSkipped, new TimeSpan(0, 0, 0, (int) subtitle.duration, (int)(subtitle.duration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);   
+            }
         }
         LocalizationManager.Instance.ClearString();
         
@@ -125,8 +110,32 @@ public class MemoryObject : MonoBehaviour, IInteractable
             (x) => _teapotRenderer.materials[1].SetFloat("_Alpha", x), 0f, 1f).SetEase(Ease.InOutExpo);
         _particleSystem.Stop();
         
+        EventManager.OnSkipCutscene -= SetSkipCutsceneState;
+        
         if (!_stopMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_stopMemoryEvent, transform.position);
     }
+
+    private void Update()
+    {
+        if (_isSkipped)
+            return;
+        
+        if (_skipState)
+            _skipDelay += Time.deltaTime;
+        else
+            _skipDelay = 0.0f;
+        LocalizationManager.Instance.SetSkipValue(_skipDelay / GameManager.Instance.Settings.SkipCutsceneDuration);
+        
+        if(_skipDelay >= GameManager.Instance.Settings.SkipCutsceneDuration)
+            SkipCutscene();
+    }
+
+    private void SetSkipCutsceneState(bool state)
+    {
+        _skipState = state;
+    }
+
+    private void SkipCutscene() => _isSkipped = true;
 
     public void OnInteract()
     {

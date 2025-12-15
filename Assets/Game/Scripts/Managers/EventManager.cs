@@ -129,6 +129,7 @@ public class EventManager : MonoBehaviour
     //Narrative Events
     public static event Action OnStartNarrativeSequence;
     public static event Action OnEndNarrativeSequence;
+    public static event Action<bool> OnSkipCutscene;
 
     public static Delegate[] OnGamePauseCallStack => OnGamePause.GetInvocationList();
     public static Delegate[] OnGameUnpauseCallStack => OnGameUnpause.GetInvocationList();
@@ -327,9 +328,9 @@ public class EventManager : MonoBehaviour
         OnEndSequence?.Invoke();
     }
 
-    public static void TriggerSkipNarraSequence()
+    public static void TriggerOnSkipCutscene(bool state)
     {
-        OnSkipNarraSequence?.Invoke();
+        OnSkipCutscene?.Invoke(state);
     }
 
     // Custom Settings Events

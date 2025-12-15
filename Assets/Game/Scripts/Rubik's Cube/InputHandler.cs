@@ -216,12 +216,12 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    public void OnSkipNarraSequence(InputAction.CallbackContext ctx)
+    public void OnSkipCutscene(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.SKIP_NARRA)) return;
-        if (ctx.performed)
+        if (ctx.started || ctx.canceled)
         {
-            EventManager.TriggerSkipNarraSequence();
+            EventManager.TriggerOnSkipCutscene(ctx.started);
         }
     }
 

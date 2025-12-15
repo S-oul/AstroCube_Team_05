@@ -3,6 +3,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using System.Runtime.InteropServices;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class AUDIO_ProgrammerInstrument : MonoBehaviour
 {
@@ -44,6 +45,12 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
         // PAS de release() pour garder la référence
     }
 
+    public void Cancel()
+    {
+        if (currentInstance.isValid())
+            currentInstance.stop(STOP_MODE.ALLOWFADEOUT);
+    }
+    
     public void Pause()
     {
         if (currentInstance.isValid())
