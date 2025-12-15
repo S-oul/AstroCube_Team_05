@@ -467,6 +467,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SkipNarraSequence"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb9f51b5-2773-40a7-bf80-4651fdfefa92"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -566,6 +575,28 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SwitchMoveCam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4657db88-8a0a-440f-b63e-eb6f52c52491"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SkipNarraSequence"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79cc21a8-e414-497a-a91e-b94e2471ba0a"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SkipNarraSequence"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -995,6 +1026,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_OtherActions_PauseGame = m_OtherActions.FindAction("PauseGame", throwIfNotFound: true);
         m_OtherActions_SeeExit = m_OtherActions.FindAction("SeeExit", throwIfNotFound: true);
         m_OtherActions_SwitchMoveCam = m_OtherActions.FindAction("SwitchMoveCam", throwIfNotFound: true);
+        m_OtherActions_SkipNarraSequence = m_OtherActions.FindAction("SkipNarraSequence", throwIfNotFound: true);
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
@@ -1289,6 +1321,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_OtherActions_PauseGame;
     private readonly InputAction m_OtherActions_SeeExit;
     private readonly InputAction m_OtherActions_SwitchMoveCam;
+    private readonly InputAction m_OtherActions_SkipNarraSequence;
     /// <summary>
     /// Provides access to input actions defined in input action map "OtherActions".
     /// </summary>
@@ -1316,6 +1349,10 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "OtherActions/SwitchMoveCam".
         /// </summary>
         public InputAction @SwitchMoveCam => m_Wrapper.m_OtherActions_SwitchMoveCam;
+        /// <summary>
+        /// Provides access to the underlying input action "OtherActions/SkipNarraSequence".
+        /// </summary>
+        public InputAction @SkipNarraSequence => m_Wrapper.m_OtherActions_SkipNarraSequence;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1354,6 +1391,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SwitchMoveCam.started += instance.OnSwitchMoveCam;
             @SwitchMoveCam.performed += instance.OnSwitchMoveCam;
             @SwitchMoveCam.canceled += instance.OnSwitchMoveCam;
+            @SkipNarraSequence.started += instance.OnSkipNarraSequence;
+            @SkipNarraSequence.performed += instance.OnSkipNarraSequence;
+            @SkipNarraSequence.canceled += instance.OnSkipNarraSequence;
         }
 
         /// <summary>
@@ -1377,6 +1417,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @SwitchMoveCam.started -= instance.OnSwitchMoveCam;
             @SwitchMoveCam.performed -= instance.OnSwitchMoveCam;
             @SwitchMoveCam.canceled -= instance.OnSwitchMoveCam;
+            @SkipNarraSequence.started -= instance.OnSkipNarraSequence;
+            @SkipNarraSequence.performed -= instance.OnSkipNarraSequence;
+            @SkipNarraSequence.canceled -= instance.OnSkipNarraSequence;
         }
 
         /// <summary>
@@ -1898,6 +1941,13 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitchMoveCam(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SkipNarraSequence" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkipNarraSequence(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerMovement" which allows adding and removing callbacks.

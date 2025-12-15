@@ -119,6 +119,8 @@ public class EventManager : MonoBehaviour
     public static event Action OnActivateSequence;
     public static event Action OnEndSequence;
 
+    public static event Action OnSkipNarraSequence;
+
     public static event Action OnPlayerChangeParent;
     public static event Action<GroundTypePlayerIsWalkingOn> OnPlayerFootSteps;
 
@@ -323,6 +325,11 @@ public class EventManager : MonoBehaviour
     public static void TriggerEndCubeSequence()
     {
         OnEndSequence?.Invoke();
+    }
+
+    public static void TriggerSkipNarraSequence()
+    {
+        OnSkipNarraSequence?.Invoke();
     }
 
     // Custom Settings Events

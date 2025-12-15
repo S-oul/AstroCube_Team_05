@@ -216,6 +216,15 @@ public class InputHandler : MonoBehaviour
         }
     }
 
+    public void OnSkipNarraSequence(InputAction.CallbackContext ctx)
+    {
+        if (!IsInputEnabled(EInputType.SKIP_NARRA)) return;
+        if (ctx.performed)
+        {
+            EventManager.TriggerSkipNarraSequence();
+        }
+    }
+
     public void OnGamePause(InputAction.CallbackContext ctx)
     {
         if (!IsInputEnabled(EInputType.GAME_PAUSE)) return;
