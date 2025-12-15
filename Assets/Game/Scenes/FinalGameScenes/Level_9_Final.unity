@@ -66445,6 +66445,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _surfaceType: 3
+--- !u!1 &816641895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 816641896}
+  - component: {fileID: 816641897}
+  m_Layer: 0
+  m_Name: SNP_Rev
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &816641896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816641895}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -542.2578, y: -2884.3774, z: 248.16031}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6800906727863625551}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &816641897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816641895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1927433435
+      Data2: 1210920866
+      Data3: -1892872262
+      Data4: 546141762
+    Path: snapshot:/Rev_Low
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &817355860 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 280301073521910043, guid: e0c85bf540713094da1c4173f8b550de,
@@ -128633,6 +128696,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _surfaceType: 3
+--- !u!1 &1939297170 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9002269809152606482, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 6800906727863625550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1939297171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939297170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -1455588844
+      Data2: 1204976263
+      Data3: 1350085284
+      Data4: -1137465918
+    Path: snapshot:/Rev_High
+  Event: 
+  EventPlayTrigger: 3
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &1939753539 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2267295691322164200, guid: a233597a9a89fe04292b40f76eb8e449,
@@ -129595,7 +129695,7 @@ GameObject:
   - component: {fileID: 1955951826}
   - component: {fileID: 1955951827}
   m_Layer: 0
-  m_Name: 'SUBTITLE 1,5s : <LVL_9_VOICELINES:voM067_EN>'
+  m_Name: 'SUBTITLE 1.5s : <LVL_9_VOICELINES:voM067_EN>'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139101,9 +139201,105 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2796755792373189456, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 816641896}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 397747147724182174, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6800906727863625555}
+    - targetCorrespondingSourceObject: {fileID: 1681782204379116576, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6800906727863625554}
+    - targetCorrespondingSourceObject: {fileID: 9002269809152606482, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1939297171}
   m_SourcePrefab: {fileID: 100100000, guid: 2fc4d4e4840166e4bbedd15db7a757ed, type: 3}
+--- !u!4 &6800906727863625551 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2796755792373189456, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 6800906727863625550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6800906727863625552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1681782204379116576, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 6800906727863625550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6800906727863625553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 397747147724182174, guid: 2fc4d4e4840166e4bbedd15db7a757ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 6800906727863625550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6800906727863625554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6800906727863625552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -1927433435
+      Data2: 1210920866
+      Data3: -1892872262
+      Data4: 546141762
+    Path: snapshot:/Rev_Low
+  Event: 
+  EventPlayTrigger: 3
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
+--- !u!114 &6800906727863625555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6800906727863625553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -1455588844
+      Data2: 1204976263
+      Data3: 1350085284
+      Data4: -1137465918
+    Path: snapshot:/Rev_High
+  Event: 
+  EventPlayTrigger: 3
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1001 &7665868115464379371
 PrefabInstance:
   m_ObjectHideFlags: 0
