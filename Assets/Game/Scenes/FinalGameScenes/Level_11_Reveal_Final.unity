@@ -11833,6 +11833,7 @@ MonoBehaviour:
   m_Script: {fileID: 1642155417}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Entries: []
 --- !u!4 &1045504575
 Transform:
   m_ObjectHideFlags: 19
@@ -17249,7 +17250,7 @@ PrefabInstance:
     - target: {fileID: 4431837876002657976, guid: d5a83ff84f883574b9c16b152434fa3f,
         type: 3}
       propertyPath: m_Name
-      value: 'DISABLE [GameObject]'
+      value: 'ACTIVATE [GameObject]'
       objectReference: {fileID: 0}
     - target: {fileID: 4460097391980955254, guid: d5a83ff84f883574b9c16b152434fa3f,
         type: 3}
@@ -20789,7 +20790,7 @@ MonoBehaviour:
   CollisionTag: 
   Parameter: PR_MusicProgress
   TriggerEvent: 0
-  Value: 13
+  Value: 11
 --- !u!114 &1902913730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22931,6 +22932,22 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 50
   OverrideMaxDistance: 700
+--- !u!114 &1949216264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949216255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Parameter: PR_MusicProgress
+  TriggerEvent: 11
+  Value: 12
 --- !u!1 &1954405324 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1783698957607350559, guid: e0c85bf540713094da1c4173f8b550de,
@@ -27214,14 +27231,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3120073588015707156}
-    - targetCorrespondingSourceObject: {fileID: 3573743386908760225, guid: 49c54062011617a4e9e38a029b346ef9,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3120073588015707161}
-    - targetCorrespondingSourceObject: {fileID: 3573743386908760225, guid: 49c54062011617a4e9e38a029b346ef9,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3120073588015707160}
     - targetCorrespondingSourceObject: {fileID: 3129473011045127403, guid: 49c54062011617a4e9e38a029b346ef9,
         type: 3}
       insertIndex: -1
@@ -27230,6 +27239,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1949216260}
+    - targetCorrespondingSourceObject: {fileID: 3129473011045127403, guid: 49c54062011617a4e9e38a029b346ef9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1949216264}
   m_SourcePrefab: {fileID: 100100000, guid: 49c54062011617a4e9e38a029b346ef9, type: 3}
 --- !u!95 &3120073588015707151 stripped
 Animator:
@@ -27299,68 +27312,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 50
   OverrideMaxDistance: 700
---- !u!114 &3120073588015707160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194760418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -1927433435
-      Data2: 1210920866
-      Data3: -1892872262
-      Data4: 546141762
-    Path: snapshot:/Rev_Low
-  Event: 
-  EventPlayTrigger: 0
-  EventStopTrigger: 11
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 0
---- !u!114 &3120073588015707161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194760418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -1455588844
-      Data2: 1204976263
-      Data3: 1350085284
-      Data4: -1137465918
-    Path: snapshot:/Rev_High
-  Event: 
-  EventPlayTrigger: 11
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 0
 --- !u!2083052967 &4710122809660126380 stripped
 VisualEffect:
   m_CorrespondingSourceObject: {fileID: 3301062697303668906, guid: 49c54062011617a4e9e38a029b346ef9,
@@ -27554,7 +27505,7 @@ PrefabInstance:
     - target: {fileID: 6271043122334194926, guid: 8964c059afd2d1a4c8a5fcbb5bb7ceea,
         type: 3}
       propertyPath: m_Name
-      value: '- wait 7,5s'
+      value: '- wait 7.5s'
       objectReference: {fileID: 0}
     - target: {fileID: 6375691151333424303, guid: 8964c059afd2d1a4c8a5fcbb5bb7ceea,
         type: 3}
