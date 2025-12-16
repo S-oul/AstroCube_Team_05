@@ -31,7 +31,7 @@ public class SequencerSkipper : MonoBehaviour
     {
         _isSkipped = true;
 
-        AUDIO_ProgrammerInstrument.Instance.Cancel();
+        AUDIO_ProgrammerInstrument.Instance?.Cancel();
         LocalizationManager.Instance.ClearString();
         
         foreach (AGameAction gameAction in _gameActionsToSkip)
