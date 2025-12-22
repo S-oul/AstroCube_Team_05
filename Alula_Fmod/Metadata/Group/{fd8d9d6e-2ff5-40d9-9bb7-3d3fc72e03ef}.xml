@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="MixerGroup" id="{fd8d9d6e-2ff5-40d9-9bb7-3d3fc72e03ef}">
 		<property name="name">
-			<value>LVL01</value>
+			<value>VO</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{8360461e-e1c2-4930-ab15-afdf1c9c30b0}</destination>
@@ -17,32 +17,35 @@
 	<object class="MixerBusEffectChain" id="{8360461e-e1c2-4930-ab15-afdf1c9c30b0}">
 		<relationship name="effects">
 			<destination>{c8516d13-ab67-473a-b800-337a30dcd623}</destination>
-			<destination>{902b84cf-ec17-4dfc-b897-098fc82ba52e}</destination>
-			<destination>{340eacb8-a9b5-4570-a687-bea0700486c6}</destination>
+			<destination>{aaf74c74-a688-4046-a0e6-999bf65a5ba7}</destination>
+			<destination>{21ac44cc-32da-45f8-9cc3-c8b90ecaf336}</destination>
+			<destination>{b8b8c6d8-f6fc-4d23-b6a3-ba13957e720c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{86c27c86-5777-4212-ba23-574dda4e331b}" />
 	<object class="MixerBusFader" id="{c8516d13-ab67-473a-b800-337a30dcd623}" />
-	<object class="ConvolutionReverbEffect" id="{902b84cf-ec17-4dfc-b897-098fc82ba52e}">
-		<property name="endFrame">
-			<value>135828</value>
-		</property>
-		<property name="wetLevel">
-			<value>-56</value>
-		</property>
-		<property name="dryLevel">
+	<object class="MixerSend" id="{aaf74c74-a688-4046-a0e6-999bf65a5ba7}">
+		<property name="inputFormat">
 			<value>0</value>
 		</property>
-		<relationship name="referenceableData">
-			<destination>{0423d478-e878-4f06-a0ac-293d56b81168}</destination>
+		<relationship name="mixerReturn">
+			<destination>{e844edeb-be66-4b6d-af4e-cb8f325e6c88}</destination>
 		</relationship>
 	</object>
-	<object class="CompressorEffect" id="{340eacb8-a9b5-4570-a687-bea0700486c6}">
-		<property name="threshold">
-			<value>-60</value>
+	<object class="MixerSend" id="{21ac44cc-32da-45f8-9cc3-c8b90ecaf336}">
+		<property name="inputFormat">
+			<value>0</value>
 		</property>
-		<relationship name="sidechains">
-			<destination>{54500ba8-a186-4410-9ee6-74ef2600f2bd}</destination>
+		<relationship name="mixerReturn">
+			<destination>{deef6716-de8d-4fea-9928-769ffa68f646}</destination>
+		</relationship>
+	</object>
+	<object class="MixerSend" id="{b8b8c6d8-f6fc-4d23-b6a3-ba13957e720c}">
+		<property name="inputFormat">
+			<value>0</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{8a2dcd69-ed3a-4b8e-b9d6-b5d359ed533a}</destination>
 		</relationship>
 	</object>
 </objects>
