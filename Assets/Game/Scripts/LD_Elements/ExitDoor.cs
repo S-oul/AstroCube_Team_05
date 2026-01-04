@@ -102,7 +102,7 @@ public class ExitDoor : MonoBehaviour
 
     private void Update()
     {
-        if (transform.parent.forward == -Vector3.up)
+        /*if (transform.parent.forward == -Vector3.up)
         {
             _isCurrentlyOpened = false;
             _doorBlock.enabled = true;
@@ -114,7 +114,7 @@ public class ExitDoor : MonoBehaviour
         {
             _doorBlock.enabled = false;
             _isCurrentlyOpened = true;
-        }
+        }*/
 
         if (_isCurrentlyOpened)
         {
