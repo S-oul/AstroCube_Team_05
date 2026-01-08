@@ -110,6 +110,7 @@ public class LocalizationManager : MonoBehaviour
 
     public void PrintString(string value, string locutor, Color? color = null)
     {
+        return; 
         _textAutoSizing.SetText(value, color);
 
         RectTransform rect = (RectTransform)_textAutoSizing.transform.GetChild(0);
