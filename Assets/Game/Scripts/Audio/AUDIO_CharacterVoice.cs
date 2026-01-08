@@ -17,6 +17,7 @@ public class AUDIO_CharacterVoice : MonoBehaviour
 
     public void PlayVoice(string key)
     {
+        return;
         if (string.IsNullOrEmpty(key) || voiceLineEvent3D.IsNull) return;
 
         // Stop previous if still playing

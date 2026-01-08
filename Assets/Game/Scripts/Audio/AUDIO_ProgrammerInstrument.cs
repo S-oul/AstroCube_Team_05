@@ -25,6 +25,8 @@ public class AUDIO_ProgrammerInstrument : MonoBehaviour
 
     public void PlayVoiceLine(string key)
     {
+        return;
+
         if (string.IsNullOrEmpty(key) || voiceLineEvent2D.IsNull) return;
 
         // Stop previous if still playing
