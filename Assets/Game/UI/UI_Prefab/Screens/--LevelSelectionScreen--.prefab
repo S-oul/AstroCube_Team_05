@@ -411,8 +411,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenuButtonFuntionalities, Assembly-CSharp
-        m_MethodName: OnQuitButtonClick
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -440,12 +440,12 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: AkEvent, AK.Wwise.Unity.MonoBehaviour
-          m_MethodName: HandleEvent
-          m_Mode: 2
+          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+          m_MethodName: Play
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -521,6 +521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7357150895387974929}
   - component: {fileID: 3067778827890342371}
+  - component: {fileID: 5188878242828419578}
   m_Layer: 0
   m_Name: Viewport
   m_TagString: Untagged
@@ -562,6 +563,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: -25}
   m_Softness: {x: 0, y: 100}
+--- !u!225 &5188878242828419578
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3084353236322187161}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3223554218682893407
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +734,7 @@ GameObject:
   - component: {fileID: 2722342249739649703}
   - component: {fileID: 3288533678786496693}
   - component: {fileID: 268933343289252761}
+  - component: {fileID: 6071621895576720545}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -842,6 +856,47 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6071621895576720545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094163658651167255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4325515651953220651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,7 +1439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 4363876784872930155}
-  viewFadeDuration: 0.4
+  viewFadeDuration: 0.1
   cameraPosition: {fileID: 0}
   firstSelected: {fileID: 0}
   scrollRect: {fileID: 8015324099452582581}
@@ -1394,37 +1449,34 @@ MonoBehaviour:
   backButton: {fileID: 227620365438315751}
   previewImage: {fileID: 6651078653975124997}
   previewMaterials:
+  - {fileID: 2100000, guid: 9c617233e07732d4b8a6d472a0d5c6a1, type: 2}
   - {fileID: 2100000, guid: 557da82b9a6e52747a521303d052c057, type: 2}
-  - {fileID: 2100000, guid: 401b6b2fab5721d41a6ee6781f442803, type: 2}
-  - {fileID: 2100000, guid: a67e13961e338eb469dd0727e925d56e, type: 2}
-  - {fileID: 2100000, guid: 722a05f74a03480458616f5e466d8382, type: 2}
-  - {fileID: 2100000, guid: dffdad6dcb808d24eac6f65733b526bc, type: 2}
-  - {fileID: 2100000, guid: 3b6c2a217fbe42846b2ff2d1946f863a, type: 2}
-  - {fileID: 2100000, guid: 4c0d0560b4d93c54c9454673e1538c9f, type: 2}
-  - {fileID: 2100000, guid: 83962c8c23fb54947ab731e63fefad84, type: 2}
-  - {fileID: 2100000, guid: cff7e8261e0db754da88a09413659e8d, type: 2}
-  - {fileID: 2100000, guid: 557da82b9a6e52747a521303d052c057, type: 2}
-  - {fileID: 2100000, guid: 401b6b2fab5721d41a6ee6781f442803, type: 2}
-  - {fileID: 2100000, guid: a67e13961e338eb469dd0727e925d56e, type: 2}
-  - {fileID: 2100000, guid: a67e13961e338eb469dd0727e925d56e, type: 2}
-  - {fileID: 2100000, guid: a67e13961e338eb469dd0727e925d56e, type: 2}
+  - {fileID: 2100000, guid: 24a33ab47c80edf4aa33df296a439793, type: 2}
+  - {fileID: 2100000, guid: 4ff3b7c13dd2d154a93a7b8f4658d0b0, type: 2}
+  - {fileID: 2100000, guid: 8fb44629f977c0240b32ded9169c0872, type: 2}
+  - {fileID: 2100000, guid: bf076854b8c222b4b869bf7869036c0f, type: 2}
+  - {fileID: 2100000, guid: 1bdc7946c56161a44969e84cfac6f10c, type: 2}
+  - {fileID: 2100000, guid: be897900a3c292d4c97d9f8188fe2f92, type: 2}
+  - {fileID: 2100000, guid: 4eb95b9f04d32ae4d96319b7aa520dff, type: 2}
+  - {fileID: 2100000, guid: c0aa60932b9866d449de0ef1ca7ea16d, type: 2}
+  - {fileID: 2100000, guid: bd858f3ec9b4f9541bfb640506e418dd, type: 2}
+  - {fileID: 2100000, guid: 1051482b481ed6741949c2d309009e20, type: 2}
   lockedPreviewMaterial: {fileID: 2100000, guid: c1ea39800f971a14abb7bae5351d175f,
     type: 2}
+  levelListCanvasGroup: {fileID: 5188878242828419578}
   levelNames:
-  - 1 - Lost
-  - 2 - Discovered
-  - 3 - Locked
-  - 4 - Remembered
-  - 5 - Debated
-  - 6 - Reserved
-  - 7 - Thought
-  - 8 - Stagnant
-  - 9 - Gobbler
-  - 10 - Angela GOAT
-  - 11 - Mariam fight
-  - 12 - The End
-  - 13 - The End End
-  - 14 - The End End End
+  - 1 - Wandering
+  - 2 - Lost
+  - "3 - D\xE9j\xE0-vu"
+  - 4 - Questioning
+  - 5 - Home..?
+  - 6 - Locked
+  - 7 - Reminiscing
+  - 8 - Guilt
+  - 9 - Disoriented
+  - 10 - Falling
+  - 11 - Doubts
+  - 12 - Exposed
   levelIndexOffset: 1
   scrollSpeed: 10
 --- !u!1001 &8707460025939753700

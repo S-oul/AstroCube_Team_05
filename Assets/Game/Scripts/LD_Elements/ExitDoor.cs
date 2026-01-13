@@ -19,6 +19,7 @@ public class ExitDoor : MonoBehaviour
     [SerializeField] private GameObject _stencil;
     [SerializeField] private float _endScaleStencil = 5.0f;
     [SerializeField] private Transform _zelligeDoorTransform;
+    [SerializeField] private Collider _doorBlock;
 
     [Header("Camera Focus to end")]
     [SerializeField] private CameraFocusAttractor _cameraFocusAttractor;
@@ -34,7 +35,7 @@ public class ExitDoor : MonoBehaviour
     private GameSettings _gameSettings;
     private bool _isShowing = false;
     private Collider _collider;
-    
+
     private bool _isCurrentlyOpened;
     private float _currentLerp;
     private float _previousLerp;
@@ -48,9 +49,9 @@ public class ExitDoor : MonoBehaviour
     {
         if (_instance) Destroy(this);
         else _instance = this;
-        
+
         _playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
-        
+
         _collider = GetComponent<Collider>();
 
         if (_isDoorOpenAtStart)
@@ -88,11 +89,11 @@ public class ExitDoor : MonoBehaviour
     public void OpenDoor()
     {
         _collider.enabled = true;
-        
+
         float distance = (_zelligeDoorTransform.position - _playerTransform.position).magnitude;
         float lerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
         //_VFXAnimator.SetTrigger("Open");
-        
+
         _currentTween = DOTween.To(() => _currentLerp, x => _currentLerp = x, lerp, 1.5f).OnComplete(() =>
         {
             _isCurrentlyOpened = true;
@@ -101,25 +102,39 @@ public class ExitDoor : MonoBehaviour
 
     private void Update()
     {
+        /*if (transform.parent.forward == -Vector3.up)
+        {
+            _isCurrentlyOpened = false;
+            _doorBlock.enabled = true;
+            _VFXAnimator.PlayInFixedTime("ZelligeDoorAnim_Open", 0, 0);
+
+            return;
+        }
+        else
+        {
+            _doorBlock.enabled = false;
+            _isCurrentlyOpened = true;
+        }*/
+
         if (_isCurrentlyOpened)
         {
             float distance = (_zelligeDoorTransform.position - _playerTransform.position).magnitude;
             _currentLerp = Mathf.Clamp01(Mathf.InverseLerp(_distanceAnimationStartEnd.y, _distanceAnimationStartEnd.x, distance));
         }
         _VFXAnimator.PlayInFixedTime("ZelligeDoorAnim_Open", 0, _currentLerp);
-        
+
         bool isTweenActive = _currentTween != null && _currentTween.IsActive() && _currentTween.IsPlaying();
-        bool isLerpChanging = Mathf.Abs(_currentLerp - _previousLerp) > 0.0001f;
+        bool isLerpChanging = Mathf.Abs(_currentLerp - _previousLerp) > 0.0001f; // USE EPLISON GODDAMN
         bool isMoving = isTweenActive || isLerpChanging;
-        
+
         if (isMoving)
         {
             _lastMoveTime = Time.time;
         }
-        
+
         bool recentlyMoved = (Time.time - _lastMoveTime) < STOP_DELAY;
         bool shouldPlaySound = _currentLerp > 0.01f && recentlyMoved;
-        
+
         if (shouldPlaySound && !_isDoorSoundPlaying)
         {
             _doorSoundInstance = RuntimeManager.CreateInstance(_zelligeDoorFXEvent);
@@ -133,24 +148,24 @@ public class ExitDoor : MonoBehaviour
             _doorSoundInstance.release();
             _isDoorSoundPlaying = false;
         }
-        
+
         if (_isDoorSoundPlaying)
         {
             _doorSoundInstance.setParameterByName("DoorProgress", _currentLerp);
         }
-        
+
         _previousLerp = _currentLerp;
-        
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.I))
-        { 
+        {
             CloseDoor();
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
             OpenDoor();
         }
-        #endif
+#endif
     }
 
     [Button("Close Door")]
@@ -193,5 +208,12 @@ public class ExitDoor : MonoBehaviour
         yield return _stencil.transform.DOScale(0, _gameSettings.StencilFadeOutDuration).WaitForCompletion();
         _stencil.SetActive(false);
         _isShowing = false;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.parent.position, transform.parent.position + transform.parent.forward);
     }
 }

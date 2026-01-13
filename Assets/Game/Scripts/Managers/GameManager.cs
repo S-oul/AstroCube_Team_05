@@ -141,6 +141,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
     }
 
+    public void LoadSpecificScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     void StopDeltaTime()
     {
         Time.timeScale = 0.0f;

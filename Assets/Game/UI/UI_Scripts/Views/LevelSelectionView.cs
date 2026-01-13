@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using System.Collections;
 
 public class LevelSelectionView : UIView
 {
@@ -16,6 +17,8 @@ public class LevelSelectionView : UIView
     [SerializeField] private RawImage previewImage;
     [SerializeField] private List<Material> previewMaterials;
     [SerializeField] private Material lockedPreviewMaterial;
+    [SerializeField] private CanvasGroup levelListCanvasGroup;
+
 
     [Header("Levels")]
     [SerializeField] private List<string> levelNames;
@@ -64,19 +67,46 @@ public class LevelSelectionView : UIView
         for (int i = 0; i < levelNames.Count; i++)
         {
             var item = Instantiate(itemPrefab, contentRoot);
+
             bool unlocked = LevelProgressionSystem.IsUnlocked(i);
 
-            item.Setup(i, levelNames[i], /*unlocked*/true, OnLevelClicked);
+            item.Setup(i, levelNames[i], unlocked, OnLevelClicked);
+
+            TMPro.TMP_Text label = item.GetComponentInChildren<TMPro.TMP_Text>();
+            if (label != null)
+                label.text = levelNames[i];
+
+            item.Button.interactable = unlocked;
+
             items.Add(item);
         }
+
+        Canvas.ForceUpdateCanvases();
     }
+
+
 
     public override void Show()
     {
+        levelListCanvasGroup.alpha = 0f;
+        levelListCanvasGroup.interactable = false;
+        levelListCanvasGroup.blocksRaycasts = false;
         base.Show();
         GenerateList();
         StartCoroutine(SelectFirstNextFrame());
+        StartCoroutine(ShowListAfterFade());
+
     }
+
+    private IEnumerator ShowListAfterFade()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        levelListCanvasGroup.alpha = 1f;
+        levelListCanvasGroup.interactable = true;
+        levelListCanvasGroup.blocksRaycasts = true;
+    }
+
 
     private System.Collections.IEnumerator SelectFirstNextFrame()
     {

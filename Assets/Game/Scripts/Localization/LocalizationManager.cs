@@ -17,6 +17,15 @@ public class LocalizationManager : MonoBehaviour
     [Header("Cutscene")]
     [SerializeField] RectTransform _upStrip;
     [SerializeField] RectTransform _downStrip;
+
+    [Header("Skip")]
+    [SerializeField] private CanvasGroup _skipGroup;
+    [SerializeField] private List<Material> _skipMaterials = new();
+    [SerializeField] private float _skipDisappearTime;
+
+    private float _currentDisappearTime;
+    private float _skipValue;
+    private bool _isSkipCurrentlyActive = false;
     
     private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
     private bool _stripsActive = false;
@@ -33,8 +42,35 @@ public class LocalizationManager : MonoBehaviour
         {
             UnparseCSV(csv);
         }
+
+        foreach (Material m in _skipMaterials)
+        {
+            m.SetFloat("_Alpha", 0.0f);
+        }
+        _skipGroup.alpha = 0.0f;
     }
-    
+
+    private void Update()
+    {
+        if (_isSkipCurrentlyActive && _skipValue == 0.0f)
+        {
+            _currentDisappearTime += Time.deltaTime;
+            if (_currentDisappearTime >= _skipDisappearTime)
+            {
+                ShowSkip(false);
+            }
+        } else if (!_isSkipCurrentlyActive && _skipValue > 0.0f)
+        {
+            _currentDisappearTime = 0.0f;
+            _isSkipCurrentlyActive = true;
+            ShowSkip(true);
+        } else if (_isSkipCurrentlyActive && _skipValue >= 1.0f)
+        {
+            _currentDisappearTime = _skipDisappearTime;
+            _skipValue = 0.0f;
+        }
+    }
+
     private void UnparseCSV(TextAsset csv)
     {
         string csvName = csv.name;
@@ -84,7 +120,7 @@ public class LocalizationManager : MonoBehaviour
         );
         _locutor.text = locutor;
         _locutor.color = color ?? Color.white;
-        //_locutor.gameObject.SetActive(true);
+        _locutor.gameObject.SetActive(true);
     }
 
     public void PrintStringFromID(string csvName, string id, string locutor, Color? color = null)
@@ -111,6 +147,24 @@ public class LocalizationManager : MonoBehaviour
             _upStrip.DOAnchorPosY(-65.745f, animationDuration);
             _downStrip.DOAnchorPosY(65.745f, animationDuration);
         }
+    }
+
+    public void SetSkipValue(float value)
+    {
+        _skipValue = Mathf.Clamp01(value);
+        
+        foreach(Material m in _skipMaterials)
+            m.SetFloat("_Slider1", _skipValue);
+    }
+    
+    private void ShowSkip(bool state)
+    {
+        _isSkipCurrentlyActive = state;
+        foreach (Material m in _skipMaterials)
+        {
+            DOTween.To(() => m.GetFloat("_Alpha"), (x) => m.SetFloat("_Alpha", x), state ? 1.0f : 0.0f, 1.0f);
+        }
+        _skipGroup.DOFade(state ? 1.0f : 0.0f, 1.0f);
     }
 }
 

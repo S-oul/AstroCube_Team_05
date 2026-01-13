@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using FMODUnity;
+using NaughtyAttributes;
 
 public class MemoryObject : MonoBehaviour, IInteractable
 {
@@ -26,11 +27,18 @@ public class MemoryObject : MonoBehaviour, IInteractable
     public UnityEvent OnMemoryInteracted, OnCharacterAnimationFinished, OnAnimationFinished;
     
     //private List<MemoryCharacter> _characters = new();
-
-    private bool _wasPlayed;
+    private bool _isSkipped = false;
+    public bool IsSkipped => _isSkipped;
     
+    private bool _wasPlayed;
+    private bool _skipState;
+    private float _skipDelay;
+
     private void OnValidate()
     {
+        if (_gameObjectsToActivate == null || _gameObjectsToActivate.Count == 0)
+            return;
+        
         foreach (GameObject obj in _gameObjectsToActivate)
         {
             if (obj.TryGetComponent(out MeshRenderer mesh))
@@ -46,6 +54,8 @@ public class MemoryObject : MonoBehaviour, IInteractable
     private IEnumerator StartMemory()
     {
         _wasPlayed = true;
+
+        EventManager.OnSkipCutscene += SetSkipCutsceneState;
         
         if (!_startMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_startMemoryEvent, transform.position);
 
@@ -69,15 +79,28 @@ public class MemoryObject : MonoBehaviour, IInteractable
         
         foreach (SubtitleData subtitle in _subtitles)
         {
-            Vector3 soundPos = transform.position;
-            if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
+            if (_isSkipped)
+                continue;
+            
+            if (subtitle.isEmpty == false)
             {
-                soundPos = _memories[subtitle.characterIndex].transform.position;
+                if (_memories.Count > subtitle.characterIndex && _memories[subtitle.characterIndex] != null)
+                {
+                    var characterVoice = _memories[subtitle.characterIndex].GetComponent<AUDIO_CharacterVoice>();
+                    if (characterVoice != null && !string.IsNullOrEmpty(subtitle.audioKey))
+                    {
+                        characterVoice.PlayVoice(subtitle.audioKey);
+                    }
+                    
+                    LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
+                    yield return new WaitUntil(() => IsSkipped, new TimeSpan(0, 0, 0, (int) subtitle.duration, (int)(subtitle.duration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);
+                    characterVoice.Cancel();
+                }
             }
-
-            if (!subtitle._voiceLineEvent.IsNull) RuntimeManager.PlayOneShot(subtitle._voiceLineEvent, soundPos);
-            LocalizationManager.Instance.PrintStringFromID(subtitle.csvName, subtitle.localizationID, subtitle.locutor, subtitle.color);
-            yield return new WaitForSeconds(subtitle.duration);
+            else
+            {
+                yield return new WaitUntil(() => IsSkipped, new TimeSpan(0, 0, 0, (int) subtitle.duration, (int)(subtitle.duration % 1.0f)), () => {}, WaitTimeoutMode.InGameTime);   
+            }
         }
         LocalizationManager.Instance.ClearString();
         
@@ -87,8 +110,32 @@ public class MemoryObject : MonoBehaviour, IInteractable
             (x) => _teapotRenderer.materials[1].SetFloat("_Alpha", x), 0f, 1f).SetEase(Ease.InOutExpo);
         _particleSystem.Stop();
         
+        EventManager.OnSkipCutscene -= SetSkipCutsceneState;
+        
         if (!_stopMemoryEvent.IsNull) RuntimeManager.PlayOneShot(_stopMemoryEvent, transform.position);
     }
+
+    private void Update()
+    {
+        if (_isSkipped)
+            return;
+        
+        if (_skipState)
+            _skipDelay += Time.deltaTime;
+        else
+            _skipDelay = 0.0f;
+        LocalizationManager.Instance.SetSkipValue(_skipDelay / GameManager.Instance.Settings.SkipCutsceneDuration);
+        
+        if(_skipDelay >= GameManager.Instance.Settings.SkipCutsceneDuration)
+            SkipCutscene();
+    }
+
+    private void SetSkipCutsceneState(bool state)
+    {
+        _skipState = state;
+    }
+
+    private void SkipCutscene() => _isSkipped = true;
 
     public void OnInteract()
     {
@@ -111,11 +158,14 @@ public class MemoryObject : MonoBehaviour, IInteractable
 [Serializable]
 public struct SubtitleData
 {
-    public string locutor;
-    public string csvName;
-    public string localizationID;
+    public bool isEmpty;
+    private bool MustShowParameter => !isEmpty;
+    
+    [ShowIf("MustShowParameter")] public string locutor;
+    [ShowIf("MustShowParameter")] public string csvName;
+    [ShowIf("MustShowParameter")] public string localizationID;
     public float duration;
-    public Color color;
-    public EventReference _voiceLineEvent;
-    public int characterIndex;
+    [ShowIf("MustShowParameter")] public Color color;
+    [ShowIf("MustShowParameter")] public string audioKey;
+    [ShowIf("MustShowParameter")] public int characterIndex;
 }

@@ -49,6 +49,9 @@ public class GameSettings : ScriptableObject
     public float StencilFadeInDuration => _stencilFadeInDuration;
     public float StencilFadeOutDuration => _stencilFadeOutDuration;
     public float StencilStayDuration => _stencilStayDuration;
+    
+    //Cutscene Properties
+    public float SkipCutsceneDuration => _skipCutsceneDuration;
 
 
     public AnimationCurve CurveFOV => curveFOV;
@@ -123,4 +126,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] AnimationCurve curveFOV;
     [SerializeField] AnimationCurve curveAberration;
     [SerializeField] AnimationCurve C_Min;
+
+    [Header("- Cutscene Duration")] [SerializeField]
+    private float _skipCutsceneDuration;
 }

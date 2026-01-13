@@ -48,16 +48,20 @@ public class MainMenuView : UIView
 
         var popup = _uiManager.ShowAndReturn<PopUpView>();
         if (popup == null) return;
-
+        Hide();
         popup.ShowPopup(new PopUpData(
             title: "New Game",
             message: "A save already exists \n do you wanna erase the previous one",
             type: PopUpType.Warning,
-            confirm: "Oui",
-            cancel: "Non",
+            confirm: "Yes",
+            cancel: "No",
             onConfirm: () =>
             {
                 StartFreshGame();
+            }
+            , onCancel: () =>
+            {
+                _uiManager.ShowInGameExclusive<MainMenuView>();
             }
         ));
     }
@@ -75,11 +79,19 @@ public class MainMenuView : UIView
 
     public void OnContinueClicked()
     {
-        int last = LevelProgressionSystem.GetLastLevel();
+        int logicalLast = LevelProgressionSystem.GetLastLevel();
 
-        if (last != -1)
-            SceneManager.LoadScene(last);
+        if (logicalLast < 0)
+            return;
+
+        int sceneIndex = LevelProgressionSystem.LogicalToSceneIndex(logicalLast);
+
+        if (sceneIndex <= 0 || sceneIndex >= SceneManager.sceneCountInBuildSettings)
+            return;
+
+        SceneManager.LoadScene(sceneIndex);
     }
+
 
     private void OnLevelsClicked()
     {
@@ -109,7 +121,7 @@ public class MainMenuView : UIView
     {
         var popup = _uiManager.ShowAndReturn<PopUpView>();
         if (popup == null) return;
-
+        Hide();
         popup.ShowPopup(new PopUpData(
             title: "Quit Game",
             message: "Are you sure you want to quit the game?",
@@ -123,7 +135,11 @@ public class MainMenuView : UIView
 #else
                 Application.Quit();
 #endif
-            }
+            },
+            onCancel: () =>
+                        {
+                            _uiManager.ShowInGameExclusive<MainMenuView>();
+                        }
         ));
     }
 }

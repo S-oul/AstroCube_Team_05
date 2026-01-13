@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
             view.Hide();
             view.HideImmediate();
         }
+        Time.timeScale = 1f;
     }
 
     public T GetView<T>() where T : UIView
@@ -41,8 +42,14 @@ public class UIManager : MonoBehaviour
         if (view == null) return;
 
         EventManager.TriggerViewShow(view);
+    }
 
+    public void ShowImmediate<T>() where T : UIView
+    {
+        var view = GetView<T>();
+        if (view == null) return;
 
+        EventManager.TriggerViewShow(view);
     }
 
     public void ShowInGame<T>() where T : UIView
