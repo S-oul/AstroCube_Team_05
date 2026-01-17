@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LocalizationManager : MonoBehaviour
 {
@@ -57,7 +58,6 @@ public class LocalizationManager : MonoBehaviour
     private void Start()
     {
         _currentLocalizedTexts = FindObjectsByType<LocalizedText>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).ToList();
-        Debug.Log(_currentLocalizedTexts.Count);
     }
 
     private void Update()
@@ -109,7 +109,26 @@ public class LocalizationManager : MonoBehaviour
     {
         if (_idToDialog.ContainsKey((csvName, id, _currentLanguage)))
         {
-            return _idToDialog[(csvName, id, _currentLanguage)];
+            string str = _idToDialog[(csvName, id, _currentLanguage)];
+            return str;
+        }
+        else
+        {
+            Debug.LogWarning($"Didn't find any key corresponding to : {csvName}:{id}");
+            return $"<{csvName}:{id}>";
+        }
+    }
+
+    public string GetString(string fullId)
+    {
+        string csvName = fullId.Split(':')[0][1..];
+        string id = fullId.Split(':')[1][..^1];
+        Debug.Log($"<{csvName}:{id}>");
+        
+        if (_idToDialog.ContainsKey((csvName, id, _currentLanguage)))
+        {
+            string str = _idToDialog[(csvName, id, _currentLanguage)];
+            return str;
         }
         else
         {
@@ -180,8 +199,25 @@ public class LocalizationManager : MonoBehaviour
     public void SwitchLanguage(int value)
     {
         int language = (int) Mathf.Repeat((float) _currentLanguage + value, 9);
-        Debug.Log((ELanguage) language);
         _currentLanguage = (ELanguage) language;
+
+        UpdateTexts();
+    }
+
+    private void UpdateTexts()
+    {
+        foreach (UIToggleButton button in FindObjectsByType<UIToggleButton>(FindObjectsInactive.Include,
+                     FindObjectsSortMode.InstanceID))
+        {
+            button.RefreshUI();
+        }
+        
+        FindFirstObjectByType<SettingsMenuScreenView>(FindObjectsInactive.Include).UpdateHoverText();
+        
+        foreach(LocalizedText txt in _currentLocalizedTexts)
+        {
+            txt.UpdateText();
+        }
     }
 
     [MenuItem("Tools/Update TMP Texts")]
@@ -190,7 +226,7 @@ public class LocalizationManager : MonoBehaviour
         TMP_Text[] texts = Resources.FindObjectsOfTypeAll<TMP_Text>();
         foreach (TMP_Text text in texts)
         {
-            if (text.TryGetComponent(out LocalizedText localizedText) == false)
+            if (text.GetComponent<LocalizedText>() == null)
             {
                 text.gameObject.AddComponent<LocalizedText>();
             }

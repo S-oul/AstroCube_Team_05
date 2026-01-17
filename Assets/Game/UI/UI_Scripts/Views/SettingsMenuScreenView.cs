@@ -51,6 +51,7 @@ public class SettingsMenuScreenView : UIView
 
     private InputAction _cancelAction;
 
+    private string _currentKey = "";
 
 
     private void Awake()
@@ -60,19 +61,19 @@ public class SettingsMenuScreenView : UIView
 
         _descriptionBySettings = new Dictionary<string, string>()
         {
-            { "General", "Controls the global sound level" },
-            { "Music", "Controls the music and ambiance sound level"},
-            { "Sound Effects", "Controls the sound level of the sound effects"},
-            { "Voice", "Controls the sound level of the voice lines"},
+            { "<MENU:GENERAL>", "<MENU:GENERAL_DESC>" },
+            { "<MENU:MUSIC>", "<MENU:MUSIC_DESC>"},
+            { "<MENU:SOUND>", "<MENU:SOUND_DESC>"},
+            { "<MENU:VOICE>", "<MENU:VOICE_DESC>"},
 
-            { "Field of View", "Changes the angle of the player's field of view"},
-            { "Camera Sensitivity", "Affects the speed at which the camera moves"},
-            { "Motion Blur", "Enables/Disables motion blur"},
+            { "<MENU:FOV>", "<MENU:FOV_DESC>"},
+            { "<MENU:CAMERA_SENSITIVITY>", "<MENU:SENSITIVITY_DESC>"},
+            { "<MENU:MOTION_BLUR>", "<MENU:MOTION_BLUR_DESC>"},
 
-            { "Language", "Changes the game language"},
-            { "Rumble", "Enables/disables controller vibration"},
-            { "Preview Hints", "Enables/disables preview feature"},
-            { "One Handed Mode", "Enables/disables one handed mode"}
+            { "<MENU:LANGUAGE>", "<MENU:LANGUAGE_DESC>"},
+            { "<MENU:RUMBLE>", "<MENU:RUMBLE_DESC>"},
+            { "<MENU:PREVIEW>", "<MENU:PREVIEW_DESC>"},
+            { "<MENU:ONE_HAND_MODE>", "<MENU:ONE_HAND_MODE_DESC>"}
         };
 
         _customisedSettings.LoadRuntimeValues();
@@ -358,36 +359,50 @@ public class SettingsMenuScreenView : UIView
     {
         if (_descriptionBySettings.TryGetValue(key, out var description))
         {
-            titleText.text = key;
-            descriptionText.text = description;
+            titleText.text = LocalizationManager.Instance.GetString(key);
+            descriptionText.text = LocalizationManager.Instance.GetString(description);
         }
     }
 
     private void SetupHover()
     {
-        AddHover(generalSoundSlider.gameObject, "General");
-        AddHover(musicSoundSlider.gameObject, "Music");
-        AddHover(soundSlider.gameObject, "Sound Effects");
-        AddHover(voiceSoundSlider.gameObject, "Voice");
+        AddHover(generalSoundSlider.gameObject, "<MENU:GENERAL>");
+        AddHover(musicSoundSlider.gameObject, "<MENU:MUSIC>");
+        AddHover(soundSlider.gameObject, "<MENU:SOUND>");
+        AddHover(voiceSoundSlider.gameObject, "<MENU:VOICE>");
 
-        AddHover(fovSlider.gameObject, "Field of View");
-        AddHover(cameraSensitivitySlider.gameObject, "Camera Sensitivity");
-        AddHover(motionBlurButton.gameObject, "Motion Blur");
+        AddHover(fovSlider.gameObject, "<MENU:FOV>");
+        AddHover(cameraSensitivitySlider.gameObject, "<MENU:CAMERA_SENSITIVITY>");
+        AddHover(motionBlurButton.gameObject, "<MENU:MOTION_BLUR>");
 
-        AddHover(languageButton.gameObject, "Language");
-        AddHover(rumbleButton.gameObject, "Rumble");
-        AddHover(previewButton.gameObject, "Preview Hints");
-        AddHover(oneHandedButton.gameObject, "One Handed Mode");
+        AddHover(languageButton.gameObject, "<MENU:LANGUAGE>");
+        AddHover(rumbleButton.gameObject, "<MENU:RUMBLE>");
+        AddHover(previewButton.gameObject, "<MENU:PREVIEW>");
+        AddHover(oneHandedButton.gameObject, "<MENU:ONE_HAND_MODE>");
     }
 
     public void OnSettingHovered(string key)
     {
         if (_descriptionBySettings.TryGetValue(key, out var description))
         {
-            titleText.text = key;
-            descriptionText.text = description;
+            titleText.text = LocalizationManager.Instance.GetString(key);
+            descriptionText.text = LocalizationManager.Instance.GetString(description);
         }
     }
+
+    public void UpdateHoverText()
+    {
+        if (_currentKey != "")
+        {
+            if (_descriptionBySettings.TryGetValue(_currentKey, out var description))
+            {
+                titleText.text = LocalizationManager.Instance.GetString(_currentKey);
+                descriptionText.text = LocalizationManager.Instance.GetString(description);
+            }
+        }
+    }
+
+    public void SetCurrentKey(string key) => _currentKey = key;
 
     private void AddHover(GameObject obj, string key)
     {

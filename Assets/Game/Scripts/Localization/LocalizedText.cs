@@ -18,6 +18,15 @@ public class LocalizedText : MonoBehaviour
 
     private void Start()
     {
-        _text.text = LocalizationManager.Instance.GetString(_csvName, _localizationId);
+        UpdateText();
+    }
+
+    public void UpdateText()
+    {
+        if(_text == null)
+            return;
+        
+        string localizedText = LocalizationManager.Instance.GetString(_csvName, _localizationId);
+        _text.text = localizedText;
     }
 }
