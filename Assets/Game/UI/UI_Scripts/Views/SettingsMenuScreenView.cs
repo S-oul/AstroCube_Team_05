@@ -29,6 +29,7 @@ public class SettingsMenuScreenView : UIView
     [SerializeField] private UIToggleButton motionBlurButton;
 
     [Header("Accessibility Settings")]
+    [SerializeField] private Button languageButton;
     [SerializeField] private UIToggleButton rumbleButton;
     [SerializeField] private UIToggleButton previewButton;
     [SerializeField] private UIToggleButton oneHandedButton;
@@ -59,18 +60,19 @@ public class SettingsMenuScreenView : UIView
 
         _descriptionBySettings = new Dictionary<string, string>()
         {
-            { "General :", "Controls the global sound level" },
-            { "Music :", "Controls the music and ambiance sound level"},
-            { "Sound Effects :", "Controls the sound level of the sound effects"},
-            { "Voice :", "Controls the sound level of the voice lines"},
+            { "General", "Controls the global sound level" },
+            { "Music", "Controls the music and ambiance sound level"},
+            { "Sound Effects", "Controls the sound level of the sound effects"},
+            { "Voice", "Controls the sound level of the voice lines"},
 
-            { "Field of View :", "Changes the angle of the player's field of view"},
-            { "Camera Sensitivity :", "Affects the speed at which the camera moves"},
-            { "Motion Blur :", "Enables/Disables motion blur"},
+            { "Field of View", "Changes the angle of the player's field of view"},
+            { "Camera Sensitivity", "Affects the speed at which the camera moves"},
+            { "Motion Blur", "Enables/Disables motion blur"},
 
-            { "Rumble :", "Enables/disables controller vibration"},
-            { "Preview Hints :", "Enables/disables preview feature"},
-            { "One Handed Mode :", "Enables/disables one handed mode"}
+            { "Language", "Changes the game language"},
+            { "Rumble", "Enables/disables controller vibration"},
+            { "Preview Hints", "Enables/disables preview feature"},
+            { "One Handed Mode", "Enables/disables one handed mode"}
         };
 
         _customisedSettings.LoadRuntimeValues();
@@ -363,18 +365,19 @@ public class SettingsMenuScreenView : UIView
 
     private void SetupHover()
     {
-        AddHover(generalSoundSlider.gameObject, "General :");
-        AddHover(musicSoundSlider.gameObject, "Music :");
-        AddHover(soundSlider.gameObject, "Sound Effects :");
-        AddHover(voiceSoundSlider.gameObject, "Voice :");
+        AddHover(generalSoundSlider.gameObject, "General");
+        AddHover(musicSoundSlider.gameObject, "Music");
+        AddHover(soundSlider.gameObject, "Sound Effects");
+        AddHover(voiceSoundSlider.gameObject, "Voice");
 
-        AddHover(fovSlider.gameObject, "Field of View :");
-        AddHover(cameraSensitivitySlider.gameObject, "Camera Sensitivity :");
-        AddHover(motionBlurButton.gameObject, "Motion Blur :");
+        AddHover(fovSlider.gameObject, "Field of View");
+        AddHover(cameraSensitivitySlider.gameObject, "Camera Sensitivity");
+        AddHover(motionBlurButton.gameObject, "Motion Blur");
 
-        AddHover(rumbleButton.gameObject, "Rumble :");
-        AddHover(previewButton.gameObject, "Preview Hints :");
-        AddHover(oneHandedButton.gameObject, "One Handed Mode :");
+        AddHover(languageButton.gameObject, "Language");
+        AddHover(rumbleButton.gameObject, "Rumble");
+        AddHover(previewButton.gameObject, "Preview Hints");
+        AddHover(oneHandedButton.gameObject, "One Handed Mode");
     }
 
     public void OnSettingHovered(string key)

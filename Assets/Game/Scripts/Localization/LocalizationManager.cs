@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using NaughtyAttributes;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class LocalizationManager : MonoBehaviour
@@ -30,6 +32,8 @@ public class LocalizationManager : MonoBehaviour
     private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
     private bool _stripsActive = false;
 
+    private List<LocalizedText> _currentLocalizedTexts = new();
+
     private void Awake()
     {
         if (Instance != null)
@@ -48,6 +52,12 @@ public class LocalizationManager : MonoBehaviour
             m.SetFloat("_Alpha", 0.0f);
         }
         _skipGroup.alpha = 0.0f;
+    }
+
+    private void Start()
+    {
+        _currentLocalizedTexts = FindObjectsByType<LocalizedText>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).ToList();
+        Debug.Log(_currentLocalizedTexts.Count);
     }
 
     private void Update()
@@ -166,18 +176,38 @@ public class LocalizationManager : MonoBehaviour
         }
         _skipGroup.DOFade(state ? 1.0f : 0.0f, 1.0f);
     }
+
+    public void SwitchLanguage(int value)
+    {
+        int language = (int) Mathf.Repeat((float) _currentLanguage + value, 9);
+        Debug.Log((ELanguage) language);
+        _currentLanguage = (ELanguage) language;
+    }
+
+    [MenuItem("Tools/Update TMP Texts")]
+    private static void UpdateTMPTexts()
+    {
+        TMP_Text[] texts = Resources.FindObjectsOfTypeAll<TMP_Text>();
+        foreach (TMP_Text text in texts)
+        {
+            if (text.TryGetComponent(out LocalizedText localizedText) == false)
+            {
+                text.gameObject.AddComponent<LocalizedText>();
+            }
+        }
+    }
 }
 
 public enum ELanguage
 {
-    ENGLISH = 1,
-    FRENCH = 2,
-    LANGUAGE_3 = 3,
-    LANGUAGE_4 = 4,
-    LANGUAGE_5 = 5,
-    LANGUAGE_6 = 6,
-    LANGUAGE_7 = 7,
-    LANGUAGE_8 = 8,
-    LANGUAGE_9 = 9,
-    LANGUAGE_10 = 10
+    ENGLISH = 0,
+    FRENCH = 1,
+    LANGUAGE_3 = 2,
+    LANGUAGE_4 = 3,
+    LANGUAGE_5 = 4,
+    LANGUAGE_6 = 5,
+    LANGUAGE_7 = 6,
+    LANGUAGE_8 = 7,
+    LANGUAGE_9 = 8,
+    LANGUAGE_10 = 9
 }
