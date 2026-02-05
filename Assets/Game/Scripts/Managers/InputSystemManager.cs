@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static InputSystemManager;
@@ -116,11 +117,11 @@ public class InputSystemManager : MonoBehaviour
 
     void DeactivateActionMap()
     {
-        //_playerInputs.currentActionMap.Disable();
+        InputHandler.DisableInputs(new[]{EInputType.JUMP, EInputType.MOVEMENT}.ToList());
     }    
     void ActivateActionMap()
     {
-       // _playerInputs.currentActionMap.Enable();
+        InputHandler.EnableInputs(new[]{EInputType.JUMP, EInputType.MOVEMENT}.ToList());
     }
     
 }
