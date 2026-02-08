@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -37,6 +38,11 @@ public class MultiTargetGraphic : MonoBehaviour, IPointerEnterHandler, IPointerE
     }
 
     public void OnDeselect(BaseEventData eventData)
+    {
+        SetColor(Color.white);
+    }
+
+    private void OnDisable()
     {
         SetColor(Color.white);
     }

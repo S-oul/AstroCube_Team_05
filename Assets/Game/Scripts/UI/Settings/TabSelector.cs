@@ -2,6 +2,9 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using Math = UnityEngine.ProBuilder.Math;
 
 public class TabSelector : MonoBehaviour
@@ -11,23 +14,63 @@ public class TabSelector : MonoBehaviour
     
     [SerializeField] private CanvasGroup[] _tabs;
     [SerializeField] private TMP_Text[] _tabsName;
+    [SerializeField] private GameObject[] _firstTabButtons;
+    [SerializeField] private GameObject _controllerIcons;
     private int _currentTabIndex = 0;
+    
+    [SerializeField] InputAction _controllerSelectTab;
 
     private void OnEnable()
     {
         SelectTab(0);
+
+        InputSystemManager.Instance.OnCurrentInputModeChange.AddListener(ToggleInputs);
+    }
+
+    private void OnDisable()
+    {
+        InputSystemManager.Instance.OnCurrentInputModeChange.RemoveListener(ToggleInputs);
+    }
+
+    private void ToggleInputs(InputSystemManager.EInputMode obj)
+    {
+        if (obj == InputSystemManager.EInputMode.CONTROLLER)
+        {
+            _controllerIcons.SetActive(true);
+            _controllerSelectTab.Enable();
+            _controllerSelectTab.performed += OnControllerSelectTab;
+        }
+        else
+        {
+            _controllerIcons.SetActive(false);
+            _controllerSelectTab.Disable();
+            _controllerSelectTab.performed -= OnControllerSelectTab;
+        } 
+    }
+
+    private void OnControllerSelectTab(InputAction.CallbackContext obj)
+    {
+        if (obj.ReadValue<float>() <= -0.5f)
+        {
+            SelectPreviousTab();
+        } else if (obj.ReadValue<float>() >= 0.5f)
+        {
+            SelectNextTab();
+        }
     }
 
     public void SelectNextTab()
     {
         _currentTabIndex = (_currentTabIndex + 1) % _tabs.Length;
         _UpdateTabVisibility();
+        EventSystem.current.SetSelectedGameObject(_firstTabButtons[_currentTabIndex]);
     }
 
     public void SelectPreviousTab()
     {
         _currentTabIndex = (_currentTabIndex - 1 + _tabs.Length) % _tabs.Length;
         _UpdateTabVisibility();
+        EventSystem.current.SetSelectedGameObject(_firstTabButtons[_currentTabIndex]);
     }
     
     public void SelectTab(int tabIndex)
