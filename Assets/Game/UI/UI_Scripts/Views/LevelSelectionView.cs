@@ -70,13 +70,13 @@ public class LevelSelectionView : UIView
 
             bool unlocked = LevelProgressionSystem.IsUnlocked(i);
 
-            item.Setup(i, levelNames[i], unlocked, OnLevelClicked);
+            item.Setup(i, levelNames[i], true, OnLevelClicked);
 
             TMPro.TMP_Text label = item.GetComponentInChildren<TMPro.TMP_Text>();
             if (label != null)
                 label.text = levelNames[i];
 
-            item.Button.interactable = unlocked;
+            item.Button.interactable = true;
 
             items.Add(item);
         }

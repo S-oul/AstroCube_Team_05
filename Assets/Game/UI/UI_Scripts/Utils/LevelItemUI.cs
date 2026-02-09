@@ -19,7 +19,7 @@ public class LevelItemUI : MonoBehaviour
 
         levelNameText.text = SceneUtility.GetScenePathByBuildIndex(levelIndex).Split('/')[^1].Split('.')[0];
 
-        button.interactable = unlocked;
+        button.interactable = true;
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => onClicked?.Invoke(levelIndex));
