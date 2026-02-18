@@ -125197,7 +125197,7 @@ PrefabInstance:
     - target: {fileID: 6511516968666353464, guid: 989b02edbff0b0742a7dfde3a0c5f2d2,
         type: 3}
       propertyPath: m_Name
-      value: 'DISABLE [GameObject]'
+      value: 'ACTIVATE [GameObject]'
       objectReference: {fileID: 0}
     - target: {fileID: 7232317881844358316, guid: 989b02edbff0b0742a7dfde3a0c5f2d2,
         type: 3}
@@ -126433,7 +126433,7 @@ PrefabInstance:
     - target: {fileID: 2644492646443918872, guid: d1c50b3a80635cc43b5d943d7fad03df,
         type: 3}
       propertyPath: m_Name
-      value: 'DISABLE [GameObject]'
+      value: 'ACTIVATE [GameObject]'
       objectReference: {fileID: 0}
     - target: {fileID: 2969520569490322496, guid: d1c50b3a80635cc43b5d943d7fad03df,
         type: 3}
@@ -134010,6 +134010,53 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1548594743}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1548732310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1548732311}
+  - component: {fileID: 1548732312}
+  m_Layer: 0
+  m_Name: 'GRANT ACHIEVEMENT: ORIGINS'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1548732311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548732310}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1848356455597187560}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1548732312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548732310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e196828e92c26d439d68fb7ffcd2589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationMode: 0
+  waitTime: 1
+  _achievementKey: ORIGINS
 --- !u!1 &1551324692 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2873379165859200757, guid: 6c63de08a68102d47853f5217d0dd7c8,
@@ -154118,7 +154165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1912227046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166165,7 +166212,11 @@ PrefabInstance:
       addedObject: {fileID: 449189181}
     - targetCorrespondingSourceObject: {fileID: 8507415913878008991, guid: 8a8cf674a17c69045ae670d0866ee863,
         type: 3}
-      insertIndex: 30
+      insertIndex: 28
+      addedObject: {fileID: 1548732311}
+    - targetCorrespondingSourceObject: {fileID: 8507415913878008991, guid: 8a8cf674a17c69045ae670d0866ee863,
+        type: 3}
+      insertIndex: 31
       addedObject: {fileID: 328752846}
     - targetCorrespondingSourceObject: {fileID: 8507415913878008991, guid: 8a8cf674a17c69045ae670d0866ee863,
         type: 3}
