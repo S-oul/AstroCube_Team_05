@@ -40,19 +40,8 @@ public class LocalizationManager : MonoBehaviour
         if (Instance != null)
             Destroy(gameObject);
         Instance = this;
-        
-        _idToDialog = new();
-        var csvFiles = Resources.LoadAll<TextAsset>("Localization");
-        foreach (TextAsset csv in csvFiles)
-        {
-            UnparseCSV(csv);
-        }
 
-        foreach (Material m in _skipMaterials)
-        {
-            m.SetFloat("_Alpha", 0.0f);
-        }
-        _skipGroup.alpha = 0.0f;
+        GenerateCSV();
     }
 
     private void Start()
@@ -81,7 +70,35 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
-    private void UnparseCSV(TextAsset csv)
+    public void GenerateCSV()
+    {
+        _idToDialog = new();
+        var csvFiles = Resources.LoadAll<TextAsset>("Localization");
+        foreach (TextAsset csv in csvFiles)
+        {
+            UnparseCSV(ref _idToDialog, csv);
+        }
+
+        foreach (Material m in _skipMaterials)
+        {
+            m.SetFloat("_Alpha", 0.0f);
+        }
+        _skipGroup.alpha = 0.0f;
+    }
+
+    public static Dictionary<(string csv, string id, ELanguage language), string> GenerateCSVInEditor()
+    {
+        Dictionary<(string csv, string id, ELanguage language), string> ed_idToDialog = new();
+        var csvFiles = Resources.LoadAll<TextAsset>("Localization");
+        foreach (TextAsset csv in csvFiles)
+        {
+            UnparseCSV(ref ed_idToDialog, csv);
+        }
+        
+        return ed_idToDialog;
+    }
+
+    private static void UnparseCSV(ref Dictionary<(string csv, string id, ELanguage language), string> dict, TextAsset csv)
     {
         string csvName = csv.name;
         string[] lines = csv.text.Split('\n');
@@ -95,7 +112,7 @@ public class LocalizationManager : MonoBehaviour
             {
                 if (Enum.TryParse(ids[value], out ELanguage language))
                 {
-                    _idToDialog[(csvName, id, language)] = values[value];
+                    dict[(csvName, id, language)] = values[value];
                 }
                 else
                 {
