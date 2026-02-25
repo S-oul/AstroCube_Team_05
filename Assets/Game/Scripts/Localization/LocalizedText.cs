@@ -23,6 +23,12 @@ public class LocalizedText : MonoBehaviour
 
     private void Start()
     {
+        if(_csvName == "" || _localizationId == "")
+        {
+            Debug.LogWarning($"CSV Name or Localization ID is empty for {gameObject.name}", gameObject);
+            return;
+        }
+        
         UpdateText();
     }
 

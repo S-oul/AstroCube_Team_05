@@ -41,6 +41,8 @@ public class LocalizationManager : MonoBehaviour
             Destroy(gameObject);
         Instance = this;
 
+        _currentLanguage = (ELanguage) PlayerPrefs.GetInt("LANGUAGE");
+        
         GenerateCSV();
     }
 
@@ -156,6 +158,7 @@ public class LocalizationManager : MonoBehaviour
 
     public void PrintString(string value, string locutor, Color? color = null)
     {
+        Debug.Log($"{value} by {locutor}");
         _textAutoSizing.SetText(value, color);
 
         RectTransform rect = (RectTransform)_textAutoSizing.transform.GetChild(0);
@@ -215,8 +218,10 @@ public class LocalizationManager : MonoBehaviour
 
     public void SwitchLanguage(int value)
     {
-        int language = (int) Mathf.Repeat((float) _currentLanguage + value, 9);
+        int language = (int) Mathf.Repeat((float) _currentLanguage + value, 2);
         _currentLanguage = (ELanguage) language;
+        
+        PlayerPrefs.SetInt("LANGUAGE", (int) _currentLanguage);
 
         UpdateTexts();
     }
