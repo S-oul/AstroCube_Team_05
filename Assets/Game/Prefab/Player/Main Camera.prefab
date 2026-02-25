@@ -121,7 +121,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 70
+  field of view: 40
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -134,7 +134,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -200,7 +200,6 @@ MonoBehaviour:
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
-  m_Version: 2
   m_TaaSettings:
     m_Quality: 3
     m_FrameInfluence: 0.1
@@ -208,6 +207,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!114 &133413100070924764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +405,7 @@ MonoBehaviour:
   flipYMode: 0
   xrRendering: 1
   fullscreenPassthrough: 0
-  allowDynamicResolution: 0
+  allowDynamicResolution: 1
   customRenderingSettings: 0
   invertFaceCulling: 0
   probeLayerMask:
@@ -627,6 +627,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2094171335718209651, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094171335718209651, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
       objectReference: {fileID: 0}
@@ -643,17 +648,17 @@ PrefabInstance:
     - target: {fileID: 2094171335718209651, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: NaN
+      value: 20.663435
       objectReference: {fileID: 0}
     - target: {fileID: 2094171335718209651, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 5.24e-43
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2094171335718209651, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 3.4e-44
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2164809802733769442, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
@@ -663,6 +668,11 @@ PrefabInstance:
     - target: {fileID: 2164809802733769442, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_LightUnit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164809802733769442, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
+      propertyPath: m_InnerSpotAngle
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2164809802733769442, guid: 5ba6c0fac937c43499fe8ce56108d094,
@@ -683,7 +693,7 @@ PrefabInstance:
     - target: {fileID: 2164809802733769442, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 0.0010817358
+      value: 20.663435
       objectReference: {fileID: 0}
     - target: {fileID: 4183467083072178398, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
@@ -747,6 +757,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4239940221382563429, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239940221382563429, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
       objectReference: {fileID: 0}
@@ -763,22 +778,22 @@ PrefabInstance:
     - target: {fileID: 4239940221382563429, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 5.3765577e+11
+      value: 20.663435
       objectReference: {fileID: 0}
     - target: {fileID: 4239940221382563429, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: NaN
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239940221382563429, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: -2.8454643e+9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239940221382563429, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.z
-      value: 6926895.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5228417061986888753, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
@@ -792,6 +807,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5228417061986888753, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5228417061986888753, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
       objectReference: {fileID: 0}
@@ -808,22 +828,22 @@ PrefabInstance:
     - target: {fileID: 5228417061986888753, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: -2.893203e-26
+      value: 19.853554
       objectReference: {fileID: 0}
     - target: {fileID: 5228417061986888753, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 2.91e-43
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5228417061986888753, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 7.848335e-24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5228417061986888753, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.z
-      value: 1.6865751e-21
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5406903179436532899, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
@@ -833,6 +853,11 @@ PrefabInstance:
     - target: {fileID: 5406903179436532899, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_LightUnit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5406903179436532899, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
+      propertyPath: m_InnerSpotAngle
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5406903179436532899, guid: 5ba6c0fac937c43499fe8ce56108d094,
@@ -853,17 +878,17 @@ PrefabInstance:
     - target: {fileID: 5406903179436532899, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 0.1002618
+      value: 20.663435
       objectReference: {fileID: 0}
     - target: {fileID: 5406903179436532899, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 100.89422
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5406903179436532899, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.z
-      value: 2.7105054e-20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5572829294728235433, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
@@ -882,6 +907,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6544958256702996829, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6544958256702996829, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
       objectReference: {fileID: 0}
@@ -898,17 +928,17 @@ PrefabInstance:
     - target: {fileID: 6544958256702996829, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: NaN
+      value: 20.663435
       objectReference: {fileID: 0}
     - target: {fileID: 6544958256702996829, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: NaN
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6544958256702996829, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 3e-45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7096799323693721790, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
@@ -918,6 +948,11 @@ PrefabInstance:
     - target: {fileID: 7096799323693721790, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_LightUnit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096799323693721790, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
+      propertyPath: m_InnerSpotAngle
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7096799323693721790, guid: 5ba6c0fac937c43499fe8ce56108d094,
@@ -952,6 +987,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7658142963484089239, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7658142963484089239, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
       objectReference: {fileID: 0}
@@ -968,12 +1008,12 @@ PrefabInstance:
     - target: {fileID: 7658142963484089239, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 5.27e-43
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7658142963484089239, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 1e-45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9090801218753635363, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
@@ -983,6 +1023,11 @@ PrefabInstance:
     - target: {fileID: 9090801218753635363, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_LightUnit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090801218753635363, guid: 5ba6c0fac937c43499fe8ce56108d094,
+        type: 3}
+      propertyPath: m_InnerSpotAngle
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9090801218753635363, guid: 5ba6c0fac937c43499fe8ce56108d094,
@@ -1003,12 +1048,12 @@ PrefabInstance:
     - target: {fileID: 9090801218753635363, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 0.00000048818583
+      value: 20.663435
       objectReference: {fileID: 0}
     - target: {fileID: 9090801218753635363, guid: 5ba6c0fac937c43499fe8ce56108d094,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 6e-45
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1076,7 +1121,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1085,9 +1133,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -1194,7 +1239,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -1224,7 +1269,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1233,9 +1281,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -1342,7 +1387,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -1372,7 +1417,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1381,9 +1429,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -1490,7 +1535,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -1520,7 +1565,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1529,9 +1577,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -1638,7 +1683,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -1668,7 +1713,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1677,9 +1725,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -1786,7 +1831,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -1822,7 +1867,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1831,9 +1879,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -1940,7 +1985,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -1970,7 +2015,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -1979,9 +2027,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -2088,7 +2133,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -2118,7 +2163,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -2127,9 +2175,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -2236,7 +2281,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
@@ -2266,7 +2311,10 @@ MonoBehaviour:
   m_LightUnit: 0
   m_LuxAtDistance: 1
   m_Intensity: 0
-  m_InnerSpotPercent: 0
+  m_InnerSpotPercent: -1
+  m_ShapeWidth: -1
+  m_ShapeHeight: -1
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -2275,9 +2323,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -2384,7 +2429,7 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 13
+  m_Version: 14
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
   m_ObsoleteCustomShadowResolution: 512
