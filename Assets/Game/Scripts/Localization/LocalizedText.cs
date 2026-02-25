@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [RequireComponent(typeof(TMP_Text))]
 public class LocalizedText : MonoBehaviour
@@ -42,6 +44,7 @@ public class LocalizedText : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(LocalizedText))]
 public class LocalizedTextCustomEditor : Editor
 {
@@ -73,3 +76,4 @@ public class LocalizedTextCustomEditor : Editor
         }
     }
 }
+#endif

@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using FMODUnity;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class GameActionShowSubtitle : AGameAction
@@ -45,6 +46,7 @@ public class GameActionShowSubtitle : AGameAction
     
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(GameActionShowSubtitle))]
 public class ShowSubtitleCustomEditor : Editor
 {
@@ -76,3 +78,4 @@ public class ShowSubtitleCustomEditor : Editor
         }
     }
 }
+#endif
