@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using NaughtyAttributes;
 using TMPro;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
-using UnityEngine.Events;
 
 public class LocalizationManager : MonoBehaviour
 {
@@ -242,6 +242,7 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
+    #if UNITY_EDITOR
     [MenuItem("Tools/Update TMP Texts")]
     private static void UpdateTMPTexts()
     {
@@ -254,6 +255,7 @@ public class LocalizationManager : MonoBehaviour
             }
         }
     }
+    #endif
 }
 
 public enum ELanguage
