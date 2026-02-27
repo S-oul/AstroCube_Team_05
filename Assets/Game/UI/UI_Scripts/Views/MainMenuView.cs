@@ -59,7 +59,7 @@ public class MainMenuView : UIView
             {
                 StartFreshGame();
             }
-            , onCancel: () =>
+            ,onCancel: () =>
             {
                 _uiManager.ShowInGameExclusive<MainMenuView>();
             }
@@ -73,6 +73,9 @@ public class MainMenuView : UIView
         LevelProgressionSystem.ResetProgression(totalLevels);
         LevelProgressionSystem.LockAllLevelsExceptFirst(totalLevels);
         LevelProgressionSystem.ResetLastLevel();
+        
+        PlayerPrefs.DeleteKey("CURRENT_TIME");
+        PlayerPrefs.DeleteKey("ROTATION_AMOUNT");
 
         SceneManager.LoadScene(firstLevelName);
     }

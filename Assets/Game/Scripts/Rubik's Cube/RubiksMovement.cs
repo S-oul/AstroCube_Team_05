@@ -517,6 +517,7 @@ public class RubiksMovement : MonoBehaviour
         if (!_isPreview && !_isArtCube)
         {
             EventManager.TriggerEndCubeRotation();
+            AchievementManager.Instance.AddRotation();
 
             // Play FMOD event when cube finishes rotating
             if (!_cubeRotationEndEvent.IsNull)
