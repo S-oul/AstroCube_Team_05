@@ -55,7 +55,8 @@ public class GameSettings : ScriptableObject
     
     // Achievements
     public float MaxTimeForAchievement => _maxTimeForAchievement;
-    public int MaxRotationsesForAchievement => _maxRotationsForAchievement;
+    public int MaxRotationsForAchievement => _maxRotationsForAchievement;
+    public int MaxLockedRotationsForAchievement => _maxLockedRotationsForAchievement;
 
 
     public AnimationCurve CurveFOV => curveFOV;
@@ -137,4 +138,5 @@ public class GameSettings : ScriptableObject
     [Header("-- ACHIEVEMENTS --")]
     [SerializeField] private float _maxTimeForAchievement;
     [SerializeField] private int _maxRotationsForAchievement;
+    [SerializeField] private int _maxLockedRotationsForAchievement;
 }

@@ -9,6 +9,7 @@ public class AchievementManager : MonoBehaviour
     
     private float _currentTime;
     private int _currentAmountOfRotations;
+    private int _lockedRotations;
     
     private void Awake()
     {
@@ -68,8 +69,7 @@ public class AchievementManager : MonoBehaviour
         {
             PlayerPrefs.SetFloat("CURRENT_TIME", _currentTime);
             PlayerPrefs.SetInt("ROTATION_AMOUNT", _currentAmountOfRotations);
-            
-            Debug.LogWarning($"Saved : Time = {PlayerPrefs.GetFloat("CURRENT_TIME")}, Rotations = {PlayerPrefs.GetInt("ROTATION_AMOUNT")}");
+            PlayerPrefs.SetInt("LOCKED_ROTATIONS", _lockedRotations);
             
             yield return new WaitForSecondsRealtime(1f);
         }
@@ -80,12 +80,23 @@ public class AchievementManager : MonoBehaviour
         if(_currentTime <= GameManager.Instance.Settings.MaxTimeForAchievement)
             UnlockAchievement("SPEEDRUNNER");
         
-        if(_currentAmountOfRotations <= GameManager.Instance.Settings.MaxRotationsesForAchievement)
+        if(_currentAmountOfRotations <= GameManager.Instance.Settings.MaxRotationsForAchievement)
             UnlockAchievement("EFFICIENCY");
     }
 
-    public void AddRotation()
+    public void AddRotation(bool locked = false)
     {
-        _currentAmountOfRotations++;
+        if (locked)
+        {
+            _lockedRotations++;
+            if (_lockedRotations > GameManager.Instance.Settings.MaxLockedRotationsForAchievement)
+            {
+                UnlockAchievement("DOOR_STUCK");
+            }
+        }
+        else
+        {
+            _currentAmountOfRotations++;
+        }
     }
 }
