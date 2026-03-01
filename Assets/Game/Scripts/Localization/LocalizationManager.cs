@@ -33,7 +33,7 @@ public class LocalizationManager : MonoBehaviour
     private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
     private bool _stripsActive = false;
 
-    private List<LocalizedText> _currentLocalizedTexts = new();
+    private (string csv, string id)? _currentPrintedText;
 
     private void Awake()
     {
@@ -44,11 +44,6 @@ public class LocalizationManager : MonoBehaviour
         _currentLanguage = (ELanguage) PlayerPrefs.GetInt("LANGUAGE");
         
         GenerateCSV();
-    }
-
-    private void Start()
-    {
-        _currentLocalizedTexts = FindObjectsByType<LocalizedText>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).ToList();
     }
 
     private void Update()
@@ -158,7 +153,6 @@ public class LocalizationManager : MonoBehaviour
 
     public void PrintString(string value, string locutor, Color? color = null)
     {
-        Debug.Log($"{value} by {locutor}");
         _textAutoSizing.SetText(value, color);
 
         RectTransform rect = (RectTransform)_textAutoSizing.transform.GetChild(0);
@@ -174,11 +168,13 @@ public class LocalizationManager : MonoBehaviour
 
     public void PrintStringFromID(string csvName, string id, string locutor, Color? color = null)
     {
+        _currentPrintedText = (csvName, id);
         PrintString(GetString(csvName, id), locutor, color);
     }
 
     public void ClearString()
     {
+        _currentPrintedText = null;
         _textAutoSizing.SetText("", null);
         _locutor.gameObject.SetActive(false);
     }
@@ -236,9 +232,14 @@ public class LocalizationManager : MonoBehaviour
         
         FindFirstObjectByType<SettingsMenuScreenView>(FindObjectsInactive.Include).UpdateHoverText();
         
-        foreach(LocalizedText txt in _currentLocalizedTexts)
+        foreach(LocalizedText txt in FindObjectsByType<LocalizedText>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID))
         {
             txt.UpdateText();
+        }
+
+        if (_currentPrintedText != null)
+        {
+            PrintStringFromID(_currentPrintedText.Value.csv, _currentPrintedText.Value.id, _locutor.text, _locutor.color);
         }
     }
 

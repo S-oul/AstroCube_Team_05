@@ -12,7 +12,7 @@ public class TabSelector : MonoBehaviour
     private static Color ActiveTabColor => new Color(0.9529412f, 0.7686275f, 0.6313726f, 1f);
     private static Color InactiveTabColor => new Color(1f, 1f, 1f, 1f);
     
-    [SerializeField] private CanvasGroup[] _tabs;
+    [SerializeField] private GameObject[] _tabs;
     [SerializeField] private TMP_Text[] _tabsName;
     [SerializeField] private GameObject[] _firstTabButtons;
     [SerializeField] private GameObject _controllerIcons;
@@ -25,11 +25,15 @@ public class TabSelector : MonoBehaviour
         SelectTab(0);
 
         InputSystemManager.Instance.OnCurrentInputModeChange.AddListener(ToggleInputs);
+
+        EventManager.OnGameUnpause += _ResetTabVisibilityImmediate;
     }
 
     private void OnDisable()
     {
         InputSystemManager.Instance.OnCurrentInputModeChange.RemoveListener(ToggleInputs);
+
+        EventManager.OnGameUnpause -= _ResetTabVisibilityImmediate;
     }
 
     private void ToggleInputs(InputSystemManager.EInputMode obj)
@@ -90,14 +94,31 @@ public class TabSelector : MonoBehaviour
         {
             if (i == _currentTabIndex)
             {
-                _tabs[i].DOFade(1f, 0.25f).SetEase(Ease.InOutSine);
-                _tabs[i].gameObject.SetActive(true);
+                _tabs[i].SetActive(true);
                 _tabsName[i].color = ActiveTabColor;
             }
             else
             {
-                _tabs[i].DOFade(0f, 0.25f).SetEase(Ease.InOutSine);
-                _tabs[i].gameObject.SetActive(false);
+                _tabs[i].SetActive(false);
+                _tabsName[i].color = InactiveTabColor;
+            }
+        }
+    }
+
+    private void _ResetTabVisibilityImmediate()
+    {
+        SelectTab(0);
+        
+        for (int i = 0; i < _tabs.Length; i++)
+        {
+            if (i == 0)
+            {
+                _tabs[i].SetActive(true);
+                _tabsName[i].color = ActiveTabColor;
+            }
+            else
+            {
+                _tabs[i].SetActive(false);
                 _tabsName[i].color = InactiveTabColor;
             }
         }

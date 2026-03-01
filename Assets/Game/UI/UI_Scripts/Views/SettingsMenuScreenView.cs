@@ -33,6 +33,7 @@ public class SettingsMenuScreenView : UIView
     [SerializeField] private UIToggleButton rumbleButton;
     [SerializeField] private UIToggleButton previewButton;
     [SerializeField] private UIToggleButton oneHandedButton;
+    [SerializeField] private Button _previousLanguageButton, _nextLanguageButton;
 
     [Header("Others")]
     [SerializeField] private Button backButton;
@@ -106,6 +107,9 @@ public class SettingsMenuScreenView : UIView
         rumbleButton.onToggleChanged.AddListener(OnRumbleToggled);
         previewButton.onToggleChanged.AddListener(OnPreviewToggled);
         oneHandedButton.onToggleChanged.AddListener(OnOneHandToggled);
+        
+        _nextLanguageButton.onClick.AddListener(() => LocalizationManager.Instance.SwitchLanguage(1));
+        _previousLanguageButton.onClick.AddListener(() => LocalizationManager.Instance.SwitchLanguage(-1));
 
         backButton.onClick.AddListener(OnQuitClicked);
 
@@ -333,7 +337,6 @@ public class SettingsMenuScreenView : UIView
     private void OnCancelPerformed(InputAction.CallbackContext ctx)
     {
         _uiManager.ShowInGameExclusive<PauseMenuView>();
-
     }
 
     private void CloseMenu()

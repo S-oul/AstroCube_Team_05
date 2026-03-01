@@ -38,6 +38,9 @@ public class LocalizedText : MonoBehaviour
     {
         if(_text == null)
             return;
+
+        if (_csvName == "" || _localizationId == "")
+            return;
         
         string localizedText = LocalizationManager.Instance.GetString(_csvName, _localizationId);
         _text.text = localizedText;
