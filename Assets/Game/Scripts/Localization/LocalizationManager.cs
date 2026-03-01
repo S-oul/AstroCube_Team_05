@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
-using NaughtyAttributes;
 using TMPro;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class LocalizationManager : MonoBehaviour
@@ -30,24 +33,17 @@ public class LocalizationManager : MonoBehaviour
     private Dictionary<(string csv, string id, ELanguage language), string> _idToDialog = new();
     private bool _stripsActive = false;
 
+    private (string csv, string id)? _currentPrintedText;
+
     private void Awake()
     {
         if (Instance != null)
             Destroy(gameObject);
         Instance = this;
-        
-        _idToDialog = new();
-        var csvFiles = Resources.LoadAll<TextAsset>("Localization");
-        foreach (TextAsset csv in csvFiles)
-        {
-            UnparseCSV(csv);
-        }
 
-        foreach (Material m in _skipMaterials)
-        {
-            m.SetFloat("_Alpha", 0.0f);
-        }
-        _skipGroup.alpha = 0.0f;
+        _currentLanguage = (ELanguage) PlayerPrefs.GetInt("LANGUAGE");
+        
+        GenerateCSV();
     }
 
     private void Update()
@@ -71,7 +67,35 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
-    private void UnparseCSV(TextAsset csv)
+    public void GenerateCSV()
+    {
+        _idToDialog = new();
+        var csvFiles = Resources.LoadAll<TextAsset>("Localization");
+        foreach (TextAsset csv in csvFiles)
+        {
+            UnparseCSV(ref _idToDialog, csv);
+        }
+
+        foreach (Material m in _skipMaterials)
+        {
+            m.SetFloat("_Alpha", 0.0f);
+        }
+        _skipGroup.alpha = 0.0f;
+    }
+
+    public static Dictionary<(string csv, string id, ELanguage language), string> GenerateCSVInEditor()
+    {
+        Dictionary<(string csv, string id, ELanguage language), string> ed_idToDialog = new();
+        var csvFiles = Resources.LoadAll<TextAsset>("Localization");
+        foreach (TextAsset csv in csvFiles)
+        {
+            UnparseCSV(ref ed_idToDialog, csv);
+        }
+        
+        return ed_idToDialog;
+    }
+
+    private static void UnparseCSV(ref Dictionary<(string csv, string id, ELanguage language), string> dict, TextAsset csv)
     {
         string csvName = csv.name;
         string[] lines = csv.text.Split('\n');
@@ -85,7 +109,7 @@ public class LocalizationManager : MonoBehaviour
             {
                 if (Enum.TryParse(ids[value], out ELanguage language))
                 {
-                    _idToDialog[(csvName, id, language)] = values[value];
+                    dict[(csvName, id, language)] = values[value];
                 }
                 else
                 {
@@ -99,7 +123,26 @@ public class LocalizationManager : MonoBehaviour
     {
         if (_idToDialog.ContainsKey((csvName, id, _currentLanguage)))
         {
-            return _idToDialog[(csvName, id, _currentLanguage)];
+            string str = _idToDialog[(csvName, id, _currentLanguage)];
+            return str;
+        }
+        else
+        {
+            Debug.LogWarning($"Didn't find any key corresponding to : {csvName}:{id}");
+            return $"<{csvName}:{id}>";
+        }
+    }
+
+    public string GetString(string fullId)
+    {
+        string csvName = fullId.Split(':')[0][1..];
+        string id = fullId.Split(':')[1][..^1];
+        Debug.Log($"<{csvName}:{id}>");
+        
+        if (_idToDialog.ContainsKey((csvName, id, _currentLanguage)))
+        {
+            string str = _idToDialog[(csvName, id, _currentLanguage)];
+            return str;
         }
         else
         {
@@ -125,11 +168,13 @@ public class LocalizationManager : MonoBehaviour
 
     public void PrintStringFromID(string csvName, string id, string locutor, Color? color = null)
     {
+        _currentPrintedText = (csvName, id);
         PrintString(GetString(csvName, id), locutor, color);
     }
 
     public void ClearString()
     {
+        _currentPrintedText = null;
         _textAutoSizing.SetText("", null);
         _locutor.gameObject.SetActive(false);
     }
@@ -166,18 +211,64 @@ public class LocalizationManager : MonoBehaviour
         }
         _skipGroup.DOFade(state ? 1.0f : 0.0f, 1.0f);
     }
+
+    public void SwitchLanguage(int value)
+    {
+        int language = (int) Mathf.Repeat((float) _currentLanguage + value, 2);
+        _currentLanguage = (ELanguage) language;
+        
+        PlayerPrefs.SetInt("LANGUAGE", (int) _currentLanguage);
+
+        UpdateTexts();
+    }
+
+    private void UpdateTexts()
+    {
+        foreach (UIToggleButton button in FindObjectsByType<UIToggleButton>(FindObjectsInactive.Include,
+                     FindObjectsSortMode.InstanceID))
+        {
+            button.RefreshUI();
+        }
+        
+        FindFirstObjectByType<SettingsMenuScreenView>(FindObjectsInactive.Include).UpdateHoverText();
+        
+        foreach(LocalizedText txt in FindObjectsByType<LocalizedText>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID))
+        {
+            txt.UpdateText();
+        }
+
+        if (_currentPrintedText != null)
+        {
+            PrintStringFromID(_currentPrintedText.Value.csv, _currentPrintedText.Value.id, _locutor.text, _locutor.color);
+        }
+    }
+
+    #if UNITY_EDITOR
+    [MenuItem("Tools/Update TMP Texts")]
+    private static void UpdateTMPTexts()
+    {
+        TMP_Text[] texts = Resources.FindObjectsOfTypeAll<TMP_Text>();
+        foreach (TMP_Text text in texts)
+        {
+            if (text.GetComponent<LocalizedText>() == null)
+            {
+                text.gameObject.AddComponent<LocalizedText>();
+            }
+        }
+    }
+    #endif
 }
 
 public enum ELanguage
 {
-    ENGLISH = 1,
-    FRENCH = 2,
-    LANGUAGE_3 = 3,
-    LANGUAGE_4 = 4,
-    LANGUAGE_5 = 5,
-    LANGUAGE_6 = 6,
-    LANGUAGE_7 = 7,
-    LANGUAGE_8 = 8,
-    LANGUAGE_9 = 9,
-    LANGUAGE_10 = 10
+    ENGLISH = 0,
+    FRENCH = 1,
+    LANGUAGE_3 = 2,
+    LANGUAGE_4 = 3,
+    LANGUAGE_5 = 4,
+    LANGUAGE_6 = 5,
+    LANGUAGE_7 = 6,
+    LANGUAGE_8 = 7,
+    LANGUAGE_9 = 8,
+    LANGUAGE_10 = 9
 }

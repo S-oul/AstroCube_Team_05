@@ -141,7 +141,7 @@ public class RubiksMovement : MonoBehaviour
         foreach (var obj in allParticle)
         {
             if(obj != null && obj.transform != null && obj.transform.root != null)
-            GameObject.DestroyImmediate(obj.transform.root.gameObject);
+                DestroyImmediate(obj.transform.root.gameObject);
         }
         allParticle.Clear();
     }
@@ -517,6 +517,7 @@ public class RubiksMovement : MonoBehaviour
         if (!_isPreview && !_isArtCube)
         {
             EventManager.TriggerEndCubeRotation();
+            AchievementManager.Instance.AddRotation();
 
             // Play FMOD event when cube finishes rotating
             if (!_cubeRotationEndEvent.IsNull)
@@ -537,6 +538,7 @@ public class RubiksMovement : MonoBehaviour
         if (!_isPreview && !_isArtCube && !_cubeRotationBlockedEvent.IsNull)
         {
             RuntimeManager.PlayOneShot(_cubeRotationBlockedEvent, transform.position);
+            AchievementManager.Instance.AddRotation(true);
         }
         
         Vector3 rotationAxis = Vector3.zero;

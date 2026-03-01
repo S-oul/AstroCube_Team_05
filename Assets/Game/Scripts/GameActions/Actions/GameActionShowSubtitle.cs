@@ -1,5 +1,8 @@
 using System.Collections;
-using FMODUnity;
+using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class GameActionShowSubtitle : AGameAction
@@ -9,6 +12,9 @@ public class GameActionShowSubtitle : AGameAction
     [SerializeField] private string _localizationID;
     [SerializeField] private float _duration;
     [SerializeField] private Color _color;
+    
+    public string CSVName => _csvName;
+    public string LocalizationID => _localizationID;
 
     private bool _isFinished = true;
     
@@ -39,3 +45,37 @@ public class GameActionShowSubtitle : AGameAction
     }
     
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(GameActionShowSubtitle))]
+public class ShowSubtitleCustomEditor : Editor
+{
+    private static string _currentText;
+    private static Dictionary<(string csv, string id, ELanguage language), string> _texts;
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        
+        GameActionShowSubtitle subtitle = (GameActionShowSubtitle)target;
+        _texts = LocalizationManager.GenerateCSVInEditor();
+        GUILayout.Space(20);
+        
+        if (_texts.TryGetValue((subtitle.CSVName, subtitle.LocalizationID, ELanguage.ENGLISH), out var text))
+        {
+            _currentText = text;
+            GUI.color = Color.green;
+            GUILayout.Label("Text Found", new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold, fontSize = 15});
+            GUI.color = Color.white;
+            GUILayout.Label(_currentText);
+        }
+        else
+        {
+            GUI.color = Color.red;
+            GUILayout.Label("Error", new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold, fontSize = 15});
+            GUI.color = Color.white;
+            GUILayout.Label($"No text found for <{subtitle.CSVName}:{subtitle.LocalizationID}>");
+        }
+    }
+}
+#endif

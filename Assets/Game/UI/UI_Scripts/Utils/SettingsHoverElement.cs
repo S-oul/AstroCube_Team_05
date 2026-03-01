@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
 
-public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDeselectHandler
+public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private string settingKey;
     private SettingsMenuScreenView settingsView;
@@ -20,6 +20,16 @@ public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler, ISelect
         if (settingsView != null && !string.IsNullOrEmpty(settingKey))
         {
             settingsView.OnSettingHovered(settingKey);
+            settingsView.SetCurrentKey(settingKey);
+        }
+    }
+    
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (settingsView != null && !string.IsNullOrEmpty(settingKey))
+        {
+            settingsView.OnSettingHovered("");
+            settingsView.SetCurrentKey("");
         }
     }
 
@@ -38,6 +48,7 @@ public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler, ISelect
         if (settingsView != null && !string.IsNullOrEmpty(settingKey))
         {
             settingsView.OnSettingHovered(settingKey);
+            settingsView.SetCurrentKey(settingKey);
         }
     }
 
@@ -46,7 +57,7 @@ public class SettingsHoverElement : MonoBehaviour, IPointerEnterHandler, ISelect
         if (settingsView != null)
         {
             settingsView.OnSettingHovered("");
+            settingsView.SetCurrentKey("");
         }
     }
-
 }
