@@ -22,28 +22,15 @@ public class AchievementManager : MonoBehaviour
         Instance = this;
         transform.parent = null;
         DontDestroyOnLoad(gameObject);
-        
-        #if UNITY_EDITOR
-        if (SteamManager.Initialized)
-        {
-            SteamUserStats.ResetAllStats(true);
-        }
-        #endif
     }
     
     private void Start()
     {
         _currentTime = PlayerPrefs.HasKey("CURRENT_TIME") ? PlayerPrefs.GetFloat("CURRENT_TIME") : 0f;
         _currentAmountOfRotations = PlayerPrefs.HasKey("ROTATION_AMOUNT") ? PlayerPrefs.GetInt("ROTATION_AMOUNT") : 0;
-
-        EventManager.OnLevelFinished += EndGame;
+        _lockedRotations = PlayerPrefs.HasKey("LOCKED_ROTATIONS") ? PlayerPrefs.GetInt("LOCKED_ROTATIONS") : 0;
         
         StartCoroutine(SaveCoroutine());
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.OnLevelFinished -= EndGame;
     }
 
     public void UnlockAchievement(string key)
@@ -55,6 +42,7 @@ public class AchievementManager : MonoBehaviour
         if (!achieved)
         {
             SteamUserStats.SetAchievement(key);
+            SteamUserStats.StoreStats();
         }
     }
     
@@ -89,7 +77,7 @@ public class AchievementManager : MonoBehaviour
         if (locked)
         {
             _lockedRotations++;
-            if (_lockedRotations > GameManager.Instance.Settings.MaxLockedRotationsForAchievement)
+            if (_lockedRotations >= GameManager.Instance.Settings.MaxLockedRotationsForAchievement)
             {
                 UnlockAchievement("DOOR_STUCK");
             }

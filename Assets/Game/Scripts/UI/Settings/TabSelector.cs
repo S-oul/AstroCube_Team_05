@@ -24,6 +24,7 @@ public class TabSelector : MonoBehaviour
     {
         SelectTab(0);
 
+        ToggleInputs(InputSystemManager.EInputMode.CONTROLLER);
         InputSystemManager.Instance.OnCurrentInputModeChange.AddListener(ToggleInputs);
 
         EventManager.OnGameUnpause += _ResetTabVisibilityImmediate;
