@@ -605,6 +605,8 @@ MonoBehaviour:
   rumbleButton: {fileID: 2570418016971293480}
   previewButton: {fileID: 2935660508603990269}
   oneHandedButton: {fileID: 6799061543553691470}
+  _previousLanguageButton: {fileID: 4959513618858455121}
+  _nextLanguageButton: {fileID: 3706764099598777775}
   backButton: {fileID: 133837175476988306}
   _customisedSettings: {fileID: 11400000, guid: d3f72fb16dd4e334bae13fde4221e290,
     type: 2}
@@ -721,6 +723,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -998,6 +1001,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1150,6 +1154,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1602,6 +1607,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1678,19 +1684,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6478937469541571767}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LocalizationManager, Assembly-CSharp
-        m_MethodName: SwitchLanguage
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &4505537114682205396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1776,7 +1770,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4460799494578598393}
   - component: {fileID: 1989381815243973646}
-  - component: {fileID: 1293881827630699302}
   m_Layer: 5
   m_Name: Accessibility
   m_TagString: Untagged
@@ -1830,18 +1823,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!225 &1293881827630699302
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4539658880271687270}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &4685585347523979421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1921,9 +1902,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tabs:
-  - {fileID: 8443806356022782534}
-  - {fileID: 8892666653294153828}
-  - {fileID: 1293881827630699302}
+  - {fileID: 5003932654574213826}
+  - {fileID: 6647142802186021184}
+  - {fileID: 4539658880271687270}
   _tabsName:
   - {fileID: 7330088280130276539}
   - {fileID: 692069910594963943}
@@ -2116,7 +2097,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4584200353360714527}
   - component: {fileID: 5954167750581157303}
-  - component: {fileID: 8443806356022782534}
   m_Layer: 5
   m_Name: Sounds
   m_TagString: Untagged
@@ -2170,18 +2150,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!225 &8443806356022782534
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5003932654574213826}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &5401422471176173090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2327,6 +2295,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2535,6 +2504,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2687,6 +2657,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2763,19 +2734,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 857086396932029736}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LocalizationManager, Assembly-CSharp
-        m_MethodName: SwitchLanguage
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: -1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &6647142802186021184
 GameObject:
   m_ObjectHideFlags: 0
@@ -2786,7 +2745,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7957331352819148811}
   - component: {fileID: 5365207526293947142}
-  - component: {fileID: 8892666653294153828}
   m_Layer: 5
   m_Name: Camera
   m_TagString: Untagged
@@ -2840,18 +2798,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!225 &8892666653294153828
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6647142802186021184}
-  m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &7077215263198835445
 GameObject:
   m_ObjectHideFlags: 0
@@ -2956,6 +2902,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3093,6 +3040,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3566,6 +3514,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
