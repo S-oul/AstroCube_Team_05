@@ -28,7 +28,7 @@ Shader "Shader_Tile"
 		_MaskColor( "MaskColor", Color ) = ( 1, 1, 1, 0 )
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
-		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 5
+		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 1
 		[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
 		[HideInInspector][ToggleUI] _SupportDecals("Support Decals", Float) = 1.0
 		[HideInInspector] _StencilRef("Stencil Ref", Int) = 0 // StencilUsage.Clear
@@ -45,14 +45,14 @@ Shader "Shader_Tile"
 		[HideInInspector][ToggleUI] _RequireSplitLighting("Require Split Lighting", Float) = 0
 		[HideInInspector][ToggleUI] _ReceivesSSR("Receives SSR", Float) = 1
 		[HideInInspector][ToggleUI] _ReceivesSSRTransparent("Receives SSR Transparent", Float) = 0
-		[HideInInspector] _SurfaceType("Surface Type", Float) = 1
+		[HideInInspector] _SurfaceType("Surface Type", Float) = 0
 		[HideInInspector] _BlendMode("Blend Mode", Float) = 0
 		[HideInInspector] _SrcBlend("Src Blend", Float) = 1
 		[HideInInspector] _DstBlend("Dst Blend", Float) = 0
 		[HideInInspector] _DstBlend2("__dst2", Float) = 0
 		[HideInInspector] _AlphaSrcBlend("Alpha Src Blend", Float) = 1
 		[HideInInspector] _AlphaDstBlend("Alpha Dst Blend", Float) = 0
-		[HideInInspector][ToggleUI] _ZWrite("ZWrite", Float) = 0
+		[HideInInspector][ToggleUI] _ZWrite("ZWrite", Float) = 1
 		[HideInInspector][ToggleUI] _TransparentZWrite("Transparent ZWrite", Float) = 0
 		[HideInInspector] _CullMode("Cull Mode", Float) = 2
 		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Float) = 0
@@ -60,7 +60,7 @@ Shader "Shader_Tile"
 		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2 // This mode is dedicated to Forward to correctly handle backface then front face rendering thin transparent
 		[HideInInspector][Enum(UnityEngine.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
 		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4 // Less equal
-		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 4// Less equal
+		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 4 // Less equal
 		[HideInInspector][ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
 		[HideInInspector][ToggleUI] _AlphaCutoffEnable("Alpha Cutoff Enable", Float) = 0
 		[HideInInspector][ToggleUI] _UseShadowThreshold("Use Shadow Threshold", Float) = 0
@@ -90,7 +90,7 @@ Shader "Shader_Tile"
 		[HideInInspector][ToggleUI] _AlphaToMaskInspectorValue("_AlphaToMaskInspectorValue", Float) = 0 // Property used to save the alpha to mask state in the inspector
         [HideInInspector][ToggleUI] _AlphaToMask("__alphaToMask", Float) = 0
 
-		//[HideInInspector][Enum(None, 0, Planar, 1, Sphere, 2, Thin, 3)]_RefractionModel("Refraction Model", Int) = 0
+		//_Refrac ( "Refraction Model", Float) = 0
         [HideInInspector][ToggleUI]_DepthOffsetEnable("Boolean", Float) = 1
         [HideInInspector][ToggleUI]_ConservativeDepthOffsetEnable("Boolean", Float) = 1
 
@@ -105,7 +105,7 @@ Shader "Shader_Tile"
 
 		
 
-		Tags { "RenderPipeline"="HDRenderPipeline" "RenderType"="Transparent" "Queue"="Transparent" }
+		Tags { "RenderPipeline"="HDRenderPipeline" "RenderType"="Opaque" "Queue"="Geometry" }
 
 		AlphaToMask Off
 
@@ -364,7 +364,6 @@ Shader "Shader_Tile"
 
 			HLSLPROGRAM
             #define ASE_GEOMETRY
-            #define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
             #pragma shader_feature_local _ _DOUBLESIDED_ON
             #define ASE_FRAGMENT_NORMAL 0
             #pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -374,7 +373,7 @@ Shader "Shader_Tile"
             #pragma instancing_options renderinglayer
             #define _AMBIENT_OCCLUSION 1
             #define ASE_VERSION 19904
-            #define ASE_SRP_VERSION 170004
+            #define ASE_SRP_VERSION -1
 
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -1306,7 +1305,6 @@ Shader "Shader_Tile"
 
 			HLSLPROGRAM
 			#define ASE_GEOMETRY
-			#define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
 			#pragma shader_feature_local _ _DOUBLESIDED_ON
 			#define ASE_FRAGMENT_NORMAL 0
 			#pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -1316,7 +1314,7 @@ Shader "Shader_Tile"
 			#pragma instancing_options renderinglayer
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 170004
+			#define ASE_SRP_VERSION -1
 
 			#pragma shader_feature _ EDITOR_VISUALIZATION
 			#pragma multi_compile _ DOTS_INSTANCING_ON
@@ -2205,7 +2203,6 @@ Shader "Shader_Tile"
 
 			HLSLPROGRAM
 			#define ASE_GEOMETRY
-			#define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
 			#pragma shader_feature_local _ _DOUBLESIDED_ON
 			#define ASE_FRAGMENT_NORMAL 0
 			#pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -2215,7 +2212,7 @@ Shader "Shader_Tile"
 			#pragma instancing_options renderinglayer
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 170004
+			#define ASE_SRP_VERSION -1
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -2925,7 +2922,6 @@ Shader "Shader_Tile"
 
 			HLSLPROGRAM
 			#define ASE_GEOMETRY
-			#define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
 			#pragma shader_feature_local _ _DOUBLESIDED_ON
 			#define ASE_FRAGMENT_NORMAL 0
 			#pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -2935,7 +2931,7 @@ Shader "Shader_Tile"
 			#pragma instancing_options renderinglayer
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 170004
+			#define ASE_SRP_VERSION -1
 
 			#pragma editor_sync_compilation
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -3617,7 +3613,6 @@ Shader "Shader_Tile"
 
 			HLSLPROGRAM
 			#define ASE_GEOMETRY
-			#define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
 			#pragma shader_feature_local _ _DOUBLESIDED_ON
 			#define ASE_FRAGMENT_NORMAL 0
 			#pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -3627,7 +3622,7 @@ Shader "Shader_Tile"
 			#pragma instancing_options renderinglayer
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 170004
+			#define ASE_SRP_VERSION -1
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -4394,7 +4389,6 @@ Shader "Shader_Tile"
 
 			HLSLPROGRAM
 			#define ASE_GEOMETRY
-			#define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
 			#pragma shader_feature_local _ _DOUBLESIDED_ON
 			#define ASE_FRAGMENT_NORMAL 0
 			#pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -4404,7 +4398,7 @@ Shader "Shader_Tile"
 			#pragma instancing_options renderinglayer
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 170004
+			#define ASE_SRP_VERSION -1
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -5232,7 +5226,6 @@ Shader "Shader_Tile"
 
 			HLSLPROGRAM
 			#define ASE_GEOMETRY
-			#define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
 			#pragma shader_feature_local _ _DOUBLESIDED_ON
 			#define ASE_FRAGMENT_NORMAL 0
 			#pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -5242,7 +5235,7 @@ Shader "Shader_Tile"
 			#pragma instancing_options renderinglayer
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 170004
+			#define ASE_SRP_VERSION -1
 
 			#pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -6404,7 +6397,6 @@ Shader "Shader_Tile"
 
             HLSLPROGRAM
 			#define ASE_GEOMETRY
-			#define SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
 			#pragma shader_feature_local _ _DOUBLESIDED_ON
 			#define ASE_FRAGMENT_NORMAL 0
 			#pragma shader_feature_local_fragment _ _DISABLE_DECALS
@@ -6414,7 +6406,7 @@ Shader "Shader_Tile"
 			#pragma instancing_options renderinglayer
 			#define _AMBIENT_OCCLUSION 1
 			#define ASE_VERSION 19904
-			#define ASE_SRP_VERSION 170004
+			#define ASE_SRP_VERSION -1
 
 			#pragma editor_sync_compilation
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -7401,7 +7393,7 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Versi
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;125;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPostpass;0;8;TransparentDepthPostpass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=TransparentDepthPostpass;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;126;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Forward;0;9;Forward;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;True;2;5;False;;10;False;;0;1;False;;0;False;;False;False;True;1;1;False;;0;True;_DstBlend2;0;1;False;;0;False;;False;False;True;1;1;False;;0;True;_DstBlend2;0;1;False;;0;False;;False;False;False;True;0;True;_CullModeForward;False;False;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelOne;False;True;True;True;True;True;0;True;_ColorMaskTransparentVelTwo;False;False;False;True;True;0;True;_StencilRef;255;False;;255;True;_StencilWriteMask;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;True;0;True;_ZWrite;True;0;True;_ZTestDepthEqualForOpaque;False;True;1;LightMode=Forward;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;127;816,32;Float;False;False;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ScenePickingPass;0;10;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;True;3;False;;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;117;1344,-176;Float;False;True;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;Shader_Tile;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;35;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefGBuffer;255;False;;255;True;_StencilWriteMaskGBuffer;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;False;True;0;True;_ZTestGBuffer;False;True;1;LightMode=GBuffer;False;False;0;;0;0;Standard;42;Category;0;0;  Instanced Terrain Normals;1;0;Surface Type;1;638986339562534295;  Rendering Pass;1;0;  Refraction Model;0;0;    Blending Mode;0;0;    Blend Preserves Specular;1;0;  Back Then Front Rendering;0;0;  Transparent Depth Prepass;0;0;  Transparent Depth Postpass;0;0;  ZWrite;0;0;  Z Test;4;0;Double-Sided;0;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Material Type;0;0;  Energy Conserving Specular;1;0;  Transmission;0;0;Normal Space;0;0;Receive Decals;1;0;Receive SSR;1;0;Receive SSR Transparent;0;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;Specular AA;0;0;Specular Occlusion Mode;1;0;Override Baked GI;0;0;Write Depth;0;0;  Depth Offset;0;0;  Conservative;0;0;GPU Instancing;1;0;LOD CrossFade;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position;1;0;0;11;True;True;True;True;True;True;False;False;False;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;117;1344,-176;Float;False;True;-1;3;Rendering.HighDefinition.LightingShaderGraphGUI;0;14;Shader_Tile;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;35;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefGBuffer;255;False;;255;True;_StencilWriteMaskGBuffer;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;False;True;0;True;_ZTestGBuffer;False;True;1;LightMode=GBuffer;False;False;0;;0;0;Standard;42;Category;0;0;  Instanced Terrain Normals;1;0;Surface Type;0;639075785735468304;  Rendering Pass;1;0;  Refraction Model;0;0;    Blending Mode;0;0;    Blend Preserves Specular;1;0;  Back Then Front Rendering;0;0;  Transparent Depth Prepass;0;0;  Transparent Depth Postpass;0;0;  ZWrite;0;0;  Z Test;4;0;Double-Sided;0;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Material Type;0;0;  Energy Conserving Specular;1;0;  Transmission;0;0;Normal Space;0;0;Receive Decals;1;0;Receive SSR;1;0;Receive SSR Transparent;0;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;Specular AA;0;0;Specular Occlusion Mode;1;0;Override Baked GI;0;0;Write Depth;0;0;  Depth Offset;0;0;  Conservative;0;0;GPU Instancing;1;0;LOD CrossFade;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position;1;0;0;11;True;True;True;True;True;True;False;False;False;True;True;False;;False;0
 WireConnection;277;0;276;0
 WireConnection;282;0;365;0
 WireConnection;282;1;277;0
@@ -7605,4 +7597,4 @@ WireConnection;117;8;96;2
 WireConnection;117;6;328;0
 WireConnection;117;9;344;0
 ASEEND*/
-//CHKSM=FD587F7B82BC7CFEAAC42166DF57360613633278
+//CHKSM=E141A18795F0BDECF157ED500B8494BAFE064B14
