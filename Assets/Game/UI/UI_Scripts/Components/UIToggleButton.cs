@@ -44,15 +44,15 @@ public class UIToggleButton : MonoBehaviour
         onToggleChanged?.Invoke(isEnable);
     }
 
-    private void RefreshUI()
+    public void RefreshUI()
     {
         if (isEnable)
         {
-            stateText.text = "< Enabled >";
+            stateText.text = $"<   {LocalizationManager.Instance.GetString("<MENU:ENABLED>")}   >";
         }
         else
         {
-            stateText.text = "< Disabled >";
+            stateText.text = $"<   {LocalizationManager.Instance.GetString("<MENU:DISABLED>")}   >";
         }
     }
 

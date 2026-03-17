@@ -164,21 +164,21 @@ public class SelectionCube : MonoBehaviour
                     if (renderer.transform.CompareTag("Floor"))
                     {
                         renderer.material.SetFloat("_State", 0f);
-                        _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
+                        _Select(renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     }
                     break;
                 case SelectionMode.LOCKED:
                     if (renderer.transform.CompareTag("Floor"))
                     {
                         renderer.material.SetFloat("_State", 1f);
-                        _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
+                        _Select(renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     }
                     break;
                 case SelectionMode.PLAYERONTILE:
                     if (renderer.transform.CompareTag("Floor"))
                     {
                         renderer.material.SetFloat("_State", 2f);
-                        _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
+                        _Select(renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
                     }
                     break;
                 case SelectionMode.ENABLE:
@@ -201,7 +201,7 @@ public class SelectionCube : MonoBehaviour
             if ((CurrentSelectionMode == SelectionMode.AXIS || CurrentSelectionMode == SelectionMode.CUBE || CurrentSelectionMode == SelectionMode.LOCKED || CurrentSelectionMode == SelectionMode.PLAYERONTILE)
                 && (renderer.transform.CompareTag("Floor")))
             {
-                _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
+                _Unselect(renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
             }
             /*
             else
@@ -224,11 +224,11 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeInDuration);
+                _Select(renderer, 0.8f, Ease.OutQuint);
             }
             else if (renderer.transform.CompareTag("Floor"))
             {
-                _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
+                _Unselect(renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
             }
         }
         yield return new WaitForSeconds(GameManager.Instance.Settings.RubikscCubeAxisRotationDuration);
@@ -236,7 +236,7 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
+                _Unselect(renderer, 0.8f, Ease.InQuint);
             }
         }
     }
@@ -263,7 +263,7 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(true, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
+                _Select(renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
 
                 if (_selectionCurrentValues.ContainsKey(renderer))
                 {
@@ -282,7 +282,7 @@ public class SelectionCube : MonoBehaviour
         {
             if (renderer.transform.CompareTag("SelectionShine"))
             {
-                _ToggleSelectionShader(false, renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
+                _Unselect(renderer, GameManager.Instance.Settings.AxisSelectionFadeOutDuration);
 
                 if (_selectionCurrentValues.ContainsKey(renderer))
                 {
@@ -298,32 +298,30 @@ public class SelectionCube : MonoBehaviour
 
     }
 
-    private void _ToggleSelectionShader(bool _selected, Renderer renderer, float duration)
+    private void _Select(Renderer renderer, float duration, Ease ease = Ease.InOutSine)
     {
-        if (_selected)
+        if (_selectionCurrentValues.ContainsKey(renderer))
         {
-            if (_selectionCurrentValues.ContainsKey(renderer))
-            {
-                if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
-                    return;
+            if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
+                return;
 
-                if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
-                    _selectionCurrentValues[renderer].DisableSelectionTween.Kill();
+            if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
+                _selectionCurrentValues[renderer].DisableSelectionTween.Kill();
 
-                _selectionCurrentValues[renderer].EnableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 1.0f, duration).SetEase(Ease.InOutSine);
-            }
+            _selectionCurrentValues[renderer].EnableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 1.0f, duration).SetEase(ease);
         }
-        else
-        {
-            if (_selectionCurrentValues.ContainsKey(renderer))
-            {
-                if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
-                    return;
-                if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
-                    _selectionCurrentValues[renderer].EnableSelectionTween.Kill();
+    }
 
-                _selectionCurrentValues[renderer].DisableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 0.0f, duration).SetEase(Ease.InOutSine);
-            }
+    private void _Unselect(Renderer renderer, float duration, Ease ease = Ease.InOutSine)
+    {
+        if (_selectionCurrentValues.ContainsKey(renderer))
+        {
+            if (_selectionCurrentValues[renderer].DisableSelectionTween != null && _selectionCurrentValues[renderer].DisableSelectionTween.active)
+                return;
+            if (_selectionCurrentValues[renderer].EnableSelectionTween != null && _selectionCurrentValues[renderer].EnableSelectionTween.active)
+                _selectionCurrentValues[renderer].EnableSelectionTween.Kill();
+
+            _selectionCurrentValues[renderer].DisableSelectionTween = DOTween.To(() => renderer.material.GetFloat("_Alpha_shader"), x => renderer.material.SetFloat("_Alpha_shader", x), 0.0f, duration).SetEase(ease);
         }
     }
 
