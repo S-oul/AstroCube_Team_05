@@ -25,13 +25,13 @@ public class CameraShake : MonoBehaviour
         originalPos = camTransform.localPosition;
 
         EventManager.OnEndCubeRotation += TriggerBigCameraShake;
-        EventManager.OnPlayerStopsFalling += TriggerSmalCameraShake;
+        //EventManager.OnPlayerStopsFalling += TriggerSmalCameraShake;
     }
 
     private void OnDisable()
     {
         EventManager.OnEndCubeRotation -= TriggerBigCameraShake;
-        EventManager.OnPlayerStopsFalling -= TriggerSmalCameraShake;
+        //EventManager.OnPlayerStopsFalling -= TriggerSmalCameraShake;
     }
 
     void Update()
