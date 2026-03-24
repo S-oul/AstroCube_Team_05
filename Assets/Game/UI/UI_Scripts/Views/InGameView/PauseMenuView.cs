@@ -110,9 +110,11 @@ public class PauseMenuView : UIView
     private void OnResumeClicked()
     {
         Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         EventManager.TriggerGameUnpause();
+        
+        InputSystemManager.Instance.PlayerInputs.DeactivateInput();
     }
 
     private void OnSettingsClicked()

@@ -12,7 +12,7 @@ public class MemoryObject : MonoBehaviour, IInteractable
     //[SerializeField] private MemoryCharacter _memoryCharacterPrefab;
     //[SerializeField] private List<Vector3> _characterPositions = new();
     [SerializeField] private List<MemoryVFXController> _memories = new();
-    [SerializeField] private List<GameObject> _gameObjectsToActivate;
+    [SerializeField] private List<GameObject> _gameObjectsToActivate = new();
     [SerializeField] private List<SubtitleData> _subtitles = new();
     [SerializeField] private Material _memoryMat;
 
@@ -37,6 +37,9 @@ public class MemoryObject : MonoBehaviour, IInteractable
     private void OnValidate()
     {
         if (_gameObjectsToActivate == null || _gameObjectsToActivate.Count == 0)
+            return;
+        
+        if(!_teapotRenderer)
             return;
         
         foreach (GameObject obj in _gameObjectsToActivate)

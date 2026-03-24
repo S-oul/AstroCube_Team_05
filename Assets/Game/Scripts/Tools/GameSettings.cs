@@ -52,6 +52,11 @@ public class GameSettings : ScriptableObject
     
     //Cutscene Properties
     public float SkipCutsceneDuration => _skipCutsceneDuration;
+    
+    // Achievements
+    public float MaxTimeForAchievement => _maxTimeForAchievement;
+    public int MaxRotationsForAchievement => _maxRotationsForAchievement;
+    public int MaxLockedRotationsForAchievement => _maxLockedRotationsForAchievement;
 
 
     public AnimationCurve CurveFOV => curveFOV;
@@ -129,4 +134,9 @@ public class GameSettings : ScriptableObject
 
     [Header("- Cutscene Duration")] [SerializeField]
     private float _skipCutsceneDuration;
+
+    [Header("-- ACHIEVEMENTS --")]
+    [SerializeField] private float _maxTimeForAchievement;
+    [SerializeField] private int _maxRotationsForAchievement;
+    [SerializeField] private int _maxLockedRotationsForAchievement;
 }

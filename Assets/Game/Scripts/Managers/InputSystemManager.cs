@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using static InputSystemManager;
 
 public class InputSystemManager : MonoBehaviour
 {
@@ -11,6 +10,8 @@ public class InputSystemManager : MonoBehaviour
 
     public EInputMode CurrentInputMode => _currentInputMode;
     private EInputMode _currentInputMode;
+
+    public UnityEvent<EInputMode> OnCurrentInputModeChange;
 
     public PlayerInput PlayerInputs => _playerInputs;
     private PlayerInput _playerInputs;
@@ -49,6 +50,7 @@ public class InputSystemManager : MonoBehaviour
 
         _playerInputs = GetComponent<PlayerInput>();
         InputSystem.onActionChange += InputActionChangeCallback;
+        OnCurrentInputModeChange.RemoveAllListeners();
     }
 
     private void InputActionChangeCallback(object obj, InputActionChange change)
@@ -58,7 +60,13 @@ public class InputSystemManager : MonoBehaviour
             InputAction receivedInputAction = (InputAction)obj;
             InputDevice lastDevice = receivedInputAction.activeControl.device;
 
+            var tempInputMode = _currentInputMode;
             _currentInputMode = lastDevice.name.Equals("Keyboard") || lastDevice.name.Equals("Mouse") ? EInputMode.KEYBOARD : EInputMode.CONTROLLER;
+            
+            if (tempInputMode != _currentInputMode)
+            {
+                OnCurrentInputModeChange?.Invoke(_currentInputMode);
+            }
         }
     }
 
@@ -116,11 +124,11 @@ public class InputSystemManager : MonoBehaviour
 
     void DeactivateActionMap()
     {
-        //_playerInputs.currentActionMap.Disable();
+        InputHandler.DisableInputs(new[]{EInputType.JUMP, EInputType.MOVEMENT}.ToList());
     }    
     void ActivateActionMap()
     {
-       // _playerInputs.currentActionMap.Enable();
+        InputHandler.EnableInputs(new[]{EInputType.JUMP, EInputType.MOVEMENT}.ToList());
     }
     
 }
