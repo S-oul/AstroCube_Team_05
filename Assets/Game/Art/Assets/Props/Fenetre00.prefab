@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 16
   m_IsActive: 1
 --- !u!4 &6262438364033079280
 Transform:
@@ -41,14 +41,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4744667048332181051}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 2
   m_Color: {r: 0.48867923, g: 0.6895357, b: 1, a: 1}
   m_Intensity: 124.32701
   m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 1
     m_Resolution: -1
@@ -118,6 +118,9 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_Intensity: 0
   m_InnerSpotPercent: 0
+  m_ShapeWidth: 0.5
+  m_ShapeHeight: 0.5
+  m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -126,9 +129,6 @@ MonoBehaviour:
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
-  m_ShapeWidth: 0.5
-  m_ShapeHeight: 0.5
-  m_AspectRatio: 1
   m_ShapeRadius: 5
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
@@ -318,10 +318,25 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: da5cad567d8eff5479e9981d9372964f, type: 2}
+    - target: {fileID: -2528148683120422, guid: fd6cf835bc88ab3499dee3e16cc4e3ff,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fd6cf835bc88ab3499dee3e16cc4e3ff,
         type: 3}
       propertyPath: m_Name
       value: Fenetre00
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fd6cf835bc88ab3499dee3e16cc4e3ff,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284054424123463538, guid: fd6cf835bc88ab3499dee3e16cc4e3ff,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
