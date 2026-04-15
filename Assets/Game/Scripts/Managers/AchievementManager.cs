@@ -58,6 +58,7 @@ public class AchievementManager : MonoBehaviour
             PlayerPrefs.SetFloat("CURRENT_TIME", _currentTime);
             PlayerPrefs.SetInt("ROTATION_AMOUNT", _currentAmountOfRotations);
             PlayerPrefs.SetInt("LOCKED_ROTATIONS", _lockedRotations);
+            PlayerPrefs.Save();
             
             yield return new WaitForSecondsRealtime(1f);
         }
@@ -66,10 +67,14 @@ public class AchievementManager : MonoBehaviour
     public void EndGame()
     {
         if(_currentTime <= GameManager.Instance.Settings.MaxTimeForAchievement)
+        {
             UnlockAchievement("SPEEDRUNNER");
-        
+        }
+    
         if(_currentAmountOfRotations <= GameManager.Instance.Settings.MaxRotationsForAchievement)
+        {
             UnlockAchievement("EFFICIENCY");
+        }
     }
 
     public void AddRotation(bool locked = false)
