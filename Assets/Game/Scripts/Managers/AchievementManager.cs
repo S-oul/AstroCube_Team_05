@@ -80,6 +80,7 @@ public class AchievementManager : MonoBehaviour
 
     public void EndGame()
     {
+#if !DISABLESTEAMWORKS
         if(_currentTime <= GameManager.Instance.Settings.MaxTimeForAchievement)
         {
             UnlockAchievement("SPEEDRUNNER");
@@ -89,6 +90,7 @@ public class AchievementManager : MonoBehaviour
         {
             UnlockAchievement("EFFICIENCY");
         }
+#endif
     }
 
     public void AddRotation(bool locked = false)
