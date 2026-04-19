@@ -140,6 +140,7 @@ public class InputDisplay : MonoBehaviour
 
     public void StartDisplay()
     {
+        Debug.Log("START DISPLAY");
         _isDisplayed = true;
         _onStartShowText?.Invoke();
         _FadeDisplay(1, _fadeOutDuration);
