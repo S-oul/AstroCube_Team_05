@@ -13,6 +13,7 @@ public class MouseCamControl : MonoBehaviour
 
     [Header("Camera Movement")]
     [SerializeField] Transform _playerTransform;
+    [SerializeField] Transform _aimPivotPoint;
 
     [Header("Raycast")]
     [SerializeField] RubiksCubeController rubiksCubeController;
@@ -33,11 +34,13 @@ public class MouseCamControl : MonoBehaviour
 
     Transform _oldTile;
 
+    float _xRotation;
     float _yRotation;
     GameSettings _settings;
     InputHandler _inputHandler;
 
     Vector2 _mousePos;
+    private Vector2 _rawMouseDelta;
     public Vector2 GetMousePos { get => _mousePos; }
     private Quaternion _externalRotationInfluence = Quaternion.identity;
     private float _rotationInfluenceAmount = 0f;
@@ -51,9 +54,11 @@ public class MouseCamControl : MonoBehaviour
 
     CinemachineVirtualCamera _cinemashineCam;
     LayerMask _detectableLayer;
+
     private void Awake()
     {
         transform.localPosition = Vector3.zero;
+        _xRotation = _playerTransform.eulerAngles.y;
 
     }
     void Start()
@@ -70,9 +75,9 @@ public class MouseCamControl : MonoBehaviour
 
     public void OnCamera(InputAction.CallbackContext callbackContext)
     {
-        Vector2 rawInput = callbackContext.ReadValue<Vector2>();
-        _mousePos = new Vector2(rawInput.x * yawSensitivity * Time.deltaTime,
-                               rawInput.y * pitchSensitivity * Time.deltaTime);
+        _rawMouseDelta = callbackContext.ReadValue<Vector2>();
+        _mousePos = new Vector2(_rawMouseDelta.x * yawSensitivity * Time.deltaTime,
+                               _rawMouseDelta.y * pitchSensitivity * Time.deltaTime);
     }
 
     private void LateUpdate()
@@ -92,18 +97,20 @@ public class MouseCamControl : MonoBehaviour
 
         Quaternion pitchRotation = Quaternion.Euler(_yRotation, 0f, 0f);
 
-        transform.localRotation = Quaternion.Slerp(pitchRotation, _externalRotationInfluence, _rotationInfluenceAmount);
+        pitchRotation = Quaternion.Slerp(pitchRotation, _externalRotationInfluence, _rotationInfluenceAmount);
 
-        float desiredYaw = _playerTransform.eulerAngles.y + _mousePos.x;
-        float blendedYaw = Mathf.LerpAngle(desiredYaw, _externalYawInfluence, _yawInfluenceAmount);
+        _xRotation += _mousePos.x;
+        float blendedYaw = Mathf.LerpAngle(_xRotation, _externalYawInfluence, _yawInfluenceAmount);
 
-
+        _aimPivotPoint.rotation = Quaternion.Euler(pitchRotation.eulerAngles.x, blendedYaw, 0f);
         _playerTransform.rotation = Quaternion.Euler(0f, blendedYaw, 0f);
     }
+
     void Update()
     {
         UpdateSelection(false);
     }
+
     private void ForceResetSelection()
     {
         UpdateSelection(true);

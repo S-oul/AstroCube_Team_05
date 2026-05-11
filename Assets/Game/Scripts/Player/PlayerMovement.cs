@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     float _currentFallSpeed;
     Vector3 _horizontalVelocity;
     bool _isGrounded;
+    bool _oldIsGrounded;
     float _currentCoyoteTime;
 
     float _defaultCameraHeight;
@@ -129,13 +130,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //check player state
+        _oldIsGrounded = _isGrounded;
+        _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
+    }
+
+
+    private void Update()
+    {
         if (!_canMove) return;
 
-        //check player state
-        bool oldIsGrounded = _isGrounded;
-        _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
-
-        if (oldIsGrounded == false && _isGrounded == true)
+        if (_oldIsGrounded == false && _isGrounded == true)
         {
             // player just landed on the ground
             EventManager.TriggerPlayerStopsFalling();
@@ -263,11 +268,11 @@ public class PlayerMovement : MonoBehaviour
         // apply calculated Movement
         float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor * (_isOnStairs ? _stairsSpeedMultiplier : 1);
         if (_hasGravity) {
-            _controller.Move((_horizontalVelocity * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed) * Time.deltaTime) + _externallyAppliedMovement) * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
-            _controller.Move(_verticalVelocity * Time.deltaTime);
+            _controller.Move((_horizontalVelocity * Time.fixedDeltaTime * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed)) + _externallyAppliedMovement) * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
+            _controller.Move(_verticalVelocity * Time.fixedDeltaTime);
         } else // no clip
         {
-            _controller.Move(_horizontalVelocity * ((moveSpeed / 10) * Time.deltaTime)
+            _controller.Move(_horizontalVelocity * ((moveSpeed / 10) * Time.fixedDeltaTime)
                              + _externallyAppliedMovement);
         }
 
