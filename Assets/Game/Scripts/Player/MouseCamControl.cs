@@ -87,7 +87,7 @@ public class MouseCamControl : MonoBehaviour
 
     private void UpdateCameraPos()
     {
-        if (_inputHandler == null || !_inputHandler.CanMove)
+        if (_inputHandler == null || !InputHandler.IsInputEnabled(InputSystemManager.EInputType.CAMERA))
             return;
 
         if (!_isExternalPitchForced)
