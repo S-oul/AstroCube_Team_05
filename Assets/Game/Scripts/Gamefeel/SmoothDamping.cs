@@ -65,7 +65,7 @@ public class SmoothDamping : MonoBehaviour
         _cubeStartRotation = transform.parent.localRotation;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         // vertical movement ----------------
 

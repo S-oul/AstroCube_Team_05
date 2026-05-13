@@ -92,7 +92,7 @@ public class MouseCamControl : MonoBehaviour
 
         if (!_isExternalPitchForced)
         {
-            _yRotation = Mathf.Clamp(_yRotation - _mousePos.y, -90f, 90f);
+            _yRotation = Mathf.Clamp(_yRotation - _mousePos.y, -89f, 89f);
         }
 
         Quaternion pitchRotation = Quaternion.Euler(_yRotation, 0f, 0f);
