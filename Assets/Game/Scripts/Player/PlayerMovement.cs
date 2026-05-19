@@ -262,23 +262,20 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-    }
-
-
-    private void Update()
-    {
-        // apply calculated Movement
         float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor * (_isOnStairs ? _stairsSpeedMultiplier : 1);
         if (_hasGravity) {
             _controller.Move((_horizontalVelocity * Time.fixedDeltaTime * ((_crouchInput ? moveSpeed : moveSpeed / _gameSettings.CrouchSpeed)) + _externallyAppliedMovement) * (!_isGrounded ? _gameSettings.AirControl : 1.0f));
             _controller.Move(_verticalVelocity * Time.fixedDeltaTime);
-        } else // no clip
+        } else 
         {
-            _controller.Move(_horizontalVelocity * ((moveSpeed / 10) * Time.fixedDeltaTime)
-                             + _externallyAppliedMovement);
+            _controller.Move(_horizontalVelocity * ((moveSpeed / 10) * Time.fixedDeltaTime) + _externallyAppliedMovement);
         }
 
         _pastHorizontalVelocity = _horizontalVelocity;
+    }
+
+    private void Update()
+    {
         ExecuteFootStep();
     }
 
@@ -297,7 +294,6 @@ public class PlayerMovement : MonoBehaviour
         if (_isWalking) {
             _timerBeforeNextStep += Time.deltaTime;
             EventManager.TriggerPlayerFootSteps(_currentGroundType);
-
         }
         else {
             _timerBeforeNextStep = 0;
@@ -308,7 +304,6 @@ public class PlayerMovement : MonoBehaviour
             _timerBeforeNextStep = 0;
             UpdateGroundType();
             EventManager.TriggerPlayerFootSteps(_currentGroundType);
-
         }
     }
 
