@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
     bool _isGrounded;
     bool _oldIsGrounded;
     float _currentCoyoteTime;
+    bool _isOnStairs;
 
     float _defaultCameraHeight;
     float _defaultControllerHeight;
@@ -133,11 +134,7 @@ public class PlayerMovement : MonoBehaviour
         //check player state
         _oldIsGrounded = _isGrounded;
         _isGrounded = Physics.CheckSphere(_floorCheck.position, _floorDistance, _floorLayer);
-    }
 
-
-    private void Update()
-    {
         if (!_canMove) return;
 
         if (_oldIsGrounded == false && _isGrounded == true)
@@ -256,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
         if (_isGrounded && _isUncontrolledFalling) _isUncontrolledFalling = false;
         if (_isUncontrolledFalling) _horizontalVelocity = Vector3.zero; //cancel any non-vertical movement
 
-        bool _isOnStairs = false;
+        _isOnStairs = false;
         if (Physics.Raycast(transform.position, -transform.up, out var hit, 10000, LayerMask.GetMask("Floor")))
         {
             if (hit.normal != Vector3.up)
@@ -265,6 +262,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+    }
+
+
+    private void Update()
+    {
         // apply calculated Movement
         float moveSpeed = _currentMoveSpeed * _currentMoveSpeedFactor * (_isOnStairs ? _stairsSpeedMultiplier : 1);
         if (_hasGravity) {
