@@ -41,7 +41,7 @@ public class MouseCamControl : MonoBehaviour
 
     Vector2 _mousePos;
     private Vector2 _rawMouseDelta;
-    public Vector2 GetMousePos { get => _mousePos; }
+    public Vector2 MousePos { get => _mousePos; }
     private Quaternion _externalRotationInfluence = Quaternion.identity;
     private float _rotationInfluenceAmount = 0f;
 
@@ -54,6 +54,10 @@ public class MouseCamControl : MonoBehaviour
 
     CinemachineVirtualCamera _cinemashineCam;
     LayerMask _detectableLayer;
+
+
+    Quaternion pitch;
+    float yaw;
 
     private void Awake()
     {
@@ -80,12 +84,13 @@ public class MouseCamControl : MonoBehaviour
                                _rawMouseDelta.y * pitchSensitivity * Time.deltaTime);
     }
 
-    private void LateUpdate()
+    void Update()
     {
-        UpdateCameraPos();
+        //_playerTransform.rotation = Quaternion.Euler(0f, yaw, 0f);
+        UpdateSelection(false);
     }
 
-    private void UpdateCameraPos()
+    private void LateUpdate()
     {
         if (_inputHandler == null || !InputHandler.IsInputEnabled(InputSystemManager.EInputType.CAMERA))
             return;
@@ -95,21 +100,15 @@ public class MouseCamControl : MonoBehaviour
             _yRotation = Mathf.Clamp(_yRotation - _mousePos.y, -89f, 89f);
         }
 
-        Quaternion pitchRotation = Quaternion.Euler(_yRotation, 0f, 0f);
+        pitch = Quaternion.Euler(_yRotation, 0f, 0f);
 
-        pitchRotation = Quaternion.Slerp(pitchRotation, _externalRotationInfluence, _rotationInfluenceAmount);
+        pitch = Quaternion.Slerp(pitch, _externalRotationInfluence, _rotationInfluenceAmount);
 
         _xRotation += _mousePos.x;
-        float blendedYaw = Mathf.LerpAngle(_xRotation, _externalYawInfluence, _yawInfluenceAmount);
-
-        _aimPivotPoint.rotation = Quaternion.Euler(pitchRotation.eulerAngles.x, blendedYaw, 0f);
-        _playerTransform.rotation = Quaternion.Euler(0f, blendedYaw, 0f);
+        yaw = Mathf.LerpAngle(_xRotation, _externalYawInfluence, _yawInfluenceAmount);
+        _aimPivotPoint.rotation = Quaternion.Euler(pitch.eulerAngles.x, yaw, 0f);
     }
 
-    void Update()
-    {
-        UpdateSelection(false);
-    }
 
     private void ForceResetSelection()
     {

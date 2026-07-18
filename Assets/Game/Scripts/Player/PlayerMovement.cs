@@ -162,10 +162,10 @@ public class PlayerMovement : MonoBehaviour
 
             //_verticalVelocity += _gravityDirection * (Math.Clamp(_gameSettings.Gravity * Time.deltaTime, 0, _maxPlayerFallSpeed));
 
-            _currentFallSpeed += _gameSettings.Gravity * Time.fixedDeltaTime; // this is not used directly but helps track the current vertical velocity. 
+            _currentFallSpeed += _gameSettings.Gravity * Time.deltaTime; // this is not used directly but helps track the current vertical velocity. 
             if (_currentFallSpeed > _maxPlayerFallSpeed * -1) // only add to the vertical velocity if fall speed is above the minimum vertical velocity. 
             {
-                _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.fixedDeltaTime);
+                _verticalVelocity += _gravityDirection * (_gameSettings.Gravity * Time.deltaTime);
             }
 
             if (_isGrounded && _currentFallSpeed <= 0)
@@ -187,14 +187,14 @@ public class PlayerMovement : MonoBehaviour
         // movePlayer (walking around)
         if (_isGrounded)
         {
-            _horizontalVelocity = transform.right * _xInput + transform.forward * _zInput;
+            _horizontalVelocity = _camera.right * _xInput + _camera.forward * _zInput;
 
         }
         else
         {
             float mag = _horizontalVelocity.magnitude;
-            if (mag != 0) _horizontalVelocity = (transform.right * _xInput + transform.forward * _zInput).normalized * mag * 1.002f;
-            else _horizontalVelocity = (transform.right * _xInput + transform.forward * _zInput);
+            if (mag != 0) _horizontalVelocity = (_camera.right * _xInput + _camera.forward * _zInput).normalized * mag * 1.002f;
+            else _horizontalVelocity = (_camera.right * _xInput + _camera.forward * _zInput);
         }
 
         if (_isSlipping)
@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
         if (_isGrounded)
             _currentCoyoteTime = _coyoteTime;
         else
-            _currentCoyoteTime -= Time.fixedDeltaTime;
+            _currentCoyoteTime -= Time.deltaTime;
 
         // jump
         if (_jumpInput && (_isGrounded || _currentCoyoteTime > 0f)) {

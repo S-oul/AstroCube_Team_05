@@ -67,6 +67,7 @@ public class InputSystemManager : MonoBehaviour
             if (tempInputMode != _currentInputMode)
             {
                 OnCurrentInputModeChange?.Invoke(_currentInputMode);
+                Cursor.lockState = _currentInputMode == EInputMode.KEYBOARD? CursorLockMode.None : CursorLockMode.Locked;
             }
         }
     }
